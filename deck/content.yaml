@@ -255,15 +255,17 @@ slides:
     section: Landscape
     layout: 4
     transition: fade
-    title: "Python passes the array, not the points"
+    title: "Use views, not copies"
     # Four hand-offs of the pipeline, in order (laspy -> NumPy -> Open3D -> NumPy -> PyVista). Every verdict is a
     # check in bench/python_facts.py (results/python_facts.json); `verify` names the boolean that must hold for the
     # verdict shown (the build warns otherwise). snippets/s06b_handoffs.py runs the same four calls with asserts.
     # 2026-10-12, speaker: explain the difference and why it matters: a two-panel legend above the rows (copy: two
     # blocks of memory; view: two names on one block) and the consequence as the support line.
+    # 2026-10-13, speaker: one takeaway first (the title and the blue band), then problem -> solution -> the four calls;
+    # the takeaway band replaces the support line at the bottom.
     legend:
-      copy: {head: "copy", text: "new memory: costs time and RAM"}
-      view: {head: "view", text: "same memory: free, writes show through"}
+      copy: {title: "The problem: copies", head: "copy", text: "new memory → costs time & RAM"}
+      view: {title: "The solution: views", head: "view", text: "same memory → free, writes show through"}
     rows:
       - {code: "las.xyz", kind: copy, verify: facts.las_xyz.fresh_copy_each_access, text: "new array, every access"}
       - {code: "Vector3dVector(xyz)", kind: copy, verify: facts.vector3dvector.copies, text: "float32: {facts.factor_v3d_float32_vs_float64_f.median|x} slower"}
@@ -272,11 +274,15 @@ slides:
     pills: {copy: "copy", view: "view"}
     # 24 B per point measured for the float64 xyz on the 1 km AHN file (results/memory.json); × 21 013 926 points
     # = 0.47 GB (1 GB = 2^30 B)
-    support: "Each xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point: 0.5 GB per 1 km AHN file."
+    takeaway: "Every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point → 0.5 GB per 1 km AHN file."
+    row_h_in: 0.44
+    row_gap_in: 0.08
+    code_pt: 18
+    text_pt: 20
     conditions: facts
     conditions_short: true
     conditions_note: "Copy or view: checked by writing to one side and reading the other, and with np.shares_memory. float32: Vector3dVector of a float32 copy, {facts.timings.v3d_float32.median_ms|ms}, against the float64 xyz of slide 12, {facts.timings.v3d_float64_f.median_ms|ms}."
-    alt: "Above, a legend: a copy is new memory and costs time and RAM; a view is the same memory, free, and writes show through. Below, four rows, one per hand-off between the libraries. las.xyz: copy, a new array on every access. Vector3dVector of xyz: copy, and {facts.factor_v3d_float32_vs_float64_f.median|x} slower for float32 input. np.asarray of pcd.points: view, writes reach the point cloud. pv.PolyData of pts: view, the same memory as pts."
+    alt: "Takeaway: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point, 0.5 GB per 1 km AHN file. The problem, copies: two names, each on its own block of memory; new memory costs time and RAM. The solution, views: two names on one block; same memory, free, writes show through. Below, four rows, one per hand-off between the libraries. las.xyz: copy, a new array on every access. Vector3dVector of xyz: copy, and {facts.factor_v3d_float32_vs_float64_f.median|x} slower for float32 input. np.asarray of pcd.points: view, writes reach the point cloud. pv.PolyData of pts: view, the same memory as pts."
     seconds: 70
 
   - n: 11

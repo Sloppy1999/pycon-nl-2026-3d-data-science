@@ -249,10 +249,12 @@ def _paint(S, st, x, y, w, h, spec):
 # ------------------------------------------------------------------------------------------
 
 def add_copy_view_legend(slide, box, spec, style=None):
-    """Two panels side by side. Copy: two names, each with its own block of memory cells. View: two names, both
-    arrows on one block. Under each, the pill word (as in the rows below) and its meaning.
+    """Two panels side by side, problem left, solution right (2026-10-13). Each: a heading (``title``) with the big
+    pill word after it, then the drawing with its meaning beside it. Copy: two names, each with its own block of memory cells.
+    View: two names, both arrows on one block. A thin rule between the panels.
 
-    spec: ``copy`` {head, text}, ``view`` {head, text}, ``names`` [a, b] (default ["a", "b"]), ``alt``?, ``name``?
+    spec: ``copy`` {title?, head, text}, ``view`` {title?, head, text}, ``names`` [a, b] (default ["a", "b"]),
+    ``alt``?, ``name``?
     """
     st = Style(style)
     x0, y0, W, H = emu_box(box)
@@ -260,48 +262,56 @@ def add_copy_view_legend(slide, box, spec, style=None):
     alt = spec.get("alt") or "Copy or view legend"
     grp = _group(slide, name, alt)
     S = grp.shapes
-    gap = 0.50
+    gap = 0.60
     pw = (W - gap) / 2
     names = spec.get("names") or ["a", "b"]
-    cell, ncell = 0.26, 5
-    row_h = 0.36
+    cell, ncell = 0.30, 5
+    row_h = 0.38
+    head_h = 0.48
+    _connector(S, x0 + pw + gap / 2, y0, x0 + pw + gap / 2, y0 + H, st.grey, 1.0, name="panel rule")
     for k, kind in enumerate(("copy", "view")):
         px = x0 + k * (pw + gap)
         d = spec[kind]
-        # left part: the drawing
-        nx = px
-        bx = px + 0.70
-        rows_y = [y0 + 0.05, y0 + 0.05 + row_h + 0.18]
+        view = kind == "view"
+        # heading row: the panel title, then the big pill word
+        tw = 0.0
+        if d.get("title"):
+            tw = _width(d["title"], 20, bold=True) + 0.30
+            _textbox(S, st, px, y0, tw, head_h, [{"text": d["title"], "size": 20, "font": st.title_font,
+                                                 "color": st.navy}], anchor=MSO_ANCHOR.MIDDLE, wrap=False,
+                     name=f"{kind} title")
+        pill_w = _width(d["head"], 24, bold=True) + 0.60
+        pill = _box(S, px + tw, y0, pill_w, head_h, fill=st.highlight if view else st.white,
+                    line=None if view else st.navy, line_w=2.0, name=f"{kind} pill")
+        pill.adjustments[0] = 0.5
+        _frame(pill.text_frame, anchor=MSO_ANCHOR.MIDDLE, margins=(0.05, 0.0, 0.05, 0.0), wrap=False)
+        _paras(pill.text_frame, st, [{"text": d["head"], "size": 24, "font": st.title_font,
+                                      "color": st.white if view else st.navy}], align=PP_ALIGN.CENTER)
+        # drawing row: names, arrows and memory blocks; the meaning beside them
+        dy = y0 + head_h + 0.14
+        nx, bx = px, px + 0.70
+        rows_y = [dy, dy + row_h + 0.20]
         for i, (nm, ry) in enumerate(zip(names, rows_y)):
             _textbox(S, st, nx, ry, 0.45, row_h, [{"text": nm, "size": 20, "mono": True, "color": st.text}],
                      anchor=MSO_ANCHOR.MIDDLE, wrap=False, name=f"{kind} name {i + 1}")
-        blocks = rows_y if kind == "copy" else [(rows_y[0] + rows_y[1]) / 2]
-        for j, by in enumerate(blocks):
+        blocks = [(rows_y[0] + rows_y[1]) / 2] if view else rows_y
+        for by in blocks:
             for c in range(ncell):
                 _box(S, bx + c * cell, by + (row_h - cell) / 2, cell, cell,
-                     fill=st.highlight if kind == "view" else st.white, line=st.navy, line_w=1.0, rounded=False,
+                     fill=st.highlight if view else st.white, line=st.navy, line_w=1.0, rounded=False,
                      name=f"{kind} cell")
         for i, ry in enumerate(rows_y):
-            ty = (blocks[i] if kind == "copy" else blocks[0]) + row_h / 2
+            ty = (blocks[0] if view else blocks[i]) + row_h / 2
             _connector(S, nx + 0.32, ry + row_h / 2, bx - 0.05, ty, st.navy, 1.5, arrow=True, name=f"{kind} ref")
-        # right part: pill word and meaning
-        tx = bx + ncell * cell + 0.35
-        view = kind == "view"
-        pill_w = _width(d["head"], 20, bold=True) + 0.50
-        pill = _box(S, tx, y0 + 0.06, pill_w, 0.42, fill=st.highlight if view else st.white,
-                    line=None if view else st.navy, line_w=1.5, name=f"{kind} pill")
-        pill.adjustments[0] = 0.5
-        _frame(pill.text_frame, anchor=MSO_ANCHOR.MIDDLE, margins=(0.05, 0.0, 0.05, 0.0), wrap=False)
-        _paras(pill.text_frame, st, [{"text": d["head"], "size": 20, "font": st.title_font,
-                                      "color": st.white if view else st.navy}], align=PP_ALIGN.CENTER)
-        _textbox(S, st, tx, y0 + 0.50, px + pw - tx, H - 0.50, [{"text": d["text"], "size": 20, "color": st.text}],
-                 name=f"{kind} meaning")
+        tx = bx + ncell * cell + 0.40
+        _textbox(S, st, tx, dy, px + pw - tx, 2 * row_h + 0.20, [{"text": d["text"], "size": 20, "color": st.text}],
+                 anchor=MSO_ANCHOR.MIDDLE, name=f"{kind} meaning")
     return _finish_group(grp, alt, name)
 
 
 def copy_view_legend_height() -> float:
-    """Height add_copy_view_legend needs: two name rows, and room for a two-line meaning beside them."""
-    return 1.05
+    """Height add_copy_view_legend needs: the panel heading, two name rows, and a two-line meaning beside them."""
+    return 1.58
 
 
 # ------------------------------------------------------------------------------------------

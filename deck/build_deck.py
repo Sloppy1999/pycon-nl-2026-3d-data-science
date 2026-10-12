@@ -1049,7 +1049,9 @@ class Builder:
     def slide_two_code(self, s, spec, n, L):
         self._two_code(s, spec, n, L)
 
-    # handoffs -- rows "code | copy/view | consequence" (L4), conditions on the bottom edge
+    # handoffs -- takeaway band, copy/view panels, rows "code | copy/view | consequence" (L4), conditions at the bottom
+    TAKEAWAY_PT = 24
+
     def slide_handoffs(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1062,29 +1064,41 @@ class Builder:
         cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, note=spec.get("conditions_note"),
                                        short=bool(spec.get("conditions_short"))) if spec.get("conditions") else BOTTOM
         sub = self.helper_spec(spec, n, None)
-        rows_top, rows_bottom = top, cond_y - 0.25
+        rows_bottom = cond_y - 0.25
+        if spec.get("takeaway"):
+            # the one sentence to remember, as a blue band right under the title (2026-10-13): the slide's loudest text
+            tk = self.R(spec["takeaway"], n)
+            th = text_h(tk, self.TAKEAWAY_PT, FULL_W - 0.60, font="title") + 0.20
+            band = rect(s, X0, top, FULL_W, th, fill="highlight", rounded=True, name="Takeaway")
+            tf = band.text_frame
+            set_body_pr(tf, wrap=True, anchor="ctr", autofit="none", insets=(0.30, 0.0, 0.30, 0.0))
+            p = tf.paragraphs[0]
+            para_format(p, align="center")
+            add_run(p, tk, font="title", size=self.TAKEAWAY_PT, colour="white")
+            end_para_size(p, self.TAKEAWAY_PT)
+            set_alt(band, tk)
+            top += th + 0.25
+        rows_top = top
         if spec.get("legend"):
-            # what copy and view mean, drawn above the rows (2026-10-12): two names on two blocks, two on one
+            # problem (copy) left, solution (view) right, drawn above the rows (2026-10-12, panels 2026-10-13)
             lg = dict(sub["legend"])
             lg.update({"name": "Copy or view", "alt": "Legend. Copy: two names, each on its own block of memory; "
                        + lg["copy"]["text"] + ". View: two names on one block of memory; " + lg["view"]["text"] + "."})
             lh = self.sketches.copy_view_legend_height() if self.sketches else 1.2
             self.call_helper(s, n, "sketches", "add_copy_view_legend", (X0, top, FULL_W, lh), lg,
                              caption="DIAGRAM PENDING: copy or view legend")
-            rule = line(s, X0, top + lh + 0.08, X0 + FULL_W, top + lh + 0.08, colour="tile", width_pt=1.0,
+            rule = line(s, X0, top + lh + 0.12, X0 + FULL_W, top + lh + 0.12, colour="tile", width_pt=1.0,
                         name="Legend rule")
             mark_decorative(rule)
-            rows_top = top + lh + 0.16
-        if spec.get("support"):
-            sup = self.R(spec["support"], n)
-            sh = text_h(sup, SUPPORT_PT, FULL_W - 0.02)
-            sy = cond_y - 0.20 - sh
-            self.support(s, n, sup, (X0, sy, FULL_W, sh))
-            rows_bottom = sy - 0.30
+            rows_top = top + lh + 0.20
         sub = {"rows": sub["rows"], "pills": sub.get("pills"), "alt": sub.get("alt"), "name": "Handoffs",
-               **({"row_gap_in": 0.10} if spec.get("legend") else {})}
+               **{k: spec[k] for k in ("row_gap_in", "row_h_in", "code_pt", "text_pt") if k in spec}}
         self.call_helper(s, n, "diagrams", "add_handoff_rows", (X0, rows_top, FULL_W, rows_bottom - rows_top), sub,
                          caption="DIAGRAM PENDING: hand-off rows")
+        k = len(sub["rows"])
+        need = k * float(spec.get("row_h_in", 0.62)) + (k - 1) * float(spec.get("row_gap_in", 0.30))
+        if rows_bottom - rows_top < need:
+            self.warn(n, f"hand-off rows need {need:.2f} in, get {rows_bottom - rows_top:.2f} in")
 
     # profile -- the Scalene command and one bar per line of the slide-19 loop (L4)
     def slide_profile(self, s, spec, n, L):

@@ -633,7 +633,7 @@ def add_handoff_rows(slide, box, spec, style=None):
         from measure import width_in  # type: ignore
     code_w = max(width_in(r["code"], code_pt, font="mono") for r in rows) + 0.40
     pill_w = max(width_in(_word(pills, r["kind"]), text_pt, font="title") for r in rows) + 0.60
-    row_h = max(0.62, code_pt * 1.2 / 72 + 0.22)
+    row_h = float(spec["row_h_in"]) if "row_h_in" in spec else max(0.62, code_pt * 1.2 / 72 + 0.22)
     gap = float(spec.get("row_gap_in", 0.30))
     total = len(rows) * row_h + (len(rows) - 1) * gap
     y = y0 + max(0.0, (H - total) / 2)
@@ -645,7 +645,7 @@ def add_handoff_rows(slide, box, spec, style=None):
         _paras(tile.text_frame, st, [{"text": r["code"], "size": code_pt, "mono": True, "color": st.text}])
         px = x0 + code_w + 0.45
         view = r["kind"] == "view"
-        pill = _box(S, px, y + 0.06, pill_w, row_h - 0.12, fill=st.highlight if view else st.white,
+        pill = _box(S, px, y + 0.03, pill_w, row_h - 0.06, fill=st.highlight if view else st.white,
                     line=None if view else st.navy, line_w=1.5, name=f"{name}_pill_{i + 1}")
         pill.adjustments[0] = 0.5
         _frame(pill.text_frame, anchor=MSO_ANCHOR.MIDDLE, margins=(0.05, 0.0, 0.05, 0.0), wrap=False)
