@@ -38,6 +38,7 @@ default `deck` group.
 | `deck/ecosystem/merge.py` (reads `part1.yaml` to `part3.yaml` and `overrides.yaml`) | `deck/ecosystem/ecosystem.yaml`, `results/ecosystem.json`, `docs/ECOSYSTEM.md`, `deck/assets/logos/SOURCES.md` | slide 3, B7 |
 | `bench/eigen_features.py --final` (needs `--group ml`) | `results/eigen_features.json` (eigenvalue features per cluster, Random Forest vs rules against AHN) | B5, notes 14 and 29 |
 | `bench/bench_freethreaded.py --final` | `results/bench_freethreaded.json` (3.14t vs 3.14, threads vs NumPy) | slide 23, notes 23 and 28 |
+| `deck/concepts/make_figures.py` (needs `uv sync --group figures` and the QA fonts from `deck/qa/setup_fonts.py`) | `deck/assets/concepts/c1_representations.png` to `c6_scale.png`, `results/concepts.json` | C1 to C6 (figures, captions, `{concept.*}` tokens) |
 | `docs/research/research_facts.py` | `results/research_facts.json` (PILOT: research numbers copied verbatim) | B2, B3, slide 25 alt text, a few notes |
 | `deck/build_deck.py` | `deck/out/20261015_PyCon-NL_3D-Data-Science.pptx`, `deck/out/build_report.json` | QA |
 | `deck/qa/render.py` | `deck/out/*.pdf`, `deck/out/png/slide-NN.png`, `deck/out/qa_render.json` | visual QA |
@@ -88,6 +89,8 @@ the highlighted key line. Numbers are tokens `{file.key|format}` (formats are li
 | B5 | `appendix.yaml` | none | `eigen.*`, `eigen.conditions` |
 | B6 | `appendix.yaml` (sources: docs/research/reports/videos.md) | none | none |
 | B7 | `appendix.yaml` | none | `eco.by_id.*`, `eco.by_status.*`, `eco.n_entries` |
+| C1 to C6 | `appendix.yaml` (build: concept; citations: docs/research/reports/mental_models.md) | `deck/assets/concepts/*.png` | `concept.*` |
+| C7 to C9 | `appendix.yaml` (dense tables) | none | none |
 
 The conditions lines (8, 20, 21, 22, 23, 25, 26, B1, B2, B4) are composed by `_conditions_text` in
 `deck/build_deck.py` from the `conditions` of `bench_cliff.json`, `memory.json`, `python_facts.json`, `profile_loop.json`

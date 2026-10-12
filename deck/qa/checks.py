@@ -112,7 +112,7 @@ COLOUR_LITERAL_RE = re.compile(r"""(["'])#?[0-9A-Fa-f]{6}\1|RGBColor\(\s*0x|RGBC
 # Literal numbers left in appendix/notes text after removing tokens: versions, dates, file and tile ids,
 # slide references, code and identifiers. Whatever remains is listed for review (warn).
 LITERAL_OK = [r"\{[^}]*\}", r"\bv?\d+(?:\.\d+){2,}\S*", r"\b\d{4}-\d{2}-\d{2}\b", r"\b\w*\d\w*_\w+\b",
-              r"\b\w+_\w*\d\w*\b", r"\bslides? \d+(?:(?:,| and| to) \d+)*", r"\bB[1-6]\b", r"`[^`]*`",
+              r"\b\w+_\w*\d\w*\b", r"\bslides? \d+(?:(?:,| and| to) \d+)*", r"\b[BC]\d\b", r"`[^`]*`",
               r"\b[A-Za-z]+\d+[A-Za-z0-9]*\b", r"\b\d+[A-Za-z]+\d*[A-Za-z]*\b", r"\([^()]*=\s*[\d.]+[^()]*\)",
               r"\b\w+\(\S*\)", r"\b\d+(?:\.\d+)? ?(?:in|pt|px)\b", r"\bclass(?:es)? \d+(?:(?:,| and) \d+)*",
               r"\b\d+ (?:is|ground|building|water|civil)\b", (r"\b(?:Python|CPython|PyTorch|torch|CUDA|LAS|Open3D|SciPy|"
@@ -438,7 +438,7 @@ def main():
     else:
         rep.add("slide_count", "pass", f"{len(slides)} slides ({len(content['slides'])} main + "
                                        f"{len(content.get('appendix') or [])} appendix)")
-    is_app = [lab.startswith("B") for lab in labels]
+    is_app = [lab.startswith(("B", "C")) for lab in labels]
     # slide roles from content.yaml (numbers change when slides are inserted): Morph chain, the one on-click build,
     # the filmstrip, the closing slide, the label-chip chain
     main_specs = list(content["slides"])
@@ -604,7 +604,7 @@ def main():
             timing.append(lab)
     put("transitions", tr_bad, f"Morph exactly on {morph_labels[0]} to {morph_labels[-1]}, fade on every other slide",
         "wrong transitions")
-    put("appendix_hidden", hid_bad, "B1 to B6 hidden, no main slide hidden", "hidden flags wrong")
+    put("appendix_hidden", hid_bad, "B and C backup slides hidden, no main slide hidden", "hidden flags wrong")
     rep.add("animations", "pass" if timing == build_labels else "fail",
             f"only slide {', '.join(build_labels)} has a build (on-click hero)" if timing == build_labels
             else f"timing on slides {timing}, expected {build_labels}", timing)

@@ -1299,6 +1299,9 @@ deck = [
     { name = "pyyaml" },
     { name = "segno" },
 ]
+figures = [
+    { name = "matplotlib" },
+]
 ml = [
     { name = "scikit-learn" },
 ]
@@ -1329,6 +1332,7 @@ deck = [
     { name = "pyyaml", specifier = ">=6" },
     { name = "segno", specifier = ">=1.6" },
 ]
+figures = [{ name = "matplotlib", specifier = ">=3.11" }]
 ml = [{ name = "scikit-learn", specifier = ">=1.9.1" }]
 profile = [{ name = "scalene", specifier = ">=2.3.0" }]
 research = [{ name = "trimesh", specifier = ">=5.1" }]

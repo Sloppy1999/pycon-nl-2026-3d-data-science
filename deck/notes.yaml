@@ -175,6 +175,7 @@ slides:
   - 'Point format 6, no RGB: crop header (research: review/honesty/inspect_crop.out, notes/verify_facts.json)'
   - 'Class codes: AHN4 acquisition spec (research: reports/dataset.md); this crop has only classes 1, 2 and 6 (results/pipeline.json
     crop.ahn_classes). Code 26 is AHN''s own: LAS 1.4 reserves codes 19 to 63'
+  mental_model: 'Hidden C1 (one object, three representations) if someone asks about meshes or voxels; one line: points measure, meshes connect, voxels index space.'
 
 - n: 6
   seconds: 45
@@ -195,6 +196,7 @@ slides:
   - '2 Look before you compute: slides 4, 18 and 27 (AHN classes, street furniture against the BGT register, the gotchas)'
   - '3 Make it small first: slides 12, 13 and 24 to 26 (voxels, tiles, streaming chunks)'
   - '4 Let compiled code loop: slides 19 to 23 (the quiz, the toll, the profiler, free threads)'
+  mental_model: 'The rules rest on the hidden C1 to C9 section (mental models, with citations); C8 ranks the ideas and says where each joins the talk.'
 
 - n: 7
   seconds: 55
@@ -212,6 +214,7 @@ slides:
   - 'pipeline/run.py, pipeline/steps.py (imports: no trimesh; per-cluster features use NumPy, pipeline/steps.py cluster_features)'
   - 'results/pipeline.json: versions'
   - 'trimesh convex_hull and bounding_box_oriented checked on one pole: research: reports/libraries.md section 2 (libraries/06_trimesh_interop.py)'
+  mental_model: 'Hidden C7 (ideas outlive the library you use): the same idea spelled in Open3D, PyVista and trimesh.'
 
 - n: 8
   seconds: 80
@@ -343,6 +346,7 @@ slides:
   sketch: 'The first point''s x in RD is 135914.6 m; float32 can only step {research.float32_step_m.x|cm} at that size.
     After subtracting header.mins it is 199.6 m, where float32 steps 15 micrometres (np.spacing). That is why the origin
     comes off first: some tools cast to float32 without telling you.'
+  mental_model: 'Hidden C2 (every array needs a frame) and C3 (a transform is a matrix, order matters) go deeper on the local origin.'
 
 - n: 12
   seconds: 55
@@ -462,6 +466,7 @@ slides:
   - 'print(ids.max() + 1, "clusters"): ids start at 0, so the largest plus one is the count, {pipeline.n_clusters|int}'
   sketch: Two groups of points, each a cluster because every point has neighbours within eps, the dashed circle; the lone
     grey point has none and is noise. DBSCAN needs no number of clusters, only how close is close.
+  mental_model: 'Hidden C4 (neighbourhood size changes the answer): eps, the voxel size and normal radii are the same kind of choice.'
 
 - n: 15
   seconds: 70
@@ -625,6 +630,7 @@ slides:
   - 'Our objects against the BGT: clusters 435 and 710 within 0.51 m and 0.49 m of a lamp post; cluster 719 is 4.97 m from
     the nearest one'
   - 'Map: 60 of the 61 poles project inside the render (one falls just outside the frame)'
+  mental_model: 'Hidden C5 (a point cloud samples the surface unevenly): the density map of this crop explains why poles get few points.'
 
 - n: 19
   seconds: 90
@@ -820,6 +826,7 @@ slides:
     the voxel centroids the rest; the peak while running is {memory.tile_1km.bytes_per_point_peak.pipeline|int} B per point'
   - 'Machine line: the RAM of the machine everything ran on, {memory.conditions.ram_gib|f1} GiB'
   - 'Units: GB = 2^30 bytes; memory figures are the increase over the process after its imports'
+  mental_model: 'Hidden C6 (memory follows N and the algorithm): linear storage against quadratic pairwise distances.'
 
 - n: 25
   seconds: 75
