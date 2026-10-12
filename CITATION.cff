@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this code or the talk material, please cite it as below."
-title: "3D Data Science with Python"
-type: software
-authors:
-  - family-names: Peral
-    given-names: Sergio
-repository-code: "https://github.com/Sloppy1999/pycon-nl-2026-3d-data-science"
-license: MIT

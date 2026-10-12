@@ -34,18 +34,3 @@ Wherever the data or anything derived from it is shown, attribute it:
 
 What was changed and where the licence is stated: [data/DATA_LICENSE.md](data/DATA_LICENSE.md). This project is not
 endorsed by Het Waterschapshuis or AHN.
-
-## Citation
-
-If you use this code or the talk material, please cite it (GitHub's "Cite this repository" reads
-[CITATION.cff](CITATION.cff)):
-
-```bibtex
-@misc{peral2026_3d_data_science,
-  author       = {Peral, Sergio},
-  title        = {3D Data Science with Python},
-  year         = {2026},
-  howpublished = {Talk at PyCon NL 2026, Jaarbeurs Utrecht, 15 October},
-  url          = {https://github.com/Sloppy1999/pycon-nl-2026-3d-data-science}
-}
-```
