@@ -11,13 +11,10 @@ performance and memory slides and the generator of the slide deck.
 the ground found by tiled RANSAC, DBSCAN clusters, and the final labels. Rebuild the picture with
 `uv run python docs/img/make_readme_banner.py`.*
 
-| | |
-|---|---|
-| Points in, after 0.5 m voxel downsampling | 722 961, 232 180 |
-| Ground vs AHN class 2 | precision 0.98, recall 0.94 |
-| Buildings vs AHN class 6 | precision 0.83 (a lower bound, AHN files many facade points elsewhere), recall 0.99 |
-| Objects found | 58 building roofs, 683 vegetation clusters, 3 street furniture |
-| Whole pipeline, load to paint-back | 0.6 s on one laptop |
+Results on that crop: 722 961 points in, 232 180 after 0.5 m voxel downsampling. Ground matches AHN class 2 with
+precision 0.98 and recall 0.94. Buildings match AHN class 6 with precision 0.83 (a lower bound, because AHN files many
+facade points elsewhere) and recall 0.99. The pipeline finds 58 building roofs, 683 vegetation clusters and 3 street
+furniture objects, and runs from load to paint-back in 0.6 s on one laptop.
 
 ## License
 
