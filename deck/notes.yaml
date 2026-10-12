@@ -232,7 +232,6 @@ slides:
     vs CPU, single runs; PyTorch3D install status)'
   - 'research: review/honesty/run_s02.out (0 points and a warning on the real crop)'
   - 'research: notes/verify_facts.json (open3d_read_laz_points = 0 on Open3D 0.20.0)'
-  - 'Icons: Lucide check and x, outline, rendered by deck/lib/diagrams.py; set and licence in the title slide''s notes (ICONS)'
   joke: Ask Open3D to read a .laz file and it politely hands you an empty point cloud.
   images:
   - 'laspy: renders/closeup.png, the slide 5 close-up: single points as laspy reads them'
@@ -648,8 +647,6 @@ slides:
   - 'results/bench_cliff.json: plane.matmul_reference (expr, equal, max_abs_diff)'
   - 'results/bench_cliff.json: plane.n, plane.array.how (P = las.xyz - las.header.mins, the full crop)'
   - 'OpenBLAS threads for @ at 1M points (pilot only): research: reports/perf.md'
-  - 'Drake meme format redrawn natively (no photo): palette panels with the Lucide x and check icons (deck/lib/diagrams.py
-    render_icon_png; set and licence in the title slide''s notes, ICONS)'
   joke: 'The quiz itself: most rooms get the winner right and the factor wrong.'
   line_by_line:
   - 'A: a, b, c, d = plane (the plane''s coefficients from segment_plane); h = np.empty(len(P)) (one result per point);

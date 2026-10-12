@@ -20,39 +20,17 @@ results/bench_cliff.json).
 from __future__ import annotations
 
 import argparse
-import gc
-import os
 import sys
-import time
 from pathlib import Path
 
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import DATA_CROP, RESULTS, factor, rel, timing_stats, write_json  # noqa: E402
+from _common import DATA_CROP, RESULTS, factor, rel, timed, write_json  # noqa: E402
 import conditions  # noqa: E402
 
 RUNS, WARMUP = 7, 1
 STAT = "median and IQR (numpy.percentile, linear) of wall time over the timed runs"
-
-
-def wait_idle(limit=1.0, timeout_s=600):
-    t0 = time.time()
-    while os.getloadavg()[0] >= limit and time.time() - t0 < timeout_s:
-        time.sleep(5)
-    return conditions.load_avg()
-
-
-def timed(fn, runs=RUNS, warmup=WARMUP):
-    for _ in range(warmup):
-        fn()
-    out = []
-    for _ in range(runs):
-        gc.collect()
-        t0 = time.perf_counter()
-        fn()
-        out.append(time.perf_counter() - t0)
-    return timing_stats(out, threads=1)
 
 
 def main() -> int:
@@ -113,16 +91,16 @@ def main() -> int:
                          "shares_memory_open3d_view": bool(np.shares_memory(poly_o3d.points, pts))}
 
     # --- timings (idle machine)
-    load_before = wait_idle()
+    load_before = conditions.wait_idle()
     snap_before = conditions.snapshot()
     f32 = xyz.astype(np.float32)
     t = {
-        "v3d_float64_f": timed(lambda: o3d.utility.Vector3dVector(xyz)),
-        "v3d_float64_c": timed(lambda: o3d.utility.Vector3dVector(c_xyz)),
-        "v3d_float32": timed(lambda: o3d.utility.Vector3dVector(f32)),
-        "las_xyz_access": timed(lambda: las.xyz),
-        "asarray_points": timed(lambda: np.asarray(pcd.points)),
-        "polydata_c": timed(lambda: pv.PolyData(c_xyz)),
+        "v3d_float64_f": timed(lambda: o3d.utility.Vector3dVector(xyz), RUNS, WARMUP),
+        "v3d_float64_c": timed(lambda: o3d.utility.Vector3dVector(c_xyz), RUNS, WARMUP),
+        "v3d_float32": timed(lambda: o3d.utility.Vector3dVector(f32), RUNS, WARMUP),
+        "las_xyz_access": timed(lambda: las.xyz, RUNS, WARMUP),
+        "asarray_points": timed(lambda: np.asarray(pcd.points), RUNS, WARMUP),
+        "polydata_c": timed(lambda: pv.PolyData(c_xyz), RUNS, WARMUP),
     }
     load_after = conditions.load_avg()
     facts["timings"] = t

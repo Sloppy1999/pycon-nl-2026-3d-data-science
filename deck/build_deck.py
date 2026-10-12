@@ -55,7 +55,7 @@ from lib.pptx_helpers import (E, add_picture_fill, add_run, add_text_runs, add_t
                               clear_text_frame, drop_placeholder, end_para_size, insert_picture,
                               mark_decorative,
                               line, para_format, pending_box, placeholder, rect, set_alt, set_body_pr,
-                              set_geometry, set_name, shape_text, text_block, title_placeholder)
+                              set_name, shape_text, text_block, title_placeholder)
 from lib.structure import build_structure, PPTX_SKILL  # noqa: E402
 from lib.style import COLOURS, LAYOUT_TITLE_PT, RENDER, SIZES, STYLE, hex_of, rgb  # noqa: E402
 from lib.tokens import Resolver, fmt_int  # noqa: E402
@@ -431,6 +431,15 @@ class Builder:
                     "facts": "results/python_facts.json", "profile": "results/profile_loop.json",
                     "ft": "results/bench_freethreaded.json", "eigen": "results/eigen_features.json"}
 
+    @staticmethod
+    def _cpu(c: dict) -> str:
+        """'AMD Ryzen 7 5700X 8-Core Processor' -> 'Ryzen 7 5700X': the same CPU name on every conditions line."""
+        return re.sub(r"^AMD |^Intel\(R\) Core\(TM\) | \d+-Core Processor$", "", str(c.get("cpu", "")))
+
+    def _label_suffix(self, key: str) -> str:
+        label = self.res.labels.get(key)
+        return f" Result label: {label} (not final)." if label and label != "FINAL" else ""
+
     def _conditions_scalene(self, kind: str = "scalene") -> str:
         """Slides 22 and 26 (Scalene): the machine line as on the others, then what the figures are."""
         key = "prof" if kind == "scalene_cpu" else "scalene"
@@ -438,7 +447,7 @@ class Builder:
         if not isinstance(c, dict):
             self.res._miss(f"{key}.conditions", None, f"conditions ({kind})")
             return f"Conditions: [{key}.conditions] pending."
-        cpu = re.sub(r"^AMD |^Intel\(R\) Core\(TM\) | \d+-Core Processor$", "", str(c.get("cpu", "")))
+        cpu = self._cpu(c)
         ver = f"Python {c.get('python')}, Scalene {self.res.lookup(f'{key}.scalene')}"
         n = fmt_int(float(c["n"]))
         if kind == "scalene_cpu":
@@ -451,10 +460,7 @@ class Builder:
             text = (f"Conditions: {cpu}, {ver}; {n} points, median of {c.get('runs')} runs; AHN5 1\u00a0km file "
                     f"(CC BY 4.0). Scalene counts allocations, not resident memory (slide 25). "
                     f"Full: results/memory_scalene.json.")
-        label = self.res.labels.get(key)
-        if label and label != "FINAL":
-            text += f" Result label: {label} (not final)."
-        return text
+        return text + self._label_suffix(key)
 
     def _conditions_short(self, kind: str) -> str:
         """'Conditions: Ryzen 7 5700X, Python 3.13.15, NumPy 2.5.3; 722 961 points, median of 7 runs; AHN5 crop
@@ -462,7 +468,7 @@ class Builder:
         c = self.res.lookup(f"{kind}.conditions")
         if not isinstance(c, dict):
             return self._conditions_text(kind)
-        cpu = re.sub(r"^AMD |^Intel\(R\) Core\(TM\) | \d+-Core Processor$", "", str(c.get("cpu", "")))
+        cpu = self._cpu(c)
         if kind == "ft":
             b = self.res.lookup("ft.builds") or {}
             f_, d_ = b.get("free_threaded", {}), b.get("gil", {})
@@ -483,15 +489,10 @@ class Builder:
                 f"Full: {self.RESULT_FILES[kind]}.")
         if kind == "memory":
             text = text.replace(" Full:", " 1\u00a0GB\u00a0=\u00a02³⁰\u00a0B. Full:")
-        label = self.res.labels.get(kind)
-        if label and label != "FINAL":
-            text += f" Result label: {label} (not final)."
-        return text
+        return text + self._label_suffix(kind)
 
     def _conditions_text(self, kind: str, plane_threads: bool = False) -> str:
-        fname = {"bench": "results/bench_cliff.json", "memory": "results/memory.json",
-                 "facts": "results/python_facts.json", "profile": "results/profile_loop.json",
-                 "ft": "results/bench_freethreaded.json", "eigen": "results/eigen_features.json"}[kind]
+        fname = self.RESULT_FILES[kind]
         c = self.res.lookup(f"{kind}.conditions")
         if not isinstance(c, dict):
             self.res._miss(f"{kind}.conditions", None, f"conditions ({kind})")
@@ -513,8 +514,7 @@ class Builder:
                 return f"{v:g}"
             return str(v)
 
-        # "AMD Ryzen 7 5700X 8-Core Processor": the core count follows anyway
-        hw = re.sub(r" \d+-Core Processor$", "", g("cpu", required=True))
+        hw = self._cpu(c) if g("cpu") else g("cpu", required=True)
         if g("cores"):
             # the hardware's cores and threads; each variant's own thread count is on its bar or in the notes
             hw += f", {g('cores')} cores" + (f" / {g('threads')} threads" if g("threads") else "")
@@ -592,10 +592,7 @@ class Builder:
         if kind == "memory":
             # memory figures are increases over the process after its imports (memory.json tile_1km.units)
             text += " Memory: increase over the process after imports; 1\u00a0GB\u00a0=\u00a02³⁰\u00a0bytes."
-        label = self.res.labels.get(kind)
-        if label and label != "FINAL":
-            text += f" Result label: {label} (not final)."
-        return text
+        return text + self._label_suffix(kind)
 
     def conditions_block(self, s, n, kind, x, w, bottom=BOTTOM, note=None, plane_threads=False, short=False):
         """Conditions small print, bottom-aligned at `bottom`, height from its wrapped lines (the box itself is
@@ -1050,48 +1047,6 @@ class Builder:
     def slide_two_code(self, s, spec, n, L):
         self._two_code(s, spec, n, L)
 
-    def link_phrases(self, slide, shape, links: dict) -> int:
-        """Hyperlink each phrase of `links` ({phrase: url}) where it occurs in `shape`'s runs (the run is split so
-        only the phrase is linked); the link keeps the run's colour, as the licence links do."""
-        from pptx.opc.constants import RELATIONSHIP_TYPE as RT
-        n = 0
-        for phrase, url in links.items():
-            queue = list(shape._element.iter(qn("a:r")))
-            while queue:
-                r = queue.pop(0)
-                rpr, t = r.find(qn("a:rPr")), r.find(qn("a:t"))
-                if t is None or not t.text or phrase not in t.text or \
-                        (rpr is not None and rpr.find(qn("a:hlinkClick")) is not None):
-                    continue
-                i = t.text.find(phrase)
-                before, after = t.text[:i], t.text[i + len(phrase):]
-                if before:
-                    r0 = copy.deepcopy(r)
-                    r0.find(qn("a:t")).text = before
-                    r.addprevious(r0)
-                if after:
-                    r2 = copy.deepcopy(r)
-                    r2.find(qn("a:t")).text = after
-                    r.addnext(r2)
-                t.text = phrase
-                if rpr is None:
-                    rpr = etree.SubElement(r, qn("a:rPr"))
-                    r.insert(0, rpr)
-                rid = slide.part.relate_to(url, RT.HYPERLINK, is_external=True)
-                h = etree.Element(qn("a:hlinkClick"))
-                h.set(qn("r:id"), rid)
-                ext = etree.SubElement(etree.SubElement(h, qn("a:extLst")), qn("a:ext"))
-                ext.set("uri", self.HLINK_CLR_URI)
-                etree.SubElement(ext, f"{{{self.AHYP_NS}}}hlinkClr", nsmap={"ahyp": self.AHYP_NS}).set("val", "tx")
-                later = next((c for c in rpr if c.tag in (qn("a:hlinkMouseOver"), qn("a:rtl"), qn("a:extLst"))), None)
-                if later is not None:
-                    later.addprevious(h)
-                else:
-                    rpr.append(h)
-                n += 1
-                break
-        return n
-
     # handoffs -- rows "code | copy/view | consequence" (L4), conditions on the bottom edge
     def slide_handoffs(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
@@ -1129,197 +1084,12 @@ class Builder:
         self.call_helper(s, n, "diagrams", "add_handoff_rows", (X0, rows_top, FULL_W, rows_bottom - rows_top), sub,
                          caption="DIAGRAM PENDING: hand-off rows")
 
-    # expectation -- two panels (L5): a drawn street (expectation) and a zoom into the final render (reality)
-    def slide_expectation(self, s, spec, n, L):
-        lines = self.set_title(s, n, spec["title"], L)
-        top = content_top(L, lines)
-        drop_placeholder(s, 1)
-        drop_placeholder(s, 2)
-        src_txt = self.source_text(spec["source"]) if spec.get("source") else ""
-        src_h = text_h(src_txt, SMALL_PT, FULL_W - 0.02) if src_txt else 0.0
-        sp = self.R(spec.get("small_print"), n) if spec.get("small_print") else ""
-        sp_h = text_h(sp, SMALL_PT, FULL_W - 0.02) if sp else 0.0
-        head_pt, cap_pt = 24, 24
-        head_h, cap_h = lines_h(1, head_pt) + 0.08, lines_h(1, cap_pt)
-        panel_y = top + head_h + 0.06
-        bottom = BOTTOM - src_h - (sp_h + 0.04 if sp else 0.0) - 0.20
-        ph = bottom - cap_h - 0.12 - panel_y
-        zoom = spec["right"]["zoom"]
-        p, info = self.render_info(zoom["file"])
-        iw, ih = info.get("px") or DEFAULT_PX
-        pw = ph * iw / ih                                    # both panels in the render's aspect
-        for side, x in (("left", X0), ("right", XR)):
-            col = spec[side]
-            text_block(s, x, top, COL_W, head_h, self.R(col["heading"], n), size=head_pt, font="title",
-                       colour="title", name=f"Heading {side}")
-            if side == "left":
-                self.call_helper(s, n, "diagrams", "add_lamp_street", (x, panel_y, pw, ph),
-                                 {"posts": col.get("posts", 6), "alt": self.R(col.get("alt"), n),
-                                  "name": "Expectation street"}, caption="DIAGRAM PENDING: lamp posts")
-            else:
-                fkey, ccls = Path(zoom["file"]).stem, zoom.get("around", "street_furniture")
-                bb = self._point_bbox(fkey, ccls, union=True)
-                if p.exists() and bb:
-                    cx, cy = (bb[0] + bb[2]) / 2, (bb[1] + bb[3]) / 2
-                    zw = float(zoom.get("width_px", 400))
-                    zh = zw * ph / pw
-                    x0_ = min(max(cx - zw / 2, 0), iw - zw)
-                    y0_ = min(max(cy - zh / 2, 0), ih - zh)
-                    pic = s.shapes.add_picture(str(p), E(x), E(panel_y), E(pw), E(ph))
-                    pic.crop_left, pic.crop_right = x0_ / iw, 1 - (x0_ + zw) / iw
-                    pic.crop_top, pic.crop_bottom = y0_ / ih, 1 - (y0_ + zh) / ih
-                    set_name(pic, "Reality zoom")
-                    set_alt(pic, self.R(col.get("alt"), n))
-                    # a sage ring around every object, so the eye finds them (decorative: the alt text says it)
-                    for k, pb in enumerate(self._point_patches(fkey, ccls) or [bb]):
-                        ox = x + ((pb[0] + pb[2]) / 2 - x0_) / zw * pw
-                        oy = panel_y + ((pb[1] + pb[3]) / 2 - y0_) / zh * ph
-                        rr = 0.32
-                        if not (x < ox < x + pw and panel_y < oy < panel_y + ph):
-                            continue
-                        ring = s.shapes.add_shape(MSO_SHAPE.OVAL, E(ox - rr), E(oy - rr), E(2 * rr), E(2 * rr))
-                        ring.fill.background()
-                        ring.line.color.rgb = rgb("highlight_dark")
-                        ring.line.width = Pt(2.5)
-                        ring.shadow.inherit = False
-                        set_name(ring, "Reality ring" if k == 0 else f"Reality ring {k + 1}")
-                        mark_decorative(ring)
-                    self.report.setdefault("expectation_zoom", {})[str(n)] = {
-                        "file": zoom["file"], "window_px": [round(x0_), round(y0_), round(zw), round(zh)]}
-                else:
-                    self.place_render(s, n, zoom["file"], (x, panel_y, pw, ph), name="Reality zoom",
-                                      alt=self.R(col.get("alt"), n), idx=None)
-                    self.warn(n, "no street furniture box in render_spec.json: whole render shown")
-            text_block(s, x, panel_y + ph + 0.12, COL_W, cap_h, self.R(col["caption"], n), size=cap_pt,
-                       font="title" if side == "right" else "minor", colour="text", name=f"Caption {side}")
-        if sp:
-            self.small(s, n, sp, (X0, BOTTOM - src_h - 0.04 - sp_h, FULL_W, sp_h))
-        if src_txt:
-            self.source(s, n, spec["source"], (X0, BOTTOM - src_h, FULL_W, src_h))
-
-    # drake -- the Drake meme format redrawn natively: per row a palette panel with an outline icon, then the code
-    def slide_drake(self, s, spec, n, L):
-        lines = self.set_title(s, n, spec["title"], L)
-        top = content_top(L, lines)
-        drop_placeholder(s, 1)
-        drop_placeholder(s, 2)
-        code_pt = float(spec.get("code_pt", 20))
-        line_pt = round(code_pt * LINE_PT / 18.0, 2)          # the deck's 1.167 em pitch
-        sns = [self.snippet(n, r["snippet"]) for r in spec["rows"]]
-        panel = code_height_in(max(len(x.lines) for x in sns), line_pt)
-        gap_row, gap_x = 0.35, 0.45
-        code_x = X0 + panel + gap_x
-        y = top + 0.05
-        code_right = code_x
-        for i, (r, sn) in enumerate(zip(spec["rows"], sns)):
-            yes = r.get("icon") == "check"
-            grp = s.shapes.add_group_shape()
-            rect(grp, X0, y, panel, panel, fill="highlight" if yes else "tile", rounded=True, name="Panel")
-            png = self.diagrams.render_icon_png(r.get("icon", "x"), COLOURS["white"] if yes else COLOURS["text_small"])
-            icon = panel * 0.52
-            import io as _io
-            pic = grp.shapes.add_picture(_io.BytesIO(png), E(X0 + (panel - icon) / 2), E(y + (panel - icon) / 2),
-                                         E(icon), E(icon))
-            set_name(pic, "Icon")
-            set_alt(pic, "Check mark icon" if yes else "Cross icon")
-            set_name(grp, "Drake yes" if yes else "Drake no")
-            set_alt(grp, self.R(r.get("alt"), n))
-            ch = code_height_in(max(len(sn.lines), 1), line_pt)
-            cy = y + (panel - ch) / 2
-            need = code_width_in(sn.max_len, code_pt)
-            label = "loop" if i == 0 else "expression"
-            if sn.ok:
-                add_code(s, sn, code_x - INSET_L, cy, need, ch, name=f"Code {label}", hl_name=f"Key line {label}",
-                         size=code_pt, line_pt=line_pt)
-            else:
-                self.code_or_pending(s, n, sn, code_x, cy, need, ch, name=f"Code {label}")
-            code_right = max(code_right, code_x - INSET_L + need)
-            y += panel + gap_row
-        rows_bottom = y - gap_row
-        sp = self.R(spec["small_print"], n) if spec.get("small_print") else ""
-        sph = text_h(sp, SMALL_PT, FULL_W - 0.02) if sp else 0.0
-        if spec.get("support"):
-            # the takeaway under the rows, as on the other code slides
-            sup = self.R(spec["support"], n)
-            sh = text_h(sup, SUPPORT_PT, FULL_W - 0.02)
-            self.support(s, n, sup, (X0, rows_bottom + 0.30, FULL_W, sh))
-            rows_bottom += 0.30 + sh
-        if rows_bottom > BOTTOM - sph - 0.15:
-            self.warn(n, f"Drake rows end at {rows_bottom:.2f} in, small print starts at {BOTTOM - sph:.2f} in")
-        if sp:
-            self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
-
-    # profile -- real cProfile output full width (L4), support line and conditions under it
+    # profile -- the Scalene command and one bar per line of the slide-19 loop (L4)
     def slide_profile(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
         drop_placeholder(s, 1)
-        if spec.get("line_profile"):
-            return self._line_profile(s, spec, n, top)
-        out = spec["output"]
-        raw = self.res.lookup(out["lines"])
-        if not isinstance(raw, list):
-            self.res._miss(out["lines"], None, f"slide {n} output")
-            pending_box(s, X0, top, FULL_W, 3.0, f"OUTPUT PENDING: results/{out['lines']}", None,
-                        name="PENDING output")
-            self.placeholder_note(n, "result", out["lines"], "profile output pending")
-            return
-        text = [str(x) for x in raw]
-        keys = [i for i, t in enumerate(text) if out.get("key") and out["key"] in t]
-        sn = Snippet(name="profile output", path=None, lines=text, keys=keys[:1], key=keys[0] if keys else None,
-                     ok=True, lang=out.get("lang", "console"))
-        need = code_width_in(sn.max_len) - INSET_L
-        if need > FULL_W + 1e-6:
-            self.warn(n, f"profile output needs {need:.2f} in, the slide has {FULL_W:.2f} in")
-        ch = code_height_in(len(text))
-        add_code(s, sn, X0 - INSET_L, top, FULL_W + INSET_L, ch, name="Code profile", hl_name="Key line profile")
-        cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, note=spec.get("conditions_note"),
-                                       short=bool(spec.get("conditions_short"))) if spec.get("conditions") else BOTTOM
-        y = top + ch + 0.30
-        if spec.get("support"):
-            sup = self.R(spec["support"], n)
-            sh = text_h(sup, SUPPORT_PT, FULL_W - 0.02)
-            self.support(s, n, sup, (X0, y, FULL_W, sh))
-            y += sh + 0.35
-        ic = spec.get("icicle")
-        if ic:
-            # the profile as an icicle (2026-10-12): row 1 the whole run, row 2 the functions under it, row 3 the
-            # loop's own time and its abs() calls; widths from results/profile_loop.json
-            num = lambda k: self.res.number(k, f"slide {n} icicle")
-            total = num(ic["total"]["value"])
-            def bar(b, x0_):
-                v = num(b["value"]) if b.get("value") else None
-                return {"label": self.R(b["label"], n), "value": v, "highlight": b.get("highlight"),
-                        "outside": b.get("outside"), "x0": x0_}
-            if total:
-                fmt_s = lambda v: f"{v:.2f}\u00a0s" if v >= 0.1 else f"{v * 1000:.0f}\u00a0ms"
-                row1 = [{"label": f"{self.R(ic['total']['label'], n)}: {fmt_s(total)}", "value": total, "x0": 0.0}]
-                row2, x = [], 0.0
-                for b in ic["level1"]:
-                    if b.get("rest"):
-                        v = total - x
-                        row2.append({"label": f"{self.R(b['label'], n)}: {fmt_s(v)}", "value": v, "x0": x,
-                                     "align": "right"})
-                    else:
-                        bb = bar(b, x)
-                        bb["label"] += f" {fmt_s(bb['value'])}"
-                        row2.append(bb)
-                        v = bb["value"]
-                    x += v
-                row3, x = [], 0.0
-                for b in ic["level2"]:
-                    bb = bar(b, x)
-                    bb["label"] += f" {fmt_s(bb['value'])}"
-                    row3.append(bb)
-                    x += bb["value"]
-                # labels beside narrow bars must not run into the next bar: the vectorised sliver's label goes
-                # into the light "everything else" bar, which is wide, so it is drawn there as plain text
-                h_ic = min(3 * 0.50 + 2 * 0.08, cond_y - 0.25 - y)
-                self.call_helper(s, n, "sketches", "add_icicle", (X0, y, FULL_W, h_ic),
-                                 {"rows": [row1, row2, row3], "total": total, "alt": self.R(ic.get("alt"), n),
-                                  "name": "Profile icicle"}, caption="CHART PENDING: profile icicle")
-                if y + h_ic > cond_y - 0.15:
-                    self.warn(n, f"icicle ends at {y + h_ic:.2f} in, conditions start at {cond_y:.2f} in")
+        self._line_profile(s, spec, n, top)
 
     def _line_profile(self, s, spec, n, top):
         """Slide 22 (2026-10-12, speaker: use Scalene): the command in a code box, then the slide-19 lines with a
@@ -1529,37 +1299,7 @@ class Builder:
         h = text_h(txt, SMALL_PT, col.w - 0.02)
         return self.source(s, n, spec["source"], (col.x, BOTTOM - h, col.w, h))
 
-    FORMULA_PT, FORMULA_LINE_PT = 24, 28
-
-    def slide_plane(self, s, spec, n, L):
-        lines = self.set_title(s, n, spec["title"], L)
-        top = content_top(L, lines)
-        drop_placeholder(s, 14)
-        file = spec["visual"]["file"]
-        pic, info = self.place_render(s, n, file, MEDIA_L, name="Render plane", alt=self.R(spec.get("alt"), n))
-        col = L8_TEXT
-        sup = self.R(spec.get("support"), n) if spec.get("support") else ""
-        y = top
-        if sup:
-            sh = text_h(sup, SUPPORT_PT, col.w - 0.02)
-            self.support(s, n, sup, (col.x, top, col.w, sh))
-            y = top + sh + 0.37
-        if spec.get("formula"):
-            # the task itself, one Fira Mono line on the slide 16 key-line bar: it previews the loop and the
-            # expression bodies of slide 16 (content.yaml slide 15 formula)
-            text = self.R(spec["formula"], n)
-            sn = Snippet(name="formula", path=None, lines=[text], keys=[0], key=0, ok=True, lang="python")
-            need = code_width_in(len(text), self.FORMULA_PT) - INSET_L
-            if need > col.w:
-                self.warn(n, f"formula needs {need:.2f} in, the column is {col.w:.2f} in")
-            h = code_height_in(1, self.FORMULA_LINE_PT)
-            add_code(s, sn, col.x - INSET_L, y, col.w + INSET_L, h, name="Code formula", hl_name="Key line formula",
-                     size=self.FORMULA_PT, line_pt=self.FORMULA_LINE_PT)
-        if spec.get("distance_label") and pic is not None:
-            self._distance_chip(s, n, file, MEDIA_L, tuple(info.get("px") or DEFAULT_PX), spec["distance_label"])
-        self._column_source(s, n, spec, col)
-
-    # -- projection of local points into a render (renders/render_spec.json camera), for labels on slide 15
+    # -- projection of local points into a render (renders/render_spec.json camera), for the poles on expectation_map
     def _render_spec(self):
         if not hasattr(self, "_rspec"):
             p = RENDERS / "render_spec.json"
@@ -1583,55 +1323,7 @@ class Builder:
         nx, ny = f / (w / h) * xc / zc, f * yc / zc
         return np.c_[(nx + 1) / 2 * w, h - (ny + 1) / 2 * h]
 
-    def _distance_chip(self, s, n, file, frame, px, spec):
-        """Label chip on one distance tick of the plane render (content.yaml slide 15 distance_label: text, tick
-        kind): navy chip, sage outline, white bold text, white leader over a navy halo, as the class chips on 10 to
-        14. The leader points at the tick's midpoint (the tick top projected with the stored camera, its foot on
-        the tile plane below it, renders/render_spec.json frames[file].ticks)."""
-        rs = self._render_spec() or {}
-        ticks = ((rs.get("frames") or {}).get(file) or {}).get("ticks") or []
-        tick = next((t for t in ticks if t.get("kind") == spec.get("tick") and t.get("drawn")), None)
-        if tick is None:
-            self.warn(n, f"no drawn {spec.get('tick')!r} tick in render_spec.json frames[{file}]: no distance label")
-            return None
-        top = tick["top_local"]
-        foot = [top[0], top[1], tick["plane_z"]]
-        (tx, ty), (fx, fy) = self.project([top, foot], px)
-        X, Y, W, H = frame
-        sx, sy = W / px[0], H / px[1]
-        top_in, foot_in = (X + tx * sx, Y + ty * sy), (X + fx * sx, Y + fy * sy)
-        anchor = ((top_in[0] + foot_in[0]) / 2, (top_in[1] + foot_in[1]) / 2)
-        label = self.R(spec.get("text", ""), n)
-        w = width_in(label, SIZES["chip"], bold=True) + 2 * self.CHIP_PAD + 0.16
-        rules = chips.Rules(side_penalty={"right": 0.0, "above": 0.6, "below": 0.6, "left": 0.6})
-        frame_r = chips.Rect(*frame)
-        placements, info = chips.place([chips.ChipSpec("h", anchor, w, self.CHIP_H)], frame_r, rules=rules,
-                                       cover=self._cover_fn(file, frame))
-        if not info.get("ok"):
-            self.warn(n, f"distance label: {info.get('reason')}; fallback placement used")
-        p = placements[0]
-        self.report.setdefault("label_chips", {})[str(n)] = {
-            "frame": file, "tick": tick.get("kind"), "tick_top_in": [round(v, 3) for v in top_in],
-            "tick_foot_in": [round(v, 3) for v in foot_in], "anchor_in": [round(v, 3) for v in anchor],
-            "rect_in": [round(p.rect.x, 3), round(p.rect.y, 3), round(p.rect.w, 3), round(p.rect.h, 3)],
-            "side": p.side, "ok": info.get("ok")}
-        ax, ay = p.anchor
-        ex, ey = p.end
-        L_ = max(1e-6, ((ex - ax) ** 2 + (ey - ay) ** 2) ** 0.5)
-        gap = 0.05                                  # the leader stops just short of the tick, so the tick stays whole
-        sx0, sy0 = ax + (ex - ax) / L_ * gap, ay + (ey - ay) / L_ * gap
-        grp = s.shapes.add_group_shape()
-        line(grp, sx0, sy0, ex, ey, colour="background_dark", width_pt=3.5, name="Leader halo")
-        line(grp, sx0, sy0, ex, ey, colour="text_dark", width_pt=1.25, name="Leader")
-        chip = rect(grp, p.rect.x, p.rect.y, p.rect.w, p.rect.h, fill="background_dark", line="highlight_dark",
-                    line_pt=1.0, rounded=True, name="Chip")
-        shape_text(chip, label, size=SIZES["chip"], colour="text_dark", bold=True, align="centre", anchor="ctr",
-                   insets=(self.CHIP_PAD, 0.0, self.CHIP_PAD, 0.0), wrap=False)
-        set_name(grp, f"Label {label}")
-        set_alt(grp, self.R(spec.get("descr") or f"Label: {label}, on the building's distance tick", n))
-        return grp
-
-    # ecosystem / filmstrip / tiles -- native diagrams (L4)
+    # ecosystem / filmstrip -- native diagrams (L4)
     def _l4_diagram(self, s, spec, n, L, fn, caption, *extra, key=None):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1669,20 +1361,6 @@ class Builder:
                 set_name(pics[0], "!!render")
             else:
                 self.warn(n, "no picture to name !!render on the filmstrip slide (renders pending?)")
-
-    def slide_tiles(self, s, spec, n, L):
-        # three tall tiles; the row sits a little above the body's centre (3/8 of the free height above it)
-        lines = self.set_title(s, n, spec["title"], L)
-        top = content_top(L, lines)
-        drop_placeholder(s, 1)
-        sub = self.helper_spec(spec, n, None)
-        # habits at 28 pt Fira Sans Medium (below the 32 pt title, so the title leads), at most three lines
-        tile_h = 2.60
-        tiles_top = top + max(0.0, BOTTOM - top - tile_h) * 0.375
-        sub.update({"valign": "top", "tile_h_in": tile_h, "fit": True, "max_lines": 3, "sizes": (28, 24),
-                    "ref_pt": 20})
-        self.call_helper(s, n, "diagrams", "add_tiles", (X0, tiles_top, FULL_W, BOTTOM - tiles_top), sub,
-                         caption="DIAGRAM PENDING: three habit tiles")
 
     # logo_wall -- rows of logo tiles (L4): the ecosystem of libraries and the companies behind them (slide 3).
     # Every id of a row resolves in deck/ecosystem/ecosystem.yaml (entries and orgs); the logo files are in
@@ -1727,39 +1405,6 @@ class Builder:
             self.report.setdefault("logo_wall_text_tiles", {})[str(n)] = miss
         if sp:
             self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
-
-    # chain_lists -- the chain that works across the slide, two list columns below it (L5)
-    CHAIN_H, CHAIN_GAP = 0.90, 0.80
-    LIST_PT = (("heading_pt", 24), ("item_pt", 24), ("item_gap_pt", 18))   # list sizes, read-only: headings as
-    # large as the items (SemiBold carries the hierarchy), well below the 32 pt title
-
-    def slide_chain_lists(self, s, spec, n, L):
-        lines = self.set_title(s, n, spec["title"], L)
-        top = content_top(L, lines)
-        drop_placeholder(s, 1)
-        drop_placeholder(s, 2)
-        rs = self.resolved_spec(spec, n)
-        cols = {}
-        for side in ("left", "right"):
-            col = dict(rs[side])
-            col.setdefault("name", f"list_{side}")
-            col.update(dict(self.LIST_PT))
-            cols[side] = col
-        hl = getattr(self.diagrams, "list_column_height", None) if self.diagrams else None
-        list_h = max(hl(c) for c in cols.values()) if hl else 2.6
-        chain = rs.get("chain") or []
-        block = (self.CHAIN_H + self.CHAIN_GAP if chain else 0) + list_h
-        y = top + max(0.0, (BOTTOM - top - block) / 2)          # the whole block centred in the body
-        if chain:
-            # gap = the L5 column gap, so the outer box pairs line up with the two columns below
-            self.call_helper(s, n, "diagrams", "add_chain", (X0, y, FULL_W, self.CHAIN_H),
-                             {"items": chain, "name": "chain_worth_it", "gap_in": GEO.col_gap,
-                              "alt": "Chain: " + ", then ".join(chain) + "."},
-                             caption="DIAGRAM PENDING: chain " + " > ".join(chain))
-            y += self.CHAIN_H + self.CHAIN_GAP
-        for side, x in (("left", X0), ("right", XR)):
-            self.call_helper(s, n, "diagrams", "add_list_column", (x, y, COL_W, list_h), cols[side],
-                             caption=f"LIST PENDING: {cols[side].get('heading', side)}")
 
     # morph -- Morph chain (L7): identical names and boxes on every slide (self.morph)
     def slide_morph(self, s, spec, n, L):
@@ -1937,48 +1582,6 @@ class Builder:
         if cond:
             self.small(s, n, cond, (X0, cond_y, FULL_W, cond_h), name="Conditions", bottom=True)
             self.report.setdefault("conditions_lines", {})[str(n)] = round(cond_h / lines_h(1, SMALL_PT))
-
-    # statement -- statement (L6, navy): the statement in the title, the struck code line right under it
-    def slide_statement(self, s, spec, n, L):
-        nl = self.set_title(s, n, spec["title"], L)
-        t = GEO.title(L)
-        tph = title_placeholder(s)
-        if tph is not None:
-            # the statement box as tall as its measured lines, so the struck code below never overlaps it
-            set_geometry(tph, t.x, t.y, t.w, lines_h(nl, LAYOUT_TITLE_PT.get(L, SIZES["title"])))
-        body = placeholder(s, 1)
-        if spec.get("struck_code") and body is not None:
-            b = GEO.ph(L, 1)
-            y = t.y + lines_h(nl, LAYOUT_TITLE_PT.get(L, SIZES["title"])) + 0.35
-            set_geometry(body, b.x, y, b.w, lines_h(1, 32) + 0.05)
-            tf = body.text_frame
-            p = clear_text_frame(tf)
-            set_body_pr(tf, wrap=False, autofit="none")
-            para_format(p, align="left")
-            add_run(p, self.R(spec["struck_code"], n), font="mono", size=32, colour="text_small_dark", strike=True,
-                    no_proof=True)
-            end_para_size(p, 32)
-            set_name(body, "Struck code")
-            # the strike-through is the point of the line, so the box says so (the title reads itself;
-            # no descr on the title placeholder, or screen readers read the title twice)
-            if spec.get("struck_code_alt"):
-                set_alt(body, self.R(spec["struck_code_alt"], n))
-            sl = spec.get("second_line")
-            if sl:
-                # a second statement line under the struck code: the code part in Fira Mono, the rest in Fira
-                # Sans, both 32 pt white (content.yaml second_line)
-                y2 = y + lines_h(1, 32) + 0.05 + 0.40
-                tb = add_textbox(s, b.x, y2, b.w, lines_h(1, 32) + 0.05, name="Second line", wrap=False)
-                p2 = tb.text_frame.paragraphs[0]
-                para_format(p2, align="left")
-                if sl.get("code"):
-                    add_run(p2, self.R(sl["code"], n), font="mono", size=32, colour="text_dark", no_proof=True)
-                add_run(p2, self.R(sl.get("text", ""), n), font="minor", size=32, colour="text_dark")
-                end_para_size(p2, 32)
-                if width_in(self.R(sl.get("code", ""), n), 32, font="mono") + width_in(self.R(sl.get("text", ""), n), 32) > b.w:
-                    self.warn(n, "second statement line wider than the body")
-        else:
-            drop_placeholder(s, 1)
 
     # bar_gb -- GB bar chart + hero (L8)
     def slide_bar_gb(self, s, spec, n, L):
@@ -2716,7 +2319,7 @@ class Builder:
     # ============================================================================ notes
     # Presenter view, one labelled block per paragraph, blank line between blocks, always in this order:
     # TALK TRACK, TIME, LIKELY QUESTION, ANSWER, CHECKPOINT, IF SKIPPED, CHECK BEFORE THE TALK, TRACE,
-    # then slide-specific extras (CANDIDATE GOTCHAS on 22, ICONS on 1, any other notes.yaml key).
+    # then slide-specific extras (CANDIDATE GOTCHAS on 22, any other notes.yaml key).
     NOTE_ORDER = ["TALK TRACK", "TIME", "LIKELY QUESTION", "ANSWER", "CHECKPOINT", "IF SKIPPED",
                   "CHECK BEFORE THE TALK", "TRACE"]
 
@@ -2863,10 +2466,6 @@ class Builder:
         for k, v in entry.items():
             if k not in known and v not in (None, "", []):
                 blocks.append(self._block(str(k).replace("_", " ").upper(), v))
-        if spec.get("build") == "title" and self.diagrams is not None and getattr(self.diagrams, "ICON_SET", None):
-            # the icon set used in the deck (the chain-and-lists slide and the Drake rows), with its licence
-            icon_slides = [str(sp["n"]) for sp in self.content["slides"] if sp.get("build") in ("chain_lists", "drake")]
-            blocks.append(self._block(f"ICONS (slides {' and '.join(icon_slides)})", self.diagrams.ICON_SET))
         return self.R("\n\n".join(b for b in blocks if b), n)
 
     # ============================================================================ main

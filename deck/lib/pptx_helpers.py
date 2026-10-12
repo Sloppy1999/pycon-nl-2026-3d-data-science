@@ -253,13 +253,6 @@ def drop_placeholder(slide, idx: int):
         sh._element.getparent().remove(sh._element)
 
 
-def layout_placeholder_geometry(slide, idx: int):
-    for sh in slide.slide_layout.placeholders:
-        if sh.placeholder_format.idx == idx:
-            return sh.left, sh.top, sh.width, sh.height
-    return None
-
-
 def set_geometry(shape, x: float, y: float, w: float, h: float):
     shape.left, shape.top, shape.width, shape.height = E(x), E(y), E(w), E(h)
     return shape

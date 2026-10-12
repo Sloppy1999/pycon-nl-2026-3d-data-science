@@ -31,25 +31,17 @@ from __future__ import annotations
 import argparse
 import gc
 import json
-import os
 import subprocess
 import sys
-import textwrap
 import time
 from pathlib import Path
 
+from _common import DATA_CROP as CROP, RESULTS, SNIPPETS, factor, region_function, timing_stats  # numpy + stdlib only
+
 HERE = Path(__file__).resolve().parent
-TALK = HERE.parent
-CROP = TALK / "data" / "utrecht_jaarbeurs_200m.laz"
 THREADS = (1, 2, 4, 8, 16)
 RUNS, WARMUP, SEED = 7, 1, 20261015
 STAT = "median and IQR (numpy.percentile, linear) of wall time over the timed runs"
-
-
-def region(name):
-    lines = (TALK / "snippets" / name).read_text().splitlines()
-    i, j = lines.index("# --- slide ---"), lines.index("# --- end ---")
-    return "\n".join(ln.removesuffix("  # <<") for ln in lines[i + 1:j]) + "\n"
 
 
 def worker() -> dict:
@@ -57,15 +49,12 @@ def worker() -> dict:
     import laspy
     from concurrent.futures import ThreadPoolExecutor
 
-    ns = {"np": np}
-    for fname, snip in (("loop", "s16_loop.py"), ("vectorised", "s16_vec.py")):
-        code = f"def {fname}(P, plane):\n{textwrap.indent(region(snip), '    ')}    return h\n"
-        exec(compile(code, f"snippets/{snip}", "exec"), ns)
-    loop, vectorised = ns["loop"], ns["vectorised"]
+    loop, _ = region_function(SNIPPETS / "s16_loop.py", ("P", "plane"), "h", name="loop")
+    vectorised, _ = region_function(SNIPPETS / "s16_vec.py", ("P", "plane"), "h", name="vectorised")
 
     las = laspy.read(CROP)
     P = las.xyz - las.header.mins
-    bench = json.loads((TALK / "results" / "bench_cliff.json").read_text())
+    bench = json.loads((RESULTS / "bench_cliff.json").read_text())
     plane = tuple(float(v) for v in bench["plane"]["coefficients"])
 
     def threaded(n, pool):
@@ -101,14 +90,8 @@ def worker() -> dict:
     for p in pools.values():
         p.shutdown()
 
-    def stats(sec, threads):
-        ms = np.asarray(sec) * 1e3
-        q1, med, q3 = np.percentile(ms, [25, 50, 75])
-        return {"median_ms": float(med), "q1_ms": float(q1), "q3_ms": float(q3), "runs": len(ms),
-                "threads": threads, "min_ms": float(ms.min()), "max_ms": float(ms.max()),
-                "all_ms": [round(float(x), 4) for x in ms]}
-
-    res = {k: stats(v, int(k.split("_")[1]) if k.startswith("threads_") else 1) for k, v in times.items()}
+    res = {k: timing_stats(v, int(k.split("_")[1]) if k.startswith("threads_") else 1, digits=4)
+           for k, v in times.items()}
     import importlib.metadata as md
     import sysconfig
     return {
@@ -124,23 +107,14 @@ def worker() -> dict:
 
 
 def run_interpreter(py: str) -> dict:
-    sys.path.insert(0, str(HERE))
     import conditions
-    t0 = time.time()
-    while os.getloadavg()[0] >= 1.0 and time.time() - t0 < 600:
-        time.sleep(5)
-    before = conditions.load_avg()
+    before = conditions.wait_idle()
     snap = conditions.snapshot()
     p = subprocess.run([py, str(Path(__file__).resolve()), "--worker"], capture_output=True, text=True, check=True)
     out = json.loads(p.stdout)
     out["load_avg_before"], out["load_avg_after"] = before, conditions.load_avg()
     out["snapshot_before"], out["snapshot_after"] = snap, conditions.snapshot()
     return out
-
-
-def factor(slow, fast):
-    return {"median": slow["median_ms"] / fast["median_ms"], "iqr_low": slow["q1_ms"] / fast["q3_ms"],
-            "iqr_high": slow["q3_ms"] / fast["q1_ms"]}
 
 
 def main() -> int:
@@ -153,9 +127,8 @@ def main() -> int:
     if args.worker:
         print(json.dumps(worker()))
         return 0
-    sys.path.insert(0, str(HERE))
     import conditions
-    from _common import RESULTS, rel, write_json
+    from _common import rel, write_json
     builds = {"free_threaded": run_interpreter(args.ft), "gil": run_interpreter(args.gil)}
     ft, gil = builds["free_threaded"]["timings"], builds["gil"]["timings"]
     best_n = min(THREADS, key=lambda n: ft[f"threads_{n}"]["median_ms"])

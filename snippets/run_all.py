@@ -5,8 +5,8 @@
 Every ``snippets/*.py`` except this file and ``_*.py`` helpers runs in its own subprocess (snippets written by
 other parts of the project, such as s16_*.py and s21_*.py, are included when present). For each snippet the
 JSON records ``ok``, ``seconds``, ``error`` (last lines of stderr), and the size of the slide region: ``lines``
-and ``max_line_len`` after the key-line marker ``  # <<`` is stripped, against the width budget of the
-slide's column. ``.cpp`` files are compiled with ``g++ -std=c++17 -O2 -Wall -Wextra ... $(pkg-config --cflags
+and ``max_line_len`` of exactly what the deck shows (``deck/lib/codebox.read_snippet``: key-line marker stripped,
+dedented, blank edge lines trimmed), against the width budget of the slide's column. ``.cpp`` files are compiled with ``g++ -std=c++17 -O2 -Wall -Wextra ... $(pkg-config --cflags
 --libs pcl_io pcl_filters)`` and run in a temporary directory holding ``crop.pcd`` (written by
 ``_setup.write_crop_pcd``, the same file s02_python.py reads) when a PCL toolchain is found: ``PCL_PREFIX`` (a
 conda/micromamba env prefix with ``pcl`` and ``cxx-compiler``; its ``bin/pkg-config``, ``bin/g++`` and ``lib/``
@@ -32,12 +32,16 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+sys.path.insert(0, str(ROOT))
+
+from deck.lib.codebox import START_RE, read_snippet  # noqa: E402  (the deck's own reader: measure what it shows)
+
 OUT = ROOT / "results" / "snippets.json"
 MAX_LINES = 12
 WIDTH = {"s21": 70}  # L4 full width; everything else sits in an L5/L7/L8 column
 DEFAULT_WIDTH = 35
 MARKERS = {".py": ("# --- slide ---", "# --- end ---", "  # <<"), ".cpp": ("// --- slide ---", "// --- end ---", "  // <<")}
-DISPLAY = {"s04_repl.py": "s04_repl.txt"}  # the slide shows the transcript, not the script
+LANG = {"s04_repl.py": "pycon"}  # the slide shows the transcript (s04_repl.txt), not the script
 CXXFLAGS = ["-std=c++17", "-O2", "-Wall", "-Wextra"]
 PCL_MODULES = ["pcl_io", "pcl_filters"]
 OUTPUT_LINE = re.compile(r"^\d+ -> \d+$")  # s02_*: "points before -> after" printed by the slide code
@@ -97,30 +101,15 @@ def run_cpp(path: Path, tc: dict) -> dict:
                 stdout_tail=p.stdout.strip().splitlines()[-3:], output_line=output_line(path.name, p.stdout))
 
 
-def region(path: Path) -> tuple[list[str], int]:
-    start, end, key = MARKERS[path.suffix]
-    lines = path.read_text().splitlines()
-    s = [i for i, ln in enumerate(lines) if ln.strip() == start]
-    e = [i for i, ln in enumerate(lines) if ln.strip() == end]
-    if len(s) != 1 or len(e) != 1 or e[0] < s[0]:
-        return [], 0
-    body = lines[s[0] + 1 : e[0]]
-    n_key = sum(ln.endswith(key) for ln in body)
-    return [ln[: -len(key)] if ln.endswith(key) else ln for ln in body], n_key
-
-
 def measure(path: Path) -> dict:
-    body, n_key = region(path)
-    shown = path.name
-    if path.name in DISPLAY and (HERE / DISPLAY[path.name]).exists():
-        shown = DISPLAY[path.name]
-        key = MARKERS[".py"][2]
-        raw = (HERE / shown).read_text().splitlines()
-        n_key = sum(ln.endswith(key) for ln in raw)
-        body = [ln[: -len(key)] if ln.endswith(key) else ln for ln in raw]
+    sn = read_snippet(HERE, path.name, LANG.get(path.name))
+    shown = sn.path.name if sn.path else path.name
+    # a script needs exactly one slide region (the deck would show a whole file without one); a transcript has none
+    one_region = shown.endswith(".txt") or sum(bool(START_RE.match(ln)) for ln in path.read_text().splitlines()) == 1
+    body = sn.lines if one_region else []
     width = WIDTH.get(path.name.split("_")[0], DEFAULT_WIDTH)
     n, w = len(body), max((len(ln) for ln in body), default=0)
-    return dict(lines=n, max_line_len=w, key_lines=n_key, shown=shown,
+    return dict(lines=n, max_line_len=w, key_lines=len(sn.keys) if body else 0, shown=shown,
                 budget=dict(max_lines=MAX_LINES, max_line_len=width),
                 within_budget=bool(body) and n <= MAX_LINES and w <= width,
                 has_region=bool(body))

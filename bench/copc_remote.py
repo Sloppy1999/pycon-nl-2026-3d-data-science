@@ -11,7 +11,6 @@ One run per invocation: the figures depend on the network, so they are indicativ
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import platform
 import sys
@@ -23,12 +22,9 @@ import requests
 from laspy import Bounds, CopcReader
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import RESULTS, write_json  # noqa: E402
+from _common import RESULTS, fetch_ahn5, write_json  # noqa: E402
 
-TALK = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("fetch_ahn5", TALK / "data" / "fetch_ahn5.py")
-F = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(F)
+F = fetch_ahn5()
 
 
 def main() -> int:
@@ -67,7 +63,8 @@ def main() -> int:
            "classes_equal_local": remote_classes == local_classes,
            "date_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "python": platform.python_version(),
            "note": "bytes = sum of GET response bodies (decompressed by requests if gzip); one run, network dependent"}
-    path = write_json(RESULTS / "copc_remote.json" if args.final else Path("/dev/stdout"), out, final=args.final)
+    if args.final:
+        write_json(RESULTS / "copc_remote.json", out, final=True)
     print(json.dumps(out, indent=1))
     return 0
 

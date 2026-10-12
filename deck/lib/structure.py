@@ -13,6 +13,7 @@ import sys
 import uuid
 import zipfile
 from pathlib import Path
+from xml.sax.saxutils import quoteattr
 
 PPTX_SKILL = Path(os.environ.get("PPTX_SKILL_DIR", Path.home() / ".claude/skills/pptx"))
 SCRIPTS = PPTX_SKILL / "scripts"
@@ -130,11 +131,11 @@ def build_structure(template: Path, work: Path, plan: list[dict]) -> tuple[Path,
             sections.append((item["section"], []))
         sections[-1][1].append(item["sld_id"])
     sec_parts = []
-    for name, sids in sections:
-        sec_id = str(uuid.uuid5(NS_UUID, "section:" + name)).upper()
+    for i, (name, sids) in enumerate(sections):
+        sec_id = str(uuid.uuid5(NS_UUID, f"section:{i}:{name}")).upper()  # index: a name may come back later
         ids_xml = "".join('<p14:sldId id="%s"/>' % s for s in sids)
-        sec_parts.append('<p14:section name="%s" id="{%s}"><p14:sldIdLst>%s</p14:sldIdLst></p14:section>'
-                         % (name, sec_id, ids_xml))
+        sec_parts.append('<p14:section name=%s id="{%s}"><p14:sldIdLst>%s</p14:sldIdLst></p14:section>'
+                         % (quoteattr(name), sec_id, ids_xml))
     sec_xml = "".join(sec_parts)
     pres = re.sub(r"(<p14:sectionLst[^>]*>).*?(</p14:sectionLst>)", lambda m: m.group(1) + sec_xml + m.group(2),
                   pres, flags=re.S)

@@ -97,7 +97,7 @@ def run_pipeline(path: Path, voxel: float, gp: S.GroundParams, eps: float, min_p
 
 def quick_metrics(r: dict, ahn: np.ndarray) -> dict:
     sc = S.score(r["point_classes"], ahn)
-    ids, cc = r["ids"], r["info"]["cluster_classes"]
+    ids, cc, first = r["ids"], r["info"]["cluster_classes"], r["info"]["first_pass"]
     considered = np.count_nonzero(ids != S.NOT_CLUSTERED)
     return dict(points_after_voxel=int(len(r["down"].points)), n_tiles=len(r["planes"]),
                 tiles_flagged=int(sum(p.rejected for p in r["planes"])),
@@ -105,8 +105,10 @@ def quick_metrics(r: dict, ahn: np.ndarray) -> dict:
                 buildings=dict(precision=r4(sc["buildings"]["precision"]), recall=r4(sc["buildings"]["recall"])),
                 n_clusters=int(ids.max() + 1), noise_share=r4(np.count_nonzero(ids == S.NOISE) / max(considered, 1)),
                 largest_cluster=int(r["info"]["features"]["n"].max()) if len(cc) else 0,
-                n_objects={S.CLASS_NAMES[c]: int(np.count_nonzero(cc == c)) for c in (S.BUILDINGS, S.VEGETATION,
-                                                                                    S.STREET_FURNITURE, S.UNLABELLED)})
+                # buildings = rule-2 roofs, as n_objects in build_json; facade fragments are not objects
+                n_objects=dict(buildings=int(np.count_nonzero(first == S.BUILDINGS)),
+                               **{S.CLASS_NAMES[c]: int(np.count_nonzero(cc == c))
+                                  for c in (S.VEGETATION, S.STREET_FURNITURE, S.UNLABELLED)}))
 
 
 def sweep(ahn: np.ndarray) -> list[dict]:

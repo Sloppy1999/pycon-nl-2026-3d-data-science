@@ -17,8 +17,6 @@ Replaces cProfile (bench/profile_loop.py, results/profile_loop.json) on slide 22
 from __future__ import annotations
 
 import argparse
-import json
-import subprocess
 import sys
 import tempfile
 import time
@@ -26,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import conditions as cond  # noqa: E402
-from _common import DATA_CROP, RESULTS, TALK, rel, write_json  # noqa: E402
+from _common import DATA_CROP, RESULTS, TALK, rel, scalene_run, scalene_version, write_json  # noqa: E402
 
 TARGET = TALK / "bench" / "cpuprof" / "loop.py"
 REPEATS_RUN, RUNS, RATE = 30, 3, "0.001"
@@ -36,12 +34,8 @@ LINES = {"for": "for i, p in enumerate(P):", "unpack": "x, y, z = p[0], p[1], p[
 
 
 def one_run(outdir: Path, i: int) -> dict:
-    out = outdir / f"cpu_{i}.json"
-    r = subprocess.run([sys.executable, "-m", "scalene", "run", "--cpu-only", "--cpu-sampling-rate", RATE, "-o", str(out),
-                        str(TARGET), "---", str(REPEATS_RUN)], capture_output=True, text=True, cwd=TALK)
-    if not out.exists() or "np.array_equal(loop, vectorised): True" not in r.stdout:
-        raise SystemExit(f"scalene run failed:\n{r.stdout[-600:]}\n{r.stderr[-600:]}")
-    return json.loads(out.read_text())
+    return scalene_run(TARGET, outdir / f"cpu_{i}.json", ("--cpu-only", "--cpu-sampling-rate", RATE),
+                       (str(REPEATS_RUN),), expect="np.array_equal(loop, vectorised): True")[0]
 
 
 def line_of(d: dict, needle: str) -> dict:
@@ -67,7 +61,7 @@ def main() -> None:
     d = sorted(runs, key=lambda r: line_of(r, LINES["loop_body"])["total"])[RUNS // 2]
     lines = {k: line_of(d, v) for k, v in LINES.items()}
     shown = sum(v["total"] for v in lines.values())
-    version = subprocess.run([sys.executable, "-m", "scalene", "--version"], capture_output=True, text=True).stdout.split()[2]
+    version = scalene_version()
     lb, vec = lines["loop_body"]["total"], lines["vectorised"]["total"]
     import laspy
     with laspy.open(DATA_CROP) as f:

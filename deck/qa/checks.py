@@ -43,6 +43,7 @@ P = "{%s}" % NS["p"]
 DECORATIVE = "{C183D7F6-B498-43B3-948B-1728B52AA6E4}"
 sys.path.insert(0, str(DECK))
 from lib.style import ALLOWED_FONTS, FONTS, MIN_PT, PALETTE, RENDER, RENDER_EXTRA  # noqa: E402
+from lib.tokens import FILES as RESULT_FILES  # noqa: E402
 
 TEMPLATE = DECK / "template" / "pycon_nl_2026_master.pptx"
 GEOMETRY_JSON = DECK / "template" / "pycon_nl_2026_master.geometry.json"
@@ -75,8 +76,8 @@ MASTER_STRINGS = ["Speaker name", "Code, support line and source line go here", 
                   "Fitting points in RAM", "Gotchas and takeaways", "Lorem ipsum"]
 SMALL_NAMES = ("Source", "!!src", "!!small", "Small print", "Conditions", "Placeholder note", "tile_ref")
 MORPH_OBJECTS = ["!!title", "!!code", "!!support", "!!src", "!!render"]
-TOKEN_RE = re.compile(r"\{(?:pipeline|bench|memory|snippets|research|facts|profile|ft)\.[^}]*\}|"
-                      r"\[(?:pipeline|bench|memory|snippets|research|facts|profile|ft)\.[A-Za-z0-9_.\-]+\]")
+_KEYS = "|".join(RESULT_FILES)
+TOKEN_RE = re.compile(rf"\{{(?:{_KEYS})\.[^}}]*\}}|\[(?:{_KEYS})\.[A-Za-z0-9_.\-]+\]")
 # Colours allowed in the package's XML: content.yaml meta.palette; the render palette only on the label chip
 # swatches (shapes named "Swatch"), the colours inside the render PNGs are not XML.
 SCHEME = set(PALETTE.values())
@@ -877,9 +878,11 @@ def main():
         scan(f"{e['n']} small print", e.get("small_print", ""))
         scan(f"{e['n']} notes", e.get("notes", ""))
     for e in notes_y.get("slides") or []:
-        for k in ("talk_track", "answer"):
-            scan(f"notes {e['n']} {k}", e.get(k, ""))
-    put("literal_numbers", lit, "no literal measured numbers in appendix text or notes talk tracks and answers "
+        for k, v in e.items():
+            if k not in ("n", "seconds", "ends_at", "trace", "checks"):
+                for item in v if isinstance(v, list) else [v]:
+                    scan(f"notes {e['n']} {k}", item)
+    put("literal_numbers", lit, "no literal measured numbers in appendix text or notes "
         "(versions, dates, ids and slide references allowed)", "literal numbers to review (each should be a token, "
         "an id, or a quote)", "warn")
 

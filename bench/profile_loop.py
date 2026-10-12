@@ -16,11 +16,9 @@ its times are not benchmark numbers (results/bench_cliff.json has those).
 from __future__ import annotations
 
 import argparse
-import os
 import re
 import subprocess
 import sys
-import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -33,18 +31,11 @@ SHOW = ("s16_loop.py:1(loop)", "builtins.abs}", "s16_vec.py:1(vectorised)")
 ROW_RE = re.compile(r"^\s*(\d+(?:/\d+)?)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+(.*)$")
 
 
-def wait_idle(limit=1.0, timeout_s=600):
-    t0 = time.time()
-    while os.getloadavg()[0] >= limit and time.time() - t0 < timeout_s:
-        time.sleep(5)
-    return conditions.load_avg()
-
-
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--final", action="store_true", help="write into results/")
     args = ap.parse_args()
-    load_before = wait_idle()
+    load_before = conditions.wait_idle()
     cmd = [sys.executable, "-m", "cProfile", "-s", "tottime", "loop.py"]
     p = subprocess.run(cmd, cwd=HERE, capture_output=True, text=True, check=True)
     load_after = conditions.load_avg()

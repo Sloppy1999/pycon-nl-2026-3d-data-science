@@ -4,7 +4,6 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import open3d as o3d
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from pipeline import steps as S  # noqa: E402
@@ -68,3 +67,15 @@ def test_paint_back_gives_nearest_voxel_class():
     full = np.array([[0.1, 0, 0], [4.9, 0, 0]])
     vox = np.array([[0.0, 0, 0], [5.0, 0, 0]])
     assert S.paint_back(full, vox, np.array([S.GROUND, S.BUILDINGS])).tolist() == [S.GROUND, S.BUILDINGS]
+
+
+def test_roof_only_tile_borrows_a_neighbours_ground_plane():
+    """Two 25 m tiles of flat ground at z = 0, then one tile that is only a flat roof at z = 10 (no street visible)."""
+    g = np.mgrid[0:75:0.5, 0:25:0.5].reshape(2, -1).T
+    xyz = np.c_[g, np.where(g[:, 0] >= 50, 10.0, 0.0)]
+    ground, planes = S.remove_ground(cloud(xyz), tile=25.0)
+    roof = next(p for p in planes if p.ij == (2, 0))
+    assert roof.rejected and roof.borrowed_from == (1, 0) and roof.n_ground == 0
+    assert not ground[xyz[:, 0] >= 50].any()
+    assert ground[xyz[:, 0] < 50].all()
+    assert not any(p.rejected for p in planes if p.ij != (2, 0))

@@ -34,8 +34,5 @@ k, first = np.unique(np.concatenate(keys), return_index=True)
 points = np.concatenate(pts)[first]             # earliest chunk wins
 # --- end ---
 
-src = Path(__file__).read_text().splitlines()
-a, b = src.index("# --- slide ---"), src.index("# --- end ---")
-body = [s[:-6] if s.endswith("  # <<") else s for s in src[a + 1:b]]
-assert body == slide_lines(SNIPPETS / "s21_chunked.py"), "slide lines drifted from snippets/s21_chunked.py"
+assert slide_lines(Path(__file__)) == slide_lines(SNIPPETS / "s21_chunked.py"), "slide lines drifted from snippets/s21_chunked.py"
 print(f"{len(points)} points kept")

@@ -35,12 +35,19 @@ from pptx.util import Emu, Pt
 
 try:  # package import (build_deck.py imports the package as "lib")
     from .measure import width_in as _width_in
+    from .pptx_helpers import EMU_IN, set_name
+    from .pptx_helpers import E as inch
+    from .pptx_helpers import box_in as emu_box
+    from .pptx_helpers import set_alt as _set_alt
     from .style import STYLE as _DEFAULT_STYLE
 except ImportError:  # pragma: no cover - run as a loose module
     from measure import width_in as _width_in  # type: ignore
+    from pptx_helpers import EMU_IN, set_name  # type: ignore
+    from pptx_helpers import E as inch  # type: ignore
+    from pptx_helpers import box_in as emu_box  # type: ignore
+    from pptx_helpers import set_alt as _set_alt  # type: ignore
     from style import STYLE as _DEFAULT_STYLE  # type: ignore
 
-EMU_IN = 914400
 CHART_PT = 20      # all chart text (data labels, category labels, axis title): the brief's 20 pt body minimum
 
 # Number formats (Excel syntax; "0," divides by 1000, so ms values show as seconds).
@@ -79,25 +86,11 @@ class Style:
         raise AttributeError(name)
 
 
-def emu_box(box):
-    """(l, t, w, h) EMU -> floats in inches."""
-    return tuple(int(v) / EMU_IN for v in box)
-
-
-def inch(v: float) -> Emu:
-    return Emu(int(round(v * EMU_IN)))
-
-
 def set_alt(shape, alt: str | None, name: str | None = None):
     """Alt text (cNvPr descr) and optional shape name on any shape, group or graphic frame."""
-    el = shape._element
-    cnv = el.find(".//" + qn("p:cNvPr"))
-    if cnv is None:
-        return
-    if alt:
-        cnv.set("descr", alt)
+    _set_alt(shape, alt)
     if name:
-        cnv.set("name", name)
+        set_name(shape, name)
 
 
 def set_run_font(run, st: Style, *, font=None, size=None, color=None, bold=None,

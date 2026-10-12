@@ -29,17 +29,15 @@ from __future__ import annotations
 
 import argparse
 import sys
-import time
 from pathlib import Path
 
 import laspy
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import DATA_CROP, RESULTS, rel, timing_stats, write_json  # noqa: E402
+from _common import DATA_CROP, RESULTS, TALK, rel, timed, write_json  # noqa: E402
 import conditions  # noqa: E402
 
-TALK = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TALK))
 from pipeline.steps import BUILDINGS, CLASS_NAMES, STREET_FURNITURE, UNLABELLED, VEGETATION  # noqa: E402
 
@@ -85,17 +83,6 @@ def eigen_features_loop(P: np.ndarray, ids: np.ndarray, n_cl: int) -> dict[str, 
     return out
 
 
-def timed(fn, runs=RUNS, warmup=WARMUP):
-    for _ in range(warmup):
-        fn()
-    out = []
-    for _ in range(runs):
-        t0 = time.perf_counter()
-        fn()
-        out.append(time.perf_counter() - t0)
-    return timing_stats(out, threads=1)
-
-
 def recall(truth: np.ndarray, pred: np.ndarray, cls: int, w: np.ndarray | None = None) -> float:
     s = truth == cls
     w = np.ones(len(truth)) if w is None else w
@@ -122,8 +109,8 @@ def main() -> int:
     f_loop = eigen_features_loop(P, ids, n_cl)
     same = all(np.allclose(f[k], f_loop[k], atol=1e-9) for k in FEATURES[:3])
     vert_diff = int((np.abs(f["verticality"] - f_loop["verticality"]) > 1e-6).sum())
-    t_vec = timed(lambda: eigen_features(P, ids, n_cl))
-    t_loop = timed(lambda: eigen_features_loop(P, ids, n_cl))
+    t_vec = timed(lambda: eigen_features(P, ids, n_cl), RUNS, WARMUP, collect=False)
+    t_loop = timed(lambda: eigen_features_loop(P, ids, n_cl), RUNS, WARMUP, collect=False)
 
     # the rules' inputs, per cluster (same definitions as pipeline/steps.cluster_features)
     k = ids[on]

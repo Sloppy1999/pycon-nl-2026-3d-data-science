@@ -58,7 +58,7 @@ the highlighted key line. Numbers are tokens `{file.key|format}` (formats are li
 | 3 | none (logo wall: ids in `content.yaml`, logos in `deck/assets/logos/`) | `deck/ecosystem/ecosystem.yaml` entries and orgs | `eco.n_entries` (small print) |
 | 4 | none | `f1_load.png`, `f6_final.png`; chips from `labels.json` `f6_final`, edge arrow from `f1_load.jaarbeurs_edge` | none |
 | 5 | `s04_repl.py`, shown as its transcript `s04_repl.txt` | `closeup.png` | `pipeline.points_in` (alt text) |
-| 6, 7 | none (native diagrams from `content.yaml`; icons drawn by `deck/lib/diagrams.py`) | none | none |
+| 6, 7 | none (native diagrams from `content.yaml`) | none | none |
 | 8 | rows in `content.yaml` (checked by `s06b_handoffs.py`) | native rows | `facts.factor_v3d_float32_vs_float64_f.median`, `facts.timings.*`; each row's `verify` boolean; conditions |
 | 9 | none | `f1_load.png` to `f6_final.png` | none |
 | 10 | `s08_load.py` | `f1_load.png` | none |
@@ -70,7 +70,7 @@ the highlighted key line. Numbers are tokens `{file.key|format}` (formats are li
 | 16 | `s14_pipeline.py` | `f6_final.png` | as 14 |
 | 17 | none | lamp posts drawn natively; `f6_final.png` cropped in PowerPoint around `render_spec.json` street furniture box | as 14 |
 | 18 | none | `plane_sheet.png` | `bench.plane.n`; `pipeline.n_tiles` (alt) |
-| 19 | `s16_loop.py`, `s16_vec.py` (timed verbatim by `bench_cliff.py`), Drake rows | Lucide x and check icons | `bench.plane.n` |
+| 19 | `s16_loop.py`, `s16_vec.py` (timed verbatim by `bench_cliff.py`), Drake rows | none | `bench.plane.n` |
 | 20 | none | native column chart | bars `bench.plane.loop_numpy_rows.median_ms`, `vectorised.median_ms`; hero `plane.factor.median`; `plane.array.*`, `plane.sensitivity.factor_c_contiguous.median`; conditions |
 | 21 | none (native diagram) | none | `bench.plane.per_step_ns_loop`, `knn.k`, `knn.per_query_us_far_knn`, `knn.per_query_desc.far_knn.*`; conditions |
 | 22 | `bench/cpuprof/loop.py` lines (the slide 19 code), profiled by Scalene | none | `prof.lines.*` (per-line Python, native, system shares); conditions |

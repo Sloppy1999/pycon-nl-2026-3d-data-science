@@ -1287,7 +1287,6 @@ dependencies = [
     { name = "psutil" },
     { name = "pyvista" },
     { name = "scipy" },
-    { name = "trimesh" },
 ]
 
 [package.dev-dependencies]
@@ -1306,6 +1305,9 @@ ml = [
 profile = [
     { name = "scalene" },
 ]
+research = [
+    { name = "trimesh" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -1315,7 +1317,6 @@ requires-dist = [
     { name = "psutil", specifier = ">=7" },
     { name = "pyvista", specifier = ">=0.49" },
     { name = "scipy", specifier = ">=1.18" },
-    { name = "trimesh", specifier = ">=5.1" },
 ]
 
 [package.metadata.requires-dev]
@@ -1330,6 +1331,7 @@ deck = [
 ]
 ml = [{ name = "scikit-learn", specifier = ">=1.9.1" }]
 profile = [{ name = "scalene", specifier = ">=2.3.0" }]
+research = [{ name = "trimesh", specifier = ">=5.1" }]
 
 [[package]]
 name = "pydantic"

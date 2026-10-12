@@ -1,5 +1,5 @@
 """Small explanatory drawings for the deck (added 2026-10-12): the step sketches on the Morph slides (11 to 16), the
-copy-or-view legend (9), the rule-of-thumb tiles (6 and 27), the profile icicle (22) and the data set table (4).
+copy-or-view legend (9), the rule-of-thumb tiles (6 and 27), the line profile (22) and the data set table (4).
 
 Same shape and rules as lib/diagrams.py: ``f(slide, box, spec, style)``, ``box`` in EMU, every visible word from
 ``spec`` (content.yaml), native editable shapes only, colours from the palette roles in lib.style (the class colours
@@ -20,7 +20,7 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Pt
 
-from .charts import Style, emu_box, inch, set_alt
+from .charts import Style, emu_box, inch
 from .diagrams import _box, _connector, _finish_group, _frame, _group, _paras, _textbox, _width
 from .style import RENDER
 
@@ -239,9 +239,9 @@ def _paint(S, st, x, y, w, h, spec):
         px, py = P(u, v)
         (vx, vy), cls = min(vp, key=lambda t: (t[0][0] - px) ** 2 + (t[0][1] - py) ** 2)
         _connector(S, px, py, vx, vy, st.grey, 0.75, name="nearest")
-        d = _dot(S, px, py, 0.08, RGBColor.from_string(RENDER[cls]), name="Swatch")
+        _dot(S, px, py, 0.08, RGBColor.from_string(RENDER[cls]), name="Swatch")
     for (vx, vy), cls in vp:
-        s = _dot(S, vx, vy, 0.20, RGBColor.from_string(RENDER[cls]), line=st.white, line_w=1.25, name="Swatch")
+        _dot(S, vx, vy, 0.20, RGBColor.from_string(RENDER[cls]), line=st.white, line_w=1.25, name="Swatch")
 
 
 # ------------------------------------------------------------------------------------------
@@ -405,53 +405,6 @@ def add_step_table(slide, box, spec, style=None):
 
 
 # ------------------------------------------------------------------------------------------
-# profile icicle (slide 22)
-# ------------------------------------------------------------------------------------------
-
-def add_icicle(slide, box, spec, style=None):
-    """Icicle chart, as snakeviz draws a profile: one row per call depth, each function a bar as wide as its share
-    of the whole run. Highlighted bars blue with white text, the others light with ink text; a bar too narrow for
-    its text gets the text beside it (``outside``), with a short leader.
-
-    spec: ``rows`` [[{label, value (s), highlight?, outside?, x0? (s from the left of the row)}]], ``total`` (s),
-    ``unit_fmt`` callable-free: the label already holds the time; ``alt``?, ``name``?   Returns [group].
-    """
-    st = Style(style)
-    x0, y0, W, H = emu_box(box)
-    rows = spec["rows"]
-    total = float(spec["total"])
-    name = spec.get("name", "profile_icicle")
-    alt = spec.get("alt") or "Icicle chart of the profile"
-    grp = _group(slide, name, alt)
-    S = grp.shapes
-    gap = 0.08
-    rh = (H - gap * (len(rows) - 1)) / len(rows)
-    for ri, row in enumerate(rows):
-        y = y0 + ri * (rh + gap)
-        for bi, b in enumerate(row):
-            bx = x0 + W * float(b.get("x0", 0.0)) / total
-            bw = max(0.04, W * float(b["value"]) / total)
-            hl = bool(b.get("highlight"))
-            bar = _box(S, bx, y, bw, rh, fill=st.highlight if hl else st.light, line=st.white, line_w=1.0,
-                       rounded=False, name=f"icicle {ri + 1}.{bi + 1}")
-            label = b["label"]
-            if b.get("outside") or _width(label, 20) > bw - 0.2:
-                # beside the bar, on the right, with a leader from the bar's centre
-                lx = bx + bw + 0.12
-                lw = _width(label, 20) + 0.15
-                if lx + lw > x0 + W:              # no room on the right: put it on the left
-                    lx = bx - 0.12 - lw
-                _textbox(S, st, lx, y, lw, rh, [{"text": label, "size": 20, "color": st.text}],
-                         anchor=MSO_ANCHOR.MIDDLE, wrap=False, name=f"icicle label {ri + 1}.{bi + 1}")
-            else:
-                _frame(bar.text_frame, anchor=MSO_ANCHOR.MIDDLE, margins=(0.12, 0.0, 0.08, 0.0), wrap=False)
-                _paras(bar.text_frame, st, [{"text": label, "size": 20, "color": st.white if hl else st.text,
-                                             "font": st.title_font if hl else None}],
-                       align=PP_ALIGN.RIGHT if b.get("align") == "right" else PP_ALIGN.LEFT)
-    return _finish_group(grp, alt, name)
-
-
-# ------------------------------------------------------------------------------------------
 # per-line CPU profile, as Scalene shows it (slide 22)
 # ------------------------------------------------------------------------------------------
 
@@ -495,8 +448,7 @@ def add_line_profile(slide, box, spec, style=None):
     y = top
     for r in rows:
         if r.get("gap"):
-            rule = _connector(S, x0, y + gap_h / 2, x0 + W, y + gap_h / 2, color=st.muted, width_pt=0.75,
-                              name="rule")
+            _connector(S, x0, y + gap_h / 2, x0 + W, y + gap_h / 2, color=st.muted, width_pt=0.75, name="rule")
             y += gap_h
         if r.get("tag"):
             _textbox(S, st, x0, y, tag_w, rh, [{"text": r["tag"], "size": 20, "color": st.text_small}],
@@ -553,5 +505,5 @@ def add_spec_table(slide, box, spec, style=None):
     return _finish_group(grp, alt, name)
 
 
-__all__ = ["add_step_sketch", "add_copy_view_legend", "copy_view_legend_height", "add_rule_tiles", "add_icicle", "add_line_profile",
+__all__ = ["add_step_sketch", "add_copy_view_legend", "copy_view_legend_height", "add_rule_tiles", "add_line_profile",
            "add_spec_table", "add_step_table"]

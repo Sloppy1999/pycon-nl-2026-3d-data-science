@@ -8,7 +8,7 @@
 #           profile_loop.json, bench_freethreaded.json)
 # build: which builder method draws the slide (deck/build_deck.py slide_<build>), so slide numbers can change freely.
 #   fmt  = int   -> 1 239 310 (no-break spaces)             pct  -> 94 %      pct1 -> 93.7 %
-#          f1/f2 -> 1 or 2 decimals   x -> 79×  (integer, rounded)   ms -> 5.7 ms / 450 ms / 14.9 s
+#          f1/f2 -> 1 or 2 decimals   x -> 79×  (integer, rounded)   ms -> 15 µs / 5.7 ms / 450 ms / 14.9 s
 #          ns -> 450 ns   ns1 -> 3.5 ns   us1 -> 3.0 µs   gb -> 27.8 GB (value already in GiB)   gb1 -> MiB value shown as 3.3 GB
 #          mb -> 985 MB   m -> 0.5 m   cm -> 1.6 cm (value in m)   s1 -> 2.8 s (value in s)   nb -> string on one line.
 #          Memory: 1 GB = 2^30 bytes (stated in small print).

@@ -14,6 +14,7 @@ import json
 import os
 import platform
 import sys
+import time
 from datetime import datetime, timezone
 from glob import glob
 from importlib.metadata import PackageNotFoundError, version
@@ -35,6 +36,14 @@ def utc_now() -> str:
 
 def load_avg() -> list[float]:
     return [round(x, 2) for x in os.getloadavg()]
+
+
+def wait_idle(limit: float = 1.0, timeout_s: float = 600) -> list[float]:
+    """Wait (up to `timeout_s`) for the 1-minute load average to drop below `limit`; returns load_avg()."""
+    t0 = time.time()
+    while os.getloadavg()[0] >= limit and time.time() - t0 < timeout_s:
+        time.sleep(5)
+    return load_avg()
 
 
 def cpu_model() -> str | None:
