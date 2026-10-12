@@ -56,6 +56,16 @@ Munroe, CC BY-NC 2.5" in 12 pt under the comic, linked to xkcd.com/353 and the l
 xkcd.com/353; alt text on the picture. **Non-commercial use only** (OPEN_ITEMS k1). The comic's pixels are the only
 non-palette colours added (grayscale), as allowed.
 
+## 2026-10-12: hidden section "Mental models", C1 to C9
+
+Nine hidden slides after B7 (section "Mental models"): C1 to C6 one idea each with a figure from
+`deck/concepts/make_figures.py` (C1, C3, C4 synthetic and labelled so; C2, C5 from the crop; C6 from results), C7
+foundational ideas against library spellings, C8 the ranked selection and narrative, C9 the glossary. Not timed: the
+main deck still sums to 1800 s; the notes of slides 5, 6, 7, 11, 14, 18 and 24 point to the matching C slide
+(`mental_model`). Citations with dates: docs/research/reports/mental_models.md, printed in each C slide's notes.
+`literal_numbers` warns on C slides for ids and spec values (EPSG:7415, N×3, versions, 1 GB = 2^30 B, 80 %): reviewed,
+not measurements.
+
 ## State at a glance (re-checked 2026-10-04, after the re-theme)
 
 | Check | Result |

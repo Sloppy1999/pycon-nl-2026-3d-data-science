@@ -294,3 +294,351 @@ appendix:
       from release dates and the archived flag, not from trying them. Two install traps I found while checking:
       the newest PyTorch3D is not on PyPI, and the kaolin name on PyPI is a placeholder. If your pipeline needs one
       of the stale ones, pin the version and check the repository's issues first.
+
+  # ------------------------------------------------------------------------------------------------------------
+  # C1 to C9: mental models of 3D data (hidden section "Mental models", added 2026-10-12). Swap-in material for a
+  # longer slot or a beginner audience; C8 gives the order and where each idea joins the main deck. C1 to C6 are
+  # build: concept (figure left, takeaway and bullets right, deck/build_deck.py slide_concept); C7 to C9 are dense.
+  # Extra keys for the notes: why, example, flags (limits and disagreements), sources (citations with dates).
+  # Figures and their numbers: deck/concepts/make_figures.py -> deck/assets/concepts/*.png, results/concepts.json.
+  # Citations: research: reports/mental_models.md (web research 2026-10-12, VERIFIED or UNVERIFIED per claim).
+  - n: C1
+    title: "One object, three representations"
+    figure:
+      file: c1_representations.png
+      caption: "Synthetic house, drawn three ways: {concept.c1.points|int} sampled points, {concept.c1.vertices|int} vertices and {concept.c1.triangles|int} triangles, {concept.c1.voxels|int} voxels of {concept.c1.pitch_m|m}."
+      alt: "The same small house three times. Left, a point cloud: scattered dots on its walls and roof. Middle, a mesh: flat triangles joined at shared edges. Right, a voxel grid: stacked cubes, blocky, with a few gaps where no point fell."
+    takeaway: "Points measure, meshes connect, voxels index space. Convert only when the task needs it."
+    bullets:
+      - text: "Point cloud: an unordered N×3 array plus attributes; no neighbours stored."
+        source: "research: reports/mental_models.md section 1 (PointNet, Open3D PointCloud)"
+        status: verified
+      - text: "Mesh: vertices plus faces, so surfaces, normals and areas are defined."
+        source: "research: reports/mental_models.md section 1 (Open3D TriangleMesh, PyVista data model, trimesh)"
+        status: verified
+      - text: "Voxel grid: occupied cells at one resolution; detail below a cell is gone."
+        source: "research: reports/mental_models.md section 1 (Open3D VoxelGrid; sparse voxels)"
+        status: verified
+    notes: >-
+      Three ways to hold the same house. A scanner gives you the left one: samples of the surface, nothing joining them.
+      A mesh adds the connections, which is what you need for area, volume, watertightness or rendering a solid. A voxel
+      grid throws away exact positions to get a regular index of space, which makes neighbour lookups and occupancy
+      questions trivial. Every conversion between them is a modelling decision with a parameter: the voxel size, the
+      meshing radius or depth. Today's pipeline stays with points, and uses voxels only as a downsampling grid.
+    why: "Choosing the representation decides which questions are cheap. Converting costs detail and adds a parameter you now have to justify."
+    example: "Open3D: o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size) and TriangleMesh.create_from_point_cloud_poisson(pcd); PyVista: PolyData for points and meshes, ImageData for regular grids; trimesh: mesh.voxelized(pitch). Analogy: a dot-to-dot puzzle before the lines (points), after the lines (mesh), and as pixel art (voxels)."
+    flags:
+      - "The figure is synthetic and tiny; real meshes from scans need cleaning and are rarely watertight."
+      - "Dense voxel grids grow with the cube of the resolution; sparse structures (hashing, octrees) avoid that. Which is best depends on the task."
+      - "Deep learning uses all three (point-based, mesh-based, voxel or sparse convolution); no representation wins everywhere (Guo et al. survey)."
+    sources:
+      - "Qi, Su, Mo, Guibas: PointNet, CVPR 2017 (arXiv 1612.00593, v2 10 Apr 2017), point sets are unordered"
+      - "Open3D 0.20.0 docs: PointCloud, TriangleMesh, voxelization tutorial (open3d.org/docs/latest, no date shown)"
+      - "PyVista 0.49.1 docs: What Is a Mesh? (docs.pyvista.org/user-guide/what-is-a-mesh.html, no date shown): a point cloud is a mesh without connectivity"
+      - "trimesh 5.1.1 docs (trimesh.org; PyPI 2026-10-02)"
+      - "Choy, Gwak, Savarese: Minkowski CNNs, CVPR 2019 (arXiv 1904.08755), sparse voxels"
+      - "Guo et al.: Deep Learning for 3D Point Clouds: A Survey, IEEE TPAMI 43(12), Dec 2021, doi 10.1109/TPAMI.2020.3005434"
+      - "Poux: 3D Data Science with Python, O'Reilly, 2025 (ISBN 9781098161330)"
+  - n: C2
+    title: "Coordinates mean nothing without a frame"
+    figure:
+      file: c2_frames.png
+      caption: "The crop's first point in RD New and in the local frame (data/utrecht_jaarbeurs_200m.laz). Right: Z up (LAS, RD + NAP, Blender) and Y up, left-handed (Unity)."
+      alt: "Left, a map frame of the Netherlands in RD New with the crop as a tiny square far from the origin. Middle, the crop's own 200 m frame, with the same point near its top right corner. Below, the RD coordinate and the float32 step: 1.6 cm in RD, 15 micrometres local. Right, two axis triads: Z up as in LAS and RD with NAP, and Y up, left-handed, as in Unity."
+    takeaway: "Every array needs a frame: reference system, units, origin and which axis is up."
+    bullets:
+      - text: "AHN: RD New metres plus NAP heights, EPSG:7415, stored in the file."
+        source: "results/pipeline.json crop.crs; research: reports/mental_models.md section 3"
+        status: verified
+      - text: "Subtract a local origin: float32 then resolves micrometres, not {concept.c2.float32_step_rd_m|cm}."
+        source: "results/concepts.json c2 (np.spacing of float32 at the first point's x); slide 11"
+        status: token
+      - text: "Tools disagree on the up axis and on lat, lon order: check, never assume."
+        source: "research: reports/mental_models.md section 3 (pyproj axis order; Unity Y up, Blender Z up)"
+        status: verified
+    notes: >-
+      A coordinate is three numbers plus a contract: which reference system, which units, which origin, which axis
+      points up. Here the contract is RD New with NAP heights, in metres, and the file says so. The first point of our
+      crop sits about a hundred and thirty-six kilometres east of RD's origin; subtract the header minimum and it's two
+      hundred metres from ours. Same point, same metres, but now float32 can still resolve it to micrometres. The other
+      silent trap is convention: LAS, GIS data and Blender are Z up, Unity is Y up and left-handed, and pyproj follows the authority's axis order
+      unless you ask for x, y.
+    why: "Frame errors raise no exception: points land in the wrong place, mirrored, or rounded to centimetres, and the code still runs."
+    example: "pyproj: Transformer.from_crs('EPSG:28992', 'EPSG:4326', always_xy=True) returns lon, lat; without always_xy, EPSG:4326 returns lat, lon. laspy: las.header.parse_crs() reads the CRS record; xyz = las.xyz - las.header.mins sets the local origin (slide 11)."
+    flags:
+      - "Which axis is up, and handedness, differ between tools and file formats; read the docs of each tool you hand data to."
+      - "A local origin is only safe if you keep it with the data to go back to RD."
+      - "Whether float32 is enough depends on the extent and the precision you need, not on a rule."
+    sources:
+      - "pyproj 3.7.2 Gotchas, Axis order changes in PROJ 6+ (pyproj4.github.io/pyproj/stable/gotchas.html, no date shown); Transformer always_xy"
+      - "EPSG:7415 Amersfoort / RD New + NAP height (epsg.io/7415, a mirror of the EPSG dataset; epsg.org not fetched)"
+      - "Unity 6.5 Manual, Quaternion: left-handed, Y up (docs.unity3d.com, no date shown); Blender Manual 2.91, Viewpoint: Z up (old manual version)"
+      - "ASPRS LAS 1.4 R16, 2025-08-27 (github.com/ASPRSorg/LAS releases): int32 coordinates with scale and offset; laspy docs: X is raw, x is scaled"
+      - "UNVERIFIED and left off the slide: Open3D's camera axis convention (not stated in the 0.20.0 API page)"
+  - n: C3
+    title: "A transform is a matrix, and order matters"
+    figure:
+      file: c3_order.png
+      caption: "Synthetic footprint, top view. Column vectors: T @ R rotates first, R @ T translates first."
+      alt: "Two panels with the same L-shaped footprint. Left, rotated 90 degrees about the origin and then shifted 5 m right: it lands right of the original. Right, shifted first and then rotated: it lands far above the original. Same rotation, same shift, different results."
+    takeaway: "One four by four matrix moves a whole cloud; composing them is not commutative."
+    bullets:
+      - text: "Rigid transform: rotation R and shift t in one homogeneous four by four matrix."
+        source: "research: reports/mental_models.md section 4"
+        status: verified
+      - text: "Apply it to all points at once: P @ R.T + t, or pcd.transform(T)."
+        source: "research: reports/mental_models.md section 4 (Open3D transform)"
+        status: verified
+      - text: "Euler angles hide a convention: SciPy's 'xyz' and 'XYZ' differ."
+        source: "research: reports/mental_models.md section 4 (SciPy Rotation, extrinsic and intrinsic)"
+        status: verified
+    notes: >-
+      Registration, camera poses, georeferencing: they're all the same object, a rotation plus a shift, packed into one
+      four by four matrix so you can chain them by multiplying. The catch is the order. Rotating then shifting puts the
+      house to the right; shifting then rotating swings it around the origin and it ends up somewhere else. Same two
+      numbers, different answer, no error. Write down which frame each matrix maps from and to, and apply it to the
+      whole array in one call.
+    why: "Every alignment step (registration, sensor to world, scan to map) is a chain of transforms; a swapped order or angle convention moves the data silently."
+    example: "NumPy: P_world = P @ R.T + t. Open3D: pcd.transform(T) with a 4 by 4 array; ICP returns such a T. SciPy: Rotation.from_euler('xyz', angles, degrees=True).as_matrix(), where lowercase means extrinsic axes and uppercase intrinsic."
+    flags:
+      - "Row-vector code (P @ M) and column-vector maths (M @ p) write the same transform transposed; mixing them is a classic bug."
+      - "Scale and shear make a transform affine, not rigid; normals then need the inverse transpose."
+    sources:
+      - "Open3D 0.20.0 transformation tutorial and Geometry3D.transform (4 by 4 matrix), open3d.org/docs/latest (no date shown)"
+      - "SciPy 1.18.0 Rotation.from_euler: uppercase intrinsic, lowercase extrinsic, no mixing (docs.scipy.org)"
+      - "SciPy RigidTransform, added in SciPy 1.16.0 (2025-06-22): when composing transforms, the order is important"
+  - n: C4
+    title: "Neighbourhood size changes the answer"
+    figure:
+      file: c4_scale.png
+      caption: "Synthetic gable roof, {concept.c4.density_per_m2|int} points per m², {concept.c4.noise_sigma_m|cm} noise. PCA normal of the points within the radius, SciPy KDTree."
+      alt: "Line chart of normal error in degrees against neighbourhood radius in metres. Both curves start high at the smallest radius because of noise. The curve for a point far from the ridge falls towards zero. The curve for a point near the ridge reaches its lowest error around half a metre and then climbs again as the neighbourhood spills over the edge."
+    takeaway: "Points have no neighbours until you choose a radius; that choice is a model parameter."
+    bullets:
+      - text: "Too small: a few noisy points, unstable normals and features."
+        source: "results/concepts.json c4.error_smallest_radius_deg; research: reports/mental_models.md section 5"
+        status: token
+      - text: "Too large: the neighbourhood crosses edges and blurs them."
+        source: "results/concepts.json c4.ridge_error_largest_radius_deg; research: reports/mental_models.md section 5 (Mitra and Nguyen)"
+        status: token
+      - text: "Tie the radius to point spacing; eps on slide 14 and the voxel on slide 12 are the same choice."
+        source: "judgement; slides 12 and 14"
+        status: judgement
+    notes: >-
+      A point cloud stores no neighbours, so every normal, curvature or eigenvalue feature starts with a choice: which
+      points count as near. This chart is a synthetic roof at our density. Far from the ridge, a bigger neighbourhood
+      just averages the noise away. Near the ridge, it helps up to about half a metre and then starts mixing in the
+      other roof face, and the normal tilts. There is no universal radius: it depends on point spacing, noise and the
+      size of the things you care about. DBSCAN's eps and the voxel size are the same decision in disguise.
+    why: "Normals, features, clustering and ground filters all depend on the neighbourhood; a radius tuned on one data set can fail on another density."
+    example: "Open3D: pcd.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=0.5, max_nn=30)); SciPy: KDTree(P).query_ball_point(P, r) for all points in one call. Analogy: judging the slope of a street from one paving stone versus the whole neighbourhood."
+    flags:
+      - "Synthetic data: the best radius here (about {concept.c4.ridge_best_radius_m|m}) is not a recommendation for other scans."
+      - "Demantke et al. (2011) and Mitra and Nguyen (2003) choose the neighbourhood size per point instead of one global value; Weinmann et al. (2015) build on this for classification (their method detail UNVERIFIED here, paywalled)."
+      - "kNN neighbourhoods adapt to density, radius neighbourhoods keep a physical size; which is better depends on how uneven the density is (C5)."
+    sources:
+      - "Mitra and Nguyen: Estimating surface normals in noisy point cloud data, SoCG 2003, doi 10.1145/777792.777840: accuracy depends on noise, curvature, density and neighbourhood size"
+      - "Hoppe et al.: Surface reconstruction from unorganized points, SIGGRAPH 1992, doi 10.1145/142920.134011: normal from a plane fit to k neighbours"
+      - "Demantke et al.: Dimensionality based scale selection in 3D LiDAR point clouds, ISPRS Archives XXXVIII-5/W12, 2011"
+      - "Weinmann et al.: optimal neighborhoods, ISPRS J. 105, July 2015, doi 10.1016/j.isprsjprs.2015.01.016 (metadata verified; method summary UNVERIFIED, paywalled)"
+      - "Open3D point cloud tutorial, estimate_normals with KDTreeSearchParamHybrid (its 0.1 m radius suits indoor scans, not AHN spacing)"
+  - n: C5
+    title: "A point cloud samples the surface unevenly"
+    figure:
+      file: c5_density.png
+      caption: "Points per m² in 2 m cells, this crop (AHN5). Walls stack many points in one map cell."
+      alt: "Left, a map of point density over the 200 m crop: the hall and streets in mid blue, the hall's walls and other facades as bright lines, tree crowns as bright spots, and some darker bands with fewer points. Right, a histogram of the cells with a median of {concept.c5.median_per_m2|int} points per square metre."
+    takeaway: "Density, noise and gaps vary within one file. Measure them before tuning anything."
+    bullets:
+      - text: "Here the middle 80 % of cells hold {concept.c5.p10_per_m2|int} to {concept.c5.p90_per_m2|int} points per m²; median {concept.c5.median_per_m2|int}."
+        source: "results/concepts.json c5 (data/utrecht_jaarbeurs_200m.laz, 2 m cells)"
+        status: token
+      - text: "Occlusion, flight-strip overlap, angle and material decide where points land."
+        source: "research: reports/mental_models.md section 6"
+        status: verified
+      - text: "Every point carries error: AHN4 specifies at most 5 cm in height; AHN5 publishes no figure yet."
+        source: "research: reports/mental_models.md section 6 (AHN Kwaliteitsbeschrijving; AHN5 tender)"
+        status: verified
+    notes: >-
+      The scanner doesn't see the city, it samples it. This map counts points per square metre in our crop. Walls show
+      up as bright lines because a vertical surface stacks many points into one map cell; tree crowns are bright
+      because each pulse can echo several times; elsewhere density changes with flight-strip overlap and with what was
+      hidden from the plane. So a parameter tuned in one corner can fail in the next, and an empty area may mean
+      nothing was there, or nothing was seen. Look at density and accuracy first, the second rule of thumb.
+    why: "Thresholds, radii and quality scores all assume a density and an error level; uneven sampling makes them wrong in parts of the same file."
+    example: "NumPy: np.histogram2d(x, y, bins=100, range=[[0, 200], [0, 200]]) gives this density map in one call. laspy: las.return_number and las.number_of_returns tell multiple echoes apart (slide 15)."
+    flags:
+      - "Density per map cell mixes surface density with geometry: walls and canopies inflate it. A per-surface density needs normals (C4)."
+      - "Published accuracy is a specification for the whole data set, not a guarantee for each point; local errors near edges and on dark or wet surfaces can be larger."
+      - "Which density is enough depends on the object size: lamp posts on slide 18 got few or no points."
+    sources:
+      - "AHN Kwaliteitsbeschrijving (ahn.nl/kwaliteitsbeschrijving, no date shown, written before 2020): AHN4 height error at most 5 cm systematic and 5 cm stochastic; about 10 to 14 points per m2"
+      - "AHN5 tender, Nota van inlichtingen, 2022-08-18 (TenderNed 275983): base requirement 10 points per m2; no AHN5 accuracy figures published"
+      - "AHN: The making of (ahn.nl/ahn-making, no date shown, AHN3 process): flight strips overlap about 20 to 35 %, vegetation gives first or intermediate returns"
+      - "Manders: AHN3 vs AHN4 for 3D buildings, MSc thesis, 2023 (gdmc.nl; not peer reviewed): facade occlusion"
+      - "ASPRS Positional Accuracy Standards, Edition 2, Version 2, approved 2024-06-24 (via Geo Week News, 2024-07-03; ASPRS PDF not fetched)"
+  - n: C6
+    title: "Memory follows N, and the algorithm"
+    figure:
+      file: c6_scale.png
+      caption: "Memory for N points: float64 xyz grows linearly, all pairwise distances quadratically. 1 GB = 2^30 B. Computed, not run."
+      alt: "Log-log chart of memory against number of points. A solid line for the float64 coordinates crosses the {concept.c6.ram_gb|int} GB RAM line only near a billion points. A dashed line for all pairwise distances crosses it below a hundred thousand points. Dotted verticals mark this crop, the 1 km AHN file and the big AHN file."
+    takeaway: "Linear work fits; anything quadratic in N never will. Pick algorithms by their growth."
+    bullets:
+      - text: "This crop's pairwise distances: {concept.c6.pairwise_gb_crop|int} GB. Its xyz: well under 1 GB."
+        source: "results/concepts.json c6.pairwise_gb_crop (crop points squared × 8 B)"
+        status: token
+      - text: "Trees and grids keep neighbour search near N log N."
+        source: "research: reports/mental_models.md section 7 (KD-tree complexity)"
+        status: verified
+      - text: "Past RAM, stream: chunks, tiles and COPC boxes (slides 25, 26, B2)."
+        source: "slides 25 and 26; B2; research: reports/mental_models.md section 7 (laspy chunk_iterator, PDAL streaming)"
+        status: verified
+    notes: >-
+      Before you ask how fast, ask how it grows. Storing the points is linear: twenty-four bytes per point for float64
+      xyz, so even the big AHN file is about twenty gigabytes. Anything that compares every point with every other point
+      is quadratic, and that line crosses our RAM before a hundred thousand points; for this crop it would be terabytes.
+      That's why neighbour search goes through a tree or a grid, and why the RAM section of the talk streams chunks
+      instead of loading everything. Big-O first, then the constant factors from the performance section.
+    why: "Scale decides feasibility before speed does; a correct method that is quadratic in N simply cannot run on real scans."
+    example: "scipy.spatial.distance.pdist(P) on the crop would need terabytes; KDTree(P).query(P, k=8, workers=-1) does the neighbour job in one batched call. laspy.open(path).chunk_iterator(1_000_000) streams a file (slide 25)."
+    flags:
+      - "Complexity classes hide constants: an N log N method with a Python loop per point can still lose (slides 19 to 21)."
+      - "KD-trees degrade towards linear query time in high dimensions; in 3D they behave well."
+    sources:
+      - "Bentley: Multidimensional binary search trees, CACM 18(9), Sept 1975, doi 10.1145/361002.361007"
+      - "Friedman, Bentley, Finkel: logarithmic expected time best matches, ACM TOMS 3(3), 1977, doi 10.1145/355744.355745"
+      - "SciPy 1.18.0 KDTree docs: no Big-O stated; do not expect speed-ups in high dimensions"
+      - "laspy docs, chunk_iterator; PDAL docs, Pipeline stream mode (pdal.io, no date shown)"
+      - "Pairwise memory N squared × 8 B: arithmetic, no citation needed"
+  - n: C7
+    title: "Ideas outlive the library you use"
+    table:
+      caption: "Foundational idea, and how three libraries spell it (Open3D 0.20, PyVista 0.49, trimesh 5.1)"
+      col_widths: [2.6, 2.4, 2.4, 2.4]
+      columns: ["Idea", "Open3D", "PyVista", "trimesh"]
+      rows:
+        - cells: ["Points as an N×3 array", "PointCloud.points", "PolyData(points)", "PointCloud(vertices)"]
+          source: "checked in the project venv 2026-10-12 (open3d 0.20.0, pyvista 0.49.0, trimesh 5.1.0); research: reports/mental_models.md section 8"
+          status: verified
+        - cells: ["Surface with connectivity", "TriangleMesh", "PolyData with faces", "Trimesh"]
+          source: "checked in the project venv 2026-10-12; research: reports/mental_models.md section 1"
+          status: verified
+        - cells: ["Regular grid of cells", "VoxelGrid", "ImageData", "Trimesh.voxelized(pitch)"]
+          source: "checked in the project venv 2026-10-12 (hasattr on each name)"
+          status: verified
+        - cells: ["Rigid transform, 4 by 4", "transform(T)", "transform(T)", "apply_transform(T)"]
+          source: "checked in the project venv 2026-10-12 (hasattr on each name)"
+          status: verified
+        - cells: ["Neighbourhoods", "KDTreeFlann", "find_closest_point", "proximity, nearest"]
+          source: "Open3D and trimesh names checked in the project venv; research: reports/mental_models.md section 5"
+          status: verified
+    bullets:
+      - text: "NumPy is the common language: every row converts with np.asarray, sometimes as a copy (slide 9)."
+        source: "slide 9; results/python_facts.json; research: reports/mental_models.md section 8"
+        status: verified
+      - text: "Learn the idea once; map it to whichever library the job needs. None does everything (slide 7)."
+        source: "judgement; slide 7"
+        status: judgement
+    small_print: "Names checked by import in this project's environment on 2026-10-12. APIs change between releases: read the docs of your version."
+    notes: >-
+      This is the slide that separates what lasts from what changes. Points, surfaces, grids, transforms and
+      neighbourhoods are the ideas; each library spells them differently. If you know the idea, switching from Open3D to
+      PyVista or trimesh is a lookup, not a relearning. And NumPy arrays are how they talk to each other, with the copy
+      or view question from slide 9 at every hand-off.
+    why: "Tools come and go (backup B7 lists the stale ones); the concepts transfer, and they are what you debug with."
+    example: "The same 4 by 4 matrix T works in Open3D pcd.transform(T), PyVista mesh.transform(T) and trimesh mesh.apply_transform(T)."
+    flags:
+      - "Not a ranking: each library has strengths the table does not show (Open3D: registration and reconstruction; PyVista: VTK filters and rendering; trimesh: mesh repair and queries)."
+      - "PyVista's transform returns a new object or works in place depending on version and arguments; check the docs of your version."
+    sources:
+      - "NumPy 2.5 manual, Interoperability with NumPy (buffer protocol, __array_interface__, DLPack)"
+      - "PyPI release dates checked 2026-10-12: Open3D 0.20.0 (2026-09-16, 20 months after 0.19.0), PyVista 0.49.1 (2026-10-11), laspy 2.7.0 (2026-01-14), trimesh 5.1.1 (2026-10-02), pdal 3.5.5 (2026-07-31)"
+      - "Zhou, Park, Koltun: Open3D, arXiv 1801.09847, 2018-01-30; Sullivan and Kaszynski: PyVista, JOSS 4(37) 1450, 2019-05-19"
+  - n: C8
+    title: "Seven ideas worth presenting, in order"
+    table:
+      caption: "Priority for a beginner audience, and where each idea joins the main deck"
+      col_widths: [0.5, 3.2, 3.6, 2.2]
+      columns: ["#", "Idea", "One line for the audience", "Joins at"]
+      rows:
+        - cells: ["1", "A point cloud is an array (slide 5)", "N rows, x y z plus attributes, no order, no links", "slide 5, rule 1"]
+          source: "slides 5 and 6"
+          status: judgement
+        - cells: ["2", "Every array needs a frame (C2)", "Reference system, units, origin, up axis", "slide 11"]
+          source: "C2"
+          status: judgement
+        - cells: ["3", "Neighbourhood size changes the answer (C4)", "Radius, eps and voxel size are model choices", "slides 12 to 14"]
+          source: "C4"
+          status: judgement
+        - cells: ["4", "Samples, not the surface (C5)", "Density and error vary; measure first", "slide 18, rule 2"]
+          source: "C5"
+          status: judgement
+        - cells: ["5", "Memory follows N and the algorithm (C6)", "Linear fits, quadratic never does", "slide 24, rule 3"]
+          source: "C6"
+          status: judgement
+        - cells: ["6", "Three representations (C1)", "Points measure, meshes connect, voxels index", "after slide 5"]
+          source: "C1"
+          status: judgement
+        - cells: ["7", "Transforms as matrices (C3)", "One matrix per frame change, order matters", "after slide 11"]
+          source: "C3"
+          status: judgement
+    bullets:
+      - text: "Narrative: what the data is (1, 6), where it is (2, 7), what is near what (3), how far to trust it (4), how big it gets (5). Close with C7: ideas outlive tools."
+        source: "judgement"
+        status: judgement
+      - text: "In the 30 minute slot the main deck already carries 1, and 2 to 5 in short form; add C2 and C4 first if time allows."
+        source: "docs/TIMING.md; judgement"
+        status: judgement
+    notes: >-
+      How to use this section. The ranking is for a mixed audience: first the ideas without which the pipeline makes
+      no sense, last the ones that matter once you build your own. In a longer slot, unhide C2 after slide 11 and C4 after
+      slide 14; each needs about a minute. In the 30 minute version, use them in Q&A, and say the one line in the third
+      column at the slide named in the last column.
+    flags:
+      - "The ranking is judgement for an introductory audience; a robotics or graphics audience would put transforms (C3) and meshes (C1) first."
+    sources:
+      - "Poux: 3D Data Science with Python, O'Reilly, 2025, for a book-length treatment (retailers disagree on the exact date)"
+      - "Guo et al. survey, TPAMI Dec 2021, for the deep learning side not covered here"
+  - n: C9
+    title: "Glossary of 3D data terms"
+    table:
+      col_widths: [2.2, 7.5]
+      columns: ["Term", "Meaning in this talk"]
+      rows:
+        - cells: ["Point cloud", "An unordered set of 3D points, stored as an N×3 array plus attribute columns"]
+          source: "research: reports/mental_models.md section 1"
+          status: verified
+        - cells: ["Mesh", "Vertices plus faces (usually triangles) that define a surface"]
+          source: "research: reports/mental_models.md section 1"
+          status: verified
+        - cells: ["Voxel", "A cell of a regular 3D grid; voxel downsampling keeps one point per cell"]
+          source: "research: reports/mental_models.md section 1; slide 12"
+          status: verified
+        - cells: ["CRS", "Coordinate reference system: what the numbers mean on Earth (here RD New + NAP)"]
+          source: "research: reports/mental_models.md section 3"
+          status: verified
+        - cells: ["Rigid transform", "Rotation plus translation, written as one four by four matrix"]
+          source: "research: reports/mental_models.md section 4"
+          status: verified
+        - cells: ["Neighbourhood", "The points within a radius or the k nearest; found with a KD-tree or grid"]
+          source: "research: reports/mental_models.md section 5"
+          status: verified
+        - cells: ["Normal", "Direction perpendicular to the local surface, estimated from a neighbourhood"]
+          source: "research: reports/mental_models.md section 5"
+          status: verified
+        - cells: ["Density", "Points per square metre; varies with overlap, occlusion and surface"]
+          source: "research: reports/mental_models.md section 6"
+          status: verified
+        - cells: ["LAS, LAZ, COPC", "LiDAR file format; its compressed form; LAZ organised as an octree for box reads"]
+          source: "research: reports/mental_models.md section 2"
+          status: verified
+        - cells: ["Return", "One echo of a laser pulse; a pulse through a tree can give several"]
+          source: "slide 15; research: reports/mental_models.md section 6"
+          status: verified
+    notes: >-
+      Reference slide for Q&A and for the handout. Every term is used with exactly this meaning in the talk; tile means
+      the processing squares only, and AHN file means a download.
+    sources:
+      - "COPC 1.0 specification (copc.io, 2021, no exact date): a LAZ 1.4 file organised as a clustered octree"
+      - "ASPRS LAS 1.4 R16 (2025-08-27); LAS 1.5 R00 approved Aug 2025 (lasformat.org)"

@@ -716,3 +716,42 @@ appendix:
     layout: 4
     title: "Which libraries have stopped moving?"
     kind: dense
+  # C1 to C9: mental models of 3D data (hidden, section "Mental models", 2026-10-12). Content, notes and citations in
+  # appendix.yaml; figures from deck/concepts/make_figures.py (deck/assets/concepts/, numbers in results/concepts.json);
+  # research: docs/research/reports/mental_models.md. C8 says which to show and where they fit the main deck.
+  - n: C1
+    layout: 4
+    title: "One object, three representations"
+    build: concept
+  - n: C2
+    layout: 4
+    title: "Coordinates mean nothing without a frame"
+    build: concept
+  - n: C3
+    layout: 4
+    title: "A transform is a matrix, and order matters"
+    build: concept
+  - n: C4
+    layout: 4
+    title: "Neighbourhood size changes the answer"
+    build: concept
+  - n: C5
+    layout: 4
+    title: "A point cloud samples the surface unevenly"
+    build: concept
+  - n: C6
+    layout: 4
+    title: "Memory follows N, and the algorithm"
+    build: concept
+  - n: C7
+    layout: 4
+    title: "Ideas outlive the library you use"
+    kind: dense
+  - n: C8
+    layout: 4
+    title: "Seven ideas worth presenting, in order"
+    kind: dense
+  - n: C9
+    layout: 4
+    title: "Glossary of 3D data terms"
+    kind: dense

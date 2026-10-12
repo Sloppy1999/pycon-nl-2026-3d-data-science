@@ -909,7 +909,7 @@ class Builder:
     def build_slide(self, slide, spec, n):
         layout = int(spec["layout"])
         # content.yaml `build` names the method (slide_<build>), so slides can be inserted and renumbered freely
-        if str(n).startswith("B"):
+        if str(n)[0] in "BC" and spec.get("build") != "concept":
             fn = self.slide_dense
         else:
             fn = getattr(self, f"slide_{spec.get('build')}", None) or self.slide_generic
@@ -2114,6 +2114,42 @@ class Builder:
         self.set_title(s, n, spec.get("title", ""), L)
         self.warn(n, "built with the generic fallback")
 
+    # C1 to C6 -- mental-model slides (L4, hidden): a figure from deck/concepts/make_figures.py on the left at its
+    # drawn size (shrunk only to fit), its caption under it; the takeaway and bullets from appendix.yaml on the right
+    def slide_concept(self, s, spec, n, L):
+        entry = self.res.resolve_tree(copy.deepcopy(self.appendix.get(str(n)) or {}), where=f"slide {n}")
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        fig = entry.get("figure") or {}
+        path = DECK / "assets" / "concepts" / str(fig.get("file", ""))
+        cap = fig.get("caption", "")
+        cap_h = text_h(cap, SMALL_PT, 7.2 - 0.02) if cap else 0
+        if path.is_file():
+            with Image.open(path) as im:
+                iw, ih = im.size
+            h = min(BOTTOM - top - cap_h - 0.10, 7.2 * ih / iw)
+            w = h * iw / ih
+            pic = s.shapes.add_picture(str(path), E(X0), E(top), E(w), E(h))
+            set_name(pic, "Concept figure")
+            set_alt(pic, fig.get("alt") or cap)
+        else:
+            w, h = 7.2, BOTTOM - top - cap_h - 0.10
+            pending_box(s, X0, top, w, h, "FIGURE PENDING: deck/concepts/make_figures.py", str(path.name),
+                        name="PENDING concept figure")
+            self.placeholder_note(n, "figure", "deck/concepts/make_figures.py", f"{n} figure pending")
+        if cap:
+            self.small(s, n, cap, (X0, top + h + 0.10, w, cap_h), name="Small print caption")
+        x = X0 + w + 0.35
+        cw = X0 + FULL_W - x
+        y = top
+        if entry.get("takeaway"):
+            th = text_h(entry["takeaway"], SUPPORT_PT, cw - 0.02)
+            self.support(s, n, entry["takeaway"], (x, y, cw, th))
+            y += th + 0.25
+        items = [it.get("text", "") if isinstance(it, dict) else str(it) for it in entry.get("bullets") or []]
+        if items:
+            self._bullets(s, x, y, cw, BOTTOM - y, items, 16, "Concept bullets")
+
     # B1 to B6 -- dense appendix (L4, hidden): bullets and/or a native table, 14 to 16 pt
     def slide_dense(self, s, spec, n, L):
         raw = self.appendix.get(str(n))
@@ -2374,7 +2410,11 @@ class Builder:
         e = self.res.resolve_tree(copy.deepcopy(raw), where=f"notes {n}")
         blocks = []
         if e.get("notes"):
-            blocks.append(self._block("ANSWER IN Q&A", e["notes"]))
+            blocks.append(self._block("TALK TRACK" if str(n).startswith("C") else "ANSWER IN Q&A", e["notes"]))
+        # mental-model slides C1 to C9: the explanation, why it matters, an example, caveats, citations
+        for key, label in (("why", "WHY IT MATTERS"), ("example", "EXAMPLE"), ("flags", "LIMITS AND DISAGREEMENTS"),
+                           ("sources", "CITATIONS")):
+            blocks.append(self._block(label, e.get(key), bullets=key in ("flags", "sources")))
         src = []
         k_b = k_r = 0
         for key in e:                       # same order as on the slide
@@ -2415,7 +2455,7 @@ class Builder:
         return cut + "..."
 
     def notes_text(self, n, spec) -> str | None:
-        if str(n).startswith("B"):
+        if str(n)[0] in "BC":
             return self.appendix_notes(n)
         entry = self.notes.get(str(n))
         if entry is None:
@@ -2478,7 +2518,8 @@ class Builder:
         for sp in slides:
             plan.append({"key": str(sp["n"]), "layout": int(sp["layout"]), "section": sp.get("section", "Main")})
         for sp in appendix:
-            plan.append({"key": str(sp["n"]), "layout": int(sp["layout"]), "section": "Appendix"})
+            plan.append({"key": str(sp["n"]), "layout": int(sp["layout"]),
+                         "section": "Mental models" if str(sp["n"]).startswith("C") else "Appendix"})
         # sections: merge RAM into Performance? keep as in content.yaml
         structure, log = build_structure(TEMPLATE, WORK, plan)
         self.report["structure_log"] = log

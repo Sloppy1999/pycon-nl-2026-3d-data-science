@@ -50,6 +50,7 @@ FILES = {
     "bgt": "bgt_street_furniture.json",    # bench/bgt_street_furniture.py: BGT poles and street furniture in the crop
     "trace": "memory_trace.json",          # bench/bench_memory_trace.py: RSS over time, load everything vs chunked (cross-check)
     "prof": "profile_scalene.json",        # bench/profile_loop_scalene.py: Scalene's CPU profile of the slide-19 loop (slide 22)
+    "concept": "concepts.json",            # deck/concepts/make_figures.py: numbers drawn into figures C1 to C6
     "scalene": "memory_scalene.json",      # bench/bench_memory_scalene.py: Scalene's memory timeline, same two cases (slide 26)
 }
 
