@@ -30,7 +30,7 @@ appendix:
       - text: "Python only orchestrates: no step loops over points, and the whole crop runs from load to paint-back in {pipeline.runtime_s|s1} (single run, renders excluded, indicative)."
         source: "pipeline/run.py; results/pipeline.json runtime_s, runtime_note (load to paint-back, renders not included)"
         status: token
-      - text: "The price is per call, not per language: {bench.plane.per_step_ns_loop|ns} per loop step of slide 19 (several NumPy calls each), {bench.plane.per_point_ns_vectorised|ns1} per point inside NumPy, {bench.knn.per_query_us_far|us1} for the cheapest KDTree call, {bench.knn.per_query_us_far_knn|us1} for an empty k\u00a0=\u00a0{bench.knn.k|int} query."
+      - text: "The price is per call, not per language: {bench.plane.per_step_ns_loop|ns} per loop step of slide 21 (several NumPy calls each), {bench.plane.per_point_ns_vectorised|ns1} per point inside NumPy, {bench.knn.per_query_us_far|us1} for the cheapest KDTree call, {bench.knn.per_query_us_far_knn|us1} for an empty k\u00a0=\u00a0{bench.knn.k|int} query."
         source: "results/bench_cliff.json plane.per_step_ns_loop, plane.per_point_ns_vectorised, knn.per_query_us_far, knn.per_query_us_far_knn, knn.k"
         status: token
       - text: "Here only the batched call used all cores: kNN in one call took {bench.knn.one_call_1t.median_ms|ms} on {bench.knn.one_call_1t.threads|int} thread, {bench.knn.one_call_all.median_ms|ms} on {bench.knn.one_call_all.threads|int}."
@@ -64,7 +64,7 @@ appendix:
       - text: "AHN files: 1 km file 135000_455000, {memory.tile_1km.points|int} points ({research.tile_1km_file.mb|mb} LAZ); {research.ahn5_c_31hz2.width_km|f2t} × {research.ahn5_c_31hz2.height_km|f2t} km file 2023_C_31HZ2, {memory.big_file.points|int} points ({research.ahn5_c_31hz2.gb|gb}); its AHN4 edition: {research.ahn4_c_31hz2.points|int} points."
         source: "results/memory.json tile_1km.points, big_file.points; results/research_facts.json tile_1km_file (local file size, research: notes/verify_facts.json), ahn5_c_31hz2 (HTTP Content-Range total and LAS header bounds), ahn4_c_31hz2 (LAS header; research: dataset/top_tile_headers.txt, reports/dataset.md)"
         status: verified
-      - text: "LAS records alone: {memory.big_file.computed_gb.las_records|gb} at {memory.tile_1km.record_bytes|int} B per point (format {memory.tile_1km.point_format|int}); our pipeline (slides 11 and 12): {memory.big_file.computed_gb.our_pipeline|gb}. Computed, not run."
+      - text: "LAS records alone: {memory.big_file.computed_gb.las_records|gb} at {memory.tile_1km.record_bytes|int} B per point (format {memory.tile_1km.point_format|int}); our pipeline (slides 12 and 13): {memory.big_file.computed_gb.our_pipeline|gb}. Computed, not run."
         source: "results/memory.json big_file.computed_gb, tile_1km.record_bytes, tile_1km.point_format; LAS 1.4 R16 and laspy.PointFormat(6).size (research: reports/memory.md, notes/verify_facts.json)"
         status: token
       - text: "COPC: laspy's CopcReader reads one box over HTTP with .query(Bounds(mins, maxs)). The same box as our crop, read remotely from the AHN5 1 km file: {copc.points_half_open|int} points, the same as the local crop, about {copc.mb|mb} in {copc.requests|int} requests and {copc.seconds|s1} (single run)."
@@ -139,7 +139,7 @@ appendix:
         - cells: ["Open3D NearestNeighborSearch", "Batched kNN, fixed-radius and hybrid search (tensor API)", "Many threads by default; radius search returns indices, distances, splits"]
           source: "research: reports/perf.md (variants E2 and E2_1t, verified gotchas); methods in notes/verify_facts.json"
           status: verified
-        - cells: ["Voxel grid hashing", "One int64 key per voxel, then np.unique (slide 25)", "Fixed cell size; np.unique(axis=0) is no faster than a dict loop"]
+        - cells: ["Voxel grid hashing", "One int64 key per voxel, then np.unique (slide 27)", "Fixed cell size; np.unique(axis=0) is no faster than a dict loop"]
           source: "research: reports/critic.md section 2 (1 M points), reports/perf.md voxel table; snippets/s21_chunked.py"
           status: verified
         - cells: ["Octree (o3d.geometry.Octree)", "Hierarchical cells for level of detail (in memory)", "Not benchmarked here; out-of-core octrees are what COPC files store (B2)"]
@@ -183,7 +183,7 @@ appendix:
       caption: "Building or not, against AHN class 6, share of points named right ({eigen.scored.points|int} points in {eigen.scored.clusters|int} clusters)"
       columns: ["Labeller", "AHN buildings", "Everything else", "Balanced"]
       rows:
-        - cells: ["Four rules of slide 15", "{eigen.rules.points_building_recall|pct1}", "{eigen.rules.points_other_recall|pct1}", "{eigen.rules.points_balanced_accuracy|pct1}"]
+        - cells: ["Four rules of slide 16", "{eigen.rules.points_building_recall|pct1}", "{eigen.rules.points_other_recall|pct1}", "{eigen.rules.points_balanced_accuracy|pct1}"]
           source: "results/eigen_features.json rules (rule 2 or 3 = building; tuned on this crop, in-sample)"
           status: token
         - cells: ["Random Forest, eigenvalue features", "{eigen.forest_eigen_only.points_building_recall|pct1}", "{eigen.forest_eigen_only.points_other_recall|pct1}", "{eigen.forest_eigen_only.points_balanced_accuracy|pct1}"]
@@ -238,7 +238,7 @@ appendix:
       - text: "Your own capture: photogrammetry (phone, camera) gives dense colour but noisy edges; LiDAR measures each pulse."
         source: "research: reports/videos.md V1 (12:30 to 16:00)"
         status: verified
-      - text: "Only LiDAR returns several echoes per pulse: slide 15's vegetation rule needs them, a photo sees one surface per pixel."
+      - text: "Only LiDAR returns several echoes per pulse: slide 16's vegetation rule needs them, a photo sees one surface per pixel."
         source: "research: reports/videos.md V1 (photogrammetry matches images); pipeline/steps.py name, rule 1 (number_of_returns)"
         status: judgement
     small_print: "Sources from F. Poux's beginner video on 3D tools (YouTube, 2025), except 3DBAG. Links checked 2026-10-11."
@@ -296,7 +296,8 @@ appendix:
       of the stale ones, pin the version and check the repository's issues first.
 
   # ------------------------------------------------------------------------------------------------------------
-  # C1 to C9: mental models of 3D data (hidden section "Mental models", added 2026-10-12). Swap-in material for a
+  # C1 to C9: mental models of 3D data (hidden section "Mental models", added 2026-10-12; C1 and C5 were promoted to main
+  # slides 6 and 20 on 2026-10-12: content.yaml `concept: C1` and `concept: C5` read these entries). Swap-in material for a
   # longer slot or a beginner audience; C8 gives the order and where each idea joins the main deck. C1 to C6 are
   # build: concept (figure left, takeaway and bullets right, deck/build_deck.py slide_concept); C7 to C9 are dense.
   # Extra keys for the notes: why, example, flags (limits and disagreements), sources (citations with dates).
@@ -307,7 +308,7 @@ appendix:
     figure:
       file: c1_representations.png
       caption: "Synthetic house, drawn three ways: {concept.c1.points|int} sampled points, {concept.c1.vertices|int} vertices and {concept.c1.triangles|int} triangles, {concept.c1.voxels|int} voxels of {concept.c1.pitch_m|m}."
-      alt: "The same small house three times. Left, a point cloud: scattered dots on its walls and roof. Middle, a mesh: flat triangles joined at shared edges. Right, a voxel grid: stacked cubes, blocky, with a few gaps where no point fell."
+      alt: "The same small house three times. Left, a point cloud: scattered dots on its walls and roof. Middle, a mesh: flat triangles joined at shared edges. Right, a voxel grid: stacked cubes, blocky, with no gaps."
     takeaway: "Points measure, meshes connect, voxels index space. Convert only when the task needs it."
     bullets:
       - text: "Point cloud: an unordered N×3 array plus attributes; no neighbours stored."
@@ -351,7 +352,7 @@ appendix:
         source: "results/pipeline.json crop.crs; research: reports/mental_models.md section 3"
         status: verified
       - text: "Subtract a local origin: float32 then resolves micrometres, not {concept.c2.float32_step_rd_m|cm}."
-        source: "results/concepts.json c2 (np.spacing of float32 at the first point's x); slide 11"
+        source: "results/concepts.json c2 (np.spacing of float32 at the first point's x); slide 12"
         status: token
       - text: "Tools disagree on the up axis and on lat, lon order: check, never assume."
         source: "research: reports/mental_models.md section 3 (pyproj axis order; Unity Y up, Blender Z up)"
@@ -364,7 +365,7 @@ appendix:
       silent trap is convention: LAS, GIS data and Blender are Z up, Unity is Y up and left-handed, and pyproj follows the authority's axis order
       unless you ask for x, y.
     why: "Frame errors raise no exception: points land in the wrong place, mirrored, or rounded to centimetres, and the code still runs."
-    example: "pyproj: Transformer.from_crs('EPSG:28992', 'EPSG:4326', always_xy=True) returns lon, lat; without always_xy, EPSG:4326 returns lat, lon. laspy: las.header.parse_crs() reads the CRS record; xyz = las.xyz - las.header.mins sets the local origin (slide 11)."
+    example: "pyproj: Transformer.from_crs('EPSG:28992', 'EPSG:4326', always_xy=True) returns lon, lat; without always_xy, EPSG:4326 returns lat, lon. laspy: las.header.parse_crs() reads the CRS record; xyz = las.xyz - las.header.mins sets the local origin (slide 12)."
     flags:
       - "Which axis is up, and handedness, differ between tools and file formats; read the docs of each tool you hand data to."
       - "A local origin is only safe if you keep it with the data to go back to RD."
@@ -421,8 +422,8 @@ appendix:
       - text: "Too large: the neighbourhood crosses edges and blurs them."
         source: "results/concepts.json c4.ridge_error_largest_radius_deg; research: reports/mental_models.md section 5 (Mitra and Nguyen)"
         status: token
-      - text: "Tie the radius to point spacing; eps on slide 14 and the voxel on slide 12 are the same choice."
-        source: "judgement; slides 12 and 14"
+      - text: "Tie the radius to point spacing; eps on slide 15 and the voxel on slide 13 are the same choice."
+        source: "judgement; slides 13 and 15"
         status: judgement
     notes: >-
       A point cloud stores no neighbours, so every normal, curvature or eigenvalue feature starts with a choice: which
@@ -435,7 +436,7 @@ appendix:
     flags:
       - "Synthetic data: the best radius here (about {concept.c4.ridge_best_radius_m|m}) is not a recommendation for other scans."
       - "Demantke et al. (2011) and Mitra and Nguyen (2003) choose the neighbourhood size per point instead of one global value; Weinmann et al. (2015) build on this for classification (their method detail UNVERIFIED here, paywalled)."
-      - "kNN neighbourhoods adapt to density, radius neighbourhoods keep a physical size; which is better depends on how uneven the density is (C5)."
+      - "kNN neighbourhoods adapt to density, radius neighbourhoods keep a physical size; which is better depends on how uneven the density is (slide 20)."
     sources:
       - "Mitra and Nguyen: Estimating surface normals in noisy point cloud data, SoCG 2003, doi 10.1145/777792.777840: accuracy depends on noise, curvature, density and neighbourhood size"
       - "Hoppe et al.: Surface reconstruction from unorganized points, SIGGRAPH 1992, doi 10.1145/142920.134011: normal from a plane fit to k neighbours"
@@ -466,11 +467,11 @@ appendix:
       hidden from the plane. So a parameter tuned in one corner can fail in the next, and an empty area may mean
       nothing was there, or nothing was seen. Look at density and accuracy first, the second rule of thumb.
     why: "Thresholds, radii and quality scores all assume a density and an error level; uneven sampling makes them wrong in parts of the same file."
-    example: "NumPy: np.histogram2d(x, y, bins=100, range=[[0, 200], [0, 200]]) gives this density map in one call. laspy: las.return_number and las.number_of_returns tell multiple echoes apart (slide 15)."
+    example: "NumPy: np.histogram2d(x, y, bins=100, range=[[0, 200], [0, 200]]) gives this density map in one call. laspy: las.return_number and las.number_of_returns tell multiple echoes apart (slide 16)."
     flags:
       - "Density per map cell mixes surface density with geometry: walls and canopies inflate it. A per-surface density needs normals (C4)."
       - "Published accuracy is a specification for the whole data set, not a guarantee for each point; local errors near edges and on dark or wet surfaces can be larger."
-      - "Which density is enough depends on the object size: lamp posts on slide 18 got few or no points."
+      - "Which density is enough depends on the object size: lamp posts on slide 19 got few or no points."
     sources:
       - "AHN Kwaliteitsbeschrijving (ahn.nl/kwaliteitsbeschrijving, no date shown, written before 2020): AHN4 height error at most 5 cm systematic and 5 cm stochastic; about 10 to 14 points per m2"
       - "AHN5 tender, Nota van inlichtingen, 2022-08-18 (TenderNed 275983): base requirement 10 points per m2; no AHN5 accuracy figures published"
@@ -491,8 +492,8 @@ appendix:
       - text: "Trees and grids keep neighbour search near N log N."
         source: "research: reports/mental_models.md section 7 (KD-tree complexity)"
         status: verified
-      - text: "Past RAM, stream: chunks, tiles and COPC boxes (slides 25, 26, B2)."
-        source: "slides 25 and 26; B2; research: reports/mental_models.md section 7 (laspy chunk_iterator, PDAL streaming)"
+      - text: "Past RAM, stream: chunks, tiles and COPC boxes (slides 27, 29, B2)."
+        source: "slides 27 and 28; B2; research: reports/mental_models.md section 7 (laspy chunk_iterator, PDAL streaming)"
         status: verified
     notes: >-
       Before you ask how fast, ask how it grows. Storing the points is linear: twenty-four bytes per point for float64
@@ -501,9 +502,9 @@ appendix:
       That's why neighbour search goes through a tree or a grid, and why the RAM section of the talk streams chunks
       instead of loading everything. Big-O first, then the constant factors from the performance section.
     why: "Scale decides feasibility before speed does; a correct method that is quadratic in N simply cannot run on real scans."
-    example: "scipy.spatial.distance.pdist(P) on the crop would need terabytes; KDTree(P).query(P, k=8, workers=-1) does the neighbour job in one batched call. laspy.open(path).chunk_iterator(1_000_000) streams a file (slide 25)."
+    example: "scipy.spatial.distance.pdist(P) on the crop would need terabytes; KDTree(P).query(P, k=8, workers=-1) does the neighbour job in one batched call. laspy.open(path).chunk_iterator(1_000_000) streams a file (slide 27)."
     flags:
-      - "Complexity classes hide constants: an N log N method with a Python loop per point can still lose (slides 19 to 21)."
+      - "Complexity classes hide constants: an N log N method with a Python loop per point can still lose (slides 21 to 23)."
       - "KD-trees degrade towards linear query time in high dimensions; in 3D they behave well."
     sources:
       - "Bentley: Multidimensional binary search trees, CACM 18(9), Sept 1975, doi 10.1145/361002.361007"
@@ -534,18 +535,18 @@ appendix:
           source: "Open3D and trimesh names checked in the project venv; research: reports/mental_models.md section 5"
           status: verified
     bullets:
-      - text: "NumPy is the common language: every row converts with np.asarray, sometimes as a copy (slide 9)."
-        source: "slide 9; results/python_facts.json; research: reports/mental_models.md section 8"
+      - text: "NumPy is the common language: every row converts with np.asarray, sometimes as a copy (slide 10)."
+        source: "slide 10; results/python_facts.json; research: reports/mental_models.md section 8"
         status: verified
-      - text: "Learn the idea once; map it to whichever library the job needs. None does everything (slide 7)."
-        source: "judgement; slide 7"
+      - text: "Learn the idea once; map it to whichever library the job needs. None does everything (slide 9)."
+        source: "judgement; slide 9"
         status: judgement
     small_print: "Names checked by import in this project's environment on 2026-10-12. APIs change between releases: read the docs of your version."
     notes: >-
       This is the slide that separates what lasts from what changes. Points, surfaces, grids, transforms and
       neighbourhoods are the ideas; each library spells them differently. If you know the idea, switching from Open3D to
       PyVista or trimesh is a lookup, not a relearning. And NumPy arrays are how they talk to each other, with the copy
-      or view question from slide 9 at every hand-off.
+      or view question from slide 10 at every hand-off.
     why: "Tools come and go (backup B7 lists the stale ones); the concepts transfer, and they are what you debug with."
     example: "The same 4 by 4 matrix T works in Open3D pcd.transform(T), PyVista mesh.transform(T) and trimesh mesh.apply_transform(T)."
     flags:
@@ -562,38 +563,38 @@ appendix:
       col_widths: [0.5, 3.2, 3.6, 2.2]
       columns: ["#", "Idea", "One line for the audience", "Joins at"]
       rows:
-        - cells: ["1", "A point cloud is an array (slide 5)", "N rows, x y z plus attributes, no order, no links", "slide 5, rule 1"]
-          source: "slides 5 and 6"
+        - cells: ["1", "A point cloud is an array (slide 6)", "N rows, x y z plus attributes, no order, no links", "slide 6, rule 1"]
+          source: "slides 6 and 8"
           status: judgement
-        - cells: ["2", "Every array needs a frame (C2)", "Reference system, units, origin, up axis", "slide 11"]
+        - cells: ["2", "Every array needs a frame (C2)", "Reference system, units, origin, up axis", "slide 12"]
           source: "C2"
           status: judgement
-        - cells: ["3", "Neighbourhood size changes the answer (C4)", "Radius, eps and voxel size are model choices", "slides 12 to 14"]
+        - cells: ["3", "Neighbourhood size changes the answer (C4)", "Radius, eps and voxel size are model choices", "slides 13 to 15"]
           source: "C4"
           status: judgement
-        - cells: ["4", "Samples, not the surface (C5)", "Density and error vary; measure first", "slide 18, rule 2"]
+        - cells: ["4", "Samples, not the surface (C5)", "Density and error vary; measure first", "slide 20, in the main deck"]
           source: "C5"
           status: judgement
-        - cells: ["5", "Memory follows N and the algorithm (C6)", "Linear fits, quadratic never does", "slide 24, rule 3"]
+        - cells: ["5", "Memory follows N and the algorithm (C6)", "Linear fits, quadratic never does", "slide 26, rule 3"]
           source: "C6"
           status: judgement
-        - cells: ["6", "Three representations (C1)", "Points measure, meshes connect, voxels index", "after slide 5"]
+        - cells: ["6", "Three representations (C1)", "Points measure, meshes connect, voxels index", "slides 6 and 7, in the main deck"]
           source: "C1"
           status: judgement
-        - cells: ["7", "Transforms as matrices (C3)", "One matrix per frame change, order matters", "after slide 11"]
+        - cells: ["7", "Transforms as matrices (C3)", "One matrix per frame change, order matters", "after slide 12"]
           source: "C3"
           status: judgement
     bullets:
       - text: "Narrative: what the data is (1, 6), where it is (2, 7), what is near what (3), how far to trust it (4), how big it gets (5). Close with C7: ideas outlive tools."
         source: "judgement"
         status: judgement
-      - text: "In the 30 minute slot the main deck already carries 1, and 2 to 5 in short form; add C2 and C4 first if time allows."
+      - text: "In the 30 minute slot the main deck carries 1, 4 and 6 in full (slides 6, 21 and 7) and 2, 3 and 5 in short form; add C2 and C4 first if time allows."
         source: "docs/TIMING.md; judgement"
         status: judgement
     notes: >-
       How to use this section. The ranking is for a mixed audience: first the ideas without which the pipeline makes
-      no sense, last the ones that matter once you build your own. In a longer slot, unhide C2 after slide 11 and C4 after
-      slide 14; each needs about a minute. In the 30 minute version, use them in Q&A, and say the one line in the third
+      no sense, last the ones that matter once you build your own. In a longer slot, unhide C2 after slide 12 and C4 after
+      slide 15; each needs about a minute. In the 30 minute version, use them in Q&A, and say the one line in the third
       column at the slide named in the last column.
     flags:
       - "The ranking is judgement for an introductory audience; a robotics or graphics audience would put transforms (C3) and meshes (C1) first."
@@ -613,7 +614,7 @@ appendix:
           source: "research: reports/mental_models.md section 1"
           status: verified
         - cells: ["Voxel", "A cell of a regular 3D grid; voxel downsampling keeps one point per cell"]
-          source: "research: reports/mental_models.md section 1; slide 12"
+          source: "research: reports/mental_models.md section 1; slide 13"
           status: verified
         - cells: ["CRS", "Coordinate reference system: what the numbers mean on Earth (here RD New + NAP)"]
           source: "research: reports/mental_models.md section 3"
@@ -634,7 +635,7 @@ appendix:
           source: "research: reports/mental_models.md section 2"
           status: verified
         - cells: ["Return", "One echo of a laser pulse; a pulse through a tree can give several"]
-          source: "slide 15; research: reports/mental_models.md section 6"
+          source: "slide 16; research: reports/mental_models.md section 6"
           status: verified
     notes: >-
       Reference slide for Q&A and for the handout. Every term is used with exactly this meaning in the talk; tile means

@@ -156,7 +156,7 @@ class Builder:
         self._chip_cache: dict = {}
         self._cover_cache: dict = {}
         # Morph chain: chips on every Morph slide first try the chip rectangles of the last Morph
-        # slide with labels (f6_final), so they stay put from slide 12 to 14.
+        # slide with labels (f6_final), so they stay put from slide 13 to 15.
         morph_labels = [sp.get("labels_from") for sp in self.content["slides"]
                         if sp.get("transition") == "morph" and sp.get("labels_from")]
         self.morph_chip_ref = morph_labels[-1] if morph_labels else None
@@ -225,7 +225,7 @@ class Builder:
     def source_text(self, key):
         if key == "ahn":
             return self.meta["source_ahn"]
-        if key == "ahn_licence":                 # slide 24: the source line, then the readable licence URI
+        if key == "ahn_licence":                 # slide 25: the source line, then the readable licence URI
             return self.meta["source_ahn"] + "\n" + self.meta["licence_line"]
         return self.R(key)
 
@@ -234,12 +234,12 @@ class Builder:
     AHYP_NS = "http://schemas.microsoft.com/office/drawing/2018/hyperlinkcolor"
 
     def link_licence(self, slide) -> int:
-        """CC BY 4.0 section 3(a)(1)(C): every "CC BY 4.0" run (and slide 24's readable licence line) gets a
+        """CC BY 4.0 section 3(a)(1)(C): every "CC BY 4.0" run (and slide 25's readable licence line) gets a
         hyperlink to meta.licence_url. A run holding the phrase is split so that only the phrase is linked."""
         url = self.meta.get("licence_url")
         if not url:
             return 0
-        # the phrase "CC BY 4.0", and the URI part of slide 24's readable line ("Licence: <uri>")
+        # the phrase "CC BY 4.0", and the URI part of slide 25's readable line ("Licence: <uri>")
         targets = ["CC BY 4.0"] + ([self.meta["licence_line"].split(": ", 1)[-1]] if self.meta.get("licence_line") else [])
         rid = None
         n = 0
@@ -287,7 +287,7 @@ class Builder:
     def set_title(self, slide, n, text, layout, *, name=None):
         """Title text only: no typeface, size or colour on the runs, so they inherit the master's title style
         (Fira Sans SemiBold; 32 pt navy, or the dark layouts' size in white). Line breaks: a "\n" in content.yaml,
-        or, on L7 (the Morph chain and slide 17), after the colon of a "N Step: claim" title, so every Morph title
+        or, on L7 (the Morph chain and slide 18), after the colon of a "N Step: claim" title, so every Morph title
         has the same two-line shape as the master's example; on L6/L8 after the separator when both halves fit on
         one line but the whole does not."""
         ph = title_placeholder(slide) or placeholder(slide, 0)
@@ -328,7 +328,7 @@ class Builder:
             return None
         return text_block(slide, *box, self.R(text, n), size=SUPPORT_PT, colour="text", name=name)
 
-    # bottom-aligned small print (conditions, slide 16): the box is one 12 pt line taller than its text and
+    # bottom-aligned small print (conditions, slide 17): the box is one 12 pt line taller than its text and
     # bottom-anchored, so a line that wraps differently in PowerPoint grows upwards into free space, not onto the
     # footer
     SMALL_PAD = 0.20
@@ -415,7 +415,7 @@ class Builder:
         """The benchmark/memory conditions line; `note` (content.yaml / appendix.yaml `conditions_note`, tokens
         allowed) is appended, for measurements whose method differs from the runs the line describes.
         plane_threads: add the plane runs' thread count and CPU/wall ratio (only where the plane timings are
-        charted, slide 20: content.yaml `conditions_threads`). short: the one-line version (content.yaml
+        charted, slide 21: content.yaml `conditions_threads`). short: the one-line version (content.yaml
         `conditions_short`, 2026-10-12): machine, versions, N, runs and the result file; the full line and the
         note go to the speaker notes (notes_text, CONDITIONS)."""
         if kind in ("scalene", "scalene_cpu"):
@@ -441,7 +441,7 @@ class Builder:
         return f" Result label: {label} (not final)." if label and label != "FINAL" else ""
 
     def _conditions_scalene(self, kind: str = "scalene") -> str:
-        """Slides 22 and 26 (Scalene): the machine line as on the others, then what the figures are."""
+        """Slides 23 and 27 (Scalene): the machine line as on the others, then what the figures are."""
         key = "prof" if kind == "scalene_cpu" else "scalene"
         c = self.res.lookup(f"{key}.conditions")
         if not isinstance(c, dict):
@@ -458,7 +458,7 @@ class Builder:
                     f"Shares are of the whole run, imports and reading the file included. Full: results/profile_scalene.json.")
         else:
             text = (f"Conditions: {cpu}, {ver}; {n} points, median of {c.get('runs')} runs; AHN5 1\u00a0km file "
-                    f"(CC BY 4.0). Scalene counts allocations, not resident memory (slide 25). "
+                    f"(CC BY 4.0). Scalene counts allocations, not resident memory (slide 26). "
                     f"Full: results/memory_scalene.json.")
         return text + self._label_suffix(key)
 
@@ -564,7 +564,7 @@ class Builder:
             run_part = f"N = {n_pts} points, {runs} runs" + (f" after {warm} warm-up" if warm else "") + f", {stat}"
         parts = [f"Conditions: {hw}; {osv}; {vers}", run_part]
         if kind == "bench" and plane_threads:
-            # thread count of the plane runs (slide 17 only; the kNN variants carry their own on B1 and B4)
+            # thread count of the plane runs (slide 18 only; the kNN variants carry their own on B1 and B4)
             th = [self.res.lookup(f"bench.plane.{v}.threads") for v in ("loop_numpy_rows", "vectorised")]
             cw = [self.res.lookup(f"bench.plane.{v}.cpu_over_wall_median") for v in ("loop_numpy_rows", "vectorised")]
             if all(isinstance(v, (int, float)) for v in th):
@@ -584,7 +584,7 @@ class Builder:
             parts.append(f"measured {m.group(1)} {m.group(2)} UTC" if m else
                          f"measured {d}" + ("" if d.endswith(("Z", "UTC", "+00:00")) else " UTC"))
         # the data the numbers were measured on (data/DATA_LICENSE.md: the source wherever derived data is shown)
-        data = {"data/utrecht_jaarbeurs_200m.laz": "data: the AHN5 crop of slide 4 (ahn.nl, ",
+        data = {"data/utrecht_jaarbeurs_200m.laz": "data: the AHN5 crop of slide 5 (ahn.nl, ",
                 "data/AHN5_C_135000_455000.COPC.LAZ": "data: AHN file 135000_455000 (AHN5, ahn.nl, "}.get(g("data") or "")
         if data:
             parts.append(data + "Het Waterschapshuis, CC BY 4.0)")
@@ -632,7 +632,7 @@ class Builder:
         return sh, info
 
     # ----------------------------------------------------------------------------- label chips
-    CHIP_H, CHIP_PAD, CHIP_SW, CHIP_GAP = 0.44, 0.10, 0.18, 0.10   # padding 0.10: four Fira Sans chips fit the slide 3 frame
+    CHIP_H, CHIP_PAD, CHIP_SW, CHIP_GAP = 0.44, 0.10, 0.18, 0.10   # padding 0.10: four Fira Sans chips fit the slide 4 frame
     RING_R = 0.08
 
     SF_LEADER_GAP = 0.08
@@ -1092,7 +1092,7 @@ class Builder:
         self._line_profile(s, spec, n, top)
 
     def _line_profile(self, s, spec, n, top):
-        """Slide 22 (2026-10-12, speaker: use Scalene): the command in a code box, then the slide-19 lines with a
+        """Slide 23 (2026-10-12, speaker: use Scalene): the command in a code box, then the slide-19 lines with a
         Scalene-style bar each (Python / native / system share of the run), from results/profile_scalene.json."""
         lp = spec["line_profile"]
         cmd = lp["command"]
@@ -1147,7 +1147,7 @@ class Builder:
         vis = spec["visual"]
         files = list(vis.get("files") or ([vis["file"]] if vis.get("file") else []))
         if vis.get("kind") != "side_by_side" or len(files) != 2:
-            self.warn(n, f"slide 3 expects visual.kind side_by_side with two files, got {vis.get('kind')} {files}")
+            self.warn(n, f"slide 4 expects visual.kind side_by_side with two files, got {vis.get('kind')} {files}")
         infos = [self.render_info(f)[1] for f in files]
         pxs = [tuple(i.get("px") or DEFAULT_PX) for i in infos]
         # vertical budget: captions, frames, support line, source line; all inside top .. BOTTOM
@@ -1226,7 +1226,7 @@ class Builder:
         if spec.get("labels_from"):
             fk = spec["labels_from"]
             i = next((i for i, f in enumerate(files) if Path(f).stem == fk), len(files) - 1)
-            # the slide 3 frame is about 3.7 in wide: four 20 pt chips fit only with a 0.06 in frame margin (the
+            # the slide 4 frame is about 3.7 in wide: four 20 pt chips fit only with a 0.06 in frame margin (the
             # default 0.10 leaves no valid place for Buildings between the other anchors)
             self.label_chips(s, n, fk, frames[i], pxs[i], files[i], prefix="Label ", rules=chips.Rules(margin=0.06))
         if specs:
@@ -1272,7 +1272,7 @@ class Builder:
         return grp
 
     # render_column -- render and text column (L7: text left, render right, as on the Morph slides, so the title stays on the 0.600
-    # margin from slide 3 to 5; L8 mirrors it)
+    # margin from slide 4 to 6; L8 mirrors it)
     def slide_render_column(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1362,7 +1362,7 @@ class Builder:
             else:
                 self.warn(n, "no picture to name !!render on the filmstrip slide (renders pending?)")
 
-    # logo_wall -- rows of logo tiles (L4): the ecosystem of libraries and the companies behind them (slide 3).
+    # logo_wall -- rows of logo tiles (L4): the ecosystem of libraries and the companies behind them (slide 4).
     # Every id of a row resolves in deck/ecosystem/ecosystem.yaml (entries and orgs); the logo files are in
     # deck/assets/logos/. An id without a logo file becomes a text tile and is listed in the build report.
     def ecosystem(self) -> dict:
@@ -1455,7 +1455,7 @@ class Builder:
 
     def _callout(self, s, n, spec, frame):
         """A small REPL callout in the render's top-left corner (the navy sky above the street): navy box, sage
-        outline, Fira Mono 18 pt; '>>> ' prompts in sage, the rest white (content.yaml `callout`, joke slide 12)."""
+        outline, Fira Mono 18 pt; '>>> ' prompts in sage, the rest white (content.yaml `callout`, joke slide 13)."""
         fx, fy, fw, fh = frame
         lines = [self.R(x, n) for x in spec["lines"]]
         pad_x, pad_y = 0.14, 0.08
@@ -1483,7 +1483,7 @@ class Builder:
     # chart_hero -- chart + hero (L7)
     def slide_chart_hero(self, s, spec, n, L):
         # always the content.yaml title: the measured factor holds for one loop on one memory layout, so the
-        # general "two orders of magnitude" phrase stays out of the title (it is spoken, notes slide 17)
+        # general "two orders of magnitude" phrase stays out of the title (it is spoken, notes slide 18)
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
         drop_placeholder(s, 14)
@@ -1559,7 +1559,7 @@ class Builder:
         vis = spec.get("visual") or {}
         for k in ("lane_top", "lane_bottom", "times", "loop_code", "call_code"):
             if not vis.get(k):
-                self.warn(n, f"content.yaml slide 18 visual.{k} missing: shown as [visual.{k}]")
+                self.warn(n, f"content.yaml slide 19 visual.{k} missing: shown as [visual.{k}]")
         # stack from the bottom: conditions (12 pt), support line, hero row; the diagram gets the rest
         cond = self.conditions_text(spec["conditions"], note=spec.get("conditions_note"), n=n,
                                     short=bool(spec.get("conditions_short"))) if spec.get("conditions") else ""
@@ -1657,12 +1657,12 @@ class Builder:
         top = content_top(L, lines)
         drop_placeholder(s, 1)
         sn = self.snippet(n, spec["code"]["snippet"])
-        line_pt = float(spec["code"].get("line_pt", LINE_PT))      # 20 pt on slide 21: room for the 60 pt hero
+        line_pt = float(spec["code"].get("line_pt", LINE_PT))      # 20 pt on slide 22: room for the 60 pt hero
         cw = max(code_width_in(max(sn.max_len, 40)) - INSET_L, 5.0)
         ch_ = code_height_in(max(len(sn.lines), 4), line_pt)
         hero = spec.get("hero") or {}
         # stack: code (full height, never clipped), hero row, optional support line, conditions (bottom-aligned).
-        # The hero row takes the largest size up to 60 pt (as on slide 18) that fits the room under the code.
+        # The hero row takes the largest size up to 60 pt (as on slide 19) that fits the room under the code.
         cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, short=bool(spec.get("conditions_short"))) \
             if spec.get("conditions") else BOTTOM
         has_sup = bool(spec.get("support"))
@@ -1776,8 +1776,8 @@ class Builder:
             drop_placeholder(s, 19)
 
     # ============================================================================ slides added 2026-10-12
-    # rules -- four rules of thumb in a 2 x 2 grid (L4): the opening tips (slide 6) and, with their evidence, the
-    # closing ones (slide 27)
+    # rules -- four rules of thumb in a 2 x 2 grid (L4): the opening tips (slide 7) and, with their evidence, the
+    # closing ones (slide 28)
     def slide_rules(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1787,55 +1787,28 @@ class Builder:
         self.call_helper(s, n, "sketches", "add_rule_tiles", (X0, top + 0.05, FULL_W, BOTTOM - top - 0.20), sub,
                          caption="TILES PENDING: four rules of thumb")
 
-    # chain_images -- the chain of libraries (L4) with, under each box, what that library hands on: a render or
-    # the array itself; captions under the images, the AHN source line on the bottom edge
-    CHAIN_IMG_H = 0.75
-
-    def slide_chain_images(self, s, spec, n, L):
+    # workflow -- the stages of a 3D data science project (L4): a ring with loops back, the tools under each stage and
+    # a render beside three of them (slide 7); the AHN source line on the bottom edge
+    def slide_workflow(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
         drop_placeholder(s, 1)
-        rs = self.resolved_spec(spec, n)
-        chain = rs["chain"]
-        gap = GEO.col_gap
-        bw = (FULL_W - (len(chain) - 1) * gap) / len(chain)
-        y = top + 0.05
-        self.call_helper(s, n, "diagrams", "add_chain", (X0, y, FULL_W, self.CHAIN_IMG_H),
-                         {"items": chain, "name": "chain", "gap_in": gap, "alt": "Chain: " + ", then ".join(chain) + "."},
-                         caption="DIAGRAM PENDING: chain")
+        sub = self.helper_spec(spec, n, None)
+        sub = {k: sub[k] for k in ("stages", "loops", "centre", "alt") if k in sub} | {"name": "Workflow"}
         src_txt = self.source_text(spec["source"]) if spec.get("source") else ""
         src_h = text_h(src_txt, SMALL_PT, FULL_W - 0.02) if src_txt else 0.0
-        cap_h = lines_h(1, 20)
-        img_y = y + self.CHAIN_IMG_H + 0.30
-        img_bottom = BOTTOM - src_h - 0.20 - cap_h - 0.10
-        ih = img_bottom - img_y
-        iw = min(bw, ih * DEFAULT_PX[0] / DEFAULT_PX[1])
-        ih = iw * DEFAULT_PX[1] / DEFAULT_PX[0]
-        for i, im in enumerate(rs["images"]):
-            bx = X0 + i * (bw + gap)
-            ix = bx + (bw - iw) / 2
-            # a short navy tick from the box down to its image
-            tick = line(s, bx + bw / 2, y + self.CHAIN_IMG_H, bx + bw / 2, img_y, colour="navy", width_pt=1.5,
-                        name=f"Chain tick {i + 1}")
-            mark_decorative(tick)
-            if im.get("file"):
-                self.place_render(s, n, im["file"], (ix, img_y, iw, ih), name=f"Chain image {i + 1}",
-                                  alt=im.get("alt"), idx=None)
-            else:
-                # the array itself: Fira Mono 18 pt on a light tile, as in the REPL of slide 5
-                lines_ = list(im.get("array") or []) + [""] + list(im.get("shape") or [])
-                sn = Snippet(name="array", path=None, lines=lines_, keys=[], key=None, ok=True, lang="text")
-                tile = rect(s, ix, img_y, iw, ih, fill="tile", rounded=True, name=f"Chain image {i + 1}")
-                set_alt(tile, im.get("alt") or "")
-                ch = code_height_in(len(lines_))
-                need = code_width_in(max(len(x) for x in lines_))
-                if need > iw:
-                    self.warn(n, f"array tile needs {need:.2f} in, the tile is {iw:.2f} in")
-                box, _ = add_code(s, sn, ix + (iw - need) / 2, img_y + (ih - ch) / 2, need, ch,
-                                  name=f"Code array {i + 1}", highlight=False)
-                set_alt(box, im.get("alt") or "")
-            text_block(s, bx, img_y + ih + 0.10, bw, cap_h, im.get("caption", ""), size=20, colour="text",
-                       align="centre", name=f"Chain caption {i + 1}")
+        box = (X0, top + 0.05, FULL_W, BOTTOM - top - 0.20 - src_h - 0.05)
+        self.call_helper(s, n, "sketches", "add_workflow", box, sub,
+                         caption="WORKFLOW PENDING: six stages of a 3D data science project")
+        tw = self.sketches.WF_THUMB_W if self.sketches else 1.0
+        th = tw * DEFAULT_PX[1] / DEFAULT_PX[0]
+        for i, st_ in enumerate(spec["stages"]):
+            im = st_.get("image")
+            if not im or not self.sketches:
+                continue
+            tx, ty = self.sketches.workflow_thumb(box, len(spec["stages"]), i, tw)
+            self.place_render(s, n, im["file"], (tx, ty - th / 2, tw, th), name=f"Workflow image {i + 1}",
+                              alt=im.get("alt"), idx=None)
         if src_txt:
             self.source(s, n, spec["source"], (X0, BOTTOM - src_h, FULL_W, src_h))
 
@@ -1983,7 +1956,7 @@ class Builder:
                 chip = rect(s, x, y0 + h - 0.30, cw, 0.30, fill="navy", name=f"Small print photo credit {k + 1}")
                 shape_text(chip, cap, size=12, colour="text_dark", align="centre", anchor="ctr")
 
-    # quiz -- two options A and B with their code (L5), the answers as pills under them (slide 19; the answer is
+    # quiz -- two options A and B with their code (L5), the answers as pills under them (slide 20; the answer is
     # the hero of the next slide)
     def slide_quiz(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
@@ -2040,7 +2013,7 @@ class Builder:
         if sp:
             self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
 
-    # trace -- memory over time, full width (L4, slide 26): one line per version, labelled at measured phases
+    # trace -- memory over time, full width (L4, slide 27): one line per version, labelled at measured phases
     def slide_trace(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -2117,7 +2090,9 @@ class Builder:
     # C1 to C6 -- mental-model slides (L4, hidden): a figure from deck/concepts/make_figures.py on the left at its
     # drawn size (shrunk only to fit), its caption under it; the takeaway and bullets from appendix.yaml on the right
     def slide_concept(self, s, spec, n, L):
-        entry = self.res.resolve_tree(copy.deepcopy(self.appendix.get(str(n)) or {}), where=f"slide {n}")
+        # content.yaml `concept: C1` plays an appendix.yaml entry as a main slide; without it the slide is the entry itself
+        entry = self.res.resolve_tree(copy.deepcopy(self.appendix.get(str(spec.get("concept", n))) or {}),
+                                      where=f"slide {n}")
         top = content_top(L, self.set_title(s, n, spec["title"], L))
         drop_placeholder(s, 1)
         fig = entry.get("figure") or {}
@@ -2148,7 +2123,36 @@ class Builder:
             y += th + 0.25
         items = [it.get("text", "") if isinstance(it, dict) else str(it) for it in entry.get("bullets") or []]
         if items:
-            self._bullets(s, x, y, cw, BOTTOM - y, items, 16, "Concept bullets")
+            # main slides keep the 20 pt body minimum; the hidden ones use the appendix 16 pt
+            self._bullets(s, x, y, cw, BOTTOM - y, items, 20 if spec.get("concept") else 16, "Concept bullets")
+
+    # meme -- the picture left, a takeaway and bullets right (L4); small print on the bottom edge
+    def slide_meme(self, s, spec, n, L):
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        sp = self.R(spec["small_print"], n) if spec.get("small_print") else ""
+        sph = text_h(sp, SMALL_PT, FULL_W - 0.02) if sp else 0.0
+        path = DECK / spec["image"]["file"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        h = BOTTOM - top - (sph + 0.15 if sp else 0.0)
+        w = h * iw / ih
+        pic = s.shapes.add_picture(str(path), E(X0), E(top), E(w), E(h))
+        set_name(pic, "Meme")
+        set_alt(pic, self.R(spec["image"]["alt"], n))
+        x = X0 + w + 0.5
+        cw = X0 + FULL_W - x
+        y = top
+        if spec.get("takeaway"):
+            tk = self.R(spec["takeaway"], n)
+            th = text_h(tk, SUPPORT_PT, cw - 0.02)
+            self.support(s, n, tk, (x, y, cw, th))
+            y += th + 0.30
+        items = [self.R(t_, n) for t_ in spec.get("bullets") or []]
+        if items:
+            self._bullets(s, x, y, cw, BOTTOM - y - (sph + 0.15 if sp else 0.0), items, 20, "Meme bullets")
+        if sp:
+            self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
 
     # B1 to B6 -- dense appendix (L4, hidden): bullets and/or a native table, 14 to 16 pt
     def slide_dense(self, s, spec, n, L):
@@ -2403,13 +2407,13 @@ class Builder:
             out.append(it.get("then") if ok else it.get("else") or it.get("if"))
         return out
 
-    def appendix_notes(self, n) -> str | None:
+    def appendix_notes(self, n, talk=True) -> str | None:
         raw = self.appendix.get(str(n))
         if not isinstance(raw, dict):
             return None
         e = self.res.resolve_tree(copy.deepcopy(raw), where=f"notes {n}")
         blocks = []
-        if e.get("notes"):
+        if e.get("notes") and talk:
             blocks.append(self._block("TALK TRACK" if str(n).startswith("C") else "ANSWER IN Q&A", e["notes"]))
         # mental-model slides C1 to C9: the explanation, why it matters, an example, caveats, citations
         for key, label in (("why", "WHY IT MATTERS"), ("example", "EXAMPLE"), ("flags", "LIMITS AND DISAGREEMENTS"),
@@ -2506,6 +2510,8 @@ class Builder:
         for k, v in entry.items():
             if k not in known and v not in (None, "", []):
                 blocks.append(self._block(str(k).replace("_", " ").upper(), v))
+        if spec.get("concept"):         # a promoted mental-model slide: its why, example, limits and citations
+            blocks.append(self.appendix_notes(spec["concept"], talk=False))
         return self.R("\n\n".join(b for b in blocks if b), n)
 
     # ============================================================================ main

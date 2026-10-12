@@ -1,7 +1,7 @@
 # How to update the deck
 
 Rule one: **the deck is generated.** Every visible word comes from `deck/content.yaml` (main slides),
-`deck/notes.yaml` (speaker notes) and `deck/appendix.yaml` (B1 to B7); every number, chart value and render comes from
+`deck/notes.yaml` (speaker notes) and `deck/appendix.yaml` (B1 to B7, C1 to C9; C1 and C5 play as main slides 6 and 21 through `concept:` in `content.yaml`); every number, chart value and render comes from
 a script's output in `results/` or `renders/`. Never edit the PPTX by hand (the next build overwrites it), and never
 type a number into the YAML files or hand-edit a result file: re-run the script that produces it.
 
@@ -24,22 +24,22 @@ default `deck` group.
 | Producer | Writes | Feeds |
 |---|---|---|
 | `data/fetch_ahn5.py` | `data/AHN5_C_135000_455000.COPC.LAZ` (git-ignored), `data/utrecht_jaarbeurs_200m.laz` (the crop, in the repo) | everything |
-| `pipeline/run.py` | `results/pipeline.json`, `results/labels_crop.npz` | renders, slides 4 to 18, B1, B2, notes |
-| `pipeline/render.py` | `renders/*.png`, `renders/labels.json`, `renders/render_spec.json` | slides 4, 5, 9 to 18; `s13_render.py` reads the camera |
+| `pipeline/run.py` | `results/pipeline.json`, `results/labels_crop.npz` | renders, slides 5 to 20, B1, B2, notes |
+| `pipeline/render.py` | `renders/*.png`, `renders/labels.json`, `renders/render_spec.json` | slides 5, 6, 11 to 20; `s13_render.py` reads the camera |
 | `snippets/run_all.py` | `results/snippets.json` (ok, lines, width per snippet) | code boxes' QA, notes traces |
 | `bench/copc_remote.py --final` | `results/copc_remote.json` (the crop box read from the AHN5 file over HTTP) | B2 |
-| `bench/bench_cliff.py --final` | `results/bench_cliff.json` | slides 18 to 21, B1, B4 |
-| `bench/bench_memory.py --final` | `results/memory.json` | slides 25, 26, B2 |
-| `bench/bench_memory_scalene.py --final` (needs `uv sync --group profile`) | `results/memory_scalene.json`: [Scalene](https://github.com/plasma-umass/scalene)'s memory timeline and per-line memory of `bench/memprof/*.py` on the 1 km tile | slide 26 |
+| `bench/bench_cliff.py --final` | `results/bench_cliff.json` | slides 20 to 24, B1, B4 |
+| `bench/bench_memory.py --final` | `results/memory.json` | slides 28, 29, B2 |
+| `bench/bench_memory_scalene.py --final` (needs `uv sync --group profile`) | `results/memory_scalene.json`: [Scalene](https://github.com/plasma-umass/scalene)'s memory timeline and per-line memory of `bench/memprof/*.py` on the 1 km tile | slide 29 |
 | `bench/bench_memory_trace.py --final` | `results/memory_trace.json`: RSS over time, the cross-check of Scalene's curve (notes only) | notes 26 |
-| `bench/python_facts.py --final` | `results/python_facts.json` (copy or view per hand-off, Vector3dVector timings) | slide 8, notes 8 and 27 |
-| `bench/profile_loop_scalene.py --final` (needs `uv sync --group profile`) | `results/profile_scalene.json`: [Scalene](https://github.com/plasma-umass/scalene)'s CPU profile of `bench/cpuprof/loop.py` | slide 22 |
+| `bench/python_facts.py --final` | `results/python_facts.json` (copy or view per hand-off, Vector3dVector timings) | slide 10, notes 9 and 29 |
+| `bench/profile_loop_scalene.py --final` (needs `uv sync --group profile`) | `results/profile_scalene.json`: [Scalene](https://github.com/plasma-umass/scalene)'s CPU profile of `bench/cpuprof/loop.py` | slide 25 |
 | `bench/profile_loop.py --final` | `results/profile_loop.json`, `results/profile_loop.txt` (cProfile of `bench/loop.py`, the cross-check) | notes 22 |
-| `deck/ecosystem/merge.py` (reads `part1.yaml` to `part3.yaml` and `overrides.yaml`) | `deck/ecosystem/ecosystem.yaml`, `results/ecosystem.json`, `docs/ECOSYSTEM.md`, `deck/assets/logos/SOURCES.md` | slide 3, B7 |
+| `deck/ecosystem/merge.py` (reads `part1.yaml` to `part3.yaml` and `overrides.yaml`) | `deck/ecosystem/ecosystem.yaml`, `results/ecosystem.json`, `docs/ECOSYSTEM.md`, `deck/assets/logos/SOURCES.md` | slide 4, B7 |
 | `bench/eigen_features.py --final` (needs `--group ml`) | `results/eigen_features.json` (eigenvalue features per cluster, Random Forest vs rules against AHN) | B5, notes 14 and 29 |
-| `bench/bench_freethreaded.py --final` | `results/bench_freethreaded.json` (3.14t vs 3.14, threads vs NumPy) | slide 23, notes 23 and 28 |
+| `bench/bench_freethreaded.py --final` | `results/bench_freethreaded.json` (3.14t vs 3.14, threads vs NumPy) | slide 26, notes 25 and 30 |
 | `deck/concepts/make_figures.py` (needs `uv sync --group figures` and the QA fonts from `deck/qa/setup_fonts.py`) | `deck/assets/concepts/c1_representations.png` to `c6_scale.png`, `results/concepts.json` | C1 to C6 (figures, captions, `{concept.*}` tokens) |
-| `docs/research/research_facts.py` | `results/research_facts.json` (PILOT: research numbers copied verbatim) | B2, B3, slide 25 alt text, a few notes |
+| `docs/research/research_facts.py` | `results/research_facts.json` (PILOT: research numbers copied verbatim) | B2, B3, slide 28 alt text, a few notes |
 | `deck/build_deck.py` | `deck/out/20261015_PyCon-NL_3D-Data-Science.pptx`, `deck/out/build_report.json` | QA |
 | `deck/qa/render.py` | `deck/out/*.pdf`, `deck/out/png/slide-NN.png`, `deck/out/qa_render.json` | visual QA |
 | `deck/qa/checks.py` | `deck/out/qa_checks.json` | QA |
@@ -56,32 +56,35 @@ the highlighted key line. Numbers are tokens `{file.key|format}` (formats are li
 |---|---|---|---|
 | 1 | none (the joke is text in `content.yaml`) | none | none |
 | 2 | `s02_pcl.cpp` (NOT RUN), `s02_python.py`; install line is text in `content.yaml` `install` | none | none |
-| 3 | none (logo wall: ids in `content.yaml`, logos in `deck/assets/logos/`) | `deck/ecosystem/ecosystem.yaml` entries and orgs | `eco.n_entries` (small print) |
-| 4 | none | `f1_load.png`, `f6_final.png`; chips from `labels.json` `f6_final`, edge arrow from `f1_load.jaarbeurs_edge` | none |
-| 5 | `s04_repl.py`, shown as its transcript `s04_repl.txt` | `closeup.png` | `pipeline.points_in` (alt text) |
-| 6, 7 | none (native diagrams from `content.yaml`) | none | none |
-| 8 | rows in `content.yaml` (checked by `s06b_handoffs.py`) | native rows | `facts.factor_v3d_float32_vs_float64_f.median`, `facts.timings.*`; each row's `verify` boolean; conditions |
-| 9 | none | `f1_load.png` to `f6_final.png` | none |
-| 10 | `s08_load.py` | `f1_load.png` | none |
-| 11 | `s09_voxel.py` | `f2_voxel.png` | `pipeline.points_in`, `points_after_voxel`, `params.voxel` |
-| 12 | `s10_ground.py`; callout checked by `s10b_zen.py` | `f3_ground.png`; Ground chip from `labels.json` `f6_final` | `pipeline.ground.precision`, `ground.recall` |
-| 13 | `s11_cluster.py` | `f4_clusters.png`; Ground chip | `pipeline.n_clusters` |
-| 14 | `s12_label.py` | `f5_labels.png`; chips from `f6_final` | `pipeline.n_objects.street_furniture`, `label_points.street_furniture` |
-| 15 | `s13_render.py` | `f6_final.png` | as 14 |
-| 16 | `s14_pipeline.py` | `f6_final.png` | as 14 |
-| 17 | none | lamp posts drawn natively; `f6_final.png` cropped in PowerPoint around `render_spec.json` street furniture box | as 14 |
-| 18 | none | `plane_sheet.png` | `bench.plane.n`; `pipeline.n_tiles` (alt) |
-| 19 | `s16_loop.py`, `s16_vec.py` (timed verbatim by `bench_cliff.py`), Drake rows | none | `bench.plane.n` |
-| 20 | none | native column chart | bars `bench.plane.loop_numpy_rows.median_ms`, `vectorised.median_ms`; hero `plane.factor.median`; `plane.array.*`, `plane.sensitivity.factor_c_contiguous.median`; conditions |
-| 21 | none (native diagram) | none | `bench.plane.per_step_ns_loop`, `knn.k`, `knn.per_query_us_far_knn`, `knn.per_query_desc.far_knn.*`; conditions |
-| 22 | `bench/cpuprof/loop.py` lines (the slide 19 code), profiled by Scalene | none | `prof.lines.*` (per-line Python, native, system shares); conditions |
-| 23 | none | native column chart | `ft.builds.*.timings.*`, `ft.summary.*`; conditions (timed interpreters from `ft.builds`) |
-| 24 | none | none | none |
-| 25 | none | native bar chart | `memory.ram_reference_gb`, `big_file.computed_gb.*`, `big_file.points`, `tile_1km.bytes_per_point.pipeline_retained`, `tile_1km.bytes_per_point_peak.pipeline`, `tile_1km.points`, `conditions.ram_gib` (machine line); `research.ahn5_c_31hz2` (alt); conditions |
-| 26 | `s21_chunked.py` lines, profiled by Scalene (`bench/memprof/chunked.py`) | none | `scalene.cases.*` (peaks and the curve); conditions |
-| 27 | none | none | speaker-supplied |
-| 28 | none | none | none |
-| 29 | none | QR code made from `qr.url` (`deck/assets/qr_repo.png`) | none |
+| 3 | none | `deck/assets/meme/python_cpp_unmasking.png` (the Scooby-Doo template with the Python and C++ logos, made once; replace the file to change it) | none |
+| 4 | none (logo wall: ids in `content.yaml`, logos in `deck/assets/logos/`) | `deck/ecosystem/ecosystem.yaml` entries and orgs | `eco.n_entries` (small print) |
+| 5 | none | `f1_load.png`, `f6_final.png`; chips from `labels.json` `f6_final`, edge arrow from `f1_load.jaarbeurs_edge` | none |
+| 6 | none (`concept: C1`, text in `appendix.yaml` C1) | `c1_representations.png` (`deck/concepts/make_figures.py`) | `concept.c1.*` (caption) |
+| 7 | none (cards from `content.yaml` `stages`, `build: workflow`) | none | none |
+| 8, 9 | none (native diagrams from `content.yaml`) | none | none |
+| 10 | rows in `content.yaml` (checked by `s06b_handoffs.py`) | native rows | `facts.factor_v3d_float32_vs_float64_f.median`, `facts.timings.*`; each row's `verify` boolean; conditions |
+| 11 | none | `f1_load.png` to `f6_final.png` | none |
+| 12 | `s08_load.py` | `f1_load.png` | none |
+| 13 | `s09_voxel.py` | `f2_voxel.png` | `pipeline.points_in`, `points_after_voxel`, `params.voxel` |
+| 14 | `s10_ground.py`; callout checked by `s10b_zen.py` | `f3_ground.png`; Ground chip from `labels.json` `f6_final` | `pipeline.ground.precision`, `ground.recall` |
+| 15 | `s11_cluster.py` | `f4_clusters.png`; Ground chip | `pipeline.n_clusters` |
+| 16 | `s12_label.py` | `f5_labels.png`; chips from `f6_final` | `pipeline.n_objects.street_furniture`, `label_points.street_furniture` |
+| 17 | `s13_render.py` | `f6_final.png` | as 15 |
+| 18 | `s14_pipeline.py` | `f6_final.png` | as 15 |
+| 19 | none | lamp posts drawn natively; `f6_final.png` cropped in PowerPoint around `render_spec.json` street furniture box | as 15 |
+| 20 | none | `plane_sheet.png` | `bench.plane.n`; `pipeline.n_tiles` (alt) |
+| 21 | none (`concept: C5`, text in `appendix.yaml` C5) | `c5_density.png` (`deck/concepts/make_figures.py`) | `concept.c5.median_per_m2`, `p10_per_m2`, `p90_per_m2` |
+| 22 | `s16_loop.py`, `s16_vec.py` (timed verbatim by `bench_cliff.py`), Drake rows | none | `bench.plane.n` |
+| 23 | none | native column chart | bars `bench.plane.loop_numpy_rows.median_ms`, `vectorised.median_ms`; hero `plane.factor.median`; `plane.array.*`, `plane.sensitivity.factor_c_contiguous.median`; conditions |
+| 24 | none (native diagram) | none | `bench.plane.per_step_ns_loop`, `knn.k`, `knn.per_query_us_far_knn`, `knn.per_query_desc.far_knn.*`; conditions |
+| 25 | `bench/cpuprof/loop.py` lines (the slide 22 code), profiled by Scalene | none | `prof.lines.*` (per-line Python, native, system shares); conditions |
+| 26 | none | native column chart | `ft.builds.*.timings.*`, `ft.summary.*`; conditions (timed interpreters from `ft.builds`) |
+| 27 | none | none | none |
+| 28 | none | native bar chart | `memory.ram_reference_gb`, `big_file.computed_gb.*`, `big_file.points`, `tile_1km.bytes_per_point.pipeline_retained`, `tile_1km.bytes_per_point_peak.pipeline`, `tile_1km.points`, `conditions.ram_gib` (machine line); `research.ahn5_c_31hz2` (alt); conditions |
+| 29 | `s21_chunked.py` lines, profiled by Scalene (`bench/memprof/chunked.py`) | none | `scalene.cases.*` (peaks and the curve); conditions |
+| 30 | none | none | speaker-supplied |
+| 31 | none | none | none |
+| 32 | none | QR code made from `qr.url` (`deck/assets/qr_repo.png`) | none |
 | B1 | `appendix.yaml` | none | `bench.plane.*`, `bench.knn.*`, `pipeline.runtime_s` |
 | B2 | `appendix.yaml` | none | `memory.tile_1km.*`, `memory.big_file.*`, `pipeline.kept_share`, `pipeline.params.*`, `research.*` |
 | B3 | `appendix.yaml` | none | `research.open3d_tensor`, `research.pytorch3d_knn`, `research.b3_versions` |
@@ -124,9 +127,9 @@ PCL_PREFIX=~/pcl/env uv run python snippets/run_all.py
 # 5 benchmarks, on an idle machine, nothing else running (189 s and 79 s on 2026-10-02)
 uv run python bench/bench_cliff.py --final
 uv run python bench/bench_memory.py --final
-uv run python bench/python_facts.py --final        # results/python_facts.json (slide 8; about 15 s)
-uv run python bench/profile_loop.py --final        # results/profile_loop.json and .txt (slide 22; one profiled run)
-# slide 23: two throw-away venvs (see the docstring of bench/bench_freethreaded.py), then
+uv run python bench/python_facts.py --final        # results/python_facts.json (slide 10; about 15 s)
+uv run python bench/profile_loop.py --final        # results/profile_loop.json and .txt (slide 25; one profiled run)
+# slide 26: two throw-away venvs (see the docstring of bench/bench_freethreaded.py), then
 uv run python bench/bench_freethreaded.py --final --ft FT_VENV/bin/python --gil GIL_VENV/bin/python
 # B5: scikit-learn lives in the optional "ml" group; re-run after pipeline/run.py (reads results/labels_crop.npz)
 uv run --group ml python bench/eigen_features.py --final
@@ -176,12 +179,12 @@ All in `deck/content.yaml` unless noted; the list with the current placeholder t
       - "Title shared with F. Poux, ..."   # without brackets, or delete this line (then say it aloud, notes 24)
 ```
 
-- `deck/notes.yaml` slide 27: replace the `[SPEAKER: ...]` parts of `talk_track` and `answer`; keep the 130 s or
+- `deck/notes.yaml` slide 30: replace the `[SPEAKER: ...]` parts of `talk_track` and `answer`; keep the 130 s or
   change `seconds` in both YAML files (below).
 - Gotcha tokens are set in Fira Mono 20 pt in a 4.25 in column: about 24 characters fit on one line. Check the render.
 - **Logo:** the builder has no key for a logo file yet. Deleting `logo_placeholder` removes the dashed box on slides 1
-  and 24. To show the PyCon NL logo (file and the organisers' permission first, OPEN_ITEMS d4), add a picture in
-  `deck/build_deck.py` in the same boxes (slide 1: left 9.83, top 5.60, 2.90 × 1.30 in; slide 29: 9.83, 0.60,
+  and 25. To show the PyCon NL logo (file and the organisers' permission first, OPEN_ITEMS d4), add a picture in
+  `deck/build_deck.py` in the same boxes (slide 1: left 9.83, top 5.60, 2.90 × 1.30 in; slide 32: 9.83, 0.60,
   2.90 × 1.30 in) with alt text, or place it by hand in PowerPoint after the last build (a rebuild removes it). On the
   navy slides it needs a light version or a white tile (docs/DESIGN.md section 1).
 - **Cup glyph:** slide 1 shows no cup (Fira Mono has no glyph for it). If you add " ☕" back to `subtitle_code`,
@@ -218,22 +221,22 @@ filmstrip and the closing slide from `content.yaml`, not from fixed numbers.
 - On-screen words: `content.yaml`; spoken words: `notes.yaml`; backup slides: `appendix.yaml`.
 - Rules the checks enforce: titles at most 8 words, sentence case; support lines at most 15 words; about 20 words of
   body text; no en or em dashes anywhere; en-GB; the terms in `meta.terms`; numbers only as tokens.
-- Slides 10 to 16 Morph: keep their titles on two lines and do not rename objects (`!!title`, `!!code`, `!!render`,
+- Slides 12 to 18 Morph: keep their titles on two lines and do not rename objects (`!!title`, `!!code`, `!!render`,
   `!!support`, `!!src`, `!!lab_*`, `!!small`); `morph_geometry` checks that they stay identical.
 - Seconds: change `seconds` in `content.yaml` and `notes.yaml` together, keep the sum at 1800, and update `ends_at` in
   `notes.yaml` and the tables in TIMING.md.
 
 ## Change the camera
 
-All renders share one camera, so a change touches slides 4, 5, 9 to 18 at once.
+All renders share one camera, so a change touches slides 5, 6, 11 to 20 at once.
 
-1. Edit `CAMERA` in `pipeline/render.py` (and `CLOSEUP_VIEW_ANGLE` for slide 5). Keep the frame sizes (1588 × 1792 px,
+1. Edit `CAMERA` in `pipeline/render.py` (and `CLOSEUP_VIEW_ANGLE` for slide 6). Keep the frame sizes (1588 × 1792 px,
    the hook frame 4190 × 1792) and never call `reset_camera` or `view_isometric`. Update the reason string that
    `render.py` writes as `camera.change_from_reviewed`.
 2. `uv run python pipeline/render.py` for all frames (`--only` writes neither `labels.json` nor `render_spec.json`).
 3. Read `renders/render_spec.json` `checks`: `camera_unchanged` true for every frame, the greyscale checks pass, every
-   `anchors_on_class_*` is `all_on_class: true`. The label chips and the slide 4 edge arrow move with the new anchors in
+   `anchors_on_class_*` is `all_on_class: true`. The label chips and the slide 5 edge arrow move with the new anchors in
    `labels.json`.
 4. `uv run python snippets/run_all.py`: `s13_render.py` reads the camera from `render_spec.json`.
-5. Build, render, check (`label_chips`, `render_no_crop`, `morph_geometry`, `source_lines`), look at slides 4, 5 and 9
-   to 15, and re-read the alt texts in `content.yaml` that describe the view.
+5. Build, render, check (`label_chips`, `render_no_crop`, `morph_geometry`, `source_lines`), look at slides 5, 6 and 11
+   to 16, and re-read the alt texts in `content.yaml` that describe the view.

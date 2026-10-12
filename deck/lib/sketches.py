@@ -354,6 +354,113 @@ def add_rule_tiles(slide, box, spec, style=None):
     return _finish_group(grp, alt, name)
 
 
+WF_DISC, WF_RX, WF_LABEL_W, WF_THUMB_W, WF_SHIFT = 0.95, 2.2, 2.3, 1.15, -0.5
+
+
+def workflow_nodes(box, n):
+    """Centres (inches) of the ``n`` discs of the workflow ring in ``box`` (x, y, w, h in inches): first stage top
+    left, clockwise. The ring sits 0.5 in left of the centre so the thumbnails on the right have room."""
+    x0, y0, W, H = box
+    cx, cy = x0 + W / 2 + WF_SHIFT, y0 + H / 2
+    ry = (H - WF_DISC) / 2 - 0.05
+    return [(cx + WF_RX * math.cos(math.radians(-120 + i * 360 / n)),
+             cy + ry * math.sin(math.radians(-120 + i * 360 / n))) for i in range(n)], cx, cy
+
+
+def workflow_thumb(box, n, i, w=WF_THUMB_W):
+    """Left x and centre y of the thumbnail of stage ``i`` (0-based): outside its label, on the side of the ring."""
+    pos, cx, _ = workflow_nodes(box, n)
+    x, y = pos[i]
+    edge = WF_DISC / 2 + 0.20 + WF_LABEL_W + 0.12
+    return (x - edge - w if x < cx else x + edge), y
+
+
+def add_workflow(slide, box, spec, style=None):
+    """The 3D data science workflow (slide 7) as a ring: numbered discs on an ellipse, joined by solid navy arrows
+    clockwise, a label beside each disc (28 pt SemiBold stage, 20 pt ink line, 20 pt SemiBold blue tools), and
+    dashed blue arrows through the middle for the loops back (``loops``), with the note ``centre`` between them.
+    Disc colour marks the phase: ``tone`` per stage, "navy" (data), "blue" (understanding) or "sage" (delivery).
+    The slide's builder places the thumbnails beside the labels (``workflow_thumb``).
+
+    spec: ``stages`` [{head, text, tools?, tone?}], ``loops`` [[from, to]] (1-based), ``centre``?, ``alt``?, ``name``?
+    Returns [group].
+    """
+    st = Style(style)
+    x0, y0, W, H = emu_box(box)
+    stages = spec["stages"]
+    n = len(stages)
+    name = spec.get("name", "workflow")
+    alt = spec.get("alt") or "; ".join(s["head"] for s in stages)
+    grp = _group(slide, name, alt)
+    S = grp.shapes
+    fills = {"navy": (st.navy, st.white), "blue": (st.highlight, st.white), "sage": (st.sage, st.navy)}
+    d = WF_DISC
+    pos, cx, cy = workflow_nodes((x0, y0, W, H), n)
+    # arrows first so the discs sit on top of their ends
+    for k, (f, t_, col, wd, dash) in enumerate(
+            [(i + 1, (i + 1) % n + 1, st.navy, 3.5, None) for i in range(n)]
+            + [(a, b, st.highlight, 3.0, MSO_LINE_DASH_STYLE.DASH) for a, b in spec.get("loops", [])]):
+        (ax, ay), (bx, by) = pos[f - 1], pos[t_ - 1]
+        L = math.hypot(bx - ax, by - ay)
+        ux, uy = (bx - ax) / L, (by - ay) / L
+        m = d / 2 + 0.10
+        _connector(S, ax + ux * m, ay + uy * m, bx - ux * m, by - uy * m, col, wd, arrow=True, dash=dash,
+                   name=f"{'arrow' if dash is None else 'loop'} {k + 1}")
+    for i, s in enumerate(stages):
+        x, y = pos[i]
+        fill, ink = fills[s.get("tone", "navy")]
+        dot = _dot(S, x, y, d, fill, name=f"stage disc {i + 1}")
+        _frame(dot.text_frame, anchor=MSO_ANCHOR.MIDDLE, wrap=False)
+        _paras(dot.text_frame, st, [{"text": str(i + 1), "size": 32, "font": st.title_font, "color": ink}],
+               align=PP_ALIGN.CENTER)
+        left = x < cx
+        lx = x - d / 2 - 0.20 - WF_LABEL_W if left else x + d / 2 + 0.20
+        paras = [{"text": s["head"], "size": 28, "font": st.title_font, "color": st.title},
+                 {"text": s["text"], "size": 20, "color": st.text}]
+        if s.get("tools"):
+            paras.append({"text": s["tools"], "size": 20, "font": st.title_font, "color": st.highlight})
+        _textbox(S, st, lx, y - 0.65, WF_LABEL_W, 1.3, paras, anchor=MSO_ANCHOR.MIDDLE,
+                 align=PP_ALIGN.RIGHT if left else PP_ALIGN.LEFT, name=f"stage label {i + 1}")
+    if spec.get("centre"):
+        w = 2 * (WF_RX / 2) - 0.5
+        _textbox(S, st, cx - w / 2, cy - 0.6, w, 1.2, [{"text": spec["centre"], "size": 20, "color": st.highlight}],
+                 anchor=MSO_ANCHOR.MIDDLE, align=PP_ALIGN.CENTER, name="loop note")
+    return _finish_group(grp, alt, name)
+
+
+def add_tradeoff_cards(slide, box, spec, style=None):
+    """One light card per column (slide 6): the name (28 pt SemiBold navy), then "Good for" and "Limits", each a
+    20 pt SemiBold blue label over 20 pt ink text.
+
+    spec: ``columns`` [{head, good, limits}], ``alt``?, ``name``?   Returns [group].
+    """
+    st = Style(style)
+    x0, y0, W, H = emu_box(box)
+    cols = spec["columns"]
+    name = spec.get("name", "tradeoff_cards")
+    alt = spec.get("alt") or "; ".join(c["head"] for c in cols)
+    grp = _group(slide, name, alt)
+    S = grp.shapes
+    gx, pad = 0.30, 0.25
+    tw = (W - gx * (len(cols) - 1)) / len(cols)
+    head_pt = 28
+    head_h = head_pt * 1.2 / 72
+    for i, c in enumerate(cols):
+        x = x0 + i * (tw + gx)
+        _box(S, x, y0, tw, H, fill=st.light, name=f"card {i + 1}")
+        _textbox(S, st, x + pad, y0 + pad, tw - 2 * pad, head_h,
+                 [{"text": c["head"], "size": head_pt, "font": st.title_font, "color": st.title}],
+                 anchor=MSO_ANCHOR.TOP, wrap=False, name=f"card head {i + 1}")
+        paras = []
+        for k, (label, key) in enumerate((("Good for", "good"), ("Limits", "limits"))):
+            paras.append({"text": label, "size": 20, "font": st.title_font, "color": st.highlight,
+                          "space_before": 0 if k == 0 else 14})
+            paras.append({"text": c[key], "size": 20, "color": st.text})
+        by = y0 + pad + head_h + 0.20
+        _textbox(S, st, x + pad, by, tw - 2 * pad, y0 + H - pad - by, paras, name=f"card text {i + 1}")
+    return _finish_group(grp, alt, name)
+
+
 def _wrap_title(text, size, width):
     """Lines of ``text`` in Fira Sans SemiBold at ``size`` that fit ``width`` (deck/lib/measure.py)."""
     from .measure import wrap_lines

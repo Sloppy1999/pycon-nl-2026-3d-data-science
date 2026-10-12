@@ -30,7 +30,7 @@ the ground found by tiled RANSAC, DBSCAN clusters, and the final labels. Rebuild
 | `results/` | the numbers the deck reads, one JSON per script (`pipeline.json`, `bench_cliff.json`, `memory.json`, ...; all FINAL except `research_facts.json`, PILOT) |
 | `renders/` | the point-cloud images, label anchors and the render spec |
 | `deck/` | the deck generator (`build_deck.py`, `lib/`), its inputs (`content.yaml`, `notes.yaml`, `appendix.yaml`), QA (`qa/`) and the built deck (`out/`) |
-| `deck/ecosystem/` | the checked catalogue of the Python 3D ecosystem behind slide 3 and `docs/ECOSYSTEM.md` (`merge.py` builds both; logos in `deck/assets/logos/`) |
+| `deck/ecosystem/` | the checked catalogue of the Python 3D ecosystem behind slide 4 and `docs/ECOSYSTEM.md` (`merge.py` builds both; logos in `deck/assets/logos/`) |
 | `docs/` | QA notes, open items, timing, how to update, the README banner (`docs/img/`) and the research files the notes cite (`docs/research/`) |
 | `tests/` | synthetic checks of `pipeline/steps.py` |
 | `storyboard.md`, `CONTRACTS.md` | the approved storyboard and the interfaces between the parts |
