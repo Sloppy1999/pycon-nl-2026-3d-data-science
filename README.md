@@ -19,16 +19,33 @@ the ground found by tiled RANSAC, DBSCAN clusters, and the final labels. Rebuild
 | Objects found | 58 building roofs, 683 vegetation clusters, 3 street furniture |
 | Whole pipeline, load to paint-back | 0.6 s on one laptop |
 
-## Data licence
+## License
 
-The point cloud is AHN5 (Actueel Hoogtebestand Nederland, ahn.nl) from Het Waterschapshuis, licensed under
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Attribution, wherever the data or anything derived from it is
-shown:
+| Part | License |
+|---|---|
+| Code (`pipeline/`, `snippets/`, `bench/`, `deck/`, `tests/`) | [MIT](LICENSE) |
+| Point cloud (`data/`) and anything derived from it | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), AHN5 from Het Waterschapshuis |
+| Logos in `deck/assets/logos/` | Belong to their owners (see its `SOURCES.md`), not covered by MIT |
+
+Wherever the data or anything derived from it is shown, attribute it:
 
 > Point cloud: AHN5, Actueel Hoogtebestand Nederland (ahn.nl), Het Waterschapshuis, CC BY 4.0.
 > AHN file 135000_455000, cropped and processed.
 
 What was changed and where the licence is stated: [data/DATA_LICENSE.md](data/DATA_LICENSE.md). This project is not
-endorsed by Het Waterschapshuis or AHN. The data licence does not cover the code: the code is MIT-licensed, see
-[LICENSE](LICENSE). The logos in `deck/assets/logos/` belong to their owners (see its `SOURCES.md`) and are not
-covered by the MIT licence.
+endorsed by Het Waterschapshuis or AHN.
+
+## Citation
+
+If you use this code or the talk material, please cite it (GitHub's "Cite this repository" reads
+[CITATION.cff](CITATION.cff)):
+
+```bibtex
+@misc{peral2026_3d_data_science,
+  author       = {Peral, Sergio},
+  title        = {3D Data Science with Python},
+  year         = {2026},
+  howpublished = {Talk at PyCon NL 2026, Jaarbeurs Utrecht, 15 October},
+  url          = {https://github.com/Sloppy1999/pycon-nl-2026-3d-data-science}
+}
+```
