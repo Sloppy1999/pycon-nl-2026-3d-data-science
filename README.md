@@ -21,16 +21,19 @@ the ground found by tiled RANSAC, DBSCAN clusters, and the final labels. Rebuild
 
 ## License
 
-| Part | License |
-|---|---|
-| Code (`pipeline/`, `snippets/`, `bench/`, `deck/`, `tests/`) | [MIT](LICENSE) |
-| Point cloud (`data/`) and anything derived from it | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), AHN5 from Het Waterschapshuis |
-| Logos in `deck/assets/logos/` | Belong to their owners (see its `SOURCES.md`), not covered by MIT |
+MIT
+
+The code in this repository is licensed under [MIT](LICENSE). Third-party material retains its own license and
+copyright notices:
+
+- The AHN5 point cloud in `data/`, and anything derived from it, is licensed under
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by Het Waterschapshuis. What was changed and where the
+  licence is stated: [data/DATA_LICENSE.md](data/DATA_LICENSE.md).
+- The logos in `deck/assets/logos/` belong to their owners (see its `SOURCES.md`) and are not covered by MIT.
 
 Wherever the data or anything derived from it is shown, attribute it:
 
 > Point cloud: AHN5, Actueel Hoogtebestand Nederland (ahn.nl), Het Waterschapshuis, CC BY 4.0.
 > AHN file 135000_455000, cropped and processed.
 
-What was changed and where the licence is stated: [data/DATA_LICENSE.md](data/DATA_LICENSE.md). This project is not
-endorsed by Het Waterschapshuis or AHN.
+This project is not endorsed by Het Waterschapshuis or AHN. The MIT licence does not amend the third-party licences.
