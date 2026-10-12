@@ -1,0 +1,23 @@
+open3d 0.20.0 | cuda.is_available: True | device_count: 1
+Tensor.from_numpy dtype Float64 | shares memory numpy->Tensor->numpy: True
+o3c.Tensor(ndarray) shares memory: False
+from_numpy(F-order) accepted
+t.PointCloud(Tensor) positions dtype Float64 | shares memory with numpy input: True
+custom attribute ok: True
+from_legacy default dtype: Float32 | max abs err on RD coords (m): 0.015499999979510903
+from_legacy(float64) max abs err: 0.0
+  t.voxel_down_sample(0.10) CPU f32: 249.5 ms
+  n 570609
+  t.segment_plane(0.05,3,1000) CPU: 67.6 ms
+  returns Tensor SizeVector[4] Float64 | Tensor SizeVector[517107] Int64
+  t.cluster_dbscan(0.5,10) on downsample: 747.8 ms
+  labels Int32 SizeVector[570609] clusters 9
+  t.voxel_down_sample(0.10) CUDA (incl. first-call warm-up): 98.1 ms
+  t.voxel_down_sample(0.10) CUDA (2nd call): 4.2 ms
+  CUDA voxel count 570609 | CPU count 570609
+  t.segment_plane on CUDA tensor: 62.3 ms
+  segment_plane result device: CUDA:0 CUDA:0
+  t.cluster_dbscan on CUDA tensor: 720.8 ms
+  dbscan result device: CUDA:0
+  .numpy() on CUDA tensor ERROR: RuntimeError [1;31m[Open3D Error] (pybind11::array open3d::core::TensorToPyArray(const open3d::core::Tensor&)) /root/Open3D/cpp/pybind/core/tensor_converter.cpp:38: Can onl
+  .cpu().numpy() ok: (1000000, 3)

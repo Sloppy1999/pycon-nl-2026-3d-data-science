@@ -1,0 +1,62 @@
+{
+ "f1_load": {
+  "jaarbeurs_hall": [
+   826,
+   753
+  ]
+ },
+ "f6_final": {
+  "ground": [
+   799,
+   1367
+  ],
+  "buildings": [
+   791,
+   896
+  ],
+  "vegetation": [
+   276,
+   1109
+  ],
+  "street_furniture": [
+   567,
+   406
+  ]
+ },
+ "f5_labels": {
+  "ground": [
+   797,
+   1368
+  ],
+  "buildings": [
+   787,
+   899
+  ],
+  "vegetation": [
+   274,
+   1106
+  ],
+  "street_furniture": [
+   567,
+   406
+  ]
+ },
+ "hook_split": {
+  "ground": [
+   2304,
+   1153
+  ],
+  "buildings": [
+   2405,
+   868
+  ],
+  "vegetation": [
+   2868,
+   1098
+  ],
+  "jaarbeurs_hall": [
+   2127,
+   753
+  ]
+ }
+}

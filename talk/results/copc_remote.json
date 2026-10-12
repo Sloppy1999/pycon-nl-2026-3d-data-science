@@ -1,0 +1,28 @@
+{
+  "label": "FINAL",
+  "script": "bench/copc_remote.py",
+  "url": "https://basisdata.nl/hwh-ahn/AHN5_KM/01_LAZ/AHN5_C_135000_455000.COPC.LAZ",
+  "bbox_rd": [
+    135715,
+    455475,
+    135915,
+    455675
+  ],
+  "mb": 16.2,
+  "requests": 33,
+  "seconds": 1.5,
+  "points": 722964,
+  "points_on_upper_edge": 3,
+  "points_half_open": 722961,
+  "same_points_as_local_crop": true,
+  "classes": {
+    "1": 109363,
+    "2": 262712,
+    "6": 338943,
+    "26": 11943
+  },
+  "classes_equal_local": true,
+  "date_utc": "2026-10-11T20:12:31Z",
+  "python": "3.13.15",
+  "note": "bytes = sum of GET response bodies (decompressed by requests if gzip); one run, network dependent"
+}

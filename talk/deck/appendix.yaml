@@ -1,0 +1,296 @@
+# Content of the hidden backup slides B1 to B6 (Q&A only). Titles match content.yaml word for word.
+# Layout L4, dense: 14 to 16 pt body, fade, hidden.
+#
+# Per slide: n, title, bullets and/or table, small_print (12 pt, on the slide), conditions (optional,
+# same meaning as in content.yaml: print the benchmark/memory conditions line), notes (presenter view).
+# Every bullet and table row carries `source` and `status`; build_deck.py puts the sources into the
+# speaker notes (not on the slide). status values:
+#   token       number filled from results/*.json by build_deck.py (final runs)
+#   verified    checked in a research report or re-checked in research: notes/verify_facts.json
+#   arithmetic  follows from a spec or from data types (no measurement)
+#   pilot       measured once in a research run on the real AHN data, not a final benchmark
+#   synthetic   measured in a research run on generated data (the street of the memory/perf pilots or the
+#               1 M point cloud of the libraries checks), not on AHN
+#   judgement   reasoning, not a measurement
+#   not_tested / not_run / UNVERIFIED   stated as such on the slide
+# Tokens {file.key|fmt}: same files and formats as content.yaml (B5 also uses eigen = results/eigen_features.json). Research numbers (pilot, synthetic, verified)
+# come from results/research_facts.json ({research.*}, label PILOT), which docs/research/research_facts.py copies
+# verbatim from the research files; no number on B1 to B6 is typed by hand.
+# "research:" = docs/research/ (research reports and prototype runs, copied from the session scratchpad with the
+#   same sub-paths by docs/research/collect.py; deck/qa/checks.py checks that every cited file exists)
+# Terminology: "tile" only for the processing squares; downloads are "AHN files".
+
+appendix:
+  - n: B1
+    title: "Why not just use C++?"
+    bullets:
+      - text: "The heavy steps already run in compiled code: Open3D and SciPy's KDTree in C++, VTK under PyVista in C++, LAZ decoding in lazrs (Rust)."
+        source: "research: reports/libraries.md section 1 (native core column)"
+        status: verified
+      - text: "Python only orchestrates: no step loops over points, and the whole crop runs from load to paint-back in {pipeline.runtime_s|s1} (single run, renders excluded, indicative)."
+        source: "pipeline/run.py; results/pipeline.json runtime_s, runtime_note (load to paint-back, renders not included)"
+        status: token
+      - text: "The price is per call, not per language: {bench.plane.per_step_ns_loop|ns} per loop step of slide 19 (several NumPy calls each), {bench.plane.per_point_ns_vectorised|ns1} per point inside NumPy, {bench.knn.per_query_us_far|us1} for the cheapest KDTree call, {bench.knn.per_query_us_far_knn|us1} for an empty k\u00a0=\u00a0{bench.knn.k|int} query."
+        source: "results/bench_cliff.json plane.per_step_ns_loop, plane.per_point_ns_vectorised, knn.per_query_us_far, knn.per_query_us_far_knn, knn.k"
+        status: token
+      - text: "Here only the batched call used all cores: kNN in one call took {bench.knn.one_call_1t.median_ms|ms} on {bench.knn.one_call_1t.threads|int} thread, {bench.knn.one_call_all.median_ms|ms} on {bench.knn.one_call_all.threads|int}."
+        source: "results/bench_cliff.json knn.one_call_1t, knn.one_call_all; research: reports/perf.md ('only the batched form can use workers=-1')"
+        status: token
+      - text: "Compiled code pays off when your step has no batched call: a custom per-point kernel you would otherwise loop over in Python."
+        source: "storyboard.md B1; follows from the measured toll above, not benchmarked separately"
+        status: judgement
+      - text: "It also pays off when Python itself is the constraint: hard real-time budgets, embedded targets without a Python runtime. Not measured here."
+        source: "storyboard.md B1"
+        status: judgement
+      - text: "NOT TESTED for this talk: Numba, Cython, writing your own C++ extension. No numbers quoted."
+        source: "scope of this talk; none of the research reports benchmarked them"
+        status: not_tested
+      - text: "The PCL code on slide 2 shows the shape only: NOT RUN (no PCL toolchain on the build machine)."
+        source: "CONTRACTS.md (s02_pcl.cpp NOT RUN)"
+        status: not_run
+    small_print: "Timings: median of repeated runs. Pipeline runtime: one run."
+    conditions: bench
+    # how the per-call costs of bullet 3 were measured (appended to the Conditions line)
+    conditions_note: "Per-call costs: SciPy KDTree, one query point far outside the cloud (radius query, and kNN with k\u00a0=\u00a0{bench.knn.k|int}), median of {bench.knn.per_query_desc.far_knn.repeat|int} timeit repeats of {bench.knn.per_query_desc.far_knn.calls_per_repeat|int} calls."
+    notes: >-
+      Short answer: you can, and the libraries here already did; Open3D, SciPy's KDTree and VTK are C++ under
+      the hood. What you pay in Python is a toll per call, so the question is not "Python or C++" but "how many
+      calls". Write compiled code yourself only when there is no batched call for your step, or when you can't
+      ship a Python runtime. Checked: the loops in pipeline/steps.py run over tiles and clusters, never over points.
+
+  - n: B2
+    title: "How does this scale to billions of points?"
+    bullets:
+      - text: "AHN files: 1 km file 135000_455000, {memory.tile_1km.points|int} points ({research.tile_1km_file.mb|mb} LAZ); {research.ahn5_c_31hz2.width_km|f2t} × {research.ahn5_c_31hz2.height_km|f2t} km file 2023_C_31HZ2, {memory.big_file.points|int} points ({research.ahn5_c_31hz2.gb|gb}); its AHN4 edition: {research.ahn4_c_31hz2.points|int} points."
+        source: "results/memory.json tile_1km.points, big_file.points; results/research_facts.json tile_1km_file (local file size, research: notes/verify_facts.json), ahn5_c_31hz2 (HTTP Content-Range total and LAS header bounds), ahn4_c_31hz2 (LAS header; research: dataset/top_tile_headers.txt, reports/dataset.md)"
+        status: verified
+      - text: "LAS records alone: {memory.big_file.computed_gb.las_records|gb} at {memory.tile_1km.record_bytes|int} B per point (format {memory.tile_1km.point_format|int}); our pipeline (slides 11 and 12): {memory.big_file.computed_gb.our_pipeline|gb}. Computed, not run."
+        source: "results/memory.json big_file.computed_gb, tile_1km.record_bytes, tile_1km.point_format; LAS 1.4 R16 and laspy.PointFormat(6).size (research: reports/memory.md, notes/verify_facts.json)"
+        status: token
+      - text: "COPC: laspy's CopcReader reads one box over HTTP with .query(Bounds(mins, maxs)). The same box as our crop, read remotely from the AHN5 1 km file: {copc.points_half_open|int} points, the same as the local crop, about {copc.mb|mb} in {copc.requests|int} requests and {copc.seconds|s1} (single run)."
+        source: "results/copc_remote.json points_half_open, same_points_as_local_crop, classes_equal_local, mb, requests, seconds (bench/copc_remote.py: the crop's RD box from the AHN5 file the talk uses); signatures re-checked in research: notes/verify_facts.json. The file's total size is in research_facts tile_1km_file"
+        status: token
+    notes: >-
+      Billions are real in AHN: the AHN4 edition of the file that contains this area has
+      {research.ahn4_c_31hz2.points|int} points. The answer is the same three moves: read only the box you need
+      (COPC), stream per-point work in chunks, and run neighbour steps on tiles with an overlap. The chunked read
+      keeps exactly the points of a load-everything first-point reference (memory.json
+      tile_1km.chunked_equals_reference: {memory.tile_1km.chunked_equals_reference}). The
+      {pipeline.voxel_0_1.voxel_m|m} share is measured on the crop (pipeline.json); the memory pilot's own percentages
+      were synthetic data and are not used here.
+
+  - n: B3
+    title: "Which GPU options actually help?"
+    bullets:
+      - text: "The open3d 0.20.0 wheel on PyPI is built with CUDA 12.6; o3d.core.cuda.is_available() is True on the test machine (RTX 3060). A CPU build, open3d-cpu 0.20.0, exists for Linux x86_64."
+        source: "research: reports/libraries.md section 1; o3d._build_config re-checked in research: notes/verify_facts.json"
+        status: verified
+      - text: "Plane fitting and DBSCAN are barely faster (table): their tensor docstrings say they wrap a CPU implementation and copy the data."
+        source: "research: reports/libraries.md (Open3D tensor API section)"
+        status: verified
+      - text: "PyTorch3D has no documented install for Python 3.13: PyPI's latest is 0.7.4 (2023-05-10, macOS x86_64 wheels only), GitHub has v0.7.9 (2025-11-28), INSTALL.md lists PyTorch 2.1.0 to 2.4.1, and torch has cp313 wheels only from 2.5.0."
+        source: "research: reports/libraries.md (PyPI JSON libraries/pypi/pytorch3d.json and torch.json, libraries/web/pt3d_INSTALL.md, libraries/web/pt3d_releases.json, fetched 2026-10-01)"
+        status: verified
+      - text: "Source build of v0.7.9 against torch 2.14.1 (CPU, gcc 16.2.1) fails: C++20 required. An unofficial -std=c++20 patch builds and runs on CPU. CUDA build UNVERIFIED."
+        source: "research: libraries/pt3d_build2.log, pt3d_build3_cxx20.log, pt3d_cxx20.patch (reports/libraries.md)"
+        status: verified
+      - text: "PyTorch3D knn_points on CPU, {research.pytorch3d_knn.n_points|int} × {research.pytorch3d_knn.n_points|int} points, k = {research.pytorch3d_knn.k|int}: {research.pytorch3d_knn.knn_points_s|s1}, against {research.pytorch3d_knn.scipy_ms|ms} for a SciPy KDTree build and query with workers=-1 (single runs)."
+        source: "results/research_facts.json pytorch3d_knn (research: libraries/07_torch_pytorch3d_interop.py, reports/libraries.md; a later single run in libraries/out_07_torch.txt gives similar values)"
+        status: synthetic
+      - text: "NOT TESTED: the Open3D wheel without a GPU or driver, Open3D's PyTorch ops, a GPU run of this pipeline."
+        source: "research: reports/libraries.md FLAG 4 and 7"
+        status: not_tested
+    table:
+      caption: "Open3D tensor API, {research.open3d_tensor.n_points|int} float32 points, RTX 3060 against CPU: single runs, indicative"
+      columns: ["Operation", "CUDA", "CPU"]
+      rows:
+        - cells: ["Voxel downsampling", "{research.open3d_tensor.voxel_cuda_first_ms|ms} first call, {research.open3d_tensor.voxel_cuda_second_ms|ms} second", "{research.open3d_tensor.voxel_cpu_ms|ms}"]
+          source: "results/research_facts.json open3d_tensor (research: libraries/03_open3d_tensor.py, out_03_open3d_tensor.txt, reports/libraries.md)"
+          status: synthetic
+        - cells: ["segment_plane", "{research.open3d_tensor.plane_cuda_ms|ms}", "{research.open3d_tensor.plane_cpu_ms|ms}"]
+          source: "results/research_facts.json open3d_tensor (research: libraries/03_open3d_tensor.py, out_03_open3d_tensor.txt, reports/libraries.md)"
+          status: synthetic
+        - cells: ["cluster_dbscan", "{research.open3d_tensor.dbscan_cuda_ms|ms}", "{research.open3d_tensor.dbscan_cpu_ms|ms}"]
+          source: "results/research_facts.json open3d_tensor (research: libraries/03_open3d_tensor.py, out_03_open3d_tensor.txt, reports/libraries.md)"
+          status: synthetic
+    small_print: "Single runs on one machine (Ryzen 7 5700X, RTX 3060, Linux/Omarchy), CPython {research.b3_versions.python}, Open3D {research.b3_versions.open3d} (CUDA {research.b3_versions.open3d_cuda} wheel), SciPy {research.b3_versions.scipy}; PyTorch3D v{research.b3_versions.pytorch3d} (patched CPU build) on torch {research.b3_versions.torch}; synthetic point clouds ({research.open3d_tensor.n_points|int} points for the Open3D table, {research.pytorch3d_knn.n_points|int} for knn_points); indicative only. No PyTorch3D GPU numbers: CUDA build UNVERIFIED."
+    notes: >-
+      Short answer: for this pipeline, the GPU did not pay off. Only voxel downsampling got clearly faster on
+      CUDA: {research.open3d_tensor.voxel_cuda_first_ms|ms} on the first call and
+      {research.open3d_tensor.voxel_cuda_second_ms|ms} on the second, against
+      {research.open3d_tensor.voxel_cpu_ms|ms} on CPU. Gotchas if you try it: .numpy() on a CUDA tensor raises RuntimeError (use
+      .cpu().numpy()); PointCloud.from_legacy converts to float32 by default; the tensor segment_plane defaults
+      (0.01, 3, 100, 0.999) differ from the legacy API. PyTorch3D is for training models on GPU tensors, not
+      for a CPU pipeline on Python 3.13. All timings here are research single runs, not the final benchmark.
+
+  - n: B4
+    title: "What can replace a KDTree?"
+    table:
+      caption: "Neighbour search options (Open3D {bench.conditions.open3d}, SciPy {bench.conditions.scipy})"
+      col_widths: [2.10, 2.20, 2.015]   # relative; column 1 holds "NearestNeighborSearch" without a mid-word break
+      columns: ["Option", "Use it for", "Note"]
+      rows:
+        - cells: ["SciPy KDTree, one call", "All points at once; workers=-1 for all cores", "This talk's choice; numbers at right"]
+          source: "results/bench_cliff.json knn; signatures in research: notes/verify_facts.json"
+          status: verified
+        - cells: ["Open3D KDTreeFlann", "search_knn_vector_3d and friends, one point per call", "Per point, it is still a Python loop"]
+          source: "methods re-checked in research: notes/verify_facts.json; per-point loop timings in research: reports/perf.md (synthetic)"
+          status: verified
+        - cells: ["Open3D NearestNeighborSearch", "Batched kNN, fixed-radius and hybrid search (tensor API)", "Many threads by default; radius search returns indices, distances, splits"]
+          source: "research: reports/perf.md (variants E2 and E2_1t, verified gotchas); methods in notes/verify_facts.json"
+          status: verified
+        - cells: ["Voxel grid hashing", "One int64 key per voxel, then np.unique (slide 25)", "Fixed cell size; np.unique(axis=0) is no faster than a dict loop"]
+          source: "research: reports/critic.md section 2 (1 M points), reports/perf.md voxel table; snippets/s21_chunked.py"
+          status: verified
+        - cells: ["Octree (o3d.geometry.Octree)", "Hierarchical cells for level of detail (in memory)", "Not benchmarked here; out-of-core octrees are what COPC files store (B2)"]
+          source: "API re-checked in research: notes/verify_facts.json (max_depth=8 accepted); in memory: the Open3D 0.20.0 Octree API is convert_from_point_cloud, insert_point, traverse, locate_leaf_node, to_voxel_grid, plus o3d.io.read_octree and write_octree (checked in the project venv, QA final round); out-of-core storage is the book's general octree material (research: reports/book.md), not Open3D; COPC stores an octree: laspy 2.7.0 laspy/copc.py (CopcInfo holds the octree centre, halved at each level; CopcReader.query takes a level); the book's octree timings state no hardware (UNVERIFIED, not used)"
+          status: not_tested
+    bullets:
+      - text: "kNN, k = {bench.knn.k|int}, {bench.knn.n|int} points: Python loop {bench.knn.loop.median_ms|ms}, one call {bench.knn.one_call_1t.median_ms|ms} ({bench.knn.one_call_1t.threads|int} thread), {bench.knn.one_call_all.median_ms|ms} ({bench.knn.one_call_all.threads|int} threads)."
+        source: "results/bench_cliff.json knn.k, knn.n, knn.loop, knn.one_call_1t, knn.one_call_all"
+        status: token
+      - text: "So the loop costs {bench.knn.factor_loop_vs_1t.median|x} against one call on one thread, and {bench.knn.factor_loop_vs_all.median|x} against all cores."
+        source: "results/bench_cliff.json knn.factor_loop_vs_1t, knn.factor_loop_vs_all"
+        status: token
+      - text: "Fixed cost per call: {bench.knn.per_query_us_far|us1} for an empty radius query, {bench.knn.per_query_us_far_knn|us1} for an empty k\u00a0=\u00a0{bench.knn.k|int} query; a typical query takes {bench.knn.per_query_us_typical|us1}."
+        source: "results/bench_cliff.json knn.per_query_us_far, knn.per_query_us_far_knn, knn.k, knn.per_query_us_typical"
+        status: token
+      - text: "Not shown: a brute-force double loop, because it changes the algorithm as well as the number of calls."
+        source: "research: reports/critic.md C2"
+        status: verified
+    # no separate small print: "median of repeated runs" is in the conditions line, the tree-build note joins it
+    conditions: bench
+    # how the per-call costs of bullet 3 were measured (appended to the Conditions line)
+    conditions_note: "Tree build excluded from every timing. Per-call costs: SciPy KDTree, median of {bench.knn.per_query_desc.far_knn.repeat|int} timeit repeats of {bench.knn.per_query_desc.far_knn.calls_per_repeat|int} calls; empty queries use one point far outside the cloud, typical ones a seeded sample of {bench.knn.per_query_desc.typical.calls_per_repeat|int} crop points."
+    notes: >-
+      Short answer: the data structure matters less than the number of calls and the threads. In the synthetic
+      pilot, Open3D's KDTreeFlann had a much cheaper call than SciPy, so a per-point loop over it was only
+      modestly slower than Open3D's batched search on one thread; the big gap came from the batched search's
+      default threads, so compare at equal threads. A
+      uniform grid hash answers radius queries in the same complexity class as a tree (the pure-Python baseline
+      of the synthetic pilot used one); it was not benchmarked as a vectorised method.
+
+  - n: B5
+    title: "Could a classifier replace the labelling rules?"
+    bullets:
+      - text: "Idea from F. Poux (PCA + Random Forest): describe each cluster by the eigenvalues of its covariance matrix (linearity, planarity, sphericity, plus verticality) and let a Random Forest name it."
+        source: "research: reports/videos.md V3 (10:10 to 25:00); bench/eigen_features.py"
+        status: verified
+      - text: "In Python: one batched np.linalg.eigh over all {eigen.n_clusters|int} clusters takes {eigen.timing.batched.median_ms|ms}; a loop over clusters with np.cov takes {eigen.timing.loop_over_clusters.median_ms|ms} ({eigen.timing.factor|x}), same features."
+        source: "results/eigen_features.json n_clusters, timing.batched, timing.loop_over_clusters, timing.factor, features_identical_loop_vs_batched (verticality differs only where the eigenvector is arbitrary: verticality_differs_clusters)"
+        status: token
+    table:
+      caption: "Building or not, against AHN class 6, share of points named right ({eigen.scored.points|int} points in {eigen.scored.clusters|int} clusters)"
+      columns: ["Labeller", "AHN buildings", "Everything else", "Balanced"]
+      rows:
+        - cells: ["Four rules of slide 15", "{eigen.rules.points_building_recall|pct1}", "{eigen.rules.points_other_recall|pct1}", "{eigen.rules.points_balanced_accuracy|pct1}"]
+          source: "results/eigen_features.json rules (rule 2 or 3 = building; tuned on this crop, in-sample)"
+          status: token
+        - cells: ["Random Forest, eigenvalue features", "{eigen.forest_eigen_only.points_building_recall|pct1}", "{eigen.forest_eigen_only.points_other_recall|pct1}", "{eigen.forest_eigen_only.points_balanced_accuracy|pct1}"]
+          source: "results/eigen_features.json forest_eigen_only (GroupKFold on 50 m blocks, point weights)"
+          status: token
+        - cells: ["Random Forest, + the rules' inputs", "{eigen.forest_eigen_plus_rule_inputs.points_building_recall|pct1}", "{eigen.forest_eigen_plus_rule_inputs.points_other_recall|pct1}", "{eigen.forest_eigen_plus_rule_inputs.points_balanced_accuracy|pct1}"]
+          source: "results/eigen_features.json forest_eigen_plus_rule_inputs (top, footprint, multiple return share added)"
+          status: token
+    small_print: "Forest: scikit-learn, cross-validated on {eigen.cv.block_m|int} m blocks ({eigen.cv.folds|int} folds), so no block is in training and test at once. Only building vs not: AHN has no vegetation class. Rules tuned on this crop (in-sample). AHN files many facades as class 1, so facade fragments count against the rules. One area, {eigen.scored.ahn_building|int} AHN building clusters: indicative."
+    conditions: eigen
+    notes: >-
+      Short answer: against AHN's building class, on this area the forest scores higher, but read the table with the
+      caveat. Balanced accuracy is {eigen.forest_eigen_only.points_balanced_accuracy|pct} for the forest with the
+      eigenvalue features alone and {eigen.forest_eigen_plus_rule_inputs.points_balanced_accuracy|pct} with the rules'
+      inputs added, against {eigen.rules.points_balanced_accuracy|pct} for the rules. Most of the gap is one thing:
+      AHN files facades, and the horizontal stripes along the hall's floors, under class 1 ("other"), while my facade rule
+      calls them building, so they count as errors. The forest learns AHN's convention from AHN's labels, which the
+      rules never see: "the model copies AHN" is a fairer reading than "the model sees better". Poux's idea is still
+      the right next step once you have labelled data from many places, and the eigenvalue features need no tuning
+      per city. In this run the weights were: planarity {eigen.forest_eigen_plus_rule_inputs.importance.planarity|pct},
+      linearity {eigen.forest_eigen_plus_rule_inputs.importance.linearity|pct}, multiple return share
+      {eigen.forest_eigen_plus_rule_inputs.importance.multi|pct}, verticality
+      {eigen.forest_eigen_plus_rule_inputs.importance.verticality|pct}. The Python lesson is the talk's lesson again:
+      compute the features for all clusters in one batched eigh call, not in a loop. And remember Poux's box: a
+      classifier trained on three classes will name a fourth thing with full confidence.
+
+  - n: B6
+    title: "Where can I get my own point cloud?"
+    table:
+      caption: "Open sources (all carry a licence: cite it)"
+      columns: ["Source", "What you get", "Note"]
+      rows:
+        - cells: ["AHN (ahn.nl)", "Airborne LiDAR, all of the Netherlands, classified", "This talk; CC BY 4.0"]
+          source: "data/DATA_LICENSE.md; research: reports/videos.md V1 (07:00, AHN viewer)"
+          status: verified
+        - cells: ["3DBAG (3dbag.nl)", "Every Dutch building as a 3D model, made from AHN", "Meshes, not points"]
+          source: "3dbag.nl reachable 2026-10-11; added for a Dutch audience, not from research: reports/videos.md"
+          status: judgement
+        - cells: ["OpenTopography", "LiDAR and photogrammetry catalogue, mostly US", "Filter by method, cut an area"]
+          source: "research: reports/videos.md V1 (04:50 to 06:00); opentopography.org reachable 2026-10-11"
+          status: verified
+        - cells: ["National and city portals", "France's LiDAR HD, Vancouver's open data, …", "Tiles, like AHN files"]
+          source: "research: reports/videos.md V1 (06:00 to 07:00); geoservices.ign.fr/lidarhd and opendata.vancouver.ca reachable 2026-10-11"
+          status: verified
+        - cells: ["Open Heritage 3D", "Terrestrial laser scans of heritage sites", "Licence and citation per data set"]
+          source: "research: reports/videos.md V1 (07:00 to 07:40); openheritage3d.org reachable 2026-10-11"
+          status: verified
+        - cells: ["Sketchfab, TurboSquid", "3D models (meshes)", "Filter for free and downloadable"]
+          source: "research: reports/videos.md V1 (08:37 to 10:20)"
+          status: verified
+    bullets:
+      - text: "Your own capture: photogrammetry (phone, camera) gives dense colour but noisy edges; LiDAR measures each pulse."
+        source: "research: reports/videos.md V1 (12:30 to 16:00)"
+        status: verified
+      - text: "Only LiDAR returns several echoes per pulse: slide 15's vegetation rule needs them, a photo sees one surface per pixel."
+        source: "research: reports/videos.md V1 (photogrammetry matches images); pipeline/steps.py name, rule 1 (number_of_returns)"
+        status: judgement
+    small_print: "Sources from F. Poux's beginner video on 3D tools (YouTube, 2025), except 3DBAG. Links checked 2026-10-11."
+    notes: >-
+      Short answer: start with AHN if your area is in the Netherlands; data/fetch_ahn5.py downloads one AHN file
+      and cuts the crop, so change its tile name, expected size and crop box
+      constants. Outside the Netherlands, OpenTopography and national portals
+      such as France's LiDAR HD have the same kind of airborne LiDAR. Florent Poux's beginner video lists these and
+      more. If you capture yourself with a phone, you get photogrammetry: dense and coloured, but one surface per
+      pixel, so the multiple-return rule for trees will not work and you need another feature.
+
+  - n: B7
+    title: "Which libraries have stopped moving?"
+    table:
+      caption: "Archived or stale: check before you depend on them"
+      columns: ["Library", "Status", "Latest release", "Note"]
+      rows:
+        - cells: ["python-pcl", "{eco.by_id.python-pcl.status}", "{eco.by_id.python-pcl.last_release}", "Repository archived"]
+          source: "results/ecosystem.json by_id.python-pcl; deck/ecosystem/ecosystem.yaml python-pcl (GitHub archived flag, PyPI release date)"
+          status: token
+        - cells: ["pclpy", "{eco.by_id.pclpy.status}", "{eco.by_id.pclpy.last_release}", "Not archived, effectively unmaintained"]
+          source: "results/ecosystem.json by_id.pclpy; ecosystem.yaml pclpy note (last push, last PyPI release)"
+          status: token
+        - cells: ["pylas", "{eco.by_id.pylas.status}", "{eco.by_id.pylas.last_release}", "Use laspy instead"]
+          source: "results/ecosystem.json by_id.pylas; ecosystem.yaml pylas (archived, superseded by laspy)"
+          status: token
+        - cells: ["MinkowskiEngine", "{eco.by_id.minkowskiengine.status}", "{eco.by_id.minkowskiengine.last_release}", "Not archived; check the repository"]
+          source: "results/ecosystem.json by_id.minkowskiengine; ecosystem.yaml minkowskiengine note"
+          status: token
+        - cells: ["TensorFlow Graphics", "{eco.by_id.tf-graphics.status}", "{eco.by_id.tf-graphics.last_release}", "Not archived; check the repository"]
+          source: "results/ecosystem.json by_id.tf-graphics; ecosystem.yaml tf-graphics note"
+          status: token
+        - cells: ["OpenSfM", "{eco.by_id.opensfm.status}", "{eco.by_id.opensfm.last_release}", "Repository still active, no release since"]
+          source: "results/ecosystem.json by_id.opensfm; ecosystem.yaml opensfm note (GitHub release against last push)"
+          status: token
+        - cells: ["MMDetection3D", "{eco.by_id.mmdet3d.status}", "{eco.by_id.mmdet3d.last_release}", "Check your PyTorch version still works"]
+          source: "results/ecosystem.json by_id.mmdet3d; ecosystem.yaml mmdet3d note; the PyTorch compatibility advice is judgement, not tested"
+          status: judgement
+    bullets:
+      - text: "Of {eco.n_entries|int} libraries and applications checked, {eco.by_status.active|int} released within a year; {eco.by_status.stale|int} are stale and {eco.by_status.archived|int} archived."
+        source: "results/ecosystem.json n_entries, by_status (12 months = active, 12 to 30 months = maintenance, older = stale; docs/ECOSYSTEM.md)"
+        status: token
+      - text: "pip install can fetch the wrong thing: PyTorch3D's newest releases are not on PyPI, and the kaolin package on PyPI is only a placeholder."
+        source: "deck/ecosystem/ecosystem.yaml pytorch3d and kaolin notes (PyPI JSON against GitHub releases, checked 2026-10-11)"
+        status: verified
+      - text: "A release date is not quality: a finished library may be stable. It is a reason to look, not to reject."
+        source: "judgement"
+        status: judgement
+    small_print: "Status from PyPI release dates and GitHub, checked 2026-10-11. Full list: docs/ECOSYSTEM.md."
+    notes: >-
+      Short answer: look at the date before you install. python-pcl and pylas are archived, pclpy has not moved for
+      years, and several deep learning libraries for sparse point clouds have had no release for a long time. This is
+      from release dates and the archived flag, not from trying them. Two install traps I found while checking:
+      the newest PyTorch3D is not on PyPI, and the kaolin name on PyPI is a placeholder. If your pipeline needs one
+      of the stale ones, pin the version and check the repository's issues first.

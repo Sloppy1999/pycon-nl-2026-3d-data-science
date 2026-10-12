@@ -1,0 +1,1191 @@
+# Group 2 catalogue: processing, reconstruction, CAD/volumetric. Verified 2026-10-11 from PyPI JSON API and GitHub API.
+entries:
+- id: open3d
+  name: "Open3D"
+  group: processing
+  pypi: "open3d"
+  repo_url: "https://github.com/isl-org/Open3D"
+  home_url: "https://www.open3d.org"
+  org: "Intel Labs (Intelligent Systems Lab)"
+  org_type: company
+  licence: "MIT"
+  latest_version: "0.20.0"
+  last_release: "2026-09-16"
+  status: active
+  repo_last_push: "2026-09-30"
+  repo_archived: false
+  summary: "Modern library for 3D data processing, with tensor and CUDA backends."
+  point_cloud_use: "Point clouds, meshes, ICP registration, reconstruction pipelines; CPU/GPU tensor API."
+  note: "Org verified via PyPI author email open3d@intel.com and isl-org homepage intel.com/labs. GitHub licence field is NOASSERTION; PyPI says MIT. Tensor API / CUDA is part of this package, not a separate entry."
+  evidence:
+    - "https://pypi.org/pypi/open3d/json"
+    - "https://api.github.com/repos/isl-org/Open3D"
+    - "https://www.intel.com/labs"
+  verified_on: '2026-10-11'
+  logo:
+    file: "open3d.png"
+    original: "open3d.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/isl-org/Open3D/HEAD/docs/_static/open3d_logo_horizontal.png"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "Raster only; PNG has an opaque white background. No brand kit found."
+    dark_background_ok: false
+    white_background_ok: true
+- id: python-pcl
+  name: "python-pcl"
+  group: processing
+  pypi: "python-pcl"
+  repo_url: "https://github.com/strawlab/python-pcl"
+  home_url: "http://strawlab.github.com/python-pcl/"
+  org: "strawlab (GitHub org)"
+  org_type: community
+  licence: "BSD"
+  latest_version: "0.3.0a1"
+  last_release: "2019-05-10"
+  status: archived
+  repo_last_push: "2023-12-30"
+  repo_archived: true
+  summary: "Cython bindings to the Point Cloud Library; repository archived."
+  point_cloud_use: "Old route to PCL filters from Python; no longer maintained."
+  note: "Repository archived; last push 2023-12-30; last PyPI release 2019 alpha. Licence is \"BSD\" on PyPI without version; GitHub NOASSERTION."
+  evidence:
+    - "https://pypi.org/pypi/python-pcl/json"
+    - "https://api.github.com/repos/strawlab/python-pcl"
+  verified_on: '2026-10-11'
+  logo:
+    file: "python-pcl.png"
+    original: "python-pcl.orig.png"
+    kind: "wordmark"
+    source_url: "https://raw.githubusercontent.com/strawlab/python-pcl/HEAD/docs/image/pcl_logo_958x309.png"
+    licence_or_terms: "none stated"
+    brand_guidelines_url: null
+    restriction_note: "This is the Point Cloud Library (PCL) logo shipped in the python-pcl docs, not a python-pcl logo."
+    dark_background_ok: true
+    white_background_ok: true
+- id: pclpy
+  name: "pclpy"
+  group: processing
+  pypi: "pclpy"
+  repo_url: "https://github.com/davidcaron/pclpy"
+  home_url: "https://www.github.com/davidcaron/pclpy"
+  org: "davidcaron (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "0.11.0"
+  last_release: "2018-08-24"
+  status: stale
+  repo_last_push: "2021-03-08"
+  repo_archived: false
+  summary: "Pybind11-based Python bindings for the Point Cloud Library."
+  point_cloud_use: "PCL algorithms from Python; abandoned, last release 2018."
+  note: "Not archived but last push 2021-03-08 and last PyPI release 2018-08-24: effectively unmaintained."
+  evidence:
+    - "https://pypi.org/pypi/pclpy/json"
+    - "https://api.github.com/repos/davidcaron/pclpy"
+  verified_on: '2026-10-11'
+  logo: null
+- id: cloudcompy
+  name: "CloudComPy"
+  group: processing
+  pypi: null
+  repo_url: "https://github.com/CloudCompare/CloudComPy"
+  home_url: "https://github.com/CloudCompare/CloudComPy"
+  org: "CloudCompare project (GitHub org)"
+  org_type: community
+  licence: "GPL-3.0-or-later"
+  latest_version: "unverified"
+  last_release: "unverified"
+  status: unverified
+  repo_last_push: "2026-06-11"
+  repo_archived: false
+  summary: "Python wrapper exposing CloudCompare engine functions to scripts."
+  point_cloud_use: "Script CloudCompare tools (ICP, M3C2, subsampling) headless from Python."
+  note: "Not on PyPI (PyPI name cloudcompy returns 404). No GitHub releases or tags: version and release date unverified; last push 2026-06-11. GitHub licence NOASSERTION; COPYING/License.txt are GPL v3 or later. Specific tool list (ICP, M3C2) is from memory, not checked."
+  evidence:
+    - "https://api.github.com/repos/CloudCompare/CloudComPy"
+    - "https://pypi.org/pypi/cloudcompy/json"
+  verified_on: '2026-10-11'
+  logo: null
+- id: point-cloud-utils
+  name: "point-cloud-utils"
+  group: processing
+  pypi: "point-cloud-utils"
+  repo_url: "https://github.com/fwilliams/point-cloud-utils"
+  home_url: "https://www.fwilliams.info/point-cloud-utils/"
+  org: "fwilliams (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "0.34.0"
+  last_release: "2025-04-14"
+  status: maintenance
+  repo_last_push: "2025-09-10"
+  repo_archived: false
+  summary: "NumPy-based utilities for point clouds and meshes: sampling, normals, distances."
+  point_cloud_use: "Fast Chamfer/Hausdorff distance, Poisson sampling, mesh I/O without heavy dependencies."
+  evidence:
+    - "https://pypi.org/pypi/point-cloud-utils/json"
+    - "https://api.github.com/repos/fwilliams/point-cloud-utils"
+  verified_on: '2026-10-11'
+  logo:
+    file: "point-cloud-utils.png"
+    original: "point-cloud-utils.svg"
+    kind: "wordmark"
+    source_url: "https://raw.githubusercontent.com/fwilliams/point-cloud-utils/HEAD/docs/docs/imgs/logo_crop.svg"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: true
+    white_background_ok: true
+- id: trimesh
+  name: "trimesh"
+  group: processing
+  pypi: "trimesh"
+  repo_url: "https://github.com/mikedh/trimesh"
+  home_url: "https://trimesh.org"
+  org: "mikedh (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "5.1.1"
+  last_release: "2026-10-02"
+  status: active
+  repo_last_push: "2026-10-02"
+  repo_archived: false
+  summary: "Load, repair, analyse and export triangular meshes with NumPy."
+  point_cloud_use: "Mesh watertightness, ray queries, voxelisation and point sampling in pure Python."
+  note: "PyPI licence field contains the full MIT text."
+  evidence:
+    - "https://pypi.org/pypi/trimesh/json"
+    - "https://api.github.com/repos/mikedh/trimesh"
+  verified_on: '2026-10-11'
+  logo:
+    file: "trimesh.png"
+    original: "trimesh.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/mikedh/trimesh/HEAD/docs/static/images/logotype-a.svg"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: false
+    white_background_ok: true
+- id: pymeshlab
+  name: "PyMeshLab"
+  group: processing
+  pypi: "pymeshlab"
+  repo_url: "https://github.com/cnr-isti-vclab/PyMeshLab"
+  home_url: "https://github.com/cnr-isti-vclab/PyMeshLab"
+  org: "Visual Computing Lab, ISTI-CNR"
+  org_type: academic
+  licence: "GPL-3.0"
+  latest_version: "2025.7.post1"
+  last_release: "2026-01-30"
+  status: active
+  repo_last_push: "2026-02-03"
+  repo_archived: false
+  summary: "Python interface to MeshLab filters, running without the GUI."
+  point_cloud_use: "Poisson reconstruction, decimation and cleaning filters scripted from Python."
+  note: "GitHub org name verified as Visual Computing Lab - ISTI - CNR."
+  evidence:
+    - "https://pypi.org/pypi/pymeshlab/json"
+    - "https://api.github.com/repos/cnr-isti-vclab/PyMeshLab"
+  verified_on: '2026-10-11'
+  logo: null
+- id: libigl
+  name: "libigl (Python bindings)"
+  group: processing
+  pypi: "libigl"
+  repo_url: "https://github.com/libigl/libigl-python-bindings"
+  home_url: "https://libigl.github.io/libigl-python-bindings/"
+  org: "libigl dev team (GitHub org)"
+  org_type: community
+  licence: "MPL-2.0"
+  latest_version: "2.6.3"
+  last_release: "2026-09-01"
+  status: active
+  repo_last_push: "2026-09-04"
+  repo_archived: false
+  summary: "Python bindings for the libigl C++ geometry processing library."
+  point_cloud_use: "Mesh geometry: curvature, parametrisation, Laplacians, booleans on NumPy arrays."
+  note: "Licence conflict: PyPI classifier MPL-2.0, GitHub licence field GPL-3.0 for the bindings repo."
+  evidence:
+    - "https://pypi.org/pypi/libigl/json"
+    - "https://api.github.com/repos/libigl/libigl-python-bindings"
+  verified_on: '2026-10-11'
+  logo: null
+- id: cgal
+  name: "CGAL Python bindings (cgal)"
+  group: processing
+  pypi: "cgal"
+  repo_url: "https://github.com/CGAL/cgal-swig-bindings"
+  home_url: "https://github.com/CGAL/cgal-swig-bindings"
+  org: "The CGAL Project"
+  org_type: community
+  licence: "GPL-3.0-or-later"
+  latest_version: "6.0.1.post202410241521"
+  last_release: "2024-10-25"
+  status: maintenance
+  repo_last_push: "2025-12-15"
+  repo_archived: false
+  summary: "SWIG bindings exposing parts of the CGAL geometry library."
+  point_cloud_use: "Robust triangulations, alpha shapes and mesh operations from CGAL, partial coverage."
+  note: "Repo has LICENSE.GPL and LICENSE.COMMERCIAL. The separate scikit-geometry package (CGAL wrapper) is not on PyPI and had its last push in 2024-01, so it was dropped."
+  evidence:
+    - "https://pypi.org/pypi/cgal/json"
+    - "https://api.github.com/repos/CGAL/cgal-swig-bindings"
+  verified_on: '2026-10-11'
+  logo: null
+- id: manifold3d
+  name: "manifold3d"
+  group: processing
+  pypi: "manifold3d"
+  repo_url: "https://github.com/elalish/manifold"
+  home_url: "https://github.com/elalish/manifold"
+  org: "elalish (individual maintainer)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "3.5.4"
+  last_release: "2026-09-25"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Fast, guaranteed-manifold mesh boolean operations with Python bindings."
+  point_cloud_use: "Robust mesh booleans that always return watertight geometry."
+  evidence:
+    - "https://pypi.org/pypi/manifold3d/json"
+    - "https://api.github.com/repos/elalish/manifold"
+  verified_on: '2026-10-11'
+  logo: null
+- id: pyntcloud
+  name: "pyntcloud"
+  group: processing
+  pypi: "pyntcloud"
+  repo_url: "https://github.com/daavoo/pyntcloud"
+  home_url: "http://pyntcloud.readthedocs.io"
+  org: "daavoo (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "0.3.1"
+  last_release: "2022-07-31"
+  status: stale
+  repo_last_push: "2026-07-10"
+  repo_archived: false
+  summary: "Pandas-backed point-cloud class with I/O, filters and scalar fields."
+  point_cloud_use: "Beginner-friendly point cloud DataFrame; voxel grids, k-neighbours, PLY/LAS I/O."
+  note: "Last PyPI release 2022-07-31 (stale) although the GitHub repo had a push on 2026-07-10."
+  evidence:
+    - "https://pypi.org/pypi/pyntcloud/json"
+    - "https://api.github.com/repos/daavoo/pyntcloud"
+  verified_on: '2026-10-11'
+  logo:
+    file: "pyntcloud.png"
+    original: "pyntcloud.orig.png"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/daavoo/pyntcloud/HEAD/docs/images/pyntcloud_logo.png"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "Symbol is small inside a large transparent canvas (not cropped, per rules)."
+    dark_background_ok: true
+    white_background_ok: true
+- id: pyransac3d
+  name: "pyRANSAC-3D"
+  group: processing
+  pypi: "pyransac3d"
+  repo_url: "https://github.com/leomariga/pyRANSAC-3D"
+  home_url: "https://leomariga.github.io/pyRANSAC-3D/"
+  org: "leomariga (individual maintainer)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "0.7.0"
+  last_release: "2026-08-18"
+  status: active
+  repo_last_push: "2026-08-28"
+  repo_archived: false
+  summary: "RANSAC fitting of planes, spheres, cylinders and more to point clouds."
+  point_cloud_use: "Primitive shape detection in noisy point clouds in a few lines."
+  evidence:
+    - "https://pypi.org/pypi/pyransac3d/json"
+    - "https://api.github.com/repos/leomariga/pyRANSAC-3D"
+  verified_on: '2026-10-11'
+  logo:
+    file: "pyransac3d.png"
+    original: "pyransac3d.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/leomariga/pyRANSAC-3D/HEAD/doc/logo_black.png"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Brown variant used; repo also has doc/logo_white.png for dark backgrounds."
+    dark_background_ok: false
+    white_background_ok: true
+- id: scikit-spatial
+  name: "scikit-spatial"
+  group: processing
+  pypi: "scikit-spatial"
+  repo_url: "https://github.com/ajhynes7/scikit-spatial"
+  home_url: "https://scikit-spatial.readthedocs.io"
+  org: "ajhynes7 (individual maintainer)"
+  org_type: community
+  licence: "BSD-3-Clause"
+  latest_version: "9.0.1"
+  last_release: "2025-04-17"
+  status: maintenance
+  repo_last_push: "2026-07-24"
+  repo_archived: false
+  summary: "Object-oriented spatial primitives (points, planes, lines) on NumPy arrays."
+  point_cloud_use: "Best-fit planes and lines, projections and intersections for point sets."
+  evidence:
+    - "https://pypi.org/pypi/scikit-spatial/json"
+    - "https://api.github.com/repos/ajhynes7/scikit-spatial"
+  verified_on: '2026-10-11'
+  logo:
+    file: "scikit-spatial.png"
+    original: "scikit-spatial.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/ajhynes7/scikit-spatial/HEAD/images/logo.svg"
+    licence_or_terms: "none stated (repository licence BSD-3-Clause)"
+    brand_guidelines_url: null
+    restriction_note: "SVG carries an opaque white background."
+    dark_background_ok: false
+    white_background_ok: true
+- id: laspy
+  name: "laspy"
+  group: processing
+  pypi: "laspy"
+  repo_url: "https://github.com/laspy/laspy"
+  home_url: "https://laspy.readthedocs.io/en/latest/"
+  org: "laspy (GitHub org)"
+  org_type: community
+  licence: "BSD-2-Clause"
+  latest_version: "2.7.0"
+  last_release: "2026-01-14"
+  status: active
+  repo_last_push: "2026-05-30"
+  repo_archived: false
+  summary: "Pure Python reader and writer for ASPRS LAS/LAZ lidar files."
+  point_cloud_use: "Standard way to load airborne and terrestrial lidar point clouds into NumPy."
+  note: "Added by me (not in seed list). GitHub licence NOASSERTION; PyPI says BSD-2-Clause."
+  evidence:
+    - "https://pypi.org/pypi/laspy/json"
+    - "https://api.github.com/repos/laspy/laspy"
+  verified_on: '2026-10-11'
+  logo: null
+- id: pycolmap
+  name: "pycolmap / COLMAP"
+  group: reconstruction
+  pypi: "pycolmap"
+  repo_url: "https://github.com/colmap/colmap"
+  home_url: "https://colmap.github.io/"
+  org: "COLMAP (GitHub org)"
+  org_type: community
+  licence: "BSD-3-Clause"
+  latest_version: "4.2.1"
+  last_release: "2026-09-29"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Python bindings to COLMAP structure-from-motion and multi-view stereo."
+  point_cloud_use: "Camera poses and sparse point clouds from photos; scriptable SfM."
+  note: "Same repo as the COLMAP application. GitHub licence NOASSERTION; PyPI says BSD-3-Clause."
+  evidence:
+    - "https://pypi.org/pypi/pycolmap/json"
+    - "https://api.github.com/repos/colmap/colmap"
+  verified_on: '2026-10-11'
+  logo:
+    file: "pycolmap.png"
+    original: "pycolmap.svg"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/colmap/colmap/HEAD/doc/_static/colmap-logo.svg"
+    licence_or_terms: "none stated (repository licence BSD-3-Clause)"
+    brand_guidelines_url: null
+    restriction_note: "Symbol only. Dark-slate version; repo has doc/_static/colmap-logo-dark.svg (light grey) for dark backgrounds, not saved."
+    dark_background_ok: false
+    white_background_ok: true
+- id: opensfm
+  name: "OpenSfM"
+  group: reconstruction
+  pypi: null
+  repo_url: "https://github.com/mapillary/OpenSfM"
+  home_url: "https://www.opensfm.org/"
+  org: "Mapillary (GitHub org)"
+  org_type: company
+  licence: "BSD-2-Clause"
+  latest_version: "v0.5.1"
+  last_release: "2020-08-11"
+  status: stale
+  repo_last_push: "2026-10-05"
+  repo_archived: false
+  summary: "Structure-from-motion library with a Python API and command line."
+  point_cloud_use: "Sparse reconstruction and depth maps from street-level or drone imagery."
+  note: "Not on PyPI (name opensfm returns 404). Latest GitHub release v0.5.1 is from 2020-08-11, though the repo had a push on 2026-10-05. Mapillary described by its GitHub org as \"Map data at scale from street-level imagery\"; its Meta ownership is not verified here."
+  evidence:
+    - "https://api.github.com/repos/mapillary/OpenSfM"
+    - "https://api.github.com/repos/mapillary/OpenSfM/releases/latest"
+  verified_on: '2026-10-11'
+  logo: null
+- id: meshroom
+  name: "Meshroom / AliceVision"
+  group: reconstruction
+  pypi: null
+  repo_url: "https://github.com/alicevision/Meshroom"
+  home_url: "https://alicevision.org"
+  org: "AliceVision (GitHub org)"
+  org_type: community
+  licence: "MPL-2.0"
+  latest_version: "v2025.1.0"
+  last_release: "2025-08-19"
+  status: maintenance
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Free node-based photogrammetry app built on the AliceVision framework."
+  point_cloud_use: "Photos to textured mesh and dense point cloud via a node graph."
+  note: "Not on PyPI: the PyPI name meshroom is an unrelated cybersecurity package. Meshroom v2025.1.0 and AliceVision v3.3.0 released 2025-08-19. GitHub licence NOASSERTION; repo ships LICENSE-MPL2.md. Legal form of AliceVision not verified. RealityCapture is commercial, mention only. Python scriptability not checked."
+  evidence:
+    - "https://api.github.com/repos/alicevision/Meshroom"
+    - "https://github.com/alicevision/AliceVision"
+    - "https://api.github.com/repos/alicevision/Meshroom/releases/latest"
+    - "https://pypi.org/pypi/meshroom/json"
+  verified_on: '2026-10-11'
+  logo: null
+- id: openmvs
+  name: "OpenMVS"
+  group: reconstruction
+  pypi: null
+  repo_url: "https://github.com/cdcseacave/openMVS"
+  home_url: "http://cdcseacave.github.io"
+  org: "cdcseacave (individual maintainer)"
+  org_type: community
+  licence: "AGPL-3.0"
+  latest_version: "v2.4.0"
+  last_release: "2026-01-20"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Multi-view stereo library for dense clouds, meshes and texturing."
+  point_cloud_use: "Dense point cloud, mesh and texture from SfM output."
+  note: "Not on PyPI (404). C++ library; no maintained Python API verified."
+  evidence:
+    - "https://api.github.com/repos/cdcseacave/openMVS"
+    - "https://api.github.com/repos/cdcseacave/openMVS/releases/latest"
+  verified_on: '2026-10-11'
+  logo:
+    file: "openmvs.png"
+    original: "openmvs.orig.png"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/cdcseacave/openMVS/HEAD/docs/assets/logo.png"
+    licence_or_terms: "none stated (repository licence AGPL-3.0)"
+    brand_guidelines_url: null
+    restriction_note: "Only 128x116 px raster, not upscaled; may look soft on a projector."
+    dark_background_ok: true
+    white_background_ok: true
+- id: kiss-icp
+  name: "KISS-ICP"
+  group: reconstruction
+  pypi: "kiss-icp"
+  repo_url: "https://github.com/PRBonn/kiss-icp"
+  home_url: "https://github.com/PRBonn/kiss-icp"
+  org: "Photogrammetry & Robotics Lab, University of Bonn"
+  org_type: academic
+  licence: "MIT"
+  latest_version: "1.3.0"
+  last_release: "2026-04-26"
+  status: active
+  repo_last_push: "2026-06-09"
+  repo_archived: false
+  summary: "Minimal-tuning LiDAR odometry via point-to-point ICP."
+  point_cloud_use: "Drop-in lidar odometry for any sensor; pip-installable."
+  evidence:
+    - "https://pypi.org/pypi/kiss-icp/json"
+    - "https://api.github.com/repos/PRBonn/kiss-icp"
+  verified_on: '2026-10-11'
+  logo: null
+- id: small-gicp
+  name: "small_gicp"
+  group: reconstruction
+  pypi: "small-gicp"
+  repo_url: "https://github.com/koide3/small_gicp"
+  home_url: "https://github.com/koide3/small_gicp"
+  org: "koide3 (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "1.0.1"
+  last_release: "2026-06-13"
+  status: active
+  repo_last_push: "2026-09-29"
+  repo_archived: false
+  summary: "Fast, parallel point cloud registration (ICP/GICP) with Python bindings."
+  point_cloud_use: "Quick GICP and downsampling, much faster than naive Python ICP."
+  evidence:
+    - "https://pypi.org/pypi/small-gicp/json"
+    - "https://api.github.com/repos/koide3/small_gicp"
+  verified_on: '2026-10-11'
+  logo: null
+- id: probreg
+  name: "probreg"
+  group: reconstruction
+  pypi: "probreg"
+  repo_url: "https://github.com/neka-nat/probreg"
+  home_url: "https://github.com/neka-nat/probreg"
+  org: "neka-nat (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "0.3.8"
+  last_release: "2024-05-11"
+  status: maintenance
+  repo_last_push: "2026-07-21"
+  repo_archived: false
+  summary: "Probabilistic point cloud registration: CPD, GMMTree, FilterReg."
+  point_cloud_use: "Non-rigid and rigid registration beyond ICP, built on Open3D."
+  note: "PyPI licence field empty; MIT from GitHub. Last release 2024-05-11. Built on Open3D: from memory, not checked."
+  evidence:
+    - "https://pypi.org/pypi/probreg/json"
+    - "https://api.github.com/repos/neka-nat/probreg"
+  verified_on: '2026-10-11'
+  logo:
+    file: "probreg.png"
+    original: "probreg.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/neka-nat/probreg/HEAD/docs/source/_static/logo_horizontal.png"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: false
+    white_background_ok: true
+- id: teaser-plusplus
+  name: "TEASER++"
+  group: reconstruction
+  pypi: null
+  repo_url: "https://github.com/MIT-SPARK/TEASER-plusplus"
+  home_url: "https://github.com/MIT-SPARK/TEASER-plusplus"
+  org: "MIT SPARK Lab"
+  org_type: academic
+  licence: "MIT"
+  latest_version: "v2.0"
+  last_release: "2020-08-12"
+  status: stale
+  repo_last_push: "2025-12-09"
+  repo_archived: false
+  summary: "Certifiably robust registration tolerating extreme outlier correspondences."
+  point_cloud_use: "Global registration without initial guess, robust to many outliers."
+  note: "No PyPI package (teaserpp-python returns 404; PyPI name teaser is an unrelated building-energy tool). Python bindings built from source. Last release v2.0 2020-08-12; repo pushed 2025-12-09. Org type inferred from name MIT-SPARK."
+  evidence:
+    - "https://api.github.com/repos/MIT-SPARK/TEASER-plusplus"
+    - "https://api.github.com/repos/MIT-SPARK/TEASER-plusplus/releases/latest"
+  verified_on: '2026-10-11'
+  logo: null
+- id: opencv
+  name: "OpenCV"
+  group: reconstruction
+  pypi: "opencv-python"
+  repo_url: "https://github.com/opencv/opencv"
+  home_url: "https://opencv.org"
+  org: "OpenCV (opencv.org)"
+  org_type: unverified
+  licence: "Apache-2.0"
+  latest_version: "5.0.0.93"
+  last_release: "2026-07-02"
+  status: active
+  repo_last_push: "2026-10-10"
+  repo_archived: false
+  summary: "Classic computer vision library: calibration, stereo, features, pose."
+  point_cloud_use: "Camera calibration, stereo depth and feature matching feeding 3D pipelines."
+  note: "Version is the opencv-python wrapper (5.0.0.93). Legal form of the OpenCV organisation not verified."
+  evidence:
+    - "https://pypi.org/pypi/opencv-python/json"
+    - "https://api.github.com/repos/opencv/opencv"
+    - "https://github.com/opencv/opencv-python"
+  verified_on: '2026-10-11'
+  logo:
+    file: "opencv.png"
+    original: "opencv.svg"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/opencv/opencv/HEAD/docs_sphinx/_static/opencv-logo.svg"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Symbol only, no name. Brand policy not located (opencv.org/license returned 403)."
+    dark_background_ok: true
+    white_background_ok: true
+- id: kornia
+  name: "Kornia"
+  group: reconstruction
+  pypi: "kornia"
+  repo_url: "https://github.com/kornia/kornia"
+  home_url: "https://www.kornia.org"
+  org: "kornia (GitHub org)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "0.8.3"
+  last_release: "2026-05-19"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Differentiable computer vision operators on PyTorch tensors."
+  point_cloud_use: "Differentiable geometry, camera models and 3D transforms on GPU."
+  note: "Built on PyTorch; kept as a geometry/vision library, drop if too ML-flavoured."
+  evidence:
+    - "https://pypi.org/pypi/kornia/json"
+    - "https://api.github.com/repos/kornia/kornia"
+  verified_on: '2026-10-11'
+  logo:
+    file: "kornia.png"
+    original: "kornia.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/kornia/kornia/HEAD/docs/source/_static/img/kornia_logo.svg"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: false
+    white_background_ok: true
+- id: nerfstudio
+  name: "nerfstudio"
+  group: reconstruction
+  pypi: "nerfstudio"
+  repo_url: "https://github.com/nerfstudio-project/nerfstudio"
+  home_url: "https://docs.nerf.studio"
+  org: "nerfstudio project (UC Berkeley)"
+  org_type: academic
+  licence: "Apache-2.0"
+  latest_version: "1.1.5"
+  last_release: "2024-11-11"
+  status: maintenance
+  repo_last_push: "2025-07-29"
+  repo_archived: false
+  summary: "Modular framework for training and viewing neural radiance fields."
+  point_cloud_use: "NeRF and splat pipelines from photos, with point cloud export."
+  note: "GitHub org description: developed at UC Berkeley, led by students from the Kanazawa group. Last release 2024-11-11. Point cloud export is from memory, not checked."
+  evidence:
+    - "https://pypi.org/pypi/nerfstudio/json"
+    - "https://api.github.com/repos/nerfstudio-project/nerfstudio"
+  verified_on: '2026-10-11'
+  logo:
+    file: "nerfstudio.png"
+    original: "nerfstudio.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/nerfstudio-project/nerfstudio/HEAD/docs/_static/imgs/logo.png"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Dark-text version; docs/_static/imgs/logo-dark.png has white text for dark backgrounds, not saved."
+    dark_background_ok: false
+    white_background_ok: true
+- id: gsplat
+  name: "gsplat"
+  group: reconstruction
+  pypi: "gsplat"
+  repo_url: "https://github.com/nerfstudio-project/gsplat"
+  home_url: "https://docs.gsplat.studio/"
+  org: "nerfstudio project (UC Berkeley)"
+  org_type: academic
+  licence: "Apache-2.0"
+  latest_version: "1.5.3"
+  last_release: "2025-07-04"
+  status: maintenance
+  repo_last_push: "2026-09-19"
+  repo_archived: false
+  summary: "CUDA library for differentiable Gaussian splat rasterisation."
+  point_cloud_use: "Fast 3D Gaussian Splatting training backend; splats are point-cloud-like."
+  note: "PyPI licence field empty; Apache-2.0 from GitHub."
+  evidence:
+    - "https://pypi.org/pypi/gsplat/json"
+    - "https://api.github.com/repos/nerfstudio-project/gsplat"
+  verified_on: '2026-10-11'
+  logo: null
+- id: gaussian-splatting
+  name: "3D Gaussian Splatting (graphdeco-inria)"
+  group: reconstruction
+  pypi: null
+  repo_url: "https://github.com/graphdeco-inria/gaussian-splatting"
+  home_url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+  org: "Inria GraphDeco (with MPII)"
+  org_type: academic
+  licence: "Gaussian-Splatting License (research use only)"
+  latest_version: "unverified"
+  last_release: "unverified"
+  status: unverified
+  repo_last_push: "2025-10-17"
+  repo_archived: false
+  summary: "Reference implementation of the original 3D Gaussian Splatting paper."
+  point_cloud_use: "Origin of splat reconstruction from SfM point clouds; research-only licence."
+  note: "No PyPI package, no GitHub releases or tags: version and release date unverified. Last push 2025-10-17. LICENSE.md grants non-exclusive rights for research purposes, free of charge."
+  evidence:
+    - "https://api.github.com/repos/graphdeco-inria/gaussian-splatting"
+  verified_on: '2026-10-11'
+  logo: null
+- id: cadquery
+  name: "CadQuery"
+  group: cad_volumetric
+  pypi: "cadquery"
+  repo_url: "https://github.com/CadQuery/cadquery"
+  home_url: "https://cadquery.org"
+  org: "CadQuery (GitHub org)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "2.8.0"
+  last_release: "2026-06-21"
+  status: active
+  repo_last_push: "2026-10-10"
+  repo_archived: false
+  summary: "Parametric scripting API for building CAD models on OpenCascade."
+  point_cloud_use: "Generate solids from code, export STEP/STL, sample surfaces to points."
+  note: "PyPI licence text \"Apache Public License 2.0\"; GitHub NOASSERTION. OpenCascade basis from memory of docs, not checked."
+  evidence:
+    - "https://pypi.org/pypi/cadquery/json"
+    - "https://api.github.com/repos/CadQuery/cadquery"
+  verified_on: '2026-10-11'
+  logo:
+    file: "cadquery.png"
+    original: "cadquery.svg"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/CadQuery/cadquery/HEAD/doc/_static/logo/cadquery_logo_dark.svg"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Symbol only (cq tile)."
+    dark_background_ok: true
+    white_background_ok: true
+- id: build123d
+  name: "build123d"
+  group: cad_volumetric
+  pypi: "build123d"
+  repo_url: "https://github.com/gumyr/build123d"
+  home_url: "https://build123d.readthedocs.io/en/latest/index.html"
+  org: "gumyr (individual maintainer)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "0.13.0"
+  last_release: "2026-09-21"
+  status: active
+  repo_last_push: "2026-10-09"
+  repo_archived: false
+  summary: "Pythonic parametric CAD with builder and algebra modes."
+  point_cloud_use: "Code-defined CAD parts; clean route to STEP and meshes."
+  evidence:
+    - "https://pypi.org/pypi/build123d/json"
+    - "https://api.github.com/repos/gumyr/build123d"
+  verified_on: '2026-10-11'
+  logo:
+    file: "build123d.png"
+    original: "build123d.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/gumyr/build123d/HEAD/docs/assets/build123d_logo/logo-banner.svg"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: false
+    white_background_ok: true
+- id: pythonocc-core
+  name: "pythonocc-core"
+  group: cad_volumetric
+  pypi: null
+  repo_url: "https://github.com/tpaviot/pythonocc-core"
+  home_url: "http://www.pythonocc.org/"
+  org: "pythonocc (maintainer Thomas Paviot)"
+  org_type: community
+  licence: "LGPL-3.0"
+  latest_version: "8.0.1.1"
+  last_release: "2026-10-05"
+  status: active
+  repo_last_push: "2026-10-08"
+  repo_archived: false
+  summary: "Python wrapper of the OpenCascade CAD kernel."
+  point_cloud_use: "Read STEP/IGES, tessellate B-reps and query geometry from Python."
+  note: "PyPI pythonocc-core is a 0.16 placeholder with no files; real releases come via GitHub/conda. Version and date from GitHub release 8.0.1.1 (2026-10-05)."
+  evidence:
+    - "https://api.github.com/repos/tpaviot/pythonocc-core"
+    - "https://api.github.com/repos/tpaviot/pythonocc-core/releases/latest"
+    - "https://pypi.org/pypi/pythonocc-core/json"
+  verified_on: '2026-10-11'
+  logo: null
+- id: ifcopenshell
+  name: "IfcOpenShell"
+  group: cad_volumetric
+  pypi: "ifcopenshell"
+  repo_url: "https://github.com/IfcOpenShell/IfcOpenShell"
+  home_url: "http://ifcopenshell.org"
+  org: "IfcOpenShell (GitHub org)"
+  org_type: community
+  licence: "LGPL-3.0-or-later"
+  latest_version: "0.9.0"
+  last_release: "2026-09-29"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Read, write and query IFC building models, with geometry kernel."
+  point_cloud_use: "Turn BIM IFC models into meshes and sampled point clouds."
+  note: "Relationship to buildingSMART not verified, so not listed as org."
+  evidence:
+    - "https://pypi.org/pypi/ifcopenshell/json"
+    - "https://api.github.com/repos/IfcOpenShell/IfcOpenShell"
+  verified_on: '2026-10-11'
+  logo: null
+- id: ezdxf
+  name: "ezdxf"
+  group: cad_volumetric
+  pypi: "ezdxf"
+  repo_url: "https://github.com/mozman/ezdxf"
+  home_url: "https://ezdxf.mozman.at"
+  org: "mozman (individual maintainer)"
+  org_type: community
+  licence: "MIT"
+  latest_version: "1.4.4"
+  last_release: "2026-05-14"
+  status: active
+  repo_last_push: "2026-10-10"
+  repo_archived: false
+  summary: "Create, read and edit DXF drawings, including 3D entities."
+  point_cloud_use: "Exchange 2D/3D CAD data via DXF, e.g. polylines and meshes."
+  evidence:
+    - "https://pypi.org/pypi/ezdxf/json"
+    - "https://api.github.com/repos/mozman/ezdxf"
+  verified_on: '2026-10-11'
+  logo:
+    file: "ezdxf.png"
+    original: "ezdxf.svg"
+    kind: "wordmark"
+    source_url: "https://raw.githubusercontent.com/mozman/ezdxf/HEAD/docs/graphics/ezdxf-logo-light-bg.svg"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "Light-background version; the repo dark-bg variant still has black letters, not saved."
+    dark_background_ok: false
+    white_background_ok: true
+- id: freecad
+  name: "FreeCAD"
+  group: cad_volumetric
+  pypi: null
+  repo_url: "https://github.com/FreeCAD/FreeCAD"
+  home_url: "https://freecad.org"
+  org: "FreeCAD project (GitHub org)"
+  org_type: community
+  licence: "LGPL-2.1"
+  latest_version: "1.1.4"
+  last_release: "2026-09-28"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Open-source parametric 3D CAD application scriptable from Python."
+  point_cloud_use: "Python-scriptable CAD and BIM workbench; STEP, IFC and mesh import."
+  note: "Not on PyPI (404 for name freecad). Version from latest GitHub release 1.1.4. Python scripting and IFC/mesh import from memory, not checked."
+  evidence:
+    - "https://api.github.com/repos/FreeCAD/FreeCAD"
+    - "https://api.github.com/repos/FreeCAD/FreeCAD/releases/latest"
+  verified_on: '2026-10-11'
+  logo:
+    file: "freecad.png"
+    original: "freecad.svg"
+    kind: "symbol"
+    source_url: "https://commons.wikimedia.org/wiki/File:FreeCAD-logo.svg"
+    licence_or_terms: "LGPL (Wikimedia Commons, author Yorik van Havre)"
+    brand_guidelines_url: null
+    restriction_note: "Symbol only; FreeCAD brand policy not looked up."
+    dark_background_ok: true
+    white_background_ok: true
+- id: simpleitk
+  name: "SimpleITK"
+  group: cad_volumetric
+  pypi: "SimpleITK"
+  repo_url: "https://github.com/SimpleITK/SimpleITK"
+  home_url: "http://www.simpleitk.org"
+  org: "SimpleITK project (GitHub org)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "2.5.6"
+  last_release: "2026-07-30"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Simplified Python interface to the ITK medical imaging toolkit."
+  point_cloud_use: "Registration and segmentation of 3D CT/MRI volumes."
+  note: "ITK itself (pypi itk 5.4.7, 2026-08-07, GitHub org Insight Software Consortium) checked but not given its own entry."
+  evidence:
+    - "https://pypi.org/pypi/SimpleITK/json"
+    - "https://api.github.com/repos/SimpleITK/SimpleITK"
+  verified_on: '2026-10-11'
+  logo:
+    file: "simpleitk.png"
+    original: "simpleitk.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/SimpleITK/SimpleITK/HEAD/Documentation/Images/simpleitk_logo.svg"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: false
+    white_background_ok: true
+- id: nibabel
+  name: "NiBabel"
+  group: cad_volumetric
+  pypi: "nibabel"
+  repo_url: "https://github.com/nipy/nibabel"
+  home_url: "https://nipy.org/nibabel"
+  org: "NIPY developers"
+  org_type: community
+  licence: "MIT"
+  latest_version: "5.4.2"
+  last_release: "2026-03-11"
+  status: active
+  repo_last_push: "2026-10-08"
+  repo_archived: false
+  summary: "Read and write neuroimaging formats such as NIfTI and GIFTI."
+  point_cloud_use: "Load MRI volumes and surface meshes into NumPy."
+  evidence:
+    - "https://pypi.org/pypi/nibabel/json"
+    - "https://api.github.com/repos/nipy/nibabel"
+  verified_on: '2026-10-11'
+  logo:
+    file: "nibabel.png"
+    original: "nibabel.svg"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/nipy/nibabel/HEAD/doc/source/_static/nibabel-logo.svg"
+    licence_or_terms: "none stated (repository licence MIT)"
+    brand_guidelines_url: null
+    restriction_note: "Brain symbol only."
+    dark_background_ok: true
+    white_background_ok: true
+- id: napari
+  name: "napari"
+  group: cad_volumetric
+  pypi: "napari"
+  repo_url: "https://github.com/napari/napari"
+  home_url: "https://napari.org"
+  org: "napari (GitHub org)"
+  org_type: community
+  licence: "BSD-3-Clause"
+  latest_version: "0.9.2"
+  last_release: "2026-09-29"
+  status: active
+  repo_last_push: "2026-10-09"
+  repo_archived: false
+  summary: "Multi-dimensional image viewer with 3D volume and points layers."
+  point_cloud_use: "Inspect 3D volumes, point clouds and surfaces interactively."
+  note: "Viewer, but included for its 3D volume and points layers; may overlap the visualisation researcher."
+  evidence:
+    - "https://pypi.org/pypi/napari/json"
+    - "https://api.github.com/repos/napari/napari"
+  verified_on: '2026-10-11'
+  logo:
+    file: "napari.png"
+    original: "napari.svg"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/napari/docs/HEAD/docs/_static/images/logo.svg"
+    licence_or_terms: "none stated (repository licence BSD-3-Clause)"
+    brand_guidelines_url: null
+    restriction_note: "Symbol only."
+    dark_background_ok: true
+    white_background_ok: true
+- id: yt
+  name: "yt"
+  group: cad_volumetric
+  pypi: "yt"
+  repo_url: "https://github.com/yt-project/yt"
+  home_url: "https://yt-project.org"
+  org: "yt project (fiscally sponsored by NumFOCUS)"
+  org_type: community
+  licence: "BSD-3-Clause"
+  latest_version: "4.4.2"
+  last_release: "2025-11-18"
+  status: active
+  repo_last_push: "2026-10-09"
+  repo_archived: false
+  summary: "Analysis and visualisation toolkit for volumetric simulation data."
+  point_cloud_use: "Slicing, projecting and rendering large 3D simulation grids and particles."
+  note: "NumFOCUS fiscal sponsorship verified on yt-project.org. Matthew Turk SciPy 2016 talk citation not checked here."
+  evidence:
+    - "https://pypi.org/pypi/yt/json"
+    - "https://api.github.com/repos/yt-project/yt"
+    - "https://yt-project.org"
+  verified_on: '2026-10-11'
+  logo:
+    file: "yt.png"
+    original: "yt.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/yt-project/yt/HEAD/doc/source/_static/yt_logo.svg"
+    licence_or_terms: "none stated (repository licence BSD-3-Clause)"
+    brand_guidelines_url: null
+    restriction_note: "none found"
+    dark_background_ok: false
+    white_background_ok: true
+- id: monai
+  name: "MONAI"
+  group: cad_volumetric
+  pypi: "monai"
+  repo_url: "https://github.com/Project-MONAI/MONAI"
+  home_url: "https://project-monai.github.io/"
+  org: "Project MONAI (maintained by NVIDIA, NIH, King's College London and others)"
+  org_type: community
+  licence: "Apache-2.0"
+  latest_version: "1.6.1"
+  last_release: "2026-09-27"
+  status: active
+  repo_last_push: "2026-10-09"
+  repo_archived: false
+  summary: "PyTorch-based toolkit for medical imaging, including 3D volumes."
+  point_cloud_use: "3D medical volume transforms, I/O and models."
+  note: "Maintainer list read from project-monai.github.io. Deep learning is out of scope for this catalogue except as a 3D-volume I/O layer; consider dropping."
+  evidence:
+    - "https://pypi.org/pypi/monai/json"
+    - "https://api.github.com/repos/Project-MONAI/MONAI"
+    - "https://project-monai.github.io/"
+  verified_on: '2026-10-11'
+  logo:
+    file: "monai.png"
+    original: "monai.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/Project-MONAI/MONAI/HEAD/docs/images/MONAI-logo-color.png"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Pale teal: weak contrast on white."
+    dark_background_ok: true
+    white_background_ok: false
+- id: 3d-slicer
+  name: "3D Slicer"
+  group: cad_volumetric
+  pypi: null
+  repo_url: "https://github.com/Slicer/Slicer"
+  home_url: "https://slicer.org"
+  org: "3D Slicer community (licence from Brigham and Women's Hospital)"
+  org_type: community
+  licence: "3D Slicer License (BSD-style, License.txt)"
+  latest_version: "v5.12.4"
+  last_release: "2026-09-09"
+  status: active
+  repo_last_push: "2026-10-11"
+  repo_archived: false
+  summary: "Medical image computing platform with Python scripting."
+  point_cloud_use: "Segment, register and view 3D scans; Python scripting and extensions."
+  note: "Not on PyPI. No GitHub releases; version is the newest git tag v5.12.4 (commit date 2026-09-09). Base/Python in the repo contains Python modules (mrml.py, sitkUtils.py)."
+  evidence:
+    - "https://api.github.com/repos/Slicer/Slicer"
+    - "https://api.github.com/repos/Slicer/Slicer/tags"
+  verified_on: '2026-10-11'
+  logo:
+    file: "slicer.png"
+    original: "slicer.svg"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/Slicer/Slicer/HEAD/Applications/SlicerApp/Resources/Images/Slicer_Logo_Horizontal.svg"
+    licence_or_terms: "3D Slicer License (BSD-style) covers the software; logo not separately licensed"
+    brand_guidelines_url: null
+    restriction_note: "Pale lavender text: weak contrast on white. Another researcher also saved slicer.orig.png in the same folder; slicer.png/svg here are mine."
+    dark_background_ok: true
+    white_background_ok: false
+orgs:
+- id: intel
+  name: "Intel (Intel Labs)"
+  org_type: company
+  home_url: "https://www.intel.com/labs"
+  what: "Chipmaker; its Labs team started and maintains Open3D."
+  logo:
+    file: "intel.png"
+    original: "intel.svg"
+    kind: "wordmark"
+    source_url: "https://commons.wikimedia.org/wiki/File:Intel_logo_2023.svg"
+    licence_or_terms: "Public domain (Wikimedia Commons), marked trademarked"
+    brand_guidelines_url: "https://www.intel.com/content/www/us/en/legal/trademarks.html"
+    restriction_note: "Registered trademark: use Intel brand rules, no implied endorsement; guidelines page returned 403 so not read. Treat as permission-required."
+    dark_background_ok: false
+    white_background_ok: true
+- id: inria
+  name: "Inria"
+  org_type: academic
+  home_url: "https://www.inria.fr"
+  what: "French national research institute; home of the GraphDeco team."
+  logo:
+    file: "inria.png"
+    original: "inria.svg"
+    kind: "wordmark"
+    source_url: "https://commons.wikimedia.org/wiki/File:Inr_logo_rouge.svg"
+    licence_or_terms: "Public domain (Wikimedia Commons), marked trademarked"
+    brand_guidelines_url: "https://www.inria.fr/en/brand-identity"
+    restriction_note: "Trademarked; brand identity page exists but could not be parsed. Treat as permission-required; do not alter."
+    dark_background_ok: false
+    white_background_ok: true
+- id: mapillary
+  name: "Mapillary"
+  org_type: company
+  home_url: "https://www.mapillary.com"
+  what: "Street-level imagery platform; GitHub owner of OpenSfM."
+  logo: null
+- id: alicevision
+  name: "AliceVision"
+  org_type: community
+  home_url: "https://alicevision.org"
+  what: "Open-source 3D computer vision framework behind Meshroom."
+  logo:
+    file: "alicevision.png"
+    original: "alicevision.orig.png"
+    kind: "symbol"
+    source_url: "https://alicevision.org/img/icon.png"
+    licence_or_terms: "none stated"
+    brand_guidelines_url: null
+    restriction_note: "Symbol only, 256x256 px raster, not upscaled. No brand page found."
+    dark_background_ok: true
+    white_background_ok: true
+- id: opencv-org
+  name: "OpenCV"
+  org_type: unverified
+  home_url: "https://opencv.org"
+  what: "Maintainers of the OpenCV computer vision library."
+  logo:
+    file: "opencv.png"
+    original: "opencv.svg"
+    kind: "symbol"
+    source_url: "https://raw.githubusercontent.com/opencv/opencv/HEAD/docs_sphinx/_static/opencv-logo.svg"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Same file as the project entry. Brand policy not located (403)."
+    dark_background_ok: true
+    white_background_ok: true
+- id: uni-bonn-ipb
+  name: "Photogrammetry & Robotics Lab, University of Bonn"
+  org_type: academic
+  home_url: "https://www.ipb.uni-bonn.de"
+  what: "Research lab behind KISS-ICP lidar odometry."
+  logo: null
+- id: mit-spark
+  name: "MIT SPARK Lab"
+  org_type: academic
+  home_url: "https://github.com/MIT-SPARK"
+  what: "MIT robotics lab behind TEASER++."
+  logo: null
+- id: nerfstudio-team
+  name: "nerfstudio project (UC Berkeley)"
+  org_type: academic
+  home_url: "https://www.nerf.studio"
+  what: "Berkeley-led team maintaining nerfstudio and gsplat."
+  logo:
+    file: "nerfstudio.png"
+    original: "nerfstudio.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/nerfstudio-project/nerfstudio/HEAD/docs/_static/imgs/logo.png"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Same file as the nerfstudio entry."
+    dark_background_ok: false
+    white_background_ok: true
+- id: cnr-isti-vclab
+  name: "Visual Computing Lab, ISTI-CNR"
+  org_type: academic
+  home_url: "http://vcg.isti.cnr.it"
+  what: "Italian research lab behind MeshLab and PyMeshLab."
+  logo: null
+- id: cgal-project
+  name: "The CGAL Project"
+  org_type: community
+  home_url: "https://www.cgal.org/"
+  what: "Open-source computational geometry algorithms library project."
+  logo: null
+- id: numfocus
+  name: "NumFOCUS"
+  org_type: foundation
+  home_url: "https://numfocus.org/"
+  what: "Non-profit fiscal sponsor of scientific Python projects such as yt."
+  logo: null
+- id: project-monai
+  name: "Project MONAI"
+  org_type: community
+  home_url: "https://project-monai.github.io/"
+  what: "Open medical-imaging AI framework backed by NVIDIA, NIH, KCL."
+  logo:
+    file: "monai.png"
+    original: "monai.orig.png"
+    kind: "symbol_and_wordmark"
+    source_url: "https://raw.githubusercontent.com/Project-MONAI/MONAI/HEAD/docs/images/MONAI-logo-color.png"
+    licence_or_terms: "none stated (repository licence Apache-2.0)"
+    brand_guidelines_url: null
+    restriction_note: "Same file as the MONAI entry."
+    dark_background_ok: true
+    white_background_ok: false

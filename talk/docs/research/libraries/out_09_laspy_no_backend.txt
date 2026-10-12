@@ -1,0 +1,2 @@
+laspy without lazrs/laszip, read .laz -> LaspyException No LazBackend selected, cannot decompress data
+LAS ok: 1000000

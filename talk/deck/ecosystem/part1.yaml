@@ -1,0 +1,1247 @@
+# Group 1 ecosystem catalogue: data formats/I-O, numerics/scaling, geospatial
+# Facts fetched 2026-10-11 from PyPI JSON API and GitHub API. 'unverified' = could not be checked.
+entries:
+  - id: laspy
+    name: "laspy"
+    group: data_io
+    pypi: "laspy"
+    repo_url: "https://github.com/laspy/laspy"
+    home_url: "https://laspy.readthedocs.io"
+    org: "community"
+    org_type: community
+    licence: "BSD-2-Clause"
+    latest_version: "2.7.0"
+    last_release: 2026-01-14
+    status: active
+    github_last_push: 2026-05-30
+    github_archived: false
+    summary: "Read, write and modify LAS/LAZ point cloud files from Python."
+    point_cloud_use: "Widely used LAS/LAZ I/O straight into NumPy arrays."
+    evidence:
+      - "https://pypi.org/pypi/laspy/json"
+      - "https://api.github.com/repos/laspy/laspy"
+    verified_on: 2026-10-11
+    logo: null
+  - id: pdal
+    name: "PDAL (python-pdal)"
+    group: data_io
+    pypi: "pdal"
+    repo_url: "https://github.com/PDAL/python"
+    home_url: "https://pdal.org"
+    org: "Hobu, Inc."
+    org_type: company
+    licence: "BSD (PyPI classifier; variant not stated)"
+    latest_version: "3.5.5"
+    last_release: 2026-07-31
+    status: active
+    github_last_push: 2026-07-31
+    github_archived: false
+    summary: "Python bindings to PDAL, a point cloud translation and filtering pipeline library."
+    point_cloud_use: "Run PDAL pipelines (readers, filters, writers) and get arrays back."
+    evidence:
+      - "https://pypi.org/pypi/pdal/json"
+      - "https://api.github.com/repos/PDAL/python"
+      - "https://pdal.org/"
+    verified_on: 2026-10-11
+    logo:
+      file: "pdal.png"
+      original: "pdal.orig.webp"
+      kind: symbol
+      source_url: "https://pdal.org/_static/pdal-logo-600.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD (PyPI classifier; variant not stated))"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; bubble symbol only, no wordmark; original is WebP"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: pye57
+    name: "pye57"
+    group: data_io
+    pypi: "pye57"
+    repo_url: "https://github.com/davidcaron/pye57"
+    home_url: "https://github.com/davidcaron/pye57"
+    org: "community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "0.4.19"
+    last_release: 2025-11-26
+    status: active
+    github_last_push: 2026-08-03
+    github_archived: false
+    summary: "Read and write E57 laser scan files, with NumPy output."
+    point_cloud_use: "E57 is the common exchange format for terrestrial laser scanners."
+    evidence:
+      - "https://pypi.org/pypi/pye57/json"
+      - "https://api.github.com/repos/davidcaron/pye57"
+    verified_on: 2026-10-11
+    logo: null
+  - id: plyfile
+    name: "plyfile"
+    group: data_io
+    pypi: "plyfile"
+    repo_url: "https://github.com/dranjan/python-plyfile"
+    home_url: "https://python-plyfile.readthedocs.io"
+    org: "community"
+    org_type: community
+    licence: "GPL-3.0-or-later (PyPI classifier; GitHub reports GPL-3.0)"
+    latest_version: "1.1.5"
+    last_release: 2026-07-28
+    status: active
+    github_last_push: 2026-07-28
+    github_archived: false
+    summary: "Small NumPy-based reader and writer for PLY files."
+    point_cloud_use: "PLY is the usual format for point clouds, meshes and Gaussian splats."
+    evidence:
+      - "https://pypi.org/pypi/plyfile/json"
+      - "https://api.github.com/repos/dranjan/python-plyfile"
+    verified_on: 2026-10-11
+    logo: null
+  - id: meshio
+    name: "meshio"
+    group: data_io
+    pypi: "meshio"
+    repo_url: "https://github.com/nschloe/meshio"
+    home_url: "https://github.com/nschloe/meshio"
+    org: "community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "5.3.5"
+    last_release: 2024-01-31
+    status: stale
+    github_last_push: 2024-07-23
+    github_archived: false
+    summary: "Convert between many mesh file formats, e.g. STL, OBJ, VTK, PLY."
+    point_cloud_use: "Format glue for meshes; note the last release is old."
+    evidence:
+      - "https://pypi.org/pypi/meshio/json"
+      - "https://api.github.com/repos/nschloe/meshio"
+    verified_on: 2026-10-11
+    logo: null
+  - id: copclib
+    name: "copc-lib (copclib)"
+    group: data_io
+    pypi: "copclib"
+    repo_url: "https://github.com/RockRobotic/copc-lib"
+    home_url: "https://github.com/RockRobotic/copc-lib"
+    org: "Rock Robotic"
+    org_type: company
+    licence: "BSD (PyPI; variant not stated; repo LICENSE text says BSD)"
+    latest_version: "2.6.3"
+    last_release: 2025-05-20
+    status: maintenance
+    github_last_push: 2026-10-06
+    github_archived: false
+    summary: "Read and create Cloud Optimized Point Cloud (COPC) LAZ files."
+    point_cloud_use: "COPC allows HTTP range-request streaming of LiDAR without conversion servers."
+    evidence:
+      - "https://pypi.org/pypi/copclib/json"
+      - "https://api.github.com/repos/RockRobotic/copc-lib"
+      - "https://api.github.com/repos/RockRobotic/copc-lib/license"
+    verified_on: 2026-10-11
+    logo: null
+  - id: pyntcloud
+    name: "pyntcloud"
+    group: data_io
+    pypi: "pyntcloud"
+    repo_url: "https://github.com/daavoo/pyntcloud"
+    home_url: "https://pyntcloud.readthedocs.io"
+    org: "community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "0.3.1"
+    last_release: 2022-07-31
+    status: stale
+    github_last_push: 2026-07-10
+    github_archived: false
+    summary: "Pandas-based point cloud class with I/O, filters and scalar fields."
+    point_cloud_use: "Quick exploration of point clouds as DataFrames; development is slow."
+    evidence:
+      - "https://pypi.org/pypi/pyntcloud/json"
+      - "https://api.github.com/repos/daavoo/pyntcloud"
+    verified_on: 2026-10-11
+    logo:
+      file: "pyntcloud.png"
+      original: "pyntcloud.orig.png"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/daavoo/pyntcloud/main/docs/images/pyntcloud_logo.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; dotted Python-snake symbol with wide transparent padding, low contrast on navy"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: entwine
+    name: "Entwine (EPT)"
+    group: data_io
+    pypi: null
+    repo_url: "https://github.com/connormanning/entwine"
+    home_url: "https://entwine.io"
+    org: "Hobu, Inc."
+    org_type: company
+    licence: "LGPL-2.0 (LICENSE file header says LGPL2; GitHub reports NOASSERTION)"
+    latest_version: "3.2.1"
+    last_release: 2025-10-15
+    status: active
+    github_last_push: 2026-06-02
+    github_archived: false
+    summary: "Builds Entwine Point Tile (EPT) octrees from large LiDAR collections."
+    point_cloud_use: "Turns billions of points into a streamable, web-friendly tiled dataset."
+    evidence:
+      - "https://api.github.com/repos/connormanning/entwine"
+      - "https://api.github.com/repos/connormanning/entwine/releases/latest"
+      - "https://api.github.com/repos/connormanning/entwine/license"
+    verified_on: 2026-10-11
+    logo:
+      file: "entwine.png"
+      original: "entwine.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/connormanning/entwine/master/doc/logo/color/entwine_logo_2-color.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: LGPL-2.0 (LICENSE file header says LGPL2; GitHub reports NOASSERTION))"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; dark text"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: potree-converter
+    name: "PotreeConverter"
+    group: data_io
+    pypi: null
+    repo_url: "https://github.com/potree/PotreeConverter"
+    home_url: "https://potree.org"
+    org: "TU Wien (Computer Graphics group)"
+    org_type: academic
+    licence: "BSD-2-Clause"
+    latest_version: "2.1.5"
+    last_release: 2026-09-23
+    status: active
+    github_last_push: 2026-09-23
+    github_archived: false
+    summary: "Converts LAS/LAZ into a Potree octree for browser viewing."
+    point_cloud_use: "Prepares huge point clouds for the Potree WebGL viewer."
+    evidence:
+      - "https://api.github.com/repos/potree/PotreeConverter"
+      - "https://api.github.com/repos/potree/PotreeConverter/releases/latest"
+      - "https://api.github.com/repos/potree/PotreeConverter/readme"
+    verified_on: 2026-10-11
+    logo:
+      file: "potree-converter.png"
+      original: "potree-converter.svg"
+      kind: wordmark
+      source_url: "https://raw.githubusercontent.com/potree/PotreeConverter/develop/resources/page_template/libs/potree/resources/logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-2-Clause)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; this is the Potree viewer logo (text), shared by Potree and PotreeConverter"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: pylas
+    name: "pylas"
+    group: data_io
+    pypi: "pylas"
+    repo_url: "https://github.com/tmontaigu/pylas"
+    home_url: "https://github.com/tmontaigu/pylas"
+    org: "community"
+    org_type: community
+    licence: "BSD-3-Clause"
+    latest_version: "0.4.3"
+    last_release: 2020-10-12
+    status: archived
+    github_last_push: 2021-06-18
+    github_archived: true
+    summary: "Deprecated LAS/LAZ reader/writer; its README points to laspy 2.0."
+    point_cloud_use: "Archived; use laspy instead."
+    evidence:
+      - "https://pypi.org/pypi/pylas/json"
+      - "https://api.github.com/repos/tmontaigu/pylas"
+      - "https://api.github.com/repos/tmontaigu/pylas/readme"
+    verified_on: 2026-10-11
+    logo: null
+  - id: open3d
+    name: "Open3D (I/O module)"
+    group: data_io
+    pypi: "open3d"
+    repo_url: "https://github.com/isl-org/Open3D"
+    home_url: "https://www.open3d.org"
+    org: "Intel (Intelligent Systems Lab)"
+    org_type: company
+    licence: "MIT (PyPI; GitHub reports NOASSERTION)"
+    latest_version: "0.20.0"
+    last_release: 2026-09-16
+    status: active
+    github_last_push: 2026-09-30
+    github_archived: false
+    summary: "3D data library; open3d.io reads PCD, PLY, XYZ, OBJ, STL."
+    point_cloud_use: "One call loads clouds and meshes, then registration and visualisation."
+    evidence:
+      - "https://pypi.org/pypi/open3d/json"
+      - "https://api.github.com/repos/isl-org/Open3D"
+    verified_on: 2026-10-11
+    logo:
+      file: "open3d.png"
+      original: "open3d.orig.png"
+      kind: wordmark
+      source_url: "https://raw.githubusercontent.com/isl-org/Open3D/main/docs/_static/open3d_logo_horizontal.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT (PyPI; GitHub reports NOASSERTION))"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; PNG has an opaque white background box, no vector available"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: point-cloud-utils
+    name: "point-cloud-utils"
+    group: data_io
+    pypi: "point-cloud-utils"
+    repo_url: "https://github.com/fwilliams/point-cloud-utils"
+    home_url: "https://www.fwilliams.info/point-cloud-utils/"
+    org: "community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "0.34.0"
+    last_release: 2025-04-14
+    status: maintenance
+    github_last_push: 2025-09-10
+    github_archived: false
+    summary: "NumPy tools for point clouds and meshes: I/O, sampling, normals, distances."
+    point_cloud_use: "Fast, dependency-light helpers: Poisson sampling, Hausdorff distance, mesh I/O."
+    evidence:
+      - "https://pypi.org/pypi/point-cloud-utils/json"
+      - "https://api.github.com/repos/fwilliams/point-cloud-utils"
+    verified_on: 2026-10-11
+    logo:
+      file: "point-cloud-utils.png"
+      original: "point-cloud-utils.svg"
+      kind: wordmark
+      source_url: "https://raw.githubusercontent.com/fwilliams/point-cloud-utils/master/docs/docs/imgs/logo_crop.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; 1.2 MB SVG with embedded effects"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: trimesh
+    name: "trimesh"
+    group: data_io
+    pypi: "trimesh"
+    repo_url: "https://github.com/mikedh/trimesh"
+    home_url: "https://trimesh.org"
+    org: "community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "5.1.1"
+    last_release: 2026-10-02
+    status: active
+    github_last_push: 2026-10-02
+    github_archived: false
+    summary: "Load, process and analyse triangle meshes; pure Python plus NumPy."
+    point_cloud_use: "Widely used mesh loader (GLB, OBJ, STL, PLY); ray queries, booleans."
+    evidence:
+      - "https://pypi.org/pypi/trimesh/json"
+      - "https://api.github.com/repos/mikedh/trimesh"
+    verified_on: 2026-10-11
+    logo:
+      file: "trimesh.png"
+      original: "trimesh.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/mikedh/trimesh/main/docs/static/images/logotype-a.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; muted purple-grey"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: numpy
+    name: "NumPy"
+    group: numerics
+    pypi: "numpy"
+    repo_url: "https://github.com/numpy/numpy"
+    home_url: "https://numpy.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0"
+    latest_version: "2.5.4"
+    last_release: 2026-10-10
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "N-dimensional array library; the base of the scientific stack."
+    point_cloud_use: "A point cloud is an (N,3) array; everything else builds on this."
+    evidence:
+      - "https://pypi.org/pypi/numpy/json"
+      - "https://api.github.com/repos/numpy/numpy"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "numpy.png"
+      original: "numpy.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/numpy/numpy/main/branding/logo/primary/numpylogo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0)"
+      brand_guidelines_url: "https://github.com/numpy/numpy/blob/main/branding/logo/logoguidelines.md"
+      restriction_note: "Per NumPy logo guidelines: scale proportionally, do not recreate or modify, keep clear space, min 50 px wide"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: scipy
+    name: "SciPy"
+    group: numerics
+    pypi: "scipy"
+    repo_url: "https://github.com/scipy/scipy"
+    home_url: "https://scipy.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause"
+    latest_version: "1.18.1"
+    last_release: 2026-08-21
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "Scientific algorithms; scipy.spatial offers cKDTree, ConvexHull, Delaunay, transforms."
+    point_cloud_use: "KD-tree neighbour queries and rotations for point cloud processing."
+    evidence:
+      - "https://pypi.org/pypi/scipy/json"
+      - "https://api.github.com/repos/scipy/scipy"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "scipy.png"
+      original: "scipy.svg"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/scipy/scipy/main/doc/source/_static/logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; symbol only"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: numba
+    name: "Numba"
+    group: numerics
+    pypi: "numba"
+    repo_url: "https://github.com/numba/numba"
+    home_url: "https://numba.pydata.org"
+    org: "community"
+    org_type: community
+    licence: "BSD-2-Clause"
+    latest_version: "0.68.0"
+    last_release: 2026-09-30
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "JIT compiler that turns Python and NumPy loops into machine code."
+    point_cloud_use: "Speeds up custom per-point loops without leaving Python."
+    evidence:
+      - "https://pypi.org/pypi/numba/json"
+      - "https://api.github.com/repos/numba/numba"
+    verified_on: 2026-10-11
+    logo:
+      file: "numba.png"
+      original: "numba.svg"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/numba/numba/main/docs/_static/numba-blue-icon-rgb.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-2-Clause)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; symbol only (blue icon)"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: cupy
+    name: "CuPy"
+    group: numerics
+    pypi: "cupy-cuda12x"
+    repo_url: "https://github.com/cupy/cupy"
+    home_url: "https://cupy.dev"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "MIT"
+    latest_version: "14.2.0"
+    last_release: 2026-08-20
+    status: active
+    github_last_push: 2026-10-10
+    github_archived: false
+    summary: "NumPy- and SciPy-compatible arrays running on NVIDIA GPUs."
+    point_cloud_use: "GPU acceleration of point cloud array maths with near-identical code."
+    evidence:
+      - "https://pypi.org/pypi/cupy-cuda12x/json"
+      - "https://api.github.com/repos/cupy/cupy"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "cupy.png"
+      original: "cupy.svg"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/cupy/cupy/main/docs/image/cupy_logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; symbol only; dark-grey cubes weak on navy"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: pandas
+    name: "pandas"
+    group: numerics
+    pypi: "pandas"
+    repo_url: "https://github.com/pandas-dev/pandas"
+    home_url: "https://pandas.pydata.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause"
+    latest_version: "3.0.6"
+    last_release: 2026-09-17
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "Labelled tabular data structures and analysis tools."
+    point_cloud_use: "Attribute tables of points (class, intensity, GPS time)."
+    evidence:
+      - "https://pypi.org/pypi/pandas/json"
+      - "https://api.github.com/repos/pandas-dev/pandas"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "pandas.png"
+      original: "pandas.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/pandas-dev/pandas/main/web/pandas/static/img/pandas.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause)"
+      brand_guidelines_url: "https://pandas.pydata.org/about/citing.html"
+      restriction_note: "Per pandas guidelines: full-colour logo only on white backgrounds (a white variant pandas_white.svg exists for dark slides); do not distort or overlay text"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: polars
+    name: "Polars"
+    group: numerics
+    pypi: "polars"
+    repo_url: "https://github.com/pola-rs/polars"
+    home_url: "https://www.pola.rs"
+    org: "Polars"
+    org_type: company
+    licence: "MIT"
+    latest_version: "2.0.0"
+    last_release: 2026-10-06
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "Fast Rust-based DataFrame library with lazy query engine."
+    point_cloud_use: "Quick group-bys and filters over large point attribute tables."
+    evidence:
+      - "https://pypi.org/pypi/polars/json"
+      - "https://api.github.com/repos/pola-rs/polars"
+    verified_on: 2026-10-11
+    logo:
+      file: "polars.png"
+      original: "polars.orig.png"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/pola-rs/polars/main/docs/source/_build/assets/logo.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; symbol only, raster 360x181"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: dask
+    name: "Dask"
+    group: numerics
+    pypi: "dask"
+    repo_url: "https://github.com/dask/dask"
+    home_url: "https://dask.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause"
+    latest_version: "2026.8.0"
+    last_release: 2026-08-24
+    status: active
+    github_last_push: 2026-09-29
+    github_archived: false
+    summary: "Parallel and out-of-core arrays and DataFrames across cores or clusters."
+    point_cloud_use: "Process tiles and rasters larger than memory in parallel."
+    evidence:
+      - "https://pypi.org/pypi/dask/json"
+      - "https://api.github.com/repos/dask/dask"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "dask.png"
+      original: "dask.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/dask/dask/main/docs/source/images/dask_horizontal.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; navy text, an on-blue variant exists in the repo"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: scikit-learn
+    name: "scikit-learn"
+    group: numerics
+    pypi: "scikit-learn"
+    repo_url: "https://github.com/scikit-learn/scikit-learn"
+    home_url: "https://scikit-learn.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause"
+    latest_version: "1.9.1"
+    last_release: 2026-09-10
+    status: active
+    github_last_push: 2026-10-10
+    github_archived: false
+    summary: "Machine learning toolkit: clustering, classification, neighbours, PCA."
+    point_cloud_use: "DBSCAN clustering, PCA normals and classic point classifiers."
+    evidence:
+      - "https://pypi.org/pypi/scikit-learn/json"
+      - "https://api.github.com/repos/scikit-learn/scikit-learn"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "scikit-learn.png"
+      original: "scikit-learn.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/scikit-learn/scikit-learn/main/doc/logos/scikit-learn-logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; black \"learn\" text and small tagline"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: scikit-image
+    name: "scikit-image"
+    group: numerics
+    pypi: "scikit-image"
+    repo_url: "https://github.com/scikit-image/scikit-image"
+    home_url: "https://scikit-image.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause (per repo LICENSE file)"
+    latest_version: "0.26.0"
+    last_release: 2025-12-20
+    status: active
+    github_last_push: 2026-10-09
+    github_archived: false
+    summary: "Image processing algorithms operating on NumPy arrays."
+    point_cloud_use: "Filters, morphology and segmentation on rasters and voxel volumes."
+    evidence:
+      - "https://pypi.org/pypi/scikit-image/json"
+      - "https://api.github.com/repos/scikit-image/scikit-image"
+      - "https://api.github.com/repos/scikit-image/scikit-image/license"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "scikit-image.png"
+      original: "scikit-image.orig.png"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/scikit-image/scikit-image/main/doc/source/_static/logo.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause (per repo LICENSE file))"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; symbol only, raster 389x389"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: xarray
+    name: "xarray"
+    group: numerics
+    pypi: "xarray"
+    repo_url: "https://github.com/pydata/xarray"
+    home_url: "https://xarray.dev"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "Apache-2.0"
+    latest_version: "2026.9.0"
+    last_release: 2026-09-29
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "Labelled N-dimensional arrays with coordinates and Dask integration."
+    point_cloud_use: "Rasters, DEMs and voxel grids as labelled, chunked cubes."
+    evidence:
+      - "https://pypi.org/pypi/xarray/json"
+      - "https://api.github.com/repos/pydata/xarray"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "xarray.png"
+      original: "xarray.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/pydata/xarray/main/doc/_static/logos/Xarray_Logo_RGB_Final.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: Apache-2.0)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; dark grey text (an inverse-RGB variant exists in the repo)"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: zarr
+    name: "Zarr"
+    group: numerics
+    pypi: "zarr"
+    repo_url: "https://github.com/zarr-developers/zarr-python"
+    home_url: "https://zarr.readthedocs.io"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "MIT"
+    latest_version: "3.4.1"
+    last_release: 2026-10-08
+    status: active
+    github_last_push: 2026-10-09
+    github_archived: false
+    summary: "Chunked, compressed N-dimensional array storage for local and cloud."
+    point_cloud_use: "Cloud-friendly storage for big voxel grids and raster stacks."
+    evidence:
+      - "https://pypi.org/pypi/zarr/json"
+      - "https://api.github.com/repos/zarr-developers/zarr-python"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "zarr.png"
+      original: "zarr.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/zarr-developers/zarr-python/main/docs/_static/logo_horizontal.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: pyarrow
+    name: "PyArrow"
+    group: numerics
+    pypi: "pyarrow"
+    repo_url: "https://github.com/apache/arrow"
+    home_url: "https://arrow.apache.org"
+    org: "Apache Software Foundation"
+    org_type: foundation
+    licence: "Apache-2.0"
+    latest_version: "26.0.0"
+    last_release: 2026-10-09
+    status: active
+    github_last_push: 2026-10-09
+    github_archived: false
+    summary: "Python bindings for Apache Arrow columnar memory and Parquet I/O."
+    point_cloud_use: "Zero-copy columnar exchange; reads and writes Parquet point tables."
+    evidence:
+      - "https://pypi.org/pypi/pyarrow/json"
+      - "https://api.github.com/repos/apache/arrow"
+    verified_on: 2026-10-11
+    logo:
+      file: "pyarrow.png"
+      original: "pyarrow.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://arrow.apache.org/img/arrow-logo_horizontal_black-txt_transparent-bg.svg"
+      licence_or_terms: "ASF trademark policy (nominative use); none stated for the file"
+      brand_guidelines_url: "https://www.apache.org/foundation/marks/"
+      restriction_note: "Apache trademark: nominative use allowed, must not imply sponsorship or endorsement by the ASF; black text, unreadable on navy"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: geoparquet
+    name: "GeoParquet"
+    group: numerics
+    pypi: null
+    repo_url: "https://github.com/opengeospatial/geoparquet"
+    home_url: "https://geoparquet.org"
+    org: "Open Geospatial Consortium"
+    org_type: foundation
+    licence: "Apache-2.0"
+    latest_version: "v2.0.0-rc.1 (GitHub latest release; pre-release)"
+    last_release: 2026-07-19
+    status: active
+    github_last_push: 2026-09-21
+    github_archived: false
+    summary: "Specification for storing geometries in Parquet files."
+    point_cloud_use: "Columnar format for vector footprints and point tables in the cloud."
+    evidence:
+      - "https://api.github.com/repos/opengeospatial/geoparquet"
+      - "https://api.github.com/repos/opengeospatial/geoparquet/releases/latest"
+    verified_on: 2026-10-11
+    logo: null
+  - id: duckdb
+    name: "DuckDB (with spatial)"
+    group: numerics
+    pypi: "duckdb"
+    repo_url: "https://github.com/duckdb/duckdb-python"
+    home_url: "https://duckdb.org"
+    org: "DuckDB Foundation"
+    org_type: foundation
+    licence: "MIT"
+    latest_version: "1.5.6"
+    last_release: 2026-09-28
+    status: active
+    github_last_push: 2026-10-01
+    github_archived: false
+    summary: "In-process analytical SQL database; spatial extension handles geometry."
+    point_cloud_use: "SQL over Parquet and GeoParquet point tables without a server."
+    evidence:
+      - "https://pypi.org/pypi/duckdb/json"
+      - "https://api.github.com/repos/duckdb/duckdb-python"
+    verified_on: 2026-10-11
+    logo:
+      file: "duckdb.png"
+      original: "duckdb.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/duckdb/duckdb/main/logo/DuckDB_Logo-horizontal.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; black text (a dark-mode variant exists in the repo)"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: jax
+    name: "JAX"
+    group: numerics
+    pypi: "jax"
+    repo_url: "https://github.com/jax-ml/jax"
+    home_url: "https://docs.jax.dev"
+    org: "Google"
+    org_type: company
+    licence: "Apache-2.0"
+    latest_version: "0.11.2"
+    last_release: 2026-09-17
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "NumPy-style arrays with autodiff and JIT compilation for CPU, GPU, TPU."
+    point_cloud_use: "Differentiable geometry and fast batched point maths on accelerators."
+    evidence:
+      - "https://pypi.org/pypi/jax/json"
+      - "https://api.github.com/repos/jax-ml/jax"
+    verified_on: 2026-10-11
+    logo:
+      file: "jax.png"
+      original: "jax.svg"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/jax-ml/jax/main/images/jax_logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: Apache-2.0)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; symbol only"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: cython
+    name: "Cython"
+    group: numerics
+    pypi: "Cython"
+    repo_url: "https://github.com/cython/cython"
+    home_url: "https://cython.org"
+    org: "community"
+    org_type: community
+    licence: "Apache-2.0"
+    latest_version: "3.3.0"
+    last_release: 2026-08-22
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "Compiler that turns typed Python into C extensions."
+    point_cloud_use: "Basis of fast native modules in many geospatial and scientific packages."
+    evidence:
+      - "https://pypi.org/pypi/Cython/json"
+      - "https://api.github.com/repos/cython/cython"
+    verified_on: 2026-10-11
+    logo:
+      file: "cython.png"
+      original: "cython.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/cython/cython/master/docs/_static/cython-logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: Apache-2.0)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; grey text"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: gdal
+    name: "GDAL"
+    group: geospatial
+    pypi: "GDAL"
+    repo_url: "https://github.com/OSGeo/gdal"
+    home_url: "https://gdal.org"
+    org: "OSGeo"
+    org_type: foundation
+    licence: "MIT (PyPI; GitHub reports NOASSERTION)"
+    latest_version: "3.13.3"
+    last_release: 2026-08-18
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "Library for reading and writing raster and vector geospatial formats."
+    point_cloud_use: "Reads DEMs and rasters; basis for most geospatial Python tools."
+    evidence:
+      - "https://pypi.org/pypi/GDAL/json"
+      - "https://api.github.com/repos/OSGeo/gdal"
+    verified_on: 2026-10-11
+    logo:
+      file: "gdal.png"
+      original: "gdal.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/OSGeo/gdal/master/data/GDALLogoColor.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT (PyPI; GitHub reports NOASSERTION))"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; OSGeo project"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: rasterio
+    name: "rasterio"
+    group: geospatial
+    pypi: "rasterio"
+    repo_url: "https://github.com/rasterio/rasterio"
+    home_url: "https://rasterio.readthedocs.io"
+    org: "community"
+    org_type: community
+    licence: "BSD-3-Clause"
+    latest_version: "1.5.2"
+    last_release: 2026-09-30
+    status: active
+    github_last_push: 2026-10-02
+    github_archived: false
+    summary: "Pythonic raster I/O built on GDAL, returning NumPy arrays."
+    point_cloud_use: "Load and write GeoTIFF rasters such as DEMs and CHMs."
+    evidence:
+      - "https://pypi.org/pypi/rasterio/json"
+      - "https://api.github.com/repos/rasterio/rasterio"
+    verified_on: 2026-10-11
+    logo: null
+  - id: geopandas
+    name: "GeoPandas"
+    group: geospatial
+    pypi: "geopandas"
+    repo_url: "https://github.com/geopandas/geopandas"
+    home_url: "https://geopandas.org"
+    org: "NumFOCUS"
+    org_type: foundation
+    licence: "BSD-3-Clause"
+    latest_version: "1.2.0"
+    last_release: 2026-09-28
+    status: active
+    github_last_push: 2026-10-07
+    github_archived: false
+    summary: "Pandas extension with geometry columns and spatial operations."
+    point_cloud_use: "Join point cloud results with footprints, parcels and tile indexes."
+    evidence:
+      - "https://pypi.org/pypi/geopandas/json"
+      - "https://api.github.com/repos/geopandas/geopandas"
+      - "https://numfocus.org/sponsored-projects"
+    verified_on: 2026-10-11
+    logo:
+      file: "geopandas.png"
+      original: "geopandas.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/geopandas/geopandas/main/doc/source/_static/logo/geopandas_logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: BSD-3-Clause)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: shapely
+    name: "Shapely"
+    group: geospatial
+    pypi: "shapely"
+    repo_url: "https://github.com/shapely/shapely"
+    home_url: "https://shapely.readthedocs.io"
+    org: "community"
+    org_type: community
+    licence: "BSD-3-Clause"
+    latest_version: "2.2.0"
+    last_release: 2026-10-07
+    status: active
+    github_last_push: 2026-10-09
+    github_archived: false
+    summary: "Create and analyse planar geometries (points, lines, polygons) via GEOS."
+    point_cloud_use: "Clip clouds with polygons; geometry predicates and vectorised operations."
+    evidence:
+      - "https://pypi.org/pypi/shapely/json"
+      - "https://api.github.com/repos/shapely/shapely"
+    verified_on: 2026-10-11
+    logo: null
+  - id: pyproj
+    name: "pyproj"
+    group: geospatial
+    pypi: "pyproj"
+    repo_url: "https://github.com/pyproj4/pyproj"
+    home_url: "https://pyproj4.github.io/pyproj"
+    org: "community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "3.8.0"
+    last_release: 2026-09-05
+    status: active
+    github_last_push: 2026-10-08
+    github_archived: false
+    summary: "Python interface to PROJ for coordinate reference system transforms."
+    point_cloud_use: "Reproject point coordinates between CRSs, such as RD New and WGS84."
+    evidence:
+      - "https://pypi.org/pypi/pyproj/json"
+      - "https://api.github.com/repos/pyproj4/pyproj"
+    verified_on: 2026-10-11
+    logo:
+      file: "pyproj.png"
+      original: "pyproj.svg"
+      kind: wordmark
+      source_url: "https://raw.githubusercontent.com/pyproj4/pyproj/main/docs/media/logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: rioxarray
+    name: "rioxarray"
+    group: geospatial
+    pypi: "rioxarray"
+    repo_url: "https://github.com/corteva/rioxarray"
+    home_url: "https://corteva.github.io/rioxarray"
+    org: "Corteva Agriscience (GitHub org owner)"
+    org_type: company
+    licence: "Apache-2.0"
+    latest_version: "0.23.0"
+    last_release: 2026-07-27
+    status: active
+    github_last_push: 2026-07-27
+    github_archived: false
+    summary: "Adds rasterio-powered geospatial raster methods to xarray."
+    point_cloud_use: "Read GeoTIFF/COG as labelled xarray cubes; reproject, clip, mosaic."
+    evidence:
+      - "https://pypi.org/pypi/rioxarray/json"
+      - "https://api.github.com/repos/corteva/rioxarray"
+    verified_on: 2026-10-11
+    logo: null
+  - id: whitebox
+    name: "WhiteboxTools (whitebox)"
+    group: geospatial
+    pypi: "whitebox"
+    repo_url: "https://github.com/opengeos/whitebox-python"
+    home_url: "https://www.whiteboxgeo.com"
+    org: "University of Guelph (John Lindsay)"
+    org_type: academic
+    licence: "MIT"
+    latest_version: "2.3.6"
+    last_release: 2025-02-23
+    status: maintenance
+    github_last_push: 2026-01-31
+    github_archived: false
+    summary: "Python wrapper for WhiteboxTools: hundreds of geospatial and LiDAR tools."
+    point_cloud_use: "LiDAR ground filtering, DEM hydrology and terrain analysis tools."
+    evidence:
+      - "https://pypi.org/pypi/whitebox/json"
+      - "https://api.github.com/repos/opengeos/whitebox-python"
+    verified_on: 2026-10-11
+    logo:
+      file: "whitebox.png"
+      original: "whitebox.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/opengeos/whitebox-python/master/whitebox/img/WhiteboxToolsLogo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; blue text weak on navy"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: csf
+    name: "CSF (cloth-simulation-filter)"
+    group: geospatial
+    pypi: "cloth-simulation-filter"
+    repo_url: "https://github.com/jianboqi/CSF"
+    home_url: "http://ramm.bnu.edu.cn/projects/CSF/"
+    org: "community"
+    org_type: community
+    licence: "Apache-2.0"
+    latest_version: "1.1.7"
+    last_release: 2025-08-13
+    status: maintenance
+    github_last_push: 2026-09-11
+    github_archived: false
+    summary: "Ground point filtering for LiDAR using a cloth simulation."
+    point_cloud_use: "Separates ground from non-ground points; Python binding to the C++ code."
+    evidence:
+      - "https://pypi.org/pypi/cloth-simulation-filter/json"
+      - "https://api.github.com/repos/jianboqi/CSF"
+    verified_on: 2026-10-11
+    logo: null
+  - id: leafmap
+    name: "leafmap"
+    group: geospatial
+    pypi: "leafmap"
+    repo_url: "https://github.com/opengeos/leafmap"
+    home_url: "https://leafmap.org"
+    org: "opengeos (Open Geospatial Solutions)"
+    org_type: community
+    licence: "MIT"
+    latest_version: "0.63.1"
+    last_release: 2026-08-02
+    status: active
+    github_last_push: 2026-10-05
+    github_archived: false
+    summary: "Interactive mapping and geospatial analysis in Jupyter notebooks."
+    point_cloud_use: "Quick map views and COG or STAC browsing; also shows point clouds."
+    evidence:
+      - "https://pypi.org/pypi/leafmap/json"
+      - "https://api.github.com/repos/opengeos/leafmap"
+    verified_on: 2026-10-11
+    logo:
+      file: "leafmap.png"
+      original: "leafmap.orig.png"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/opengeos/leafmap/master/docs/assets/logo_rect.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; raster 720x344, dark green on navy weak"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: geemap
+    name: "geemap"
+    group: geospatial
+    pypi: "geemap"
+    repo_url: "https://github.com/gee-community/geemap"
+    home_url: "https://geemap.org"
+    org: "gee-community"
+    org_type: community
+    licence: "MIT"
+    latest_version: "0.38.9"
+    last_release: 2026-10-01
+    status: active
+    github_last_push: 2026-10-08
+    github_archived: false
+    summary: "Interactive Google Earth Engine mapping and analysis in Python."
+    point_cloud_use: "Satellite and terrain context for LiDAR projects via Earth Engine."
+    evidence:
+      - "https://pypi.org/pypi/geemap/json"
+      - "https://api.github.com/repos/gee-community/geemap"
+    verified_on: 2026-10-11
+    logo:
+      file: "geemap.png"
+      original: "geemap.orig.png"
+      kind: symbol_and_wordmark
+      source_url: "https://raw.githubusercontent.com/gee-community/geemap/master/docs/assets/logo.png"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT)"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; raster 683x682; \"not an officially supported Google product\" per org description"
+      dark_background_ok: true
+      white_background_ok: true
+  - id: proj
+    name: "PROJ"
+    group: geospatial
+    pypi: null
+    repo_url: "https://github.com/OSGeo/PROJ"
+    home_url: "https://proj.org"
+    org: "OSGeo"
+    org_type: foundation
+    licence: "MIT (LICENSE text: \"MIT style license\"; GitHub reports NOASSERTION)"
+    latest_version: "9.9.0"
+    last_release: 2026-09-15
+    status: active
+    github_last_push: 2026-10-11
+    github_archived: false
+    summary: "C library for cartographic projections and datum transformations."
+    point_cloud_use: "The engine behind CRS handling in pyproj, GDAL and PDAL."
+    evidence:
+      - "https://api.github.com/repos/OSGeo/PROJ"
+      - "https://api.github.com/repos/OSGeo/PROJ/releases/latest"
+    verified_on: 2026-10-11
+    logo:
+      file: "proj.png"
+      original: "proj.svg"
+      kind: wordmark
+      source_url: "https://raw.githubusercontent.com/OSGeo/PROJ/master/media/logo.svg"
+      licence_or_terms: "none stated for the logo file itself (repo code licence: MIT (LICENSE text: \"MIT style license\"; GitHub reports NOASSERTION))"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; OSGeo project"
+      dark_background_ok: true
+      white_background_ok: true
+orgs:
+  - id: numfocus
+    name: "NumFOCUS"
+    org_type: foundation
+    home_url: "https://numfocus.org"
+    what: "Non-profit fiscal sponsor of NumPy, pandas, SciPy and other projects."
+    logo: null
+  - id: hobu
+    name: "Hobu, Inc."
+    org_type: company
+    home_url: "https://www.hobu.co"
+    what: "Company behind PDAL, Entwine and python-pdal."
+    logo:
+      file: "hobu.png"
+      original: "hobu.orig.png"
+      kind: symbol_and_wordmark
+      source_url: "https://www.hobu.co/theme/images/hobu-logo-2C.png"
+      licence_or_terms: "none stated"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; PNG 220x63 only, dark grey text"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: osgeo
+    name: "OSGeo"
+    org_type: foundation
+    home_url: "https://www.osgeo.org"
+    what: "Open Source Geospatial Foundation; hosts GDAL and PROJ."
+    logo:
+      file: "osgeo.png"
+      original: "osgeo.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://www.osgeo.org/wp-content/themes/roots/assets/img/logo-osgeo.svg"
+      licence_or_terms: "none stated"
+      brand_guidelines_url: null
+      restriction_note: "none found (no brand policy located in repo or docs); do not alter, no implied endorsement; dark teal text weak on navy"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: apache-software-foundation
+    name: "Apache Software Foundation"
+    org_type: foundation
+    home_url: "https://www.apache.org"
+    what: "Non-profit that governs Apache Arrow and many other projects."
+    logo:
+      file: "apache-software-foundation.png"
+      original: "apache-software-foundation.svg"
+      kind: symbol_and_wordmark
+      source_url: "https://www.apache.org/foundation/press/kit/asf_logo.svg"
+      licence_or_terms: "ASF trademark policy (nominative use); none stated for the file"
+      brand_guidelines_url: "https://www.apache.org/foundation/marks/"
+      restriction_note: "Apache trademark: nominative use allowed, must not imply endorsement or sponsorship by the ASF; purple text weak on navy"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: google
+    name: "Google"
+    org_type: company
+    home_url: "https://about.google"
+    what: "Company behind JAX and Google Earth Engine."
+    logo:
+      file: "google.png"
+      original: "google.svg"
+      kind: symbol
+      source_url: "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/google.svg"
+      licence_or_terms: "Simple Icons file: CC0-1.0 (LICENSE.md)"
+      brand_guidelines_url: "https://about.google/brand-resource-center/"
+      restriction_note: "Google trademark; brand resource centre exists (terms not reviewed in detail); Simple Icons file (CC0-1.0 per its LICENSE.md); monochrome, carries no brand colour; trademark remains with the company; black G only"
+      dark_background_ok: false
+      white_background_ok: true
+  - id: intel
+    name: "Intel"
+    org_type: company
+    home_url: "https://www.intel.com"
+    what: "Company whose Intelligent Systems Lab hosts Open3D."
+    logo: null
+  - id: rock-robotic
+    name: "Rock Robotic"
+    org_type: company
+    home_url: "https://rockrobotic.com"
+    what: "Drone-LiDAR company that maintains copc-lib."
+    logo: null
+  - id: polars-inc
+    name: "Polars"
+    org_type: company
+    home_url: "https://www.pola.rs"
+    what: "Company/organisation behind the Polars DataFrame library."
+    logo: null
+  - id: duckdb-foundation
+    name: "DuckDB Foundation"
+    org_type: foundation
+    home_url: "https://duckdb.org"
+    what: "Non-profit steward of DuckDB (named as PyPI author)."
+    logo: null
+  - id: corteva
+    name: "Corteva Agriscience"
+    org_type: company
+    home_url: "https://www.corteva.com"
+    what: "Agriculture company owning the rioxarray GitHub organisation."
+    logo: null
+  - id: tu-wien
+    name: "TU Wien (Computer Graphics group)"
+    org_type: academic
+    home_url: "https://www.cg.tuwien.ac.at"
+    what: "University research group behind Potree and PotreeConverter."
+    logo: null
+  - id: university-of-guelph
+    name: "University of Guelph (John Lindsay)"
+    org_type: academic
+    home_url: "https://www.uoguelph.ca"
+    what: "University group that develops WhiteboxTools."
+    logo: null
+  - id: ogc
+    name: "Open Geospatial Consortium"
+    org_type: foundation
+    home_url: "https://www.ogc.org"
+    what: "Standards body hosting the GeoParquet specification repository."
+    logo: null
+  - id: opengeos
+    name: "opengeos (Open Geospatial Solutions)"
+    org_type: community
+    home_url: "https://opengeos.org"
+    what: "GitHub organisation maintaining leafmap and whitebox-python."
+    logo: null
+  - id: gee-community
+    name: "gee-community"
+    org_type: community
+    home_url: "https://github.com/gee-community"
+    what: "Earth Engine community GitHub organisation; maintains geemap."
+    logo: null

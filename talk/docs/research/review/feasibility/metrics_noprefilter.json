@@ -1,0 +1,116 @@
+{
+ "label": "PROTOTYPE",
+ "voxel": 0.25,
+ "tile": 25.0,
+ "eps": 0.75,
+ "min_points": 8,
+ "split_returns": false,
+ "bbox_rd": [
+  135330,
+  455450,
+  135530,
+  455650
+ ],
+ "origin": [
+  135330.0,
+  455450.0,
+  0.0
+ ],
+ "points_in": 1239310,
+ "points_after_voxel": 774947,
+ "kept_share": 0.6253,
+ "ahn_classes_in": {
+  "1": 296751,
+  "2": 808952,
+  "6": 133607
+ },
+ "ransac": {
+  "tiles": 64,
+  "rejected_tiles": 8,
+  "threshold": 0.2,
+  "band": [
+   -1.0,
+   0.35
+  ],
+  "zwin": 1000.0,
+  "iterations": 300,
+  "probability": 1.0,
+  "seed": 0
+ },
+ "clusters": 1387,
+ "noise_voxels": 25213,
+ "labelled_voxels": {
+  "ground": 422736,
+  "building": 101855,
+  "vegetation": 193310,
+  "furniture": 5093,
+  "unlabelled": 51953
+ },
+ "clusters_per_class": {
+  "building": 32,
+  "vegetation": 915,
+  "furniture": 165,
+  "unlabelled": 275
+ },
+ "furniture_subtypes": {
+  "pole_like": 63,
+  "car_sized": 35,
+  "other_small": 67
+ },
+ "score": {
+  "voxel_level": {
+   "ground_vs_class2": {
+    "precision": 0.983,
+    "recall": 0.921,
+    "pred": 422736,
+    "truth": 451138
+   },
+   "building_vs_class6": {
+    "precision": 0.739,
+    "recall": 0.968,
+    "pred": 101855,
+    "truth": 77717
+   }
+  },
+  "point_level": {
+   "ground_vs_class2": {
+    "precision": 0.988,
+    "recall": 0.929,
+    "pred": 761104,
+    "truth": 808952
+   },
+   "building_vs_class6": {
+    "precision": 0.787,
+    "recall": 0.975,
+    "pred": 165543,
+    "truth": 133607
+   }
+  },
+  "veg_points_ahn_class_share": {
+   "1": 0.906,
+   "2": 0.083,
+   "6": 0.01
+  },
+  "furn_points_ahn_class_share": {
+   "1": 0.911,
+   "2": 0.089,
+   "6": 0.0
+  },
+  "class1_multireturn_points_labelled_veg": 0.864
+ },
+ "timings_s": {
+  "load_s": 0.109,
+  "voxel_s": 1.0,
+  "voxel_attr_s": 1.231,
+  "ground_s": 0.393,
+  "dbscan_s": 0.199,
+  "label_s": 0.337,
+  "total_s": 3.302
+ },
+ "env": {
+  "python": "3.13.15",
+  "laspy": "2.7.0",
+  "open3d": "0.20.0",
+  "numpy": "2.5.3"
+ }
+}

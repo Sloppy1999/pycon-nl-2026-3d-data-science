@@ -1,0 +1,225 @@
+{
+  "label": "FINAL",
+  "script": "bench/eigen_features.py",
+  "idea": "F. Poux, Real-Time 3D Point Cloud Classification for 3D Shapes (PCA + Random Forests), YouTube o2fe6faVHEw, 2025-03-20",
+  "conditions": {
+    "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+    "cores": 8,
+    "threads": 16,
+    "ram_gib": 31.3,
+    "os": "Omarchy",
+    "kernel": "7.2.5-3-omarchy",
+    "governor": "performance",
+    "boost": "on",
+    "python": "3.13.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "open3d": "0.20.0",
+    "laspy": "2.7.0",
+    "load_avg_before": [
+      0.99,
+      1.5,
+      1.14
+    ],
+    "load_avg_after": null,
+    "date_utc": "2026-10-11T20:07:46Z",
+    "data": "data/utrecht_jaarbeurs_200m.laz",
+    "n": 139804,
+    "runs": 7,
+    "warmup": 1,
+    "statistic": "median and IQR (numpy.percentile, linear) of wall time over the timed runs",
+    "extra": {
+      "boost_sources": {
+        "/sys/devices/system/cpu/cpufreq/boost": "1",
+        "/sys/devices/system/cpu/cpufreq/policy*/boost": "1"
+      },
+      "scaling_driver": "amd-pstate-epp",
+      "energy_performance_preference": "performance",
+      "cpu_max_mhz": 4666,
+      "cpu_temp_c_at_collect": 51.25,
+      "ram_available_gib_at_collect": 24.6,
+      "affinity_cpus": 16,
+      "python_implementation": "CPython",
+      "python_full": "3.13.15 (main, Aug 25 2026, 14:01:07) [Clang 22.1.3 ]",
+      "gil_enabled": true,
+      "lazrs": "0.8.2",
+      "psutil": "7.2.2",
+      "thread_env": {
+        "OMP_NUM_THREADS": null,
+        "OPENBLAS_NUM_THREADS": null,
+        "MKL_NUM_THREADS": null,
+        "NUMEXPR_NUM_THREADS": null
+      },
+      "transparent_hugepage": "[always] madvise never",
+      "scikit_learn": "1.9.1"
+    }
+  },
+  "n_clusters": 1024,
+  "voxels_in_clusters": 139804,
+  "features_identical_loop_vs_batched": true,
+  "verticality_differs_clusters": 0,
+  "verticality_note": "differs only where the two smallest eigenvalues are equal (the eigenvector is arbitrary)",
+  "timing": {
+    "batched": {
+      "median_ms": 10.964091001369525,
+      "q1_ms": 10.932662000413984,
+      "q3_ms": 11.017962999176234,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 10.893898997892393,
+      "max_ms": 11.124944998300634,
+      "all_ms": [
+        11.039774,
+        10.996152,
+        10.943092,
+        10.893899,
+        10.922232,
+        11.124945,
+        10.964091
+      ]
+    },
+    "loop_over_clusters": {
+      "median_ms": 53.228873999614734,
+      "q1_ms": 52.916774999175686,
+      "q3_ms": 53.370245501355384,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 52.637538999988465,
+      "max_ms": 54.31987200063304,
+      "all_ms": [
+        54.319872,
+        53.456693,
+        52.637539,
+        52.963543,
+        52.870007,
+        53.228874,
+        53.283798
+      ]
+    },
+    "factor": 4.854836939329116
+  },
+  "median_features_by_rule_class": {
+    "buildings": {
+      "clusters": 276,
+      "linearity": 0.7777609835572776,
+      "planarity": 0.19280886055113874,
+      "sphericity": 0.0029210982805524736,
+      "verticality": 0.08319518638659151
+    },
+    "vegetation": {
+      "clusters": 683,
+      "linearity": 0.7478091394402847,
+      "planarity": 0.1867950386317494,
+      "sphericity": 0.012502869884053618,
+      "verticality": 0.2193804785174096
+    },
+    "street_furniture": {
+      "clusters": 3,
+      "linearity": 0.7887573883131382,
+      "planarity": 0.2102217529341093,
+      "sphericity": 0.001020858752752497,
+      "verticality": 0.9996026633385945
+    },
+    "unlabelled": {
+      "clusters": 62,
+      "linearity": 0.8733251037751169,
+      "planarity": 0.10114522180631311,
+      "sphericity": 0.007218934970921338,
+      "verticality": 0.02181038049124623
+    }
+  },
+  "median_features_by_ahn_class": {
+    "ahn_building": {
+      "clusters": 104,
+      "linearity": 0.7359451222483278,
+      "planarity": 0.2274851049587588,
+      "sphericity": 0.004128015133569122,
+      "verticality": 0.004366991118982422
+    },
+    "ahn_other": {
+      "clusters": 902,
+      "linearity": 0.758816123707881,
+      "planarity": 0.18311110919777981,
+      "sphericity": 0.009399747898202554,
+      "verticality": 0.19058240775789448
+    }
+  },
+  "scored": {
+    "clusters": 1006,
+    "ahn_building": 104,
+    "ahn_other": 902,
+    "points": 427853,
+    "points_ahn_building": 341795,
+    "points_ahn_other": 86058,
+    "left_out": 18,
+    "left_out_note": "AHN majority class 2 (ground) or other codes"
+  },
+  "rules": {
+    "points_building_recall": 0.9933176319138665,
+    "points_other_recall": 0.3319505449812917,
+    "clusters_building_recall": 0.5384615384615384,
+    "clusters_other_recall": 0.7594235033259423,
+    "points_balanced_accuracy": 0.6626340884475791,
+    "clusters_balanced_accuracy": 0.6489425208937404,
+    "note": "rule 2 or 3 = building; no training"
+  },
+  "forest_eigen_only": {
+    "features": [
+      "linearity",
+      "planarity",
+      "sphericity",
+      "verticality"
+    ],
+    "points_building_recall": 0.6876665837709738,
+    "points_other_recall": 0.9243068628134514,
+    "clusters_building_recall": 0.2403846153846154,
+    "clusters_other_recall": 0.9124168514412417,
+    "points_balanced_accuracy": 0.8059867232922127,
+    "clusters_balanced_accuracy": 0.5764007334129285,
+    "importance": {
+      "linearity": 0.23383307211608198,
+      "planarity": 0.4094037336542534,
+      "sphericity": 0.11697418842610957,
+      "verticality": 0.23978900580355508
+    }
+  },
+  "forest_eigen_plus_rule_inputs": {
+    "features": [
+      "linearity",
+      "planarity",
+      "sphericity",
+      "verticality",
+      "top",
+      "foot",
+      "multi"
+    ],
+    "points_building_recall": 0.9423367808189119,
+    "points_other_recall": 0.6379650933091636,
+    "clusters_building_recall": 0.23076923076923078,
+    "clusters_other_recall": 0.9889135254988913,
+    "points_balanced_accuracy": 0.7901509370640378,
+    "clusters_balanced_accuracy": 0.609841378134061,
+    "importance": {
+      "linearity": 0.18700355369400534,
+      "planarity": 0.25932146777079157,
+      "sphericity": 0.049201762212877656,
+      "verticality": 0.14632195694806657,
+      "top": 0.10773489150351075,
+      "foot": 0.07152532296109042,
+      "multi": 0.1788910449096578
+    }
+  },
+  "cv": {
+    "kind": "GroupKFold on 50 m blocks of the cluster centroid",
+    "folds": 5,
+    "blocks": 16,
+    "block_m": 50.0,
+    "forest": "RandomForestClassifier(n_estimators=100, random_state=0, n_jobs=-1)"
+  },
+  "caveats": [
+    "AHN has no vegetation class: only building vs not is scored",
+    "the rules were tuned on this crop, so their score is in-sample",
+    "points_*: every original point counts once (the forest is trained with the same weights); clusters_*: a 3-voxel fragment counts as much as a roof",
+    "AHN files many facade points as class 1, so facade fragments the rules call buildings count as errors"
+  ]
+}

@@ -1,0 +1,12 @@
+== AHN4 Utrecht crop C
+ url=https://basisdata.nl/hwh-ahn/AHN4_KM/01_LAZ/AHN4_C_135000_455000.COPC.LAZ
+ header: LAS 1.4 PF6 total_points=33507029 scales=[0.001 0.001 0.001] offsets=[135500. 455500.     -0.] software='las2las64 (version 240415)' created=2020-03-31
+ bbox 135330,455450-135530,455650: 1490595 pts (37.3/m2), first returns 31.6/m2
+ classes: {1: 317862, 2: 983517, 6: 189216}
+ fetched ~36.2 MB in 55 HTTP calls, 2.8s
+== AHN6 2025 Groningen centre
+ url=https://basisdata.nl/hwh-ahn/AHN6/01_LAZ/AHN6_2025_C_233000_582000.COPC.LAZ
+ header: LAS 1.4 PF7 total_points=27921566 scales=[0.001 0.001 0.001] offsets=[-0. -0. -0.] software='TerraScan' created=2025-01-13
+ bbox 233400,582400-233600,582600: 1099745 pts (27.5/m2), first returns 17.2/m2
+ classes: {1: 461567, 2: 309669, 6: 328509}
+ fetched ~43.4 MB in 40 HTTP calls, 3.1s

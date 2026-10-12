@@ -1,0 +1,6 @@
+>>> import laspy
+>>> las = laspy.read("crop.laz")
+>>> las.xyz.shape
+(722961, 3)  # <<
+>>> las.classification[:5]
+array([6, 6, 6, 6, 6], dtype=uint8)

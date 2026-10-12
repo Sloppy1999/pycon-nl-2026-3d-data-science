@@ -1,0 +1,496 @@
+{
+  "label": "FINAL",
+  "conditions": {
+    "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+    "cores": 8,
+    "threads": 16,
+    "ram_gib": 31.3,
+    "os": "Omarchy",
+    "kernel": "7.2.5-3-omarchy",
+    "governor": "performance",
+    "boost": "on",
+    "python": "3.13.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "open3d": "0.20.0",
+    "laspy": "2.7.0",
+    "load_avg_before": [
+      0.9,
+      1.43,
+      1.13
+    ],
+    "load_avg_after": [
+      1.05,
+      1.3,
+      1.11
+    ],
+    "date_utc": "2026-10-11T20:08:19Z",
+    "data": "data/utrecht_jaarbeurs_200m.laz",
+    "n": 722961,
+    "runs": 7,
+    "warmup": 1,
+    "statistic": "median and IQR (numpy.percentile, linear) of wall time over the timed runs",
+    "extra": {
+      "boost_sources": {
+        "/sys/devices/system/cpu/cpufreq/boost": "1",
+        "/sys/devices/system/cpu/cpufreq/policy*/boost": "1"
+      },
+      "scaling_driver": "amd-pstate-epp",
+      "energy_performance_preference": "performance",
+      "cpu_max_mhz": 4666,
+      "cpu_temp_c_at_collect": 49.375,
+      "ram_available_gib_at_collect": 24.4,
+      "affinity_cpus": 16,
+      "python_implementation": "CPython",
+      "python_full": "3.13.15 (main, Aug 25 2026, 14:01:07) [Clang 22.1.3 ]",
+      "gil_enabled": true,
+      "lazrs": "0.8.2",
+      "psutil": "7.2.2",
+      "thread_env": {
+        "OMP_NUM_THREADS": null,
+        "OPENBLAS_NUM_THREADS": null,
+        "MKL_NUM_THREADS": null,
+        "NUMEXPR_NUM_THREADS": null
+      },
+      "transparent_hugepage": "[always] madvise never",
+      "load_check": {
+        "limit_1min": 1.0,
+        "value": 0.9,
+        "forced": false,
+        "applies_to": "--final"
+      },
+      "order": "interleaved: seeded (numpy default_rng 20261015) permutation of the variants per round",
+      "gc": "gc.collect() before every run, GC enabled during runs; timeit disables GC",
+      "timers": "wall time.perf_counter, CPU time.process_time (whole process)",
+      "pinning": "none (no taskset); boost and SMT as reported"
+    }
+  },
+  "plane": {
+    "n": 722961,
+    "loop_numpy_rows": {
+      "median_ms": 317.0335899994825,
+      "q1_ms": 315.0706425021781,
+      "q3_ms": 319.2289214985067,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 312.73301799956243,
+      "max_ms": 323.49142199745984,
+      "all_ms": [
+        317.03359,
+        312.733018,
+        319.793056,
+        318.664787,
+        323.491422,
+        316.962967,
+        313.178318
+      ],
+      "cpu_over_wall_median": 0.9974445874408604,
+      "warmup_ms": [
+        318.311201
+      ]
+    },
+    "loop_python_floats": {
+      "median_ms": 77.69906100293156,
+      "q1_ms": 77.56365099885443,
+      "q3_ms": 78.16453400118917,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 77.50013599797967,
+      "max_ms": 81.77214399984223,
+      "all_ms": [
+        77.609352,
+        77.699061,
+        77.740309,
+        77.51795,
+        81.772144,
+        77.500136,
+        78.588759
+      ],
+      "cpu_over_wall_median": 0.99629927312868,
+      "warmup_ms": [
+        78.803755
+      ]
+    },
+    "vectorised": {
+      "median_ms": 2.440463002130855,
+      "q1_ms": 2.4343215009139385,
+      "q3_ms": 2.4579009987064637,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 2.294267000252148,
+      "max_ms": 2.4709909994271584,
+      "all_ms": [
+        2.430384,
+        2.440463,
+        2.438259,
+        2.458948,
+        2.456854,
+        2.294267,
+        2.470991
+      ],
+      "cpu_over_wall_median": 1.0036357018985036,
+      "warmup_ms": [
+        4.086638
+      ]
+    },
+    "equal": true,
+    "factor": {
+      "median": 129.9071486528045,
+      "iqr_low": 128.18687272920775,
+      "iqr_high": 131.13671360937977
+    },
+    "factor_python_floats": {
+      "median": 31.837836072536135,
+      "iqr_low": 31.556865406570232,
+      "iqr_high": 32.10937173739918
+    },
+    "per_step_ns_loop": 438.5210128893295,
+    "per_point_ns_vectorised": 3.3756495884713766,
+    "equal_python_floats": true,
+    "per_step_ns_python_floats": 107.47337823607576,
+    "coefficients": [
+      0.00020076062499026925,
+      0.0004357586645023016,
+      0.9999998849047722,
+      -3.3444190018550604
+    ],
+    "plane_fit": {
+      "distance_threshold": 0.3,
+      "ransac_n": 3,
+      "num_iterations": 1000,
+      "probability": 1.0,
+      "seed": 0,
+      "on": "whole crop (722961 points)",
+      "inliers": 233058,
+      "seconds": 0.4305734469999152,
+      "call": "pcd.segment_plane(0.3, 3, 1000, 1.0) after o3d.utility.random.seed(0)"
+    },
+    "array": {
+      "how": "las.xyz - las.header.mins",
+      "dtype": "float64",
+      "layout": "F-contiguous",
+      "smoke_subsample": null
+    },
+    "snippets": {
+      "loop": {
+        "file": "snippets/s16_loop.py",
+        "source": "a, b, c, d = plane\nh = np.empty(len(P))  # distances\nfor i, p in enumerate(P):\n    x, y, z = p[0], p[1], p[2]\n    h[i] = abs(a*x + b*y + c*z + d)\n",
+        "budget": {
+          "lines": 5,
+          "max_chars": 35,
+          "ok": true,
+          "budget": {
+            "lines": 5,
+            "chars": 35
+          }
+        }
+      },
+      "vectorised": {
+        "file": "snippets/s16_vec.py",
+        "source": "a, b, c, d = plane\nx, y, z = P.T  # columns, no copy\nh = np.abs(a*x + b*y + c*z + d)\n",
+        "budget": {
+          "lines": 3,
+          "max_chars": 33,
+          "ok": true,
+          "budget": {
+            "lines": 3,
+            "chars": 35
+          }
+        }
+      },
+      "run_as": "slide region verbatim, compiled as a function body f(P, plane) returning h"
+    },
+    "matmul_reference": {
+      "expr": "np.abs(P @ (a, b, c) + d)",
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "note": "not used in any factor"
+    },
+    "sensitivity": {
+      "loop_numpy_rows_c_contiguous": {
+        "median_ms": 319.9531170030241,
+        "q1_ms": 319.0206329982175,
+        "q3_ms": 320.9613689996331,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 317.353644000832,
+        "max_ms": 322.09905499985325,
+        "all_ms": [
+          319.00538,
+          317.353644,
+          319.953117,
+          322.099055,
+          321.957027,
+          319.965711,
+          319.035886
+        ],
+        "cpu_over_wall_median": 0.9973857011143651,
+        "warmup_ms": [
+          319.531543
+        ]
+      },
+      "vectorised_c_contiguous": {
+        "median_ms": 3.6233840000932105,
+        "q1_ms": 3.4312424995732727,
+        "q3_ms": 3.765628000110155,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 3.3161360006488394,
+        "max_ms": 4.427490999660222,
+        "all_ms": [
+          4.427491,
+          3.316136,
+          3.489312,
+          3.68935,
+          3.373173,
+          3.841906,
+          3.623384
+        ],
+        "cpu_over_wall_median": 1.0009640736540504,
+        "warmup_ms": [
+          4.588625
+        ]
+      },
+      "factor_c_contiguous": {
+        "median": 88.30229337955717,
+        "iqr_low": 84.71910475195246,
+        "iqr_high": 93.54085846149013
+      },
+      "loop_numpy_rows_unpack": {
+        "median_ms": 591.6056360001676,
+        "q1_ms": 590.7111639990035,
+        "q3_ms": 597.5806315000227,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 589.6931600000244,
+        "max_ms": 603.8323690008838,
+        "all_ms": [
+          589.69316,
+          591.463619,
+          591.605636,
+          591.998687,
+          603.832369,
+          603.162576,
+          589.958709
+        ],
+        "cpu_over_wall_median": 0.9973249715156546,
+        "warmup_ms": [
+          602.706306
+        ]
+      },
+      "unpack_source": "a, b, c, d = plane\nh = np.empty(len(P))  # distances\nfor i, p in enumerate(P):\n    x, y, z = p\n    h[i] = abs(a*x + b*y + c*z + d)\n",
+      "factor_unpack_vs_loop": {
+        "median": 1.866066103598465,
+        "iqr_low": 1.8504312241701657,
+        "iqr_high": 1.8966560221360251
+      },
+      "tolist": {
+        "median_ms": 106.52807099904749,
+        "q1_ms": 106.20930400000361,
+        "q3_ms": 107.12403399884352,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 104.87431100045796,
+        "max_ms": 108.84344800069812,
+        "all_ms": [
+          106.227794,
+          106.528071,
+          108.843448,
+          107.531292,
+          106.716776,
+          106.190814,
+          104.874311
+        ],
+        "cpu_over_wall_median": 0.9964116627332722,
+        "warmup_ms": [
+          106.250587
+        ]
+      },
+      "equal": {
+        "loop_python_floats": true,
+        "loop_numpy_rows_c_contiguous": true,
+        "vectorised_c_contiguous": true,
+        "loop_numpy_rows_unpack": true
+      },
+      "note": "C-contiguous = np.ascontiguousarray(P); unpack = the loop with `x, y, z = p`; tolist = cost of P.tolist(), excluded from loop_python_floats"
+    },
+    "snapshots": {
+      "before": {
+        "time_utc": "2026-10-11T20:08:20Z",
+        "load_avg": [
+          0.9,
+          1.43,
+          1.13
+        ],
+        "cpu_temp_c": 44.25,
+        "cpu_freq_mhz_mean": 2170,
+        "ram_available_gib": 24.4
+      },
+      "after": {
+        "time_utc": "2026-10-11T20:08:38Z",
+        "load_avg": [
+          0.93,
+          1.4,
+          1.12
+        ],
+        "cpu_temp_c": 52.875,
+        "cpu_freq_mhz_mean": 2726,
+        "ram_available_gib": 24.0
+      }
+    }
+  },
+  "knn": {
+    "n": 722961,
+    "k": 16,
+    "loop": {
+      "median_ms": 9555.900172999827,
+      "q1_ms": 9549.985518498943,
+      "q3_ms": 9596.401356498973,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 9543.797136000649,
+      "max_ms": 9652.04730899859,
+      "all_ms": [
+        9597.783348,
+        9551.133181,
+        9652.047309,
+        9543.797136,
+        9555.900173,
+        9595.019365,
+        9548.837856
+      ],
+      "cpu_over_wall_median": 0.9960269601812599,
+      "warmup_ms": [
+        9766.079567
+      ]
+    },
+    "one_call_1t": {
+      "median_ms": 1552.577114001906,
+      "q1_ms": 1549.1330534987355,
+      "q3_ms": 1553.2896285003517,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 1540.6412369993632,
+      "max_ms": 1554.9239259999013,
+      "all_ms": [
+        1553.946574,
+        1552.632683,
+        1547.584467,
+        1552.577114,
+        1540.641237,
+        1554.923926,
+        1550.68164
+      ],
+      "cpu_over_wall_median": 0.9967027307511562,
+      "warmup_ms": [
+        1550.851657
+      ]
+    },
+    "one_call_all": {
+      "median_ms": 165.02929799753474,
+      "q1_ms": 163.68101999796636,
+      "q3_ms": 176.33345650028787,
+      "runs": 7,
+      "threads": 16,
+      "min_ms": 160.6630620008218,
+      "max_ms": 194.0047339994635,
+      "all_ms": [
+        166.948439,
+        185.718474,
+        165.029298,
+        194.004734,
+        162.409706,
+        164.952334,
+        160.663062
+      ],
+      "cpu_over_wall_median": 12.989658424725043,
+      "warmup_ms": [
+        171.464007
+      ]
+    },
+    "factor_loop_vs_1t": {
+      "median": 6.154863476229301,
+      "iqr_low": 6.148232334313034,
+      "iqr_high": 6.194691498464503
+    },
+    "factor_loop_vs_all": {
+      "median": 57.90426481207341,
+      "iqr_low": 54.15867021516335,
+      "iqr_high": 58.62867519165143
+    },
+    "factor_1t_vs_all": {
+      "median": 9.407887768056185,
+      "iqr_low": 8.785247475122263,
+      "iqr_high": 9.489735758731529
+    },
+    "per_query_us_far": 3.1841332998737926,
+    "per_query_us_typical": 14.090416349972656,
+    "per_query_us_far_knn": 9.777370099982363,
+    "per_point_us_loop": 13.217725676765175,
+    "per_point_us_one_call_1t": 2.147525404554196,
+    "per_query_desc": {
+      "per_query_us_far": "scipy.spatial.KDTree.query_ball_point(p_far, r=0.5, return_length=True), p_far = local origin + (-10000, -10000, -10000) m, answer 0 neighbours (no tree work beyond the root check); median over 7 timeit repeats of per-call time, gc disabled by timeit",
+      "per_query_us_far_knn": "KDTree.query(p_far, k=16, distance_upper_bound=0.5), same p_far, answer: no neighbour (all distances inf); fixed cost of the call the loop uses",
+      "per_query_us_typical": "KDTree.query(p, k=16) looped over 20000 crop points (seeded random sample, seed 20261016); median per call over 7 repeats",
+      "far": {
+        "median_us": 3.1841332998737926,
+        "min_us": 3.1422417001522263,
+        "max_us": 3.2055617499281652,
+        "repeat": 7,
+        "calls_per_repeat": 20000,
+        "stmt": "tree.query_ball_point(p_far, r, return_length=True)"
+      },
+      "far_knn": {
+        "median_us": 9.777370099982363,
+        "min_us": 9.769975699964561,
+        "max_us": 9.907246399961878,
+        "repeat": 7,
+        "calls_per_repeat": 20000,
+        "stmt": "tree.query(p_far, k=k, distance_upper_bound=r)"
+      },
+      "typical": {
+        "median_us": 14.090416349972656,
+        "min_us": 13.741187449886638,
+        "max_us": 14.290158900075767,
+        "repeat": 7,
+        "calls_per_repeat": 20000,
+        "stmt": "for p in S: tree.query(p, k=k)"
+      },
+      "far_answer": {
+        "ball_count": 0,
+        "knn_all_inf": true
+      }
+    },
+    "equal_loop_vs_1t": true,
+    "equal_1t_vs_all": true,
+    "build_s": 0.18777106599736726,
+    "threads_all_source": "worker threads observed in /proc/self/task during a workers=-1 call",
+    "tree": "scipy.spatial.KDTree(P) default leafsize, built once, build excluded from every timing",
+    "snapshots": {
+      "before": {
+        "time_utc": "2026-10-11T20:08:38Z",
+        "load_avg": [
+          0.93,
+          1.4,
+          1.12
+        ],
+        "cpu_temp_c": 53.0,
+        "cpu_freq_mhz_mean": 3599,
+        "ram_available_gib": 24.1
+      },
+      "after": {
+        "time_utc": "2026-10-11T20:10:09Z",
+        "load_avg": [
+          1.05,
+          1.31,
+          1.11
+        ],
+        "cpu_temp_c": 49.75,
+        "cpu_freq_mhz_mean": 3262,
+        "ram_available_gib": 24.1
+      }
+    }
+  },
+  "script": "bench/bench_cliff.py",
+  "runtime_s": 114.15815457499775
+}

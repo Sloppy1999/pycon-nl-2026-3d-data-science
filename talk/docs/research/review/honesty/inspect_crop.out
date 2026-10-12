@@ -1,0 +1,25 @@
+versions 3.13.15 laspy 2.7.0 o3d 0.20.0 numpy 2.5.3 scipy 1.18.1
+LAS 1.4 PF 6 size 30 count 1239310
+dims ['X', 'Y', 'Z', 'intensity', 'return_number', 'number_of_returns', 'synthetic', 'key_point', 'withheld', 'overlap', 'scanner_channel', 'scan_direction_flag', 'edge_of_flight_line', 'classification', 'user_data', 'scan_angle', 'point_source_id', 'gps_time']
+extra dims []
+mins [1.3533e+05 4.5545e+05 1.0720e+00] maxs [1.35529999e+05 4.55649999e+05 4.34110000e+01] scales [0.001 0.001 0.001] offsets [135500. 455500.     -0.]
+xyz shape (1239310, 3)
+classes {1: 296751, 2: 808952, 6: 133607}
+number_of_returns hist {1: 903446, 2: 120834, 3: 93282, 4: 68112, 5: 35244, 6: 13012, 7: 4049, 8: 960, 9: 301, 10: 60, 11: 10}
+class 1: share multi-return 0.796
+class 2: share multi-return 0.113
+class 6: share multi-return 0.061
+intensity min/max/mean 202 65535 1324.9 nonzero frac 1.0
+user_data unique 1 [2]
+point_source_id unique 2 [1109 1110]
+scan_angle unique 11 [1667 1833 2000 2167 2333 2500]
+synthetic unique 1 [0]
+key_point unique 1 [0]
+withheld unique 1 [0]
+overlap unique 1 [0]
+scanner_channel unique 1 [0]
+scan_direction_flag unique 2 [0 1]
+edge_of_flight_line unique 1 [0]
+gps_time range 364772934.5293168 364773908.92565453
+vlrs ['WktCoordinateSystemVlr'] evlrs []
+area m2 39999.600001004284 density 30.9830598298204

@@ -1,0 +1,561 @@
+{
+  "label": "FINAL",
+  "script": "bench/bench_freethreaded.py",
+  "question": "Does the free-threaded build make the slide-16 loop over NumPy rows fast, if the loop is split over threads?",
+  "conditions": {
+    "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+    "cores": 8,
+    "threads": 16,
+    "ram_gib": 31.3,
+    "os": "Omarchy",
+    "kernel": "7.2.5-3-omarchy",
+    "governor": "performance",
+    "boost": "on",
+    "python": "3.13.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "open3d": "0.20.0",
+    "laspy": "2.7.0",
+    "load_avg_before": [
+      0.98,
+      1.56,
+      1.12
+    ],
+    "load_avg_after": [
+      0.99,
+      1.5,
+      1.14
+    ],
+    "date_utc": "2026-10-11T20:07:43Z",
+    "data": "data/utrecht_jaarbeurs_200m.laz",
+    "n": 722961,
+    "runs": 7,
+    "warmup": 1,
+    "statistic": "median and IQR (numpy.percentile, linear) of wall time over the timed runs",
+    "extra": {
+      "boost_sources": {
+        "/sys/devices/system/cpu/cpufreq/boost": "1",
+        "/sys/devices/system/cpu/cpufreq/policy*/boost": "1"
+      },
+      "scaling_driver": "amd-pstate-epp",
+      "energy_performance_preference": "performance",
+      "cpu_max_mhz": 4666,
+      "cpu_temp_c_at_collect": 52.875,
+      "ram_available_gib_at_collect": 24.8,
+      "affinity_cpus": 16,
+      "python_implementation": "CPython",
+      "python_full": "3.13.15 (main, Aug 25 2026, 14:01:07) [Clang 22.1.3 ]",
+      "gil_enabled": true,
+      "lazrs": "0.8.2",
+      "psutil": "7.2.2",
+      "thread_env": {
+        "OMP_NUM_THREADS": null,
+        "OPENBLAS_NUM_THREADS": null,
+        "MKL_NUM_THREADS": null,
+        "NUMEXPR_NUM_THREADS": null
+      },
+      "transparent_hugepage": "[always] madvise never",
+      "note": "python/numpy/scipy/open3d keys above describe the driver (project venv); the timed interpreters are under builds.*",
+      "load_avg_per_build": {
+        "before": [
+          [
+            0.98,
+            1.56,
+            1.12
+          ],
+          [
+            0.99,
+            1.54,
+            1.14
+          ]
+        ],
+        "after": [
+          [
+            2.29,
+            1.82,
+            1.21
+          ],
+          [
+            0.99,
+            1.5,
+            1.14
+          ]
+        ]
+      },
+      "order": "interleaved: seeded (numpy default_rng 20261015) permutation of the variants per round",
+      "pool": "ThreadPoolExecutor created before timing, one task per slice",
+      "load_check": {
+        "limit_1min": 1.0
+      }
+    }
+  },
+  "threads": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "builds": {
+    "free_threaded": {
+      "python": "3.14.7",
+      "python_full": "3.14.7 free-threading build (main, Aug 25 2026, 14:01:34) [Clang 22.1.3 ]",
+      "executable_build": "free-threaded",
+      "py_gil_disabled_build": true,
+      "gil_enabled_at_end": false,
+      "numpy": "2.5.4",
+      "laspy": "2.7.0",
+      "lazrs": "0.8.2",
+      "n": 722961,
+      "array": {
+        "how": "las.xyz - las.header.mins",
+        "dtype": "float64",
+        "f_contiguous": true
+      },
+      "plane": [
+        0.0018204033838573736,
+        -0.0006397247320270031,
+        0.999998138440161,
+        -1.3341548203100342
+      ],
+      "equal_to_vectorised": {
+        "loop": true,
+        "vectorised": true,
+        "threads_1": true,
+        "threads_2": true,
+        "threads_4": true,
+        "threads_8": true,
+        "threads_16": true
+      },
+      "timings": {
+        "loop": {
+          "median_ms": 335.80125799926464,
+          "q1_ms": 334.7409875004814,
+          "q3_ms": 338.83367700036615,
+          "runs": 7,
+          "threads": 1,
+          "min_ms": 333.79547300137347,
+          "max_ms": 342.79880699978094,
+          "all_ms": [
+            339.0435,
+            335.8013,
+            334.3292,
+            333.7955,
+            338.6238,
+            335.1528,
+            342.7988
+          ]
+        },
+        "vectorised": {
+          "median_ms": 2.2707629977958277,
+          "q1_ms": 2.241192500150646,
+          "q3_ms": 2.2861724992253585,
+          "runs": 7,
+          "threads": 1,
+          "min_ms": 1.8755079981929157,
+          "max_ms": 2.5491880005574785,
+          "all_ms": [
+            2.5492,
+            2.2894,
+            1.8755,
+            2.25,
+            2.2708,
+            2.2324,
+            2.2829
+          ]
+        },
+        "threads_1": {
+          "median_ms": 346.1428340015118,
+          "q1_ms": 345.8191785011877,
+          "q3_ms": 347.38906449820206,
+          "runs": 7,
+          "threads": 1,
+          "min_ms": 344.1778480009816,
+          "max_ms": 347.43108399925404,
+          "all_ms": [
+            344.1778,
+            347.4311,
+            347.3919,
+            347.3862,
+            346.0363,
+            345.602,
+            346.1428
+          ]
+        },
+        "threads_2": {
+          "median_ms": 183.58312999771442,
+          "q1_ms": 182.42217999977584,
+          "q3_ms": 184.48444999921776,
+          "runs": 7,
+          "threads": 2,
+          "min_ms": 181.2527640031476,
+          "max_ms": 185.61963200045284,
+          "all_ms": [
+            182.3111,
+            185.6196,
+            183.8355,
+            185.1334,
+            182.5333,
+            183.5831,
+            181.2528
+          ]
+        },
+        "threads_4": {
+          "median_ms": 96.3658030013903,
+          "q1_ms": 95.92368949779484,
+          "q3_ms": 97.18928200163646,
+          "runs": 7,
+          "threads": 4,
+          "min_ms": 95.30835899931844,
+          "max_ms": 99.8203300005116,
+          "all_ms": [
+            95.8243,
+            96.5387,
+            97.8398,
+            99.8203,
+            95.3084,
+            96.3658,
+            96.0231
+          ]
+        },
+        "threads_8": {
+          "median_ms": 61.14176099799806,
+          "q1_ms": 59.14858100186393,
+          "q3_ms": 65.32279250131978,
+          "runs": 7,
+          "threads": 8,
+          "min_ms": 57.58290800076793,
+          "max_ms": 70.99796300099115,
+          "all_ms": [
+            59.9943,
+            66.2825,
+            57.5829,
+            61.1418,
+            58.3029,
+            64.363,
+            70.998
+          ]
+        },
+        "threads_16": {
+          "median_ms": 75.09361800111947,
+          "q1_ms": 57.18198649992701,
+          "q3_ms": 78.43591750133783,
+          "runs": 7,
+          "threads": 16,
+          "min_ms": 52.686811999592464,
+          "max_ms": 80.1278539984196,
+          "all_ms": [
+            78.1474,
+            61.4138,
+            78.7244,
+            80.1279,
+            52.9501,
+            75.0936,
+            52.6868
+          ]
+        }
+      },
+      "load_avg_before": [
+        0.98,
+        1.56,
+        1.12
+      ],
+      "load_avg_after": [
+        2.29,
+        1.82,
+        1.21
+      ],
+      "snapshot_before": {
+        "time_utc": "2026-10-11T20:06:24Z",
+        "load_avg": [
+          0.98,
+          1.56,
+          1.12
+        ],
+        "cpu_temp_c": 49.75,
+        "cpu_freq_mhz_mean": 4616,
+        "ram_available_gib": 24.8
+      },
+      "snapshot_after": {
+        "time_utc": "2026-10-11T20:06:34Z",
+        "load_avg": [
+          2.29,
+          1.82,
+          1.21
+        ],
+        "cpu_temp_c": 56.75,
+        "cpu_freq_mhz_mean": 3774,
+        "ram_available_gib": 24.9
+      }
+    },
+    "gil": {
+      "python": "3.14.7",
+      "python_full": "3.14.7 (main, Aug 25 2026, 14:02:56) [Clang 22.1.3 ]",
+      "executable_build": "default (GIL)",
+      "py_gil_disabled_build": false,
+      "gil_enabled_at_end": true,
+      "numpy": "2.5.4",
+      "laspy": "2.7.0",
+      "lazrs": "0.8.2",
+      "n": 722961,
+      "array": {
+        "how": "las.xyz - las.header.mins",
+        "dtype": "float64",
+        "f_contiguous": true
+      },
+      "plane": [
+        0.0018204033838573736,
+        -0.0006397247320270031,
+        0.999998138440161,
+        -1.3341548203100342
+      ],
+      "equal_to_vectorised": {
+        "loop": true,
+        "vectorised": true,
+        "threads_1": true,
+        "threads_2": true,
+        "threads_4": true,
+        "threads_8": true,
+        "threads_16": true
+      },
+      "timings": {
+        "loop": {
+          "median_ms": 327.0928569982061,
+          "q1_ms": 326.318295999954,
+          "q3_ms": 328.2687744995201,
+          "runs": 7,
+          "threads": 1,
+          "min_ms": 324.37467999989167,
+          "max_ms": 329.15657999910763,
+          "all_ms": [
+            329.1566,
+            324.3747,
+            327.4922,
+            326.8196,
+            325.817,
+            327.0929,
+            329.0453
+          ]
+        },
+        "vectorised": {
+          "median_ms": 2.210959999501938,
+          "q1_ms": 2.1700835022784304,
+          "q3_ms": 2.222071500000311,
+          "runs": 7,
+          "threads": 1,
+          "min_ms": 1.6774039977462962,
+          "max_ms": 2.2562859994650353,
+          "all_ms": [
+            2.2179,
+            2.1666,
+            1.6774,
+            2.2563,
+            2.2262,
+            2.1735,
+            2.211
+          ]
+        },
+        "threads_1": {
+          "median_ms": 349.87378799996804,
+          "q1_ms": 348.1441804997303,
+          "q3_ms": 351.6527190004126,
+          "runs": 7,
+          "threads": 1,
+          "min_ms": 346.5531940018991,
+          "max_ms": 353.0757580010686,
+          "all_ms": [
+            353.0758,
+            346.7737,
+            346.5532,
+            352.5312,
+            349.5146,
+            350.7742,
+            349.8738
+          ]
+        },
+        "threads_2": {
+          "median_ms": 343.4649190021446,
+          "q1_ms": 339.915098500569,
+          "q3_ms": 347.4311204990954,
+          "runs": 7,
+          "threads": 2,
+          "min_ms": 332.2507860029873,
+          "max_ms": 351.1611569992965,
+          "all_ms": [
+            351.1612,
+            341.6175,
+            345.5859,
+            349.2763,
+            338.2127,
+            332.2508,
+            343.4649
+          ]
+        },
+        "threads_4": {
+          "median_ms": 341.504089999944,
+          "q1_ms": 340.7407909999165,
+          "q3_ms": 343.0791914979636,
+          "runs": 7,
+          "threads": 4,
+          "min_ms": 335.875352997391,
+          "max_ms": 346.1764450003102,
+          "all_ms": [
+            346.1764,
+            335.8754,
+            340.7545,
+            342.8866,
+            340.7271,
+            341.5041,
+            343.2718
+          ]
+        },
+        "threads_8": {
+          "median_ms": 346.5098630003922,
+          "q1_ms": 345.77147449999757,
+          "q3_ms": 348.08798400081287,
+          "runs": 7,
+          "threads": 8,
+          "min_ms": 344.14863900019554,
+          "max_ms": 351.1903309990885,
+          "all_ms": [
+            348.6021,
+            346.244,
+            347.5738,
+            345.2989,
+            344.1486,
+            346.5099,
+            351.1903
+          ]
+        },
+        "threads_16": {
+          "median_ms": 343.3099370013224,
+          "q1_ms": 342.32503400016867,
+          "q3_ms": 345.8946670016303,
+          "runs": 7,
+          "threads": 16,
+          "min_ms": 341.36332500202116,
+          "max_ms": 348.439101002441,
+          "all_ms": [
+            341.9057,
+            341.3633,
+            342.7444,
+            343.3099,
+            345.3772,
+            346.4122,
+            348.4391
+          ]
+        }
+      },
+      "load_avg_before": [
+        0.99,
+        1.54,
+        1.14
+      ],
+      "load_avg_after": [
+        0.99,
+        1.5,
+        1.14
+      ],
+      "snapshot_before": {
+        "time_utc": "2026-10-11T20:07:24Z",
+        "load_avg": [
+          0.99,
+          1.54,
+          1.14
+        ],
+        "cpu_temp_c": 33.5,
+        "cpu_freq_mhz_mean": 1743,
+        "ram_available_gib": 24.8
+      },
+      "snapshot_after": {
+        "time_utc": "2026-10-11T20:07:43Z",
+        "load_avg": [
+          0.99,
+          1.5,
+          1.14
+        ],
+        "cpu_temp_c": 52.875,
+        "cpu_freq_mhz_mean": 3888,
+        "ram_available_gib": 24.8
+      }
+    }
+  },
+  "summary": {
+    "best_threads_ft": 8,
+    "ft_speedup_best_vs_loop": {
+      "median": 5.4921751110547765,
+      "iqr_low": 5.124413312454735,
+      "iqr_high": 5.728517426135524
+    },
+    "ft_speedup_vs_loop": {
+      "1": {
+        "median": 0.9701233855322222,
+        "iqr_low": 0.9635910329647521,
+        "iqr_high": 0.9798001327425004
+      },
+      "2": {
+        "median": 1.8291509574079345,
+        "iqr_low": 1.8144672220444638,
+        "iqr_high": 1.8574149097482693
+      },
+      "4": {
+        "median": 3.4846516870141153,
+        "iqr_low": 3.444217105080014,
+        "iqr_high": 3.532325317909665
+      },
+      "8": {
+        "median": 5.4921751110547765,
+        "iqr_low": 5.124413312454735,
+        "iqr_high": 5.728517426135524
+      },
+      "16": {
+        "median": 4.471768266569053,
+        "iqr_low": 4.267700285328746,
+        "iqr_high": 5.92553175816651
+      }
+    },
+    "gil_speedup_vs_loop": {
+      "1": {
+        "median": 0.9348881460026265,
+        "iqr_low": 0.9279561293526387,
+        "iqr_high": 0.9429104172539067
+      },
+      "2": {
+        "median": 0.952332651464075,
+        "iqr_low": 0.9392316253396868,
+        "iqr_high": 0.9657375501929066
+      },
+      "4": {
+        "median": 0.9578007015911867,
+        "iqr_low": 0.9511456948909444,
+        "iqr_high": 0.9633973482781535
+      },
+      "8": {
+        "median": 0.9439640596834494,
+        "iqr_low": 0.9374592373151035,
+        "iqr_high": 0.9493807289170189
+      },
+      "16": {
+        "median": 0.9527625674200808,
+        "iqr_low": 0.9434036634002685,
+        "iqr_high": 0.9589388502021103
+      }
+    },
+    "ft_vectorised_vs_best_threads": {
+      "median": 26.9256461626981,
+      "iqr_low": 25.872317605913686,
+      "iqr_high": 29.146444358050005
+    },
+    "ft_vectorised_vs_loop": {
+      "median": 147.88036370383807,
+      "iqr_low": 146.41982948089188,
+      "iqr_high": 151.18454884066887
+    },
+    "ft_loop_vs_gil_loop": {
+      "median": 1.0266236355051503,
+      "iqr_low": 1.0197162005762774,
+      "iqr_high": 1.038353292333979
+    },
+    "all_equal": true
+  }
+}

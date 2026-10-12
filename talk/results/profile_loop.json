@@ -1,0 +1,211 @@
+{
+  "label": "FINAL",
+  "script": "bench/profile_loop.py",
+  "profiled": "bench/loop.py",
+  "command": "python -m cProfile -s tottime loop.py",
+  "cwd": "bench",
+  "sort": "tottime (internal time)",
+  "total_calls": 1007035,
+  "primitive_calls": 998409,
+  "total_s": 0.629,
+  "loop": {
+    "rank": 1,
+    "ncalls": 1,
+    "tottime_s": 0.373,
+    "cumtime_s": 0.413,
+    "function": "s16_loop.py:1(loop)"
+  },
+  "abs": {
+    "rank": 2,
+    "ncalls": 722961,
+    "tottime_s": 0.04,
+    "function": "{built-in method builtins.abs}"
+  },
+  "vectorised": {
+    "rank": 11,
+    "ncalls": 1,
+    "tottime_s": 0.004,
+    "cumtime_s": 0.004,
+    "function": "s16_vec.py:1(vectorised)"
+  },
+  "share_loop_cumtime": 0.656597774244833,
+  "factor_loop_vs_vectorised_cumtime": 103.24999999999999,
+  "display": [
+    "$ python -m cProfile -s tottime loop.py",
+    "1007035 function calls (998409 primitive calls) in 0.629 seconds",
+    "ncalls  tottime  percall  cumtime  percall filename:lineno(function)",
+    "     1    0.373    0.373    0.413    0.413 s16_loop.py:1(loop)",
+    "722961    0.040    0.000    0.040    0.000 {built-in method builtins.abs}",
+    "...",
+    "     1    0.004    0.004    0.004    0.004 s16_vec.py:1(vectorised)"
+  ],
+  "display_note": "real output lines; the shown rows dedented by their common indent; '...' marks rows left out",
+  "rows_top10": [
+    {
+      "rank": 1,
+      "ncalls": "1",
+      "tottime": 0.373,
+      "percall_tot": 0.373,
+      "cumtime": 0.413,
+      "percall_cum": 0.413,
+      "function": "s16_loop.py:1(loop)",
+      "line": "        1    0.373    0.373    0.413    0.413 s16_loop.py:1(loop)"
+    },
+    {
+      "rank": 2,
+      "ncalls": "722961",
+      "tottime": 0.04,
+      "percall_tot": 0.0,
+      "cumtime": 0.04,
+      "percall_cum": 0.0,
+      "function": "{built-in method builtins.abs}",
+      "line": "   722961    0.040    0.000    0.040    0.000 {built-in method builtins.abs}"
+    },
+    {
+      "rank": 3,
+      "ncalls": "1",
+      "tottime": 0.031,
+      "percall_tot": 0.031,
+      "cumtime": 0.031,
+      "percall_cum": 0.031,
+      "function": "{method 'decompress_many' of 'builtins.ParLasZipDecompressor' objects}",
+      "line": "        1    0.031    0.031    0.031    0.031 {method 'decompress_many' of 'builtins.ParLasZipDecompressor' objects}"
+    },
+    {
+      "rank": 4,
+      "ncalls": "277",
+      "tottime": 0.015,
+      "percall_tot": 0.0,
+      "cumtime": 0.015,
+      "percall_cum": 0.0,
+      "function": "{built-in method marshal.loads}",
+      "line": "      277    0.015    0.000    0.015    0.000 {built-in method marshal.loads}"
+    },
+    {
+      "rank": 5,
+      "ncalls": "3",
+      "tottime": 0.007,
+      "percall_tot": 0.002,
+      "cumtime": 0.007,
+      "percall_cum": 0.002,
+      "function": "dims.py:718(_apply_scale)",
+      "line": "        3    0.007    0.002    0.007    0.002 dims.py:718(_apply_scale)"
+    },
+    {
+      "rank": 6,
+      "ncalls": "701/696",
+      "tottime": 0.006,
+      "percall_tot": 0.0,
+      "cumtime": 0.02,
+      "percall_cum": 0.0,
+      "function": "{built-in method builtins.__build_class__}",
+      "line": "  701/696    0.006    0.000    0.020    0.000 {built-in method builtins.__build_class__}"
+    },
+    {
+      "rank": 7,
+      "ncalls": "501/95",
+      "tottime": 0.006,
+      "percall_tot": 0.0,
+      "cumtime": 0.014,
+      "percall_cum": 0.0,
+      "function": "_parser.py:511(_parse)",
+      "line": "   501/95    0.006    0.000    0.014    0.000 _parser.py:511(_parse)"
+    },
+    {
+      "rank": 8,
+      "ncalls": "372",
+      "tottime": 0.006,
+      "percall_tot": 0.0,
+      "cumtime": 0.01,
+      "percall_cum": 0.0,
+      "function": "inspect.py:900(cleandoc)",
+      "line": "      372    0.006    0.000    0.010    0.000 inspect.py:900(cleandoc)"
+    },
+    {
+      "rank": 9,
+      "ncalls": "5/4",
+      "tottime": 0.005,
+      "percall_tot": 0.001,
+      "cumtime": 0.013,
+      "percall_cum": 0.003,
+      "function": "{built-in method _imp.exec_dynamic}",
+      "line": "      5/4    0.005    0.001    0.013    0.003 {built-in method _imp.exec_dynamic}"
+    },
+    {
+      "rank": 10,
+      "ncalls": "1",
+      "tottime": 0.004,
+      "percall_tot": 0.004,
+      "cumtime": 0.629,
+      "percall_cum": 0.629,
+      "function": "loop.py:1(<module>)",
+      "line": "        1    0.004    0.004    0.629    0.629 loop.py:1(<module>)"
+    }
+  ],
+  "stdout_file": "results/profile_loop.txt",
+  "note": "one profiled run; cProfile adds overhead to every traced call (here builtins.abs), so these times are not benchmark numbers (results/bench_cliff.json)",
+  "conditions": {
+    "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+    "cores": 8,
+    "threads": 16,
+    "ram_gib": 31.3,
+    "os": "Omarchy",
+    "kernel": "7.2.5-3-omarchy",
+    "governor": "performance",
+    "boost": "on",
+    "python": "3.13.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "open3d": "0.20.0",
+    "laspy": "2.7.0",
+    "load_avg_before": [
+      0.98,
+      1.56,
+      1.12
+    ],
+    "load_avg_after": [
+      0.98,
+      1.56,
+      1.12
+    ],
+    "date_utc": "2026-10-11T20:06:24Z",
+    "data": "data/utrecht_jaarbeurs_200m.laz",
+    "n": 722961,
+    "runs": 1,
+    "warmup": 0,
+    "statistic": "one profiled run (cProfile, deterministic profiler)",
+    "extra": {
+      "boost_sources": {
+        "/sys/devices/system/cpu/cpufreq/boost": "1",
+        "/sys/devices/system/cpu/cpufreq/policy*/boost": "1"
+      },
+      "scaling_driver": "amd-pstate-epp",
+      "energy_performance_preference": "performance",
+      "cpu_max_mhz": 4666,
+      "cpu_temp_c_at_collect": 49.75,
+      "ram_available_gib_at_collect": 24.8,
+      "affinity_cpus": 16,
+      "python_implementation": "CPython",
+      "python_full": "3.13.15 (main, Aug 25 2026, 14:01:07) [Clang 22.1.3 ]",
+      "gil_enabled": true,
+      "lazrs": "0.8.2",
+      "psutil": "7.2.2",
+      "thread_env": {
+        "OMP_NUM_THREADS": null,
+        "OPENBLAS_NUM_THREADS": null,
+        "MKL_NUM_THREADS": null,
+        "NUMEXPR_NUM_THREADS": null
+      },
+      "transparent_hugepage": "[always] madvise never",
+      "command": "./.venv/bin/python3 -m cProfile -s tottime loop.py",
+      "load_check": {
+        "limit_1min": 1.0,
+        "waited_until": [
+          0.98,
+          1.56,
+          1.12
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+https://basisdata.nl/hwh-ahn/ahn4/01_LAZ/C_31HZ2.LAZ HTTP 206 bytes 65536 total bytes 0-65535/9952399556
+  LAS 1.4 PF 1 points 1290104537 mins [ 1.35e+05  4.50e+05 -4.80e+00] maxs [1.4000e+05 4.5625e+05 1.2650e+02] sw TerraScan 20.023 date 2020-03-31
+https://basisdata.nl/hwh-ahn/AHN5/01_LAZ/2023_C_31HZ2.LAZ HTTP 206 bytes 65536 total bytes 0-65535/5068977788
+  LAS 1.4 PF 6 points 926203338 mins [ 1.35e+05  4.50e+05 -4.70e+00] maxs [1.4000e+05 4.5625e+05 1.2120e+02] sw TerraScan date 2022-12-13

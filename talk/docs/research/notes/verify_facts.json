@@ -1,0 +1,102 @@
+{
+ "versions": {
+  "python": "3.13.15",
+  "numpy": "2.5.3",
+  "laspy": "2.7.0",
+  "open3d": "0.20.0",
+  "scipy": "1.18.1"
+ },
+ "crop_header": {
+  "mins": [
+   135330.0,
+   455450.0,
+   1.072
+  ],
+  "maxs": [
+   135529.999,
+   455649.999,
+   43.411
+  ],
+  "point_format": 6,
+  "record_bytes": 30,
+  "points": 1239310
+ },
+ "float32_spacing_m": {
+  "x_135000": 0.015625,
+  "x_136000": 0.015625,
+  "y_455000": 0.03125,
+  "y_456000": 0.03125
+ },
+ "pointformat_size": {
+  "1": 28,
+  "6": 30,
+  "7": 36
+ },
+ "bytes_float32_xyz": 12,
+ "bytes_float64_xyz": 24,
+ "bytes_float32_xyz_plus_uint8_class": 13,
+ "open3d_read_laz_points": 0,
+ "o3d_KDTreeFlann": {
+  "search_knn_vector_3d": true,
+  "search_radius_vector_3d": true,
+  "search_hybrid_vector_3d": true
+ },
+ "o3d_nns": {
+  "knn_index": true,
+  "knn_search": true,
+  "fixed_radius_index": true,
+  "fixed_radius_search": true,
+  "hybrid_index": true,
+  "hybrid_search": true
+ },
+ "o3d_Octree": {
+  "convert_from_point_cloud": true,
+  "locate_leaf_node": true,
+  "traverse": true,
+  "max_depth": true
+ },
+ "o3d_VoxelGrid": {
+  "create_from_point_cloud": true,
+  "get_voxel": true,
+  "check_if_included": true
+ },
+ "o3d_Octree_max_depth_8_ok": true,
+ "o3d_build_cuda": {
+  "BUILD_CUDA_MODULE": "True",
+  "CUDA_VERSION": "12.6"
+ },
+ "o3d_cuda_is_available": true,
+ "laspy_CopcReader_open_sig": "(source: Union[str, os.PathLike, io.IOBase], http_num_threads: int = 80, _http_strategy: str = 'queue', decompression_selection: laspy._compression.selection.DecompressionSelection = <DecompressionSelection.XY_RETURNS_CHANNEL|Z|CLASSIFICATION|FLAGS|INTENSITY|SCAN_ANGLE|USER_DATA|POINT_SOURCE_ID|GPS_TIME|RGB|NIR|WAVEPACKET|ALL_EXTRA_BYTES: 8191>) -> 'CopcReader'",
+ "laspy_CopcReader_query_sig": "(self, bounds: Optional[laspy.copc.Bounds] = None, resolution: Union[float, int, NoneType] = None, level: Union[int, range, NoneType] = None) -> laspy.point.record.ScaleAwarePointRecord",
+ "laspy_copc_Bounds": true,
+ "scipy_KDTree_query_sig": "(self, x, k=1, eps=0.0, p=2.0, distance_upper_bound=inf, workers=1)",
+ "scipy_KDTree_query_ball_point_sig": "(self, x, r, p=2.0, eps=0.0, workers=1, return_sorted=None, return_length=False)",
+ "tile_header": {
+  "points": 21013926,
+  "point_format": 6,
+  "mins": [
+   135000.0,
+   455000.0,
+   -1.167
+  ],
+  "maxs": [
+   135999.999,
+   455999.999,
+   121.242
+  ],
+  "vlrs": [
+   "CopcInfoVlr",
+   "WktCoordinateSystemVlr",
+   "LasZipVlr"
+  ]
+ },
+ "tile_file_bytes": 130213150,
+ "crop_file_bytes": 7797485,
+ "voxel_centroid_check": [
+  [
+   0.015,
+   0.0,
+   0.0
+  ]
+ ]
+}

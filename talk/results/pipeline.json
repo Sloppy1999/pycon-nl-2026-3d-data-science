@@ -1,0 +1,2349 @@
+{
+ "label": "FINAL",
+ "versions": {
+  "python": "3.13.15",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "laspy": "2.7.0",
+  "lazrs": "0.8.2",
+  "open3d": "0.20.0",
+  "pyvista": "0.49.0"
+ },
+ "machine": {
+  "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+  "os": "Linux 7.2.5-3-omarchy"
+ },
+ "crop": {
+  "file": "data/utrecht_jaarbeurs_200m.laz",
+  "sha256": "b8dfa077c4c1d5aa471c476af56beda6ced6e53a454f5af35b44cda1896916da",
+  "bbox_rd": [
+   135715,
+   455475,
+   135915,
+   455675
+  ],
+  "points": 722961,
+  "point_format": 6,
+  "origin_local": [
+   135715.0,
+   455475.0,
+   -0.8130000000000001
+  ],
+  "crs": "EPSG:28992 + NAP (WKT record in the file)",
+  "ahn_classes": {
+   "1": 109363,
+   "2": 262712,
+   "6": 338943,
+   "26": 11943
+  },
+  "multi_return_share": {
+   "all": 0.0986,
+   "ahn_class_1": 0.3965,
+   "ahn_class_2": 0.0492,
+   "ahn_class_6": 0.0415,
+   "ahn_class_26": 0.0748
+  }
+ },
+ "params": {
+  "voxel": 0.5,
+  "tile": 25.0,
+  "ransac_threshold": 0.4,
+  "ransac_n": 3,
+  "ransac_iterations": 300,
+  "ransac_probability": 1.0,
+  "seed": 0,
+  "low_prefilter": {
+   "percentile": 2.0,
+   "window_m": 1.5
+  },
+  "plausibility": {
+   "max_tilt_deg": 15.0,
+   "max_above_median_m": 2.5
+  },
+  "eps": 0.75,
+  "min_points": 6,
+  "cluster_min_height_m": 0.3,
+  "rules": {
+   "order": "first rule that fires wins; rules 3 and 4 use distances to the results of rules 1 and 2",
+   "source": [
+    "def name(c):",
+    "    if c.multi > 0.4 and c.top > 1:",
+    "        return VEGETATION",
+    "    if c.foot > 25 and c.top > 2.5:",
+    "        return BUILDINGS",
+    "    if c.to_building < 2:  # facade",
+    "        return BUILDINGS",
+    "    if c.slender and c.free:",
+    "        return STREET_FURNITURE",
+    "    return UNLABELLED"
+   ],
+   "slender": [
+    "@property",
+    "    def slender(self) -> bool:",
+    "        # pole-like: at most 1.5 m wide, taller than 1.5 m, at least twice as tall as it is wide, and",
+    "        # below 15 m. A car (about 1.5 m tall, 1.8 m wide) fails \"twice as tall as wide\".",
+    "        return self.width <= 1.5 and 1.5 < self.top <= 15 and self.top >= 2 * self.width"
+   ],
+   "free": [
+    "@property",
+    "    def free(self) -> bool:",
+    "        # free-standing: more than 2 m from any building and more than 1 m from any tree (plan view)",
+    "        return self.to_building > 2 and self.to_vegetation > 1"
+   ],
+   "features": {
+    "top": "highest point above local ground (m)",
+    "foot": "occupied 1 m x 1 m cells (m2)",
+    "multi": "share of points with number_of_returns > 1 (carried through voxel downsampling in a colour channel)",
+    "width": "largest horizontal extent (m)",
+    "to_building": "plan-view distance to the nearest point of a rule-2 building (m)",
+    "to_vegetation": "plan-view distance to the nearest point of rule-1 vegetation (m)",
+    "height_above_ground": "z minus z of the nearest ground voxel in plan view"
+   }
+  }
+ },
+ "params_why": {
+  "note": "each reason points at a row of param_choice (one parameter changed, everything else final)",
+  "voxel": "0.5 m, as approved in the storyboard",
+  "tile": "25 m: ground recall 0.9427 against 0.8515 for 50 m tiles ('tile 50 m'); one plane for the whole crop scores 0.9457 here ('one plane (tile 250 m)'): this ground is flat, the first example street's was not (previous_street), so the tiles stay",
+  "ransac_threshold": "0.4 m: 0.2 m misses more of the uneven ground ('RANSAC threshold 0.2 m')",
+  "low_prefilter": "without it RANSAC fits roofs and facades in several tiles, which the plausibility check then has to catch ('no low-point pre-filter', tiles_flagged)",
+  "low_window": "1.5 m, kept from the first example street (not re-tuned: the sweep is scored against the same AHN classes it would tune on); 'pre-filter window 3 m' here: ground recall 0.9662 against 0.9427, building precision 0.8242 against 0.8342",
+  "eps": "0.75 m (1.5 voxels): 0.5 m, the voxel size, leaves most voxels as noise and finds no building; 1.0 m glues buildings to trees and building recall collapses ('eps 0.5', 'eps 1.0')",
+  "min_points": "6: 5 lets a tree fuse with a building (lower building recall); 10 turns more than half of the voxels into noise ('min_points 5', 'min_points 10')",
+  "cluster_min_height": "0.3 m: without it, ground that RANSAC missed links objects together, building precision drops and more AHN ground becomes vegetation ('no near-ground skip')"
+ },
+ "points_in": 722961,
+ "points_after_voxel": 232180,
+ "kept_share": 0.3212,
+ "previous_street": {
+  "file": "data/previous/street_graadt_van_roggenweg_200m.laz",
+  "bbox_rd": [
+   135330,
+   455450,
+   135530,
+   455650
+  ],
+  "note": "the first example street, same parameters; kept in data/previous/, not used by the deck",
+  "tiles_25m": {
+   "ground": {
+    "precision": 0.9875,
+    "recall": 0.9448
+   },
+   "n_tiles": 64,
+   "tiles_flagged": 0,
+   "plane_height_range_m": [
+    0.131,
+    1.8962
+   ]
+  },
+  "one_plane": {
+   "ground": {
+    "precision": 0.9777,
+    "recall": 0.8273
+   },
+   "n_tiles": 1,
+   "tiles_flagged": 0,
+   "plane_height_range_m": [
+    1.1721,
+    1.1721
+   ]
+  }
+ },
+ "single_plane": {
+  "ground": {
+   "precision": 0.9877,
+   "recall": 0.9457
+  },
+  "tiles_flagged": 0,
+  "note": "the same pipeline with one 250 m tile, i.e. one RANSAC plane for the whole 200 m crop (sweep row 'one plane (tile 250 m)'); scored like the final run"
+ },
+ "voxel_0_1": {
+  "voxel_m": 0.1,
+  "kept_share": 0.9681,
+  "note": "share of the crop's points kept by voxel_down_sample(0.1), same code as step 2"
+ },
+ "n_tiles": 64,
+ "tiles_flagged": 20,
+ "ground": {
+  "precision": 0.9816,
+  "recall": 0.9427,
+  "counts": {
+   "true_positives": 247654,
+   "predicted": 252303,
+   "truth": 262712
+  },
+  "against": "AHN class 2, point level, after paint-back"
+ },
+ "buildings": {
+  "precision": 0.8342,
+  "recall": 0.9886,
+  "counts": {
+   "true_positives": 335085,
+   "predicted": 401689,
+   "truth": 338943
+  },
+  "against": "AHN class 6, point level, after paint-back",
+  "note": "AHN puts many facade points in class 1 ('overig'); facades we call buildings count as false positives, so this precision is a lower bound"
+ },
+ "n_clusters": 1024,
+ "noise_share": 0.102,
+ "noise_share_note": "DBSCAN noise voxels / voxels given to DBSCAN (not ground, more than 0.3 m above the ground)",
+ "voxels_not_clustered_near_ground": 4986,
+ "label_points": {
+  "ground": 252303,
+  "buildings": 401689,
+  "vegetation": 27224,
+  "street_furniture": 53,
+  "unlabelled": 41692
+ },
+ "label_voxels": {
+  "ground": 71504,
+  "buildings": 121035,
+  "vegetation": 17234,
+  "street_furniture": 28,
+  "unlabelled": 22379
+ },
+ "n_objects": {
+  "buildings": 58,
+  "vegetation": 683,
+  "street_furniture": 3
+ },
+ "n_objects_note": "objects = DBSCAN clusters, not real-world objects: buildings = clusters named by rule 2 (roofs); facade fragments (rule 3) are counted separately; one tree can be several vegetation clusters",
+ "n_clusters_by_rule": {
+  "vegetation_rule1": 683,
+  "buildings_rule2": 58,
+  "facades_rule3": 218,
+  "street_furniture_rule4": 3,
+  "unlabelled": 62
+ },
+ "largest_cluster_voxels": 46039,
+ "known_errors": {
+  "vegetation_clusters_mostly_ahn_ground_or_building": [],
+  "note": "clusters of 500+ points called vegetation although at least 25 % of their points are AHN class 2 or 6: low structures with many echoes and ground that RANSAC missed (an empty list means no such cluster); what each one is on the ground is UNVERIFIED"
+ },
+ "label_vs_ahn": {
+  "note": "points per predicted class, split by AHN class (AHN has no vegetation or street furniture class: both live in class 1)",
+  "ground": {
+   "1": 4494,
+   "2": 247654,
+   "6": 155,
+   "26": 0
+  },
+  "buildings": {
+   "1": 51050,
+   "2": 4046,
+   "6": 335085,
+   "26": 11508
+  },
+  "vegetation": {
+   "1": 24639,
+   "2": 0,
+   "6": 2291,
+   "26": 294
+  },
+  "street_furniture": {
+   "1": 53,
+   "2": 0,
+   "6": 0,
+   "26": 0
+  },
+  "unlabelled": {
+   "1": 29127,
+   "2": 11012,
+   "6": 1412,
+   "26": 141
+  }
+ },
+ "street_furniture_objects": [
+  {
+   "cluster": 435,
+   "x_rd": 135806.75,
+   "y_rd": 455654.57,
+   "voxels": 10,
+   "points": 15,
+   "top_m": 7.42,
+   "bottom_m": 5.69,
+   "width_m": 0.72,
+   "footprint_m2": 2.0,
+   "multi_return_share": 0.4,
+   "to_building_m": 14.16,
+   "to_vegetation_m": 3.99,
+   "ahn_classes": {
+    "1": 15
+   }
+  },
+  {
+   "cluster": 710,
+   "x_rd": 135766.79,
+   "y_rd": 455620.74,
+   "voxels": 7,
+   "points": 10,
+   "top_m": 6.03,
+   "bottom_m": 4.77,
+   "width_m": 0.47,
+   "footprint_m2": 2.0,
+   "multi_return_share": 0.19,
+   "to_building_m": 10.86,
+   "to_vegetation_m": 5.75,
+   "ahn_classes": {
+    "1": 10
+   }
+  },
+  {
+   "cluster": 719,
+   "x_rd": 135754.83,
+   "y_rd": 455608.66,
+   "voxels": 11,
+   "points": 28,
+   "top_m": 3.38,
+   "bottom_m": 3.27,
+   "width_m": 1.29,
+   "footprint_m2": 3.0,
+   "multi_return_share": 0.327,
+   "to_building_m": 11.23,
+   "to_vegetation_m": 13.07,
+   "ahn_classes": {
+    "1": 28
+   }
+  }
+ ],
+ "street_furniture_missed_candidates": {
+  "voxels": 32,
+  "groups": 23,
+  "rule": "DBSCAN noise voxels 1.5 to 15 m above ground, multi-return share < 0.4, more than 2 m from buildings and 1 m from vegetation, grouped within 1.5 m in plan view",
+  "note": "too small for min_points; what they are is UNVERIFIED"
+ },
+ "street_furniture_note": "free-standing, slender clusters with few multiple returns (rule 4). From the air a lamp post is a few dozen points at most, and DBSCAN with min_points 6 drops objects of fewer voxels as noise; what each object is on the ground is UNVERIFIED",
+ "tiles": [
+  {
+   "ij": [
+    0,
+    0
+   ],
+   "bounds": [
+    0.0,
+    0.0,
+    25.0,
+    25.0
+   ],
+   "plane": [
+    0.010988746690130667,
+    0.012369580196023116,
+    0.9998631110966912,
+    -3.861480360429298
+   ],
+   "n_points": 6479,
+   "n_candidates": 233,
+   "n_ground": 215,
+   "z_low": 3.361,
+   "z_centre": 3.57,
+   "tilt_deg": 0.948,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    1
+   ],
+   "bounds": [
+    0.0,
+    25.0,
+    25.0,
+    50.0
+   ],
+   "plane": [
+    -0.004757644086486913,
+    0.0006796689795214422,
+    0.9999884513697268,
+    -3.2653420124838464
+   ],
+   "n_points": 5616,
+   "n_candidates": 2091,
+   "n_ground": 1766,
+   "z_low": 3.1966,
+   "z_centre": 3.2994,
+   "tilt_deg": 0.275,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    2
+   ],
+   "bounds": [
+    0.0,
+    50.0,
+    25.0,
+    75.0
+   ],
+   "plane": [
+    -0.0019332126169827298,
+    -0.001377679310931962,
+    0.9999971823403772,
+    -3.1944094872804105
+   ],
+   "n_points": 2945,
+   "n_candidates": 2818,
+   "n_ground": 2727,
+   "z_low": 3.181,
+   "z_centre": 3.3047,
+   "tilt_deg": 0.136,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    3
+   ],
+   "bounds": [
+    0.0,
+    75.0,
+    25.0,
+    100.0
+   ],
+   "plane": [
+    -0.002501330270186993,
+    0.0014123411239488895,
+    0.9999958743112038,
+    -3.410504705602938
+   ],
+   "n_points": 3085,
+   "n_candidates": 2632,
+   "n_ground": 2630,
+   "z_low": 3.2233,
+   "z_centre": 3.3182,
+   "tilt_deg": 0.165,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    4
+   ],
+   "bounds": [
+    0.0,
+    100.0,
+    25.0,
+    125.0
+   ],
+   "plane": [
+    0.0010876883130593496,
+    -0.0003720778966452407,
+    0.999999339245868,
+    -3.276988883151862
+   ],
+   "n_points": 3617,
+   "n_candidates": 2651,
+   "n_ground": 2643,
+   "z_low": 3.2089,
+   "z_centre": 3.3053,
+   "tilt_deg": 0.066,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    5
+   ],
+   "bounds": [
+    0.0,
+    125.0,
+    25.0,
+    150.0
+   ],
+   "plane": [
+    0.005501682124935699,
+    -0.0007440520765924096,
+    0.9999845888213994,
+    -3.373577542596307
+   ],
+   "n_points": 1814,
+   "n_candidates": 1734,
+   "n_ground": 1704,
+   "z_low": 3.0934,
+   "z_centre": 3.4072,
+   "tilt_deg": 0.318,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    6
+   ],
+   "bounds": [
+    0.0,
+    150.0,
+    25.0,
+    175.0
+   ],
+   "plane": [
+    0.02088620561333454,
+    0.01862711936107816,
+    0.9996083217137529,
+    -6.3021516248102385
+   ],
+   "n_points": 2063,
+   "n_candidates": 2009,
+   "n_ground": 2007,
+   "z_low": 2.6663,
+   "z_centre": 3.0153,
+   "tilt_deg": 1.604,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    0,
+    7
+   ],
+   "bounds": [
+    0.0,
+    175.0,
+    25.0,
+    200.0
+   ],
+   "plane": [
+    0.004558869291273783,
+    -0.018627995609121855,
+    0.999816090333803,
+    0.05830085204088631
+   ],
+   "n_points": 2759,
+   "n_candidates": 2755,
+   "n_ground": 2753,
+   "z_low": 2.9572,
+   "z_centre": 3.3781,
+   "tilt_deg": 1.099,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    0
+   ],
+   "bounds": [
+    25.0,
+    0.0,
+    50.0,
+    25.0
+   ],
+   "plane": [
+    9.339812442719449e-05,
+    0.007751266981378553,
+    0.9999699541171093,
+    -3.503881417417451
+   ],
+   "n_points": 7206,
+   "n_candidates": 2667,
+   "n_ground": 2250,
+   "z_low": 3.239,
+   "z_centre": 3.4036,
+   "tilt_deg": 0.444,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    1
+   ],
+   "bounds": [
+    25.0,
+    25.0,
+    50.0,
+    50.0
+   ],
+   "plane": [
+    0.022120142159005846,
+    0.00983745000459906,
+    0.9997069189958987,
+    -4.305561813410103
+   ],
+   "n_points": 3319,
+   "n_candidates": 1040,
+   "n_ground": 817,
+   "z_low": 1.7899,
+   "z_centre": 3.1081,
+   "tilt_deg": 1.387,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    2
+   ],
+   "bounds": [
+    25.0,
+    50.0,
+    50.0,
+    75.0
+   ],
+   "plane": [
+    -0.0555473474604635,
+    0.0778093676979764,
+    0.9954196072453806,
+    -3.021721242726944
+   ],
+   "n_points": 3114,
+   "n_candidates": 519,
+   "n_ground": 509,
+   "z_low": 0.1871,
+   "z_centre": 0.2428,
+   "tilt_deg": 5.486,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    3
+   ],
+   "bounds": [
+    25.0,
+    75.0,
+    50.0,
+    100.0
+   ],
+   "plane": [
+    0.0030640441422959772,
+    0.0007971918082786434,
+    0.9999949880467977,
+    -3.5128181885510417
+   ],
+   "n_points": 4262,
+   "n_candidates": 2309,
+   "n_ground": 2218,
+   "z_low": 3.191,
+   "z_centre": 3.3282,
+   "tilt_deg": 0.181,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    4
+   ],
+   "bounds": [
+    25.0,
+    100.0,
+    50.0,
+    125.0
+   ],
+   "plane": [
+    -0.012109246542814922,
+    0.0031176090333503333,
+    0.9999218202750055,
+    -3.2771673773461054
+   ],
+   "n_points": 4083,
+   "n_candidates": 1599,
+   "n_ground": 1536,
+   "z_low": 3.2334,
+   "z_centre": 3.3808,
+   "tilt_deg": 0.716,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    5
+   ],
+   "bounds": [
+    25.0,
+    125.0,
+    50.0,
+    150.0
+   ],
+   "plane": [
+    -0.0042028287446198844,
+    0.0034443359138210663,
+    0.9999852362813444,
+    -3.6628580082756446
+   ],
+   "n_points": 2554,
+   "n_candidates": 2543,
+   "n_ground": 2529,
+   "z_low": 3.187,
+   "z_centre": 3.3469,
+   "tilt_deg": 0.311,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    6
+   ],
+   "bounds": [
+    25.0,
+    150.0,
+    50.0,
+    175.0
+   ],
+   "plane": [
+    -0.005081527141064107,
+    0.022869169756467567,
+    0.9997255519174073,
+    -6.438350104989
+   ],
+   "n_points": 2532,
+   "n_candidates": 2532,
+   "n_ground": 2532,
+   "z_low": 2.6549,
+   "z_centre": 2.9135,
+   "tilt_deg": 1.342,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    1,
+    7
+   ],
+   "bounds": [
+    25.0,
+    175.0,
+    50.0,
+    200.0
+   ],
+   "plane": [
+    0.011899631165224453,
+    -0.032809401863298136,
+    0.9993907853925331,
+    2.5752174931023424
+   ],
+   "n_points": 3022,
+   "n_candidates": 2734,
+   "n_ground": 2727,
+   "z_low": 2.656,
+   "z_centre": 3.1322,
+   "tilt_deg": 2.0,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    2,
+    0
+   ],
+   "bounds": [
+    50.0,
+    0.0,
+    75.0,
+    25.0
+   ],
+   "plane": [
+    0.004285680158211193,
+    0.005251324138018853,
+    0.9999770280063333,
+    -3.581548993379589
+   ],
+   "n_points": 3263,
+   "n_candidates": 2723,
+   "n_ground": 2686,
+   "z_low": 3.0567,
+   "z_centre": 3.2481,
+   "tilt_deg": 0.388,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    2,
+    1
+   ],
+   "bounds": [
+    50.0,
+    25.0,
+    75.0,
+    50.0
+   ],
+   "plane": [
+    0.00341669993577073,
+    -0.0031421321569944046,
+    0.9999892265254946,
+    -3.415683699477269
+   ],
+   "n_points": 3732,
+   "n_candidates": 2498,
+   "n_ground": 2410,
+   "z_low": 2.8926,
+   "z_centre": 3.32,
+   "tilt_deg": 0.266,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    2,
+    2
+   ],
+   "bounds": [
+    50.0,
+    50.0,
+    75.0,
+    75.0
+   ],
+   "plane": [
+    -0.010448742516525616,
+    -0.0038836026511241766,
+    0.9999378687749911,
+    -2.488235619336213
+   ],
+   "n_points": 4582,
+   "n_candidates": 1174,
+   "n_ground": 1173,
+   "z_low": 3.1802,
+   "z_centre": 3.3842,
+   "tilt_deg": 0.639,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    2,
+    3
+   ],
+   "bounds": [
+    50.0,
+    75.0,
+    75.0,
+    100.0
+   ],
+   "plane": [
+    0.0030640441422959772,
+    0.0007971918082786434,
+    0.9999949880467977,
+    -3.5128181885510417
+   ],
+   "n_points": 3837,
+   "n_candidates": 81,
+   "n_ground": 18,
+   "z_low": 6.7532,
+   "z_centre": 7.086,
+   "tilt_deg": 3.475,
+   "rejected": true,
+   "borrowed_from": [
+    1,
+    3
+   ]
+  },
+  {
+   "ij": [
+    2,
+    4
+   ],
+   "bounds": [
+    50.0,
+    100.0,
+    75.0,
+    125.0
+   ],
+   "plane": [
+    -0.012109246542814922,
+    0.0031176090333503333,
+    0.9999218202750055,
+    -3.2771673773461054
+   ],
+   "n_points": 3194,
+   "n_candidates": 2053,
+   "n_ground": 1,
+   "z_low": 43.2213,
+   "z_centre": 43.4071,
+   "tilt_deg": 0.488,
+   "rejected": true,
+   "borrowed_from": [
+    1,
+    4
+   ]
+  },
+  {
+   "ij": [
+    2,
+    5
+   ],
+   "bounds": [
+    50.0,
+    125.0,
+    75.0,
+    150.0
+   ],
+   "plane": [
+    0.0024840471472141776,
+    0.0024001110424560768,
+    0.9999940344705833,
+    -3.8276871168020965
+   ],
+   "n_points": 3149,
+   "n_candidates": 1073,
+   "n_ground": 1073,
+   "z_low": 3.2861,
+   "z_centre": 3.3424,
+   "tilt_deg": 0.198,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    2,
+    6
+   ],
+   "bounds": [
+    50.0,
+    150.0,
+    75.0,
+    175.0
+   ],
+   "plane": [
+    -0.007183016613326014,
+    0.01950439073596936,
+    0.9997839681723003,
+    -5.785030096600195
+   ],
+   "n_points": 3571,
+   "n_candidates": 2583,
+   "n_ground": 2582,
+   "z_low": 2.7761,
+   "z_centre": 3.0652,
+   "tilt_deg": 1.191,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    2,
+    7
+   ],
+   "bounds": [
+    50.0,
+    175.0,
+    75.0,
+    200.0
+   ],
+   "plane": [
+    0.003033286537338678,
+    -0.021267036788793065,
+    0.9997692295319989,
+    0.8538883841480569
+   ],
+   "n_points": 3217,
+   "n_candidates": 2592,
+   "n_ground": 2528,
+   "z_low": 2.6975,
+   "z_centre": 2.9448,
+   "tilt_deg": 1.231,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    3,
+    0
+   ],
+   "bounds": [
+    75.0,
+    0.0,
+    100.0,
+    25.0
+   ],
+   "plane": [
+    -0.009027029076091606,
+    -0.003412282073408603,
+    0.999953433454334,
+    -2.4586950803597745
+   ],
+   "n_points": 3251,
+   "n_candidates": 1986,
+   "n_ground": 1934,
+   "z_low": 3.106,
+   "z_centre": 3.2914,
+   "tilt_deg": 0.553,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    3,
+    1
+   ],
+   "bounds": [
+    75.0,
+    25.0,
+    100.0,
+    50.0
+   ],
+   "plane": [
+    0.004958913627222592,
+    -0.004253084242514563,
+    0.9999786599973342,
+    -3.570174016131476
+   ],
+   "n_points": 5141,
+   "n_candidates": 1699,
+   "n_ground": 1672,
+   "z_low": 3.183,
+   "z_centre": 3.2958,
+   "tilt_deg": 0.374,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    3,
+    2
+   ],
+   "bounds": [
+    75.0,
+    50.0,
+    100.0,
+    75.0
+   ],
+   "plane": [
+    -0.010448742516525616,
+    -0.0038836026511241766,
+    0.9999378687749911,
+    -2.488235619336213
+   ],
+   "n_points": 3217,
+   "n_candidates": 81,
+   "n_ground": 7,
+   "z_low": 14.6166,
+   "z_centre": 178.5229,
+   "tilt_deg": 85.008,
+   "rejected": true,
+   "borrowed_from": [
+    2,
+    2
+   ]
+  },
+  {
+   "ij": [
+    3,
+    3
+   ],
+   "bounds": [
+    75.0,
+    75.0,
+    100.0,
+    100.0
+   ],
+   "plane": [
+    -0.010448742516525616,
+    -0.0038836026511241766,
+    0.9999378687749911,
+    -2.488235619336213
+   ],
+   "n_points": 3034,
+   "n_candidates": 2214,
+   "n_ground": 0,
+   "z_low": 43.3528,
+   "z_centre": 43.5418,
+   "tilt_deg": 0.41,
+   "rejected": true,
+   "borrowed_from": [
+    2,
+    2
+   ]
+  },
+  {
+   "ij": [
+    3,
+    4
+   ],
+   "bounds": [
+    75.0,
+    100.0,
+    100.0,
+    125.0
+   ],
+   "plane": [
+    0.0024840471472141776,
+    0.0024001110424560768,
+    0.9999940344705833,
+    -3.8276871168020965
+   ],
+   "n_points": 2661,
+   "n_candidates": 2653,
+   "n_ground": 0,
+   "z_low": 43.4445,
+   "z_centre": 43.6088,
+   "tilt_deg": 0.445,
+   "rejected": true,
+   "borrowed_from": [
+    2,
+    5
+   ]
+  },
+  {
+   "ij": [
+    3,
+    5
+   ],
+   "bounds": [
+    75.0,
+    125.0,
+    100.0,
+    150.0
+   ],
+   "plane": [
+    0.0024840471472141776,
+    0.0024001110424560768,
+    0.9999940344705833,
+    -3.8276871168020965
+   ],
+   "n_points": 3019,
+   "n_candidates": 599,
+   "n_ground": 8,
+   "z_low": 13.137,
+   "z_centre": 15.2915,
+   "tilt_deg": 8.261,
+   "rejected": true,
+   "borrowed_from": [
+    2,
+    5
+   ]
+  },
+  {
+   "ij": [
+    3,
+    6
+   ],
+   "bounds": [
+    75.0,
+    150.0,
+    100.0,
+    175.0
+   ],
+   "plane": [
+    -0.00821611447357796,
+    0.009572914008858131,
+    0.999920424224016,
+    -4.1080384259753275
+   ],
+   "n_points": 3708,
+   "n_candidates": 2238,
+   "n_ground": 2232,
+   "z_low": 3.0824,
+   "z_centre": 3.2716,
+   "tilt_deg": 0.723,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    3,
+    7
+   ],
+   "bounds": [
+    75.0,
+    175.0,
+    100.0,
+    200.0
+   ],
+   "plane": [
+    -0.015225248808050462,
+    -0.009975595628882238,
+    0.9998343259213408,
+    -0.0028375124671708996
+   ],
+   "n_points": 2919,
+   "n_candidates": 2494,
+   "n_ground": 2447,
+   "z_low": 2.9552,
+   "z_centre": 3.206,
+   "tilt_deg": 1.043,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    4,
+    0
+   ],
+   "bounds": [
+    100.0,
+    0.0,
+    125.0,
+    25.0
+   ],
+   "plane": [
+    -0.009027029076091606,
+    -0.003412282073408603,
+    0.999953433454334,
+    -2.4586950803597745
+   ],
+   "n_points": 5082,
+   "n_candidates": 940,
+   "n_ground": 70,
+   "z_low": 12.1096,
+   "z_centre": 12.3949,
+   "tilt_deg": 0.35,
+   "rejected": true,
+   "borrowed_from": [
+    3,
+    0
+   ]
+  },
+  {
+   "ij": [
+    4,
+    1
+   ],
+   "bounds": [
+    100.0,
+    25.0,
+    125.0,
+    50.0
+   ],
+   "plane": [
+    -0.0055500676683266515,
+    0.011336618735957262,
+    0.9999203357390591,
+    -3.1194124929024167
+   ],
+   "n_points": 4043,
+   "n_candidates": 765,
+   "n_ground": 749,
+   "z_low": 3.1294,
+   "z_centre": 3.3189,
+   "tilt_deg": 0.723,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    4,
+    2
+   ],
+   "bounds": [
+    100.0,
+    50.0,
+    125.0,
+    75.0
+   ],
+   "plane": [
+    0.00953843118810213,
+    -0.016561162021118497,
+    0.9998173564421554,
+    -3.4510578117950095
+   ],
+   "n_points": 4657,
+   "n_candidates": 735,
+   "n_ground": 735,
+   "z_low": 3.1475,
+   "z_centre": 3.4137,
+   "tilt_deg": 1.095,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    4,
+    3
+   ],
+   "bounds": [
+    100.0,
+    75.0,
+    125.0,
+    100.0
+   ],
+   "plane": [
+    0.00953843118810213,
+    -0.016561162021118497,
+    0.9998173564421554,
+    -3.4510578117950095
+   ],
+   "n_points": 2501,
+   "n_candidates": 2501,
+   "n_ground": 0,
+   "z_low": 43.4367,
+   "z_centre": 43.5948,
+   "tilt_deg": 0.141,
+   "rejected": true,
+   "borrowed_from": [
+    4,
+    2
+   ]
+  },
+  {
+   "ij": [
+    4,
+    4
+   ],
+   "bounds": [
+    100.0,
+    100.0,
+    125.0,
+    125.0
+   ],
+   "plane": [
+    0.015596714619916501,
+    -0.030184592616261465,
+    0.9994226497641802,
+    -3.338902909964097
+   ],
+   "n_points": 2908,
+   "n_candidates": 2908,
+   "n_ground": 0,
+   "z_low": 43.5326,
+   "z_centre": 43.681,
+   "tilt_deg": 0.203,
+   "rejected": true,
+   "borrowed_from": [
+    5,
+    3
+   ]
+  },
+  {
+   "ij": [
+    4,
+    5
+   ],
+   "bounds": [
+    100.0,
+    125.0,
+    125.0,
+    150.0
+   ],
+   "plane": [
+    0.00032016944285671406,
+    0.004516027086199463,
+    0.9999897514429258,
+    -4.163096839278228
+   ],
+   "n_points": 2505,
+   "n_candidates": 2505,
+   "n_ground": 0,
+   "z_low": 43.3924,
+   "z_centre": 43.5708,
+   "tilt_deg": 0.511,
+   "rejected": true,
+   "borrowed_from": [
+    4,
+    6
+   ]
+  },
+  {
+   "ij": [
+    4,
+    6
+   ],
+   "bounds": [
+    100.0,
+    150.0,
+    125.0,
+    175.0
+   ],
+   "plane": [
+    0.00032016944285671406,
+    0.004516027086199463,
+    0.9999897514429258,
+    -4.163096839278228
+   ],
+   "n_points": 3346,
+   "n_candidates": 995,
+   "n_ground": 929,
+   "z_low": 3.313,
+   "z_centre": 3.3933,
+   "tilt_deg": 0.259,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    4,
+    7
+   ],
+   "bounds": [
+    100.0,
+    175.0,
+    125.0,
+    200.0
+   ],
+   "plane": [
+    -0.1455609464670727,
+    -0.09555662925521319,
+    0.9847237894298033,
+    28.850518082277514
+   ],
+   "n_points": 3106,
+   "n_candidates": 486,
+   "n_ground": 391,
+   "z_low": 3.3054,
+   "z_centre": 5.5264,
+   "tilt_deg": 10.028,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    5,
+    0
+   ],
+   "bounds": [
+    125.0,
+    0.0,
+    150.0,
+    25.0
+   ],
+   "plane": [
+    -0.0055500676683266515,
+    0.011336618735957262,
+    0.9999203357390591,
+    -3.1194124929024167
+   ],
+   "n_points": 4927,
+   "n_candidates": 804,
+   "n_ground": 23,
+   "z_low": 7.5421,
+   "z_centre": 7.5724,
+   "tilt_deg": 1.04,
+   "rejected": true,
+   "borrowed_from": [
+    4,
+    1
+   ]
+  },
+  {
+   "ij": [
+    5,
+    1
+   ],
+   "bounds": [
+    125.0,
+    25.0,
+    150.0,
+    50.0
+   ],
+   "plane": [
+    -0.0055500676683266515,
+    0.011336618735957262,
+    0.9999203357390591,
+    -3.1194124929024167
+   ],
+   "n_points": 3208,
+   "n_candidates": 475,
+   "n_ground": 2,
+   "z_low": 7.3363,
+   "z_centre": 7.6369,
+   "tilt_deg": 1.53,
+   "rejected": true,
+   "borrowed_from": [
+    4,
+    1
+   ]
+  },
+  {
+   "ij": [
+    5,
+    2
+   ],
+   "bounds": [
+    125.0,
+    50.0,
+    150.0,
+    75.0
+   ],
+   "plane": [
+    0.0032945442003125707,
+    -0.005146068567500247,
+    0.9999813318041545,
+    -3.3526906119210373
+   ],
+   "n_points": 4193,
+   "n_candidates": 1566,
+   "n_ground": 1553,
+   "z_low": 3.1009,
+   "z_centre": 3.2214,
+   "tilt_deg": 0.35,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    5,
+    3
+   ],
+   "bounds": [
+    125.0,
+    75.0,
+    150.0,
+    100.0
+   ],
+   "plane": [
+    0.015596714619916501,
+    -0.030184592616261465,
+    0.9994226497641802,
+    -3.338902909964097
+   ],
+   "n_points": 3529,
+   "n_candidates": 80,
+   "n_ground": 80,
+   "z_low": 3.4004,
+   "z_centre": 3.8377,
+   "tilt_deg": 1.947,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    5,
+    4
+   ],
+   "bounds": [
+    125.0,
+    100.0,
+    150.0,
+    125.0
+   ],
+   "plane": [
+    0.015596714619916501,
+    -0.030184592616261465,
+    0.9994226497641802,
+    -3.338902909964097
+   ],
+   "n_points": 2608,
+   "n_candidates": 2599,
+   "n_ground": 0,
+   "z_low": 43.4604,
+   "z_centre": 43.5863,
+   "tilt_deg": 0.385,
+   "rejected": true,
+   "borrowed_from": [
+    5,
+    3
+   ]
+  },
+  {
+   "ij": [
+    5,
+    5
+   ],
+   "bounds": [
+    125.0,
+    125.0,
+    150.0,
+    150.0
+   ],
+   "plane": [
+    -0.020018834018818543,
+    0.03294523485852003,
+    0.9992566526096507,
+    -6.35621536331997
+   ],
+   "n_points": 2913,
+   "n_candidates": 2570,
+   "n_ground": 0,
+   "z_low": 43.43,
+   "z_centre": 43.5433,
+   "tilt_deg": 0.373,
+   "rejected": true,
+   "borrowed_from": [
+    5,
+    6
+   ]
+  },
+  {
+   "ij": [
+    5,
+    6
+   ],
+   "bounds": [
+    125.0,
+    150.0,
+    150.0,
+    175.0
+   ],
+   "plane": [
+    -0.020018834018818543,
+    0.03294523485852003,
+    0.9992566526096507,
+    -6.35621536331997
+   ],
+   "n_points": 3162,
+   "n_candidates": 150,
+   "n_ground": 150,
+   "z_low": 3.325,
+   "z_centre": 3.758,
+   "tilt_deg": 2.209,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    5,
+    7
+   ],
+   "bounds": [
+    125.0,
+    175.0,
+    150.0,
+    200.0
+   ],
+   "plane": [
+    -0.1455609464670727,
+    -0.09555662925521319,
+    0.9847237894298033,
+    28.850518082277514
+   ],
+   "n_points": 3109,
+   "n_candidates": 1331,
+   "n_ground": 255,
+   "z_low": 9.6295,
+   "z_centre": 11.097,
+   "tilt_deg": 0.042,
+   "rejected": true,
+   "borrowed_from": [
+    4,
+    7
+   ]
+  },
+  {
+   "ij": [
+    6,
+    0
+   ],
+   "bounds": [
+    150.0,
+    0.0,
+    175.0,
+    25.0
+   ],
+   "plane": [
+    0.0008274266110396902,
+    -0.0026308795188811638,
+    0.9999961969118484,
+    -3.4376360342701493
+   ],
+   "n_points": 3490,
+   "n_candidates": 2723,
+   "n_ground": 0,
+   "z_low": 7.185,
+   "z_centre": 7.5504,
+   "tilt_deg": 1.474,
+   "rejected": true,
+   "borrowed_from": [
+    6,
+    1
+   ]
+  },
+  {
+   "ij": [
+    6,
+    1
+   ],
+   "bounds": [
+    150.0,
+    25.0,
+    175.0,
+    50.0
+   ],
+   "plane": [
+    0.0008274266110396902,
+    -0.0026308795188811638,
+    0.9999961969118484,
+    -3.4376360342701493
+   ],
+   "n_points": 4435,
+   "n_candidates": 332,
+   "n_ground": 260,
+   "z_low": 3.3623,
+   "z_centre": 3.4019,
+   "tilt_deg": 0.158,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    6,
+    2
+   ],
+   "bounds": [
+    150.0,
+    50.0,
+    175.0,
+    75.0
+   ],
+   "plane": [
+    -0.004702421569112351,
+    0.005879877236785913,
+    0.999971656735863,
+    -2.9607768738743814
+   ],
+   "n_points": 4406,
+   "n_candidates": 2191,
+   "n_ground": 1849,
+   "z_low": 3.1978,
+   "z_centre": 3.3575,
+   "tilt_deg": 0.431,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    6,
+    3
+   ],
+   "bounds": [
+    150.0,
+    75.0,
+    175.0,
+    100.0
+   ],
+   "plane": [
+    0.003033717531323879,
+    -0.0071887182894064035,
+    0.99996955898032,
+    -3.204046855544485
+   ],
+   "n_points": 4471,
+   "n_candidates": 1308,
+   "n_ground": 1303,
+   "z_low": 3.2101,
+   "z_centre": 3.3402,
+   "tilt_deg": 0.447,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    6,
+    4
+   ],
+   "bounds": [
+    150.0,
+    100.0,
+    175.0,
+    125.0
+   ],
+   "plane": [
+    0.003033717531323879,
+    -0.0071887182894064035,
+    0.99996955898032,
+    -3.204046855544485
+   ],
+   "n_points": 2585,
+   "n_candidates": 2585,
+   "n_ground": 0,
+   "z_low": 43.3709,
+   "z_centre": 43.4698,
+   "tilt_deg": 0.31,
+   "rejected": true,
+   "borrowed_from": [
+    6,
+    3
+   ]
+  },
+  {
+   "ij": [
+    6,
+    5
+   ],
+   "bounds": [
+    150.0,
+    125.0,
+    175.0,
+    150.0
+   ],
+   "plane": [
+    -0.0076715141929079534,
+    -0.0016908296267138185,
+    0.9999691440065346,
+    -1.8675076428482678
+   ],
+   "n_points": 4936,
+   "n_candidates": 564,
+   "n_ground": 7,
+   "z_low": 11.0709,
+   "z_centre": 11.0251,
+   "tilt_deg": 0.737,
+   "rejected": true,
+   "borrowed_from": [
+    6,
+    6
+   ]
+  },
+  {
+   "ij": [
+    6,
+    6
+   ],
+   "bounds": [
+    150.0,
+    150.0,
+    175.0,
+    175.0
+   ],
+   "plane": [
+    -0.0076715141929079534,
+    -0.0016908296267138185,
+    0.9999691440065346,
+    -1.8675076428482678
+   ],
+   "n_points": 4837,
+   "n_candidates": 333,
+   "n_ground": 320,
+   "z_low": 3.4309,
+   "z_centre": 3.389,
+   "tilt_deg": 0.45,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    6,
+    7
+   ],
+   "bounds": [
+    150.0,
+    175.0,
+    175.0,
+    200.0
+   ],
+   "plane": [
+    -0.0076715141929079534,
+    -0.0016908296267138185,
+    0.9999691440065346,
+    -1.8675076428482678
+   ],
+   "n_points": 3122,
+   "n_candidates": 1251,
+   "n_ground": 5,
+   "z_low": 11.0721,
+   "z_centre": 11.1537,
+   "tilt_deg": 0.266,
+   "rejected": true,
+   "borrowed_from": [
+    6,
+    6
+   ]
+  },
+  {
+   "ij": [
+    7,
+    0
+   ],
+   "bounds": [
+    175.0,
+    0.0,
+    200.0,
+    25.0
+   ],
+   "plane": [
+    0.01897981406752752,
+    0.00816485178423148,
+    0.9997865281415347,
+    -7.098655865511534
+   ],
+   "n_points": 3514,
+   "n_candidates": 1204,
+   "n_ground": 1022,
+   "z_low": 3.1554,
+   "z_centre": 3.4386,
+   "tilt_deg": 1.184,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    1
+   ],
+   "bounds": [
+    175.0,
+    25.0,
+    200.0,
+    50.0
+   ],
+   "plane": [
+    0.005038303361416187,
+    3.926174546746923e-05,
+    0.9999873068983195,
+    -4.2099373581638595
+   ],
+   "n_points": 3548,
+   "n_candidates": 2665,
+   "n_ground": 2386,
+   "z_low": 3.151,
+   "z_centre": 3.2638,
+   "tilt_deg": 0.289,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    2
+   ],
+   "bounds": [
+    175.0,
+    50.0,
+    200.0,
+    75.0
+   ],
+   "plane": [
+    0.0036293901940898997,
+    -0.004685551136299785,
+    0.9999824364144443,
+    -3.667134460319852
+   ],
+   "n_points": 3555,
+   "n_candidates": 2973,
+   "n_ground": 2764,
+   "z_low": 3.1693,
+   "z_centre": 3.2795,
+   "tilt_deg": 0.34,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    3
+   ],
+   "bounds": [
+    175.0,
+    75.0,
+    200.0,
+    100.0
+   ],
+   "plane": [
+    -0.004210438555474393,
+    0.003943449324812257,
+    0.9999833605688613,
+    -2.905340457304282
+   ],
+   "n_points": 4038,
+   "n_candidates": 2480,
+   "n_ground": 2287,
+   "z_low": 3.2282,
+   "z_centre": 3.3498,
+   "tilt_deg": 0.331,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    4
+   ],
+   "bounds": [
+    175.0,
+    100.0,
+    200.0,
+    125.0
+   ],
+   "plane": [
+    -0.005710980901342958,
+    -0.002830008168062508,
+    0.9999796876691611,
+    -2.015850841423311
+   ],
+   "n_points": 5462,
+   "n_candidates": 612,
+   "n_ground": 612,
+   "z_low": 3.4114,
+   "z_centre": 3.4051,
+   "tilt_deg": 0.365,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    5
+   ],
+   "bounds": [
+    175.0,
+    125.0,
+    200.0,
+    150.0
+   ],
+   "plane": [
+    -0.00999468066044805,
+    -0.004897363065367666,
+    0.9999380591784182,
+    -0.9641034342424981
+   ],
+   "n_points": 4199,
+   "n_candidates": 1192,
+   "n_ground": 1177,
+   "z_low": 3.42,
+   "z_centre": 3.5117,
+   "tilt_deg": 0.638,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    6
+   ],
+   "bounds": [
+    175.0,
+    150.0,
+    200.0,
+    175.0
+   ],
+   "plane": [
+    -0.014945679538930957,
+    -0.0030379694108314775,
+    0.9998836919387066,
+    -0.36189347349434
+   ],
+   "n_points": 3098,
+   "n_candidates": 242,
+   "n_ground": 241,
+   "z_low": 3.478,
+   "z_centre": 3.6583,
+   "tilt_deg": 0.874,
+   "rejected": false,
+   "borrowed_from": null
+  },
+  {
+   "ij": [
+    7,
+    7
+   ],
+   "bounds": [
+    175.0,
+    175.0,
+    200.0,
+    200.0
+   ],
+   "plane": [
+    -0.014945679538930957,
+    -0.0030379694108314775,
+    0.9998836919387066,
+    -0.36189347349434
+   ],
+   "n_points": 2722,
+   "n_candidates": 357,
+   "n_ground": 0,
+   "z_low": 24.2628,
+   "z_centre": 28.2388,
+   "tilt_deg": 14.954,
+   "rejected": true,
+   "borrowed_from": [
+    7,
+    6
+   ]
+  }
+ ],
+ "runtime_s": 0.616,
+ "runtime_note": "single run, load to paint-back, indicative only",
+ "timings_s": {
+  "load": 0.056,
+  "to_open3d": 0.016,
+  "downsample": 0.083,
+  "remove_ground": 0.081,
+  "cluster": 0.134,
+  "label": 0.146,
+  "paint_back": 0.099,
+  "total": 0.616
+ },
+ "param_choice": [
+  {
+   "variant": "final",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9816,
+    "recall": 0.9427
+   },
+   "buildings": {
+    "precision": 0.8342,
+    "recall": 0.9886
+   },
+   "n_clusters": 1024,
+   "noise_share": 0.102,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 276,
+    "vegetation": 683,
+    "street_furniture": 3,
+    "unlabelled": 62
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "tile 50 m",
+   "points_after_voxel": 232180,
+   "n_tiles": 16,
+   "tiles_flagged": 1,
+   "ground": {
+    "precision": 0.9846,
+    "recall": 0.8515
+   },
+   "buildings": {
+    "precision": 0.8098,
+    "recall": 0.9886
+   },
+   "n_clusters": 1031,
+   "noise_share": 0.0996,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 285,
+    "vegetation": 683,
+    "street_furniture": 3,
+    "unlabelled": 60
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "one plane (tile 250 m)",
+   "points_after_voxel": 232180,
+   "n_tiles": 1,
+   "tiles_flagged": 0,
+   "ground": {
+    "precision": 0.9877,
+    "recall": 0.9457
+   },
+   "buildings": {
+    "precision": 0.8296,
+    "recall": 0.9886
+   },
+   "n_clusters": 1038,
+   "noise_share": 0.1012,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 282,
+    "vegetation": 682,
+    "street_furniture": 3,
+    "unlabelled": 71
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "no low-point pre-filter",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 29,
+   "ground": {
+    "precision": 0.9011,
+    "recall": 0.9739
+   },
+   "buildings": {
+    "precision": 0.8213,
+    "recall": 0.9107
+   },
+   "n_clusters": 1007,
+   "noise_share": 0.107,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 269,
+    "vegetation": 677,
+    "street_furniture": 3,
+    "unlabelled": 58
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "RANSAC threshold 0.2 m",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9926,
+    "recall": 0.9157
+   },
+   "buildings": {
+    "precision": 0.8208,
+    "recall": 0.9886
+   },
+   "n_clusters": 1048,
+   "noise_share": 0.1011,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 285,
+    "vegetation": 683,
+    "street_furniture": 3,
+    "unlabelled": 77
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "pre-filter window 3 m",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 21,
+   "ground": {
+    "precision": 0.9833,
+    "recall": 0.9662
+   },
+   "buildings": {
+    "precision": 0.8242,
+    "recall": 0.9886
+   },
+   "n_clusters": 1018,
+   "noise_share": 0.101,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 276,
+    "vegetation": 683,
+    "street_furniture": 3,
+    "unlabelled": 56
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "eps 0.5 (= voxel size)",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9816,
+    "recall": 0.9427
+   },
+   "buildings": {
+    "precision": null,
+    "recall": 0.0
+   },
+   "n_clusters": 1644,
+   "noise_share": 0.9143,
+   "largest_cluster": 75,
+   "n_objects": {
+    "buildings": 0,
+    "vegetation": 306,
+    "street_furniture": 307,
+    "unlabelled": 1031
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "eps 1.0",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9816,
+    "recall": 0.9427
+   },
+   "buildings": {
+    "precision": 0.8215,
+    "recall": 0.9724
+   },
+   "n_clusters": 506,
+   "noise_share": 0.0234,
+   "largest_cluster": 52702,
+   "n_objects": {
+    "buildings": 92,
+    "vegetation": 370,
+    "street_furniture": 1,
+    "unlabelled": 43
+   },
+   "vegetation_points_ahn2": 1
+  },
+  {
+   "variant": "min_points 5",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9816,
+    "recall": 0.9427
+   },
+   "buildings": {
+    "precision": 0.8263,
+    "recall": 0.9917
+   },
+   "n_clusters": 1220,
+   "noise_share": 0.0652,
+   "largest_cluster": 46684,
+   "n_objects": {
+    "buildings": 294,
+    "vegetation": 859,
+    "street_furniture": 5,
+    "unlabelled": 62
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "min_points 10",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9816,
+    "recall": 0.9427
+   },
+   "buildings": {
+    "precision": 0.8777,
+    "recall": 0.1977
+   },
+   "n_clusters": 1809,
+   "noise_share": 0.6992,
+   "largest_cluster": 2136,
+   "n_objects": {
+    "buildings": 521,
+    "vegetation": 318,
+    "street_furniture": 165,
+    "unlabelled": 805
+   },
+   "vegetation_points_ahn2": 0
+  },
+  {
+   "variant": "no near-ground skip (min_height -inf)",
+   "points_after_voxel": 232180,
+   "n_tiles": 64,
+   "tiles_flagged": 20,
+   "ground": {
+    "precision": 0.9816,
+    "recall": 0.9427
+   },
+   "buildings": {
+    "precision": 0.7991,
+    "recall": 0.9886
+   },
+   "n_clusters": 1026,
+   "noise_share": 0.0988,
+   "largest_cluster": 46039,
+   "n_objects": {
+    "buildings": 288,
+    "vegetation": 682,
+    "street_furniture": 3,
+    "unlabelled": 53
+   },
+   "vegetation_points_ahn2": 0
+  }
+ ],
+ "checks": {
+  "ransac_default_probability": {
+   "probability_1.0": {
+    "runs": 5,
+    "voxels_differing_from_run_1": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "probability_default_0.99999999": {
+    "runs": 5,
+    "voxels_differing_from_run_1": [
+     855,
+     865,
+     762,
+     703
+    ]
+   },
+   "note": "o3d.utility.random.seed(0) before every run. With probability < 1 RANSAC may stop early and the early stop races between threads, so seeded runs differ; with probability=1.0 they agree."
+  },
+  "determinism": {
+   "json_identical": true,
+   "npz_arrays_identical": true,
+   "method": "pipeline/run.py run again in a fresh process; pipeline.json compared without ['runtime_s', 'timings_s', 'checks'], every labels_crop.npz array with np.array_equal"
+  }
+ }
+}

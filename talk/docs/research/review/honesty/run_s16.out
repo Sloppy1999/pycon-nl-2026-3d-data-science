@@ -1,0 +1,8 @@
+N 1239310 plane [ 1.8000e-03 -7.0000e-04  1.0000e+00 -1.3344e+00] type of a: float
+loop times [0.609, 0.607, 0.603] median 0.607 s
+vec  times median 6.13 ms
+ratio (median/median) 98.9 x
+np.array_equal(loop, vec): True
+np.array_equal(loop, P @ n + d): False max abs diff 7.105427357601002e-15
+pure-Python list-of-floats median 0.104 s; ratio vs vec 17.0 x; equal: True
+loadavg ['2.67', '0.78', '0.35']

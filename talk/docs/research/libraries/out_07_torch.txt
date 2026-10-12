@@ -1,0 +1,18 @@
+python 3.13.15 | torch 2.14.1+cpu | pytorch3d 0.7.9 | open3d 0.20.0 | torch.cuda.is_available() False
+== numpy -> torch
+  torch.from_numpy shares memory: True | dtype torch.float64
+  .float() (f64->f32) is a copy: True
+  from_numpy(F-order) accepted; is_contiguous: False
+  torch.as_tensor(np, dtype=float32) is a copy: True
+== PyTorch3D Pointclouds
+  points_list()[0] shares memory with input tensor: True
+  points_padded() shape (1, 1000000, 3) dtype torch.float32
+  float64 input accepted, dtype kept: torch.float64
+== knn_points (CPU) vs SciPy KDTree on 100k pts, k=8
+  pytorch3d.knn_points CPU: 30166 ms | scipy KDTree build+query workers=-1: 53 ms
+  knn_points returns KNN fields ('dists', 'idx', 'knn') | dists are SQUARED: True
+  sample_farthest_points -> (1, 1024, 3) (1, 1024)
+== Open3D tensor <-> torch via DLPack
+  o3c -> torch via to_dlpack() shares memory: True
+  torch.from_dlpack(o3c.Tensor) (protocol) works, shares: True
+  torch -> o3c via from_dlpack shares memory: True

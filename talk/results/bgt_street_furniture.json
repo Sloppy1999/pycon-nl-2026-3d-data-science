@@ -1,0 +1,2427 @@
+{
+  "label": "FINAL",
+  "script": "bench/bgt_street_furniture.py",
+  "date_utc": "2026-10-12T08:04:23Z",
+  "source": {
+    "name": "BGT (Basisregistratie Grootschalige Topografie) via PDOK OGC API Features",
+    "licence": {
+      "api_landing_page": {
+        "title": "CC0 1.0",
+        "href": "http://creativecommons.org/publicdomain/zero/1.0/deed.nl",
+        "checked_at": "https://api.pdok.nl/lv/bgt/ogc/v1?f=json"
+      },
+      "dataset_metadata_ngr": {
+        "cc_by_4_0": true,
+        "checked_at": "https://www.nationaalgeoregister.nl/geonetwork/srv/api/records/2cb4769c-b56e-48fa-8685-c48f61b9a319/formatters/xml",
+        "attribution": "Kadaster, Basisregistratie Grootschalige Topografie (BGT)"
+      },
+      "note": "the API links CC0 1.0, the NGR dataset metadata says CC BY 4.0 with attribution; attribute 'Kadaster, BGT' to satisfy both"
+    },
+    "urls": [
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/paal/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/straatmeubilair/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/kast/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/bord/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/mast/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/sensor_punt/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/installatie/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/bak/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/weginrichtingselement_punt/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/put/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992",
+      "https://api.pdok.nl/lv/bgt/ogc/v1/collections/vegetatieobject_punt/items?bbox=135715,455475,135915,455675&bbox-crs=http://www.opengis.net/def/crs/EPSG/0/28992&limit=1000&f=json&crs=http://www.opengis.net/def/crs/EPSG/0/28992"
+    ]
+  },
+  "bbox_rd": [
+    135715,
+    455475,
+    135915,
+    455675
+  ],
+  "ahn_flight_utc": "2023-04-05T23:51:00Z",
+  "params": {
+    "pole_radius_m": 0.6,
+    "above_ground_m": 1.5,
+    "ground_radius_m": 3.0,
+    "ground": "median z of AHN class-2 points within ground_radius_m",
+    "voxel_m": 0.5,
+    "voxel_grid": "floor((xyz - LAS header mins) / 0.5), approximates Open3D voxel_down_sample",
+    "min_points": 6
+  },
+  "collections": {
+    "paal": {
+      "n": 61,
+      "by_type": {
+        "lichtmast": 51,
+        "afsluitpaal": 10
+      },
+      "n_versions_returned": 183,
+      "n_first_registered_after_flight": 3
+    },
+    "straatmeubilair": {
+      "n": 29,
+      "by_type": {
+        "bank": 26,
+        "speelvoorziening": 3
+      },
+      "n_versions_returned": 43,
+      "n_first_registered_after_flight": 0
+    },
+    "kast": {
+      "n": 4,
+      "by_type": {
+        "elektrakast": 4
+      },
+      "n_versions_returned": 6,
+      "n_first_registered_after_flight": 0
+    },
+    "bord": {
+      "n": 0,
+      "by_type": {},
+      "n_versions_returned": 0,
+      "n_first_registered_after_flight": 0
+    },
+    "mast": {
+      "n": 0,
+      "by_type": {},
+      "n_versions_returned": 0,
+      "n_first_registered_after_flight": 0
+    },
+    "sensor_punt": {
+      "n": 0,
+      "by_type": {},
+      "n_versions_returned": 0,
+      "n_first_registered_after_flight": 0
+    },
+    "installatie": {
+      "n": 0,
+      "by_type": {},
+      "n_versions_returned": 0,
+      "n_first_registered_after_flight": 0
+    },
+    "bak": {
+      "n": 0,
+      "by_type": {},
+      "n_versions_returned": 0,
+      "n_first_registered_after_flight": 0
+    },
+    "weginrichtingselement_punt": {
+      "n": 0,
+      "by_type": {},
+      "n_versions_returned": 2,
+      "n_first_registered_after_flight": 0
+    },
+    "put": {
+      "n": 171,
+      "by_type": {
+        "kolk": 99,
+        "inspectie- / rioolput": 64,
+        "brandkraan / -put": 7,
+        "niet-bgt": 1
+      },
+      "n_versions_returned": 513,
+      "n_first_registered_after_flight": 18
+    },
+    "vegetatieobject_punt": {
+      "n": 43,
+      "by_type": {
+        "boom": 43
+      },
+      "n_versions_returned": 177,
+      "n_first_registered_after_flight": 15
+    }
+  },
+  "poles": [
+    {
+      "x_rd": 135907.24,
+      "y_rd": 455617.03,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.363b5d6428034150aa4aa5a4adf703bf",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2017-10-08T22:00:00Z",
+      "ground_z": 2.76,
+      "ground_points_3m": 26,
+      "points_within_0_6m": 18,
+      "points_above_1_5m": 18,
+      "voxels_above_1_5m": 14,
+      "top_above_ground_m": 14.39,
+      "ahn_classes_above": {
+        "1": 6,
+        "6": 12
+      },
+      "pipeline_labels_above": {
+        "buildings": 16,
+        "unlabelled": 2
+      }
+    },
+    {
+      "x_rd": 135911.5,
+      "y_rd": 455619.46,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.cbac4112fa664f358f329f8cb9342a3f",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2017-10-08T22:00:00Z",
+      "ground_z": 2.69,
+      "ground_points_3m": 3,
+      "points_within_0_6m": 9,
+      "points_above_1_5m": 9,
+      "voxels_above_1_5m": 5,
+      "top_above_ground_m": 15.59,
+      "ahn_classes_above": {
+        "1": 1,
+        "6": 8
+      },
+      "pipeline_labels_above": {
+        "buildings": 9
+      }
+    },
+    {
+      "x_rd": 135763.63,
+      "y_rd": 455493.68,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e2c64ee0f55b4659808f6d689e5684a2",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2017-10-08T22:00:00Z",
+      "ground_z": 2.47,
+      "ground_points_3m": 517,
+      "points_within_0_6m": 20,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135875.83,
+      "y_rd": 455641.02,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.4df9cace20d64e5095be73f9304991af",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 10,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135871.17,
+      "y_rd": 455652.65,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.689b9e8983e4450cbbce918981c41780",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 11,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135890.48,
+      "y_rd": 455617.33,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.6aa7ec1ee235417e8b3d8fb183a951d5",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": 2.62,
+      "ground_points_3m": 16,
+      "points_within_0_6m": 8,
+      "points_above_1_5m": 8,
+      "voxels_above_1_5m": 6,
+      "top_above_ground_m": 8.11,
+      "ahn_classes_above": {
+        "26": 8
+      },
+      "pipeline_labels_above": {
+        "buildings": 8
+      }
+    },
+    {
+      "x_rd": 135898.34,
+      "y_rd": 455604.83,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.88def8f047a8462e9f217763b8de6b5f",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": 2.64,
+      "ground_points_3m": 47,
+      "points_within_0_6m": 11,
+      "points_above_1_5m": 11,
+      "voxels_above_1_5m": 7,
+      "top_above_ground_m": 8.09,
+      "ahn_classes_above": {
+        "26": 11
+      },
+      "pipeline_labels_above": {
+        "buildings": 11
+      }
+    },
+    {
+      "x_rd": 135884.34,
+      "y_rd": 455629.83,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9fa51174900e4f5bbe3032e301a327e7",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": 2.62,
+      "ground_points_3m": 53,
+      "points_within_0_6m": 11,
+      "points_above_1_5m": 11,
+      "voxels_above_1_5m": 6,
+      "top_above_ground_m": 7.74,
+      "ahn_classes_above": {
+        "26": 11
+      },
+      "pipeline_labels_above": {
+        "buildings": 11
+      }
+    },
+    {
+      "x_rd": 135896.93,
+      "y_rd": 455475.55,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.bf298397561246e693ca226565a879a6",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135905.32,
+      "y_rd": 455592.08,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.d98bd7e643014b6ca1b18753da19d8a0",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": 2.65,
+      "ground_points_3m": 27,
+      "points_within_0_6m": 10,
+      "points_above_1_5m": 10,
+      "voxels_above_1_5m": 6,
+      "top_above_ground_m": 7.95,
+      "ahn_classes_above": {
+        "26": 10
+      },
+      "pipeline_labels_above": {
+        "buildings": 10
+      }
+    },
+    {
+      "x_rd": 135899.25,
+      "y_rd": 455482.79,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.f2d829feebbf4ba2bd96ec5c9231c168",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 22,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135910.63,
+      "y_rd": 455579.58,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.fcb3c0953cb94f9fa7028e773def4d2a",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2018-04-11T22:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135729.61,
+      "y_rd": 455547.05,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.073604ef445d481a98167c57e21fe15d",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.55,
+      "ground_points_3m": 509,
+      "points_within_0_6m": 26,
+      "points_above_1_5m": 6,
+      "voxels_above_1_5m": 5,
+      "top_above_ground_m": 3.09,
+      "ahn_classes_above": {
+        "1": 6
+      },
+      "pipeline_labels_above": {
+        "unlabelled": 6
+      }
+    },
+    {
+      "x_rd": 135771.82,
+      "y_rd": 455655.11,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.0c2b34c37b3d4d63b4679f3d19a74180",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.9,
+      "ground_points_3m": 327,
+      "points_within_0_6m": 16,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135765.62,
+      "y_rd": 455657.68,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.0db61b02e4034eea9bc5b4e4941f8211",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.9,
+      "ground_points_3m": 312,
+      "points_within_0_6m": 14,
+      "points_above_1_5m": 1,
+      "voxels_above_1_5m": 1,
+      "top_above_ground_m": 5.58,
+      "ahn_classes_above": {
+        "1": 1
+      },
+      "pipeline_labels_above": {
+        "buildings": 1
+      }
+    },
+    {
+      "x_rd": 135774.13,
+      "y_rd": 455515.23,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.149c744d96cd4573a6ad14b60abb30a3",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.62,
+      "ground_points_3m": 347,
+      "points_within_0_6m": 18,
+      "points_above_1_5m": 4,
+      "voxels_above_1_5m": 4,
+      "top_above_ground_m": 7.97,
+      "ahn_classes_above": {
+        "1": 4
+      },
+      "pipeline_labels_above": {
+        "unlabelled": 4
+      }
+    },
+    {
+      "x_rd": 135766.23,
+      "y_rd": 455659.93,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.2ff9ae062ed14a42ad351d1b55b74a53",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.96,
+      "ground_points_3m": 321,
+      "points_within_0_6m": 18,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135731.37,
+      "y_rd": 455591.32,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.36990a46af6544f0b1ba09517ee7ab51",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.51,
+      "ground_points_3m": 499,
+      "points_within_0_6m": 16,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135716.2,
+      "y_rd": 455578.37,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.3dfccabba669446aac43e1066e7c7824",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.47,
+      "ground_points_3m": 375,
+      "points_within_0_6m": 27,
+      "points_above_1_5m": 8,
+      "voxels_above_1_5m": 5,
+      "top_above_ground_m": 15.96,
+      "ahn_classes_above": {
+        "1": 8
+      },
+      "pipeline_labels_above": {
+        "unlabelled": 8
+      }
+    },
+    {
+      "x_rd": 135768.48,
+      "y_rd": 455654.27,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.3eefb92fbbaf4da69f185d8ec8e51ad6",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.89,
+      "ground_points_3m": 323,
+      "points_within_0_6m": 13,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135766.52,
+      "y_rd": 455621.15,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.3fc36caf2ae949bbb123ae920c1c1967",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.58,
+      "ground_points_3m": 485,
+      "points_within_0_6m": 32,
+      "points_above_1_5m": 12,
+      "voxels_above_1_5m": 10,
+      "top_above_ground_m": 7.1,
+      "ahn_classes_above": {
+        "1": 12
+      },
+      "pipeline_labels_above": {
+        "street_furniture": 6,
+        "unlabelled": 6
+      }
+    },
+    {
+      "x_rd": 135725.48,
+      "y_rd": 455659.06,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.43561df590e9445ba08cf6e796d4b207",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.45,
+      "ground_points_3m": 512,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135718.51,
+      "y_rd": 455644.55,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.52278b3a376d48ccb060fca0b3d623eb",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.13,
+      "ground_points_3m": 514,
+      "points_within_0_6m": 17,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135761.26,
+      "y_rd": 455500.94,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.582a17cfcf2e440a882e1912359624d5",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.65,
+      "ground_points_3m": 505,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135747.03,
+      "y_rd": 455525.93,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.61596c9f4ed8494a85a11ba1b9809c28",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.64,
+      "ground_points_3m": 519,
+      "points_within_0_6m": 18,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135760.25,
+      "y_rd": 455539.22,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.6631099c1352496d98e9646401dc58fa",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.64,
+      "ground_points_3m": 341,
+      "points_within_0_6m": 13,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135746.4,
+      "y_rd": 455572.66,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.6fc09f5b78414897bfdf2826a08a563d",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.46,
+      "ground_points_3m": 253,
+      "points_within_0_6m": 11,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135770.82,
+      "y_rd": 455654.48,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.83e1711ebc86454383a3535e4b7253ca",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.9,
+      "ground_points_3m": 348,
+      "points_within_0_6m": 17,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135766.48,
+      "y_rd": 455655.49,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9206273003f54943a50f60ac5308bbe1",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.88,
+      "ground_points_3m": 293,
+      "points_within_0_6m": 10,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135786.55,
+      "y_rd": 455638.12,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.acfcd0700f3c4101a085a8fa52bf5224",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.33,
+      "ground_points_3m": 494,
+      "points_within_0_6m": 29,
+      "points_above_1_5m": 11,
+      "voxels_above_1_5m": 6,
+      "top_above_ground_m": 7.28,
+      "ahn_classes_above": {
+        "1": 11
+      },
+      "pipeline_labels_above": {
+        "unlabelled": 11
+      }
+    },
+    {
+      "x_rd": 135769.67,
+      "y_rd": 455654.18,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.b4d96f28b1344f03873f32e2ea73be68",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.89,
+      "ground_points_3m": 347,
+      "points_within_0_6m": 17,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135730.14,
+      "y_rd": 455671.53,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.b9c6ebf100ef4b94b09461d7b64f27cf",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.69,
+      "ground_points_3m": 525,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135765.74,
+      "y_rd": 455658.84,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.d3c88e9ab87c4d09a41d2e9b6eb9f57f",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.91,
+      "ground_points_3m": 322,
+      "points_within_0_6m": 16,
+      "points_above_1_5m": 1,
+      "voxels_above_1_5m": 1,
+      "top_above_ground_m": 5.58,
+      "ahn_classes_above": {
+        "1": 1
+      },
+      "pipeline_labels_above": {
+        "buildings": 1
+      }
+    },
+    {
+      "x_rd": 135806.45,
+      "y_rd": 455654.98,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.ddb05a622f634b8cbbb1b8792225f3bd",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.39,
+      "ground_points_3m": 503,
+      "points_within_0_6m": 35,
+      "points_above_1_5m": 12,
+      "voxels_above_1_5m": 8,
+      "top_above_ground_m": 7.42,
+      "ahn_classes_above": {
+        "1": 12
+      },
+      "pipeline_labels_above": {
+        "street_furniture": 10,
+        "unlabelled": 2
+      }
+    },
+    {
+      "x_rd": 135767.31,
+      "y_rd": 455654.64,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.dfbe1a5b3faa4cc3b260c8e1a6beee91",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.88,
+      "ground_points_3m": 316,
+      "points_within_0_6m": 9,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135755.66,
+      "y_rd": 455671.97,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e66d1dc1d67c4cd19aba44a83df7cfa4",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.52,
+      "ground_points_3m": 518,
+      "points_within_0_6m": 24,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135743.01,
+      "y_rd": 455665.82,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e8b58148c19a4e36ac544422974762f5",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.44,
+      "ground_points_3m": 522,
+      "points_within_0_6m": 27,
+      "points_above_1_5m": 6,
+      "voxels_above_1_5m": 5,
+      "top_above_ground_m": 2.97,
+      "ahn_classes_above": {
+        "1": 6
+      },
+      "pipeline_labels_above": {
+        "unlabelled": 6
+      }
+    },
+    {
+      "x_rd": 135765.89,
+      "y_rd": 455656.52,
+      "type": "afsluitpaal",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e8f4298355cb443baa2d47375eaf2815",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 1.89,
+      "ground_points_3m": 291,
+      "points_within_0_6m": 13,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135781.93,
+      "y_rd": 455671.16,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.f2b9544774824c8392f4523da0ebd7b2",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.19,
+      "ground_points_3m": 507,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135750.08,
+      "y_rd": 455607.21,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.fb237f30d77e4bbeb94af49ed1012778",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.56,
+      "ground_points_3m": 506,
+      "points_within_0_6m": 24,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135766.4,
+      "y_rd": 455674.78,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.fccd7030e2fe4a8ca892def67a246887",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-03-17T23:00:00Z",
+      "ground_z": 2.44,
+      "ground_points_3m": 281,
+      "points_within_0_6m": 12,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135792.7,
+      "y_rd": 455483.52,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.6614005ff157481a81b2e0cf5e2ba9c5",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-05-26T22:00:00Z",
+      "ground_z": 2.39,
+      "ground_points_3m": 505,
+      "points_within_0_6m": 18,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135806.03,
+      "y_rd": 455476.22,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.72a28252bc054501ac449e92802fde62",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-05-26T22:00:00Z",
+      "ground_z": 2.45,
+      "ground_points_3m": 315,
+      "points_within_0_6m": 17,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135775.83,
+      "y_rd": 455480.15,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9cf6b1503b8f4d95b2d729a9fc93a32a",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-05-26T22:00:00Z",
+      "ground_z": 2.51,
+      "ground_points_3m": 504,
+      "points_within_0_6m": 27,
+      "points_above_1_5m": 4,
+      "voxels_above_1_5m": 4,
+      "top_above_ground_m": 8.1,
+      "ahn_classes_above": {
+        "1": 4
+      },
+      "pipeline_labels_above": {
+        "vegetation": 1,
+        "unlabelled": 3
+      }
+    },
+    {
+      "x_rd": 135732.33,
+      "y_rd": 455663.17,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.fff9fa34eba84eaebd08aff14a01a0a6",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2019-10-13T22:00:00Z",
+      "ground_z": 2.51,
+      "ground_points_3m": 527,
+      "points_within_0_6m": 23,
+      "points_above_1_5m": 6,
+      "voxels_above_1_5m": 4,
+      "top_above_ground_m": 4.69,
+      "ahn_classes_above": {
+        "1": 6
+      },
+      "pipeline_labels_above": {
+        "unlabelled": 6
+      }
+    },
+    {
+      "x_rd": 135911.99,
+      "y_rd": 455557.09,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.03e553795f30435aaf2d0a0c1513f175",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.64,
+      "ground_points_3m": 306,
+      "points_within_0_6m": 26,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135908.99,
+      "y_rd": 455525.52,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.0505e7a1894b4ae3add8420590230b3a",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.49,
+      "ground_points_3m": 432,
+      "points_within_0_6m": 24,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135900.06,
+      "y_rd": 455505.2,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.0e9aed3e00fb4b9587dc608cce812426",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.52,
+      "ground_points_3m": 320,
+      "points_within_0_6m": 25,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135902.63,
+      "y_rd": 455536.65,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.3f9668d389dc40f996fdbba7bf2930a7",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.52,
+      "ground_points_3m": 405,
+      "points_within_0_6m": 23,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135887.11,
+      "y_rd": 455527.61,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.68976230324042aca9efcfd4f7748291",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.67,
+      "ground_points_3m": 308,
+      "points_within_0_6m": 27,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135906.5,
+      "y_rd": 455493.66,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.6cddd6027e0d453ca5695505cc3ecec2",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.53,
+      "ground_points_3m": 317,
+      "points_within_0_6m": 22,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135893.51,
+      "y_rd": 455516.55,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e1e8e199a23b4f1c9ef1c5b912cc4d16",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.54,
+      "ground_points_3m": 333,
+      "points_within_0_6m": 25,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135880.56,
+      "y_rd": 455539.17,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.fef2364a461d46b4850925d83f99acc5",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2020-10-14T22:00:00Z",
+      "ground_z": 2.64,
+      "ground_points_3m": 319,
+      "points_within_0_6m": 28,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135838.28,
+      "y_rd": 455645.26,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.0192b17dc2814480b52cea3439372c24",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2021-12-28T23:00:00Z",
+      "ground_z": 2.51,
+      "ground_points_3m": 47,
+      "points_within_0_6m": 9,
+      "points_above_1_5m": 9,
+      "voxels_above_1_5m": 6,
+      "top_above_ground_m": 7.85,
+      "ahn_classes_above": {
+        "1": 9
+      },
+      "pipeline_labels_above": {
+        "buildings": 9
+      }
+    },
+    {
+      "x_rd": 135841.26,
+      "y_rd": 455665.13,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9ba701f3cd7440fdba61e3698dec831e",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2021-12-28T23:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 19,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135861.53,
+      "y_rd": 455673.58,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.a53826e23a1840cf93b555c204c124bf",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2021-12-28T23:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 9,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135848.84,
+      "y_rd": 455651.37,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.b209cf01081d4fbea45343d1e674382e",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2021-12-28T23:00:00Z",
+      "ground_z": 2.51,
+      "ground_points_3m": 29,
+      "points_within_0_6m": 11,
+      "points_above_1_5m": 11,
+      "voxels_above_1_5m": 8,
+      "top_above_ground_m": 7.85,
+      "ahn_classes_above": {
+        "1": 11
+      },
+      "pipeline_labels_above": {
+        "buildings": 11
+      }
+    },
+    {
+      "x_rd": 135856.83,
+      "y_rd": 455658.63,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.f125231828f941e1a87b7bfb94488ad4",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2021-12-28T23:00:00Z",
+      "ground_z": null,
+      "ground_points_3m": 0,
+      "points_within_0_6m": 11,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135735.09,
+      "y_rd": 455527.27,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.ac73933328f547ed94ce81ad49930fb5",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2026-03-12T23:00:00Z",
+      "ground_z": 2.5,
+      "ground_points_3m": 485,
+      "points_within_0_6m": 21,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135749.76,
+      "y_rd": 455501.61,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.c4be66d6eb634897927be0ceea2aa7b0",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2026-03-12T23:00:00Z",
+      "ground_z": 2.56,
+      "ground_points_3m": 451,
+      "points_within_0_6m": 19,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    },
+    {
+      "x_rd": 135763.8,
+      "y_rd": 455477.08,
+      "type": "lichtmast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.dc24805267964576a521bfbff1671e73",
+      "status": "bestaand",
+      "collection": "paal",
+      "first_created": "2026-03-12T23:00:00Z",
+      "ground_z": 2.57,
+      "ground_points_3m": 399,
+      "points_within_0_6m": 22,
+      "points_above_1_5m": 0,
+      "voxels_above_1_5m": 0,
+      "top_above_ground_m": null,
+      "ahn_classes_above": {},
+      "pipeline_labels_above": {}
+    }
+  ],
+  "objects": [
+    {
+      "x_rd": 135901.84,
+      "y_rd": 455631.57,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.1d9594eebfc74bf180aafc3b7181687b",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135898.66,
+      "y_rd": 455637.16,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.42f8fb759307436fb648fbff6ac5752a",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135912.11,
+      "y_rd": 455666.93,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.46fb6c13680e442ca85ac7dfbaf55b6c",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135912.25,
+      "y_rd": 455669.66,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.56e7e7d3c3e6410f894145e85a29a20e",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135887.46,
+      "y_rd": 455656.89,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.b5f9ca5d0ce243d39038f3f5d453f0e5",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135902.91,
+      "y_rd": 455629.69,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e3ebfff6137d4d7885453bbb985e3a74",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135880.92,
+      "y_rd": 455508.83,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.3c9afe867a804bca9127f772c03f6761",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135888.41,
+      "y_rd": 455501.81,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.5280f1f801c04cf6bdbef05af120c508",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135895.67,
+      "y_rd": 455606.07,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.764d5150edcc4166bfe8f5db26132c9f",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135871.1,
+      "y_rd": 455496.62,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.8d187c9170cc427490fcb00f805b1db5",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135892.04,
+      "y_rd": 455495.42,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.94373547c4b64727aa20adce1af7d45e",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135869.66,
+      "y_rd": 455496.83,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.d6023625dcf24f1380c4bf55760b7125",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135891.56,
+      "y_rd": 455617.37,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.d8c256a2e8744ab08e8e0b2bb9630eb8",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135873.75,
+      "y_rd": 455491.96,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.da071a93ff6e451c82c3b2e816949942",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135888.66,
+      "y_rd": 455503.14,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e460ab8923d847e7bf8406be8571e8a7",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135883.38,
+      "y_rd": 455489.07,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e6b690ae731540908cd938d4ce408bcb",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135876.18,
+      "y_rd": 455504.14,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.f865152ef76a4b148e8b7499e3188f46",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2018-04-11T22:00:00Z"
+    },
+    {
+      "x_rd": 135717.32,
+      "y_rd": 455584.92,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.4287052a8a944d22888ba3e3e6fb9a46",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-03-17T23:00:00Z"
+    },
+    {
+      "x_rd": 135720.14,
+      "y_rd": 455591.07,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.6d40b26d777348648fa93ab4cf39302e",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-03-17T23:00:00Z"
+    },
+    {
+      "x_rd": 135774.64,
+      "y_rd": 455534.03,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.70d941683d024256a6ee75ff14565265",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-03-17T23:00:00Z"
+    },
+    {
+      "x_rd": 135719.04,
+      "y_rd": 455602.47,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.92468463e63f46cf8f57e03bacde5327",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-03-17T23:00:00Z"
+    },
+    {
+      "x_rd": 135782.86,
+      "y_rd": 455519.91,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9f5ace9e60024c5f9b8654d972991576",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-03-17T23:00:00Z"
+    },
+    {
+      "x_rd": 135716.9,
+      "y_rd": 455663.77,
+      "type": "speelvoorziening",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.2968e61fca054921ba19fbd945db364f",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-10-13T22:00:00Z"
+    },
+    {
+      "x_rd": 135748.36,
+      "y_rd": 455673.79,
+      "type": "speelvoorziening",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.41d6031d33264b7283525ef1ccc52c02",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-10-13T22:00:00Z"
+    },
+    {
+      "x_rd": 135715.76,
+      "y_rd": 455658.57,
+      "type": "speelvoorziening",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9f6d1edf3a3548ab9def2216bd3f416a",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2019-10-13T22:00:00Z"
+    },
+    {
+      "x_rd": 135844.97,
+      "y_rd": 455673.8,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.546b69a8168447b9acb548e549dead3f",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2021-10-06T22:00:00Z"
+    },
+    {
+      "x_rd": 135832.46,
+      "y_rd": 455674.11,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.9d6baad1d1844341a18df6fb1a5a0785",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2021-10-06T22:00:00Z"
+    },
+    {
+      "x_rd": 135845.4,
+      "y_rd": 455663.35,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.d779011e6bab422b96ac3cff841b5756",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2021-10-06T22:00:00Z"
+    },
+    {
+      "x_rd": 135839.18,
+      "y_rd": 455669.96,
+      "type": "bank",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.e9d979e880c345388e7430b1d65c1373",
+      "status": "bestaand",
+      "collection": "straatmeubilair",
+      "first_created": "2021-10-06T22:00:00Z"
+    },
+    {
+      "x_rd": 135880.35,
+      "y_rd": 455674.71,
+      "type": "elektrakast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.11b3cfcbffa14cfbb8667498987e0b39",
+      "status": "bestaand",
+      "collection": "kast",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135877.9,
+      "y_rd": 455673.46,
+      "type": "elektrakast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.24b7cc479e6847ad8fd1969de8a30598",
+      "status": "bestaand",
+      "collection": "kast",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135876.61,
+      "y_rd": 455672.75,
+      "type": "elektrakast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.7f1f0812a45b4fdb8af6237915d4a646",
+      "status": "bestaand",
+      "collection": "kast",
+      "first_created": "2017-10-08T22:00:00Z"
+    },
+    {
+      "x_rd": 135879.16,
+      "y_rd": 455674.18,
+      "type": "elektrakast",
+      "bgt_type": "niet-bgt",
+      "lokaal_id": "G0344.b6a933da9aff4321a21e1ed3b3634e93",
+      "status": "bestaand",
+      "collection": "kast",
+      "first_created": "2017-10-08T22:00:00Z"
+    }
+  ],
+  "ground_level_objects": {
+    "put": {
+      "kolk": 99,
+      "inspectie- / rioolput": 64,
+      "brandkraan / -put": 7,
+      "niet-bgt": 1
+    }
+  },
+  "pole_points_histogram": {
+    "0": 42,
+    "1-5": 4,
+    "6-20": 15,
+    ">20": 0
+  },
+  "poles_with_6_voxels": 10,
+  "poles_with_6_voxels_only_ahn_class_1": 5,
+  "poles_first_registered_after_flight": 3,
+  "pole_points_histogram_by_type": {
+    "afsluitpaal": {
+      "0": 8,
+      "1-5": 2,
+      "6-20": 0,
+      ">20": 0
+    },
+    "lichtmast": {
+      "0": 34,
+      "1-5": 2,
+      "6-20": 15,
+      ">20": 0
+    }
+  },
+  "poles_with_6_voxels_by_type": {
+    "afsluitpaal": 0,
+    "lichtmast": 10
+  },
+  "our_objects_vs_bgt": [
+    {
+      "x_rd": 135806.75,
+      "y_rd": 455654.57,
+      "cluster": 435,
+      "nearest_type": "lichtmast",
+      "nearest_collection": "paal",
+      "nearest_x_rd": 135806.45,
+      "nearest_y_rd": 455654.98,
+      "distance_m": 0.51
+    },
+    {
+      "x_rd": 135766.79,
+      "y_rd": 455620.74,
+      "cluster": 710,
+      "nearest_type": "lichtmast",
+      "nearest_collection": "paal",
+      "nearest_x_rd": 135766.52,
+      "nearest_y_rd": 455621.15,
+      "distance_m": 0.49
+    },
+    {
+      "x_rd": 135754.83,
+      "y_rd": 455608.66,
+      "cluster": 719,
+      "nearest_type": "lichtmast",
+      "nearest_collection": "paal",
+      "nearest_x_rd": 135750.08,
+      "nearest_y_rd": 455607.21,
+      "distance_m": 4.97
+    }
+  ],
+  "our_objects_vs_bgt_trees": [
+    {
+      "x_rd": 135806.75,
+      "y_rd": 455654.57,
+      "cluster": 435,
+      "nearest_type": "boom",
+      "nearest_collection": "vegetatieobject_punt",
+      "nearest_x_rd": 135802.08,
+      "nearest_y_rd": 455651.5,
+      "distance_m": 5.59
+    },
+    {
+      "x_rd": 135766.79,
+      "y_rd": 455620.74,
+      "cluster": 710,
+      "nearest_type": "boom",
+      "nearest_collection": "vegetatieobject_punt",
+      "nearest_x_rd": 135771.05,
+      "nearest_y_rd": 455626.17,
+      "distance_m": 6.9
+    },
+    {
+      "x_rd": 135754.83,
+      "y_rd": 455608.66,
+      "cluster": 719,
+      "nearest_type": "boom",
+      "nearest_collection": "vegetatieobject_punt",
+      "nearest_x_rd": 135771.05,
+      "nearest_y_rd": 455626.17,
+      "distance_m": 23.87
+    }
+  ],
+  "our_objects_vs_ovl": [
+    {
+      "x_rd": 135806.75,
+      "y_rd": 455654.57,
+      "cluster": 435,
+      "nearest_type": "12FKP",
+      "nearest_collection": "ovl_utrecht",
+      "nearest_x_rd": 135808.01,
+      "nearest_y_rd": 455658.42,
+      "distance_m": 4.05
+    },
+    {
+      "x_rd": 135766.79,
+      "y_rd": 455620.74,
+      "cluster": 710,
+      "nearest_type": "12FKP",
+      "nearest_collection": "ovl_utrecht",
+      "nearest_x_rd": 135776.01,
+      "nearest_y_rd": 455612.33,
+      "distance_m": 12.48
+    },
+    {
+      "x_rd": 135754.83,
+      "y_rd": 455608.66,
+      "cluster": 719,
+      "nearest_type": "12FKP",
+      "nearest_collection": "ovl_utrecht",
+      "nearest_x_rd": 135747.41,
+      "nearest_y_rd": 455595.99,
+      "distance_m": 14.68
+    }
+  ],
+  "missed_candidates": "skipped: results/ holds no coordinates for the 23 missed candidate groups",
+  "second_source": {
+    "name": "Gemeente Utrecht, openbare verlichting (OVL) paaldump",
+    "url": "https://data.utrecht.nl/sites/default/files/open-data/20211125paaldump.csv",
+    "page": "https://data.overheid.nl/dataset/utrecht-openbare-verlichting",
+    "licence": "CC0 1.0 (per data.overheid.nl dataset page)",
+    "export_date": [
+      "20211125"
+    ],
+    "n": 16,
+    "by_type": {
+      "12FKP": 10,
+      "2WA": 5,
+      "8AKU": 1
+    },
+    "items": [
+      {
+        "x_rd": 135793.02,
+        "y_rd": 455499.82,
+        "type": "12FKP",
+        "street": "Mineurslaan",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.45,
+        "ground_points_3m": 487,
+        "points_within_0_6m": 20,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135747.41,
+        "y_rd": 455595.99,
+        "type": "12FKP",
+        "street": "Jaarbeursplein",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.46,
+        "ground_points_3m": 414,
+        "points_within_0_6m": 20,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135808.01,
+        "y_rd": 455658.42,
+        "type": "12FKP",
+        "street": "Jaarbeursplein",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.4,
+        "ground_points_3m": 515,
+        "points_within_0_6m": 21,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135813.98,
+        "y_rd": 455634.0,
+        "type": "12FKP",
+        "street": "Jaarbeursplein",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.59,
+        "ground_points_3m": 189,
+        "points_within_0_6m": 10,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135776.01,
+        "y_rd": 455612.33,
+        "type": "12FKP",
+        "street": "Jaarbeursplein",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.56,
+        "ground_points_3m": 59,
+        "points_within_0_6m": 0,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135802.81,
+        "y_rd": 455504.34,
+        "type": "12FKP",
+        "street": "Mineurslaan",
+        "placed": "19700101",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.52,
+        "ground_points_3m": 203,
+        "points_within_0_6m": 14,
+        "points_above_1_5m": 2,
+        "voxels_above_1_5m": 1,
+        "top_above_ground_m": 8.66,
+        "ahn_classes_above": {
+          "6": 2
+        },
+        "pipeline_labels_above": {
+          "buildings": 2
+        }
+      },
+      {
+        "x_rd": 135836.55,
+        "y_rd": 455523.99,
+        "type": "12FKP",
+        "street": "Mineurslaan",
+        "placed": "19700101",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.43,
+        "ground_points_3m": 170,
+        "points_within_0_6m": 10,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135725.9,
+        "y_rd": 455497.8,
+        "type": "12FKP",
+        "street": "Croeselaan",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": null,
+        "ground_points_3m": 0,
+        "points_within_0_6m": 19,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135763.67,
+        "y_rd": 455494.45,
+        "type": "12FKP",
+        "street": "Croeselaan",
+        "placed": "20160801",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.48,
+        "ground_points_3m": 519,
+        "points_within_0_6m": 23,
+        "points_above_1_5m": 1,
+        "voxels_above_1_5m": 1,
+        "top_above_ground_m": 2.36,
+        "ahn_classes_above": {
+          "1": 1
+        },
+        "pipeline_labels_above": {
+          "vegetation": 1
+        }
+      },
+      {
+        "x_rd": 135911.95,
+        "y_rd": 455585.19,
+        "type": "12FKP",
+        "street": "Mineurslaan",
+        "placed": "19961016",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.67,
+        "ground_points_3m": 141,
+        "points_within_0_6m": 24,
+        "points_above_1_5m": 18,
+        "voxels_above_1_5m": 7,
+        "top_above_ground_m": 7.65,
+        "ahn_classes_above": {
+          "26": 18
+        },
+        "pipeline_labels_above": {
+          "buildings": 18
+        }
+      },
+      {
+        "x_rd": 135897.17,
+        "y_rd": 455576.7,
+        "type": "2WA",
+        "street": "Mineurslaan",
+        "placed": "20191204",
+        "collection": "ovl_utrecht",
+        "ground_z": null,
+        "ground_points_3m": 0,
+        "points_within_0_6m": 26,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135871.96,
+        "y_rd": 455562.3,
+        "type": "2WA",
+        "street": "Mineurslaan",
+        "placed": "20191204",
+        "collection": "ovl_utrecht",
+        "ground_z": null,
+        "ground_points_3m": 0,
+        "points_within_0_6m": 23,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135846.9,
+        "y_rd": 455547.69,
+        "type": "2WA",
+        "street": "Mineurslaan",
+        "placed": "20191204",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.58,
+        "ground_points_3m": 4,
+        "points_within_0_6m": 21,
+        "points_above_1_5m": 21,
+        "voxels_above_1_5m": 7,
+        "top_above_ground_m": 39.98,
+        "ahn_classes_above": {
+          "6": 21
+        },
+        "pipeline_labels_above": {
+          "buildings": 21
+        }
+      },
+      {
+        "x_rd": 135822.21,
+        "y_rd": 455532.47,
+        "type": "2WA",
+        "street": "Mineurslaan",
+        "placed": "20191204",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.57,
+        "ground_points_3m": 34,
+        "points_within_0_6m": 29,
+        "points_above_1_5m": 29,
+        "voxels_above_1_5m": 15,
+        "top_above_ground_m": 43.04,
+        "ahn_classes_above": {
+          "1": 5,
+          "6": 24
+        },
+        "pipeline_labels_above": {
+          "buildings": 29
+        }
+      },
+      {
+        "x_rd": 135795.74,
+        "y_rd": 455520.27,
+        "type": "2WA",
+        "street": "Mineurslaan",
+        "placed": "20191204",
+        "collection": "ovl_utrecht",
+        "ground_z": null,
+        "ground_points_3m": 0,
+        "points_within_0_6m": 21,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      },
+      {
+        "x_rd": 135789.98,
+        "y_rd": 455484.7,
+        "type": "8AKU",
+        "street": "Croeselaan",
+        "placed": "20161201",
+        "collection": "ovl_utrecht",
+        "ground_z": 2.43,
+        "ground_points_3m": 503,
+        "points_within_0_6m": 20,
+        "points_above_1_5m": 0,
+        "voxels_above_1_5m": 0,
+        "top_above_ground_m": null,
+        "ahn_classes_above": {},
+        "pipeline_labels_above": {}
+      }
+    ],
+    "pole_points_histogram": {
+      "0": 11,
+      "1-5": 2,
+      "6-20": 1,
+      ">20": 2
+    },
+    "poles_with_6_voxels": 3,
+    "matched_to_bgt_lichtmast_within_2m": 1,
+    "nearest_bgt_lichtmast_m": [
+      16.3,
+      11.53,
+      3.78,
+      22.29,
+      12.96,
+      23.14,
+      46.55,
+      24.16,
+      0.77,
+      5.76,
+      13.76,
+      24.68,
+      34.72,
+      51.08,
+      22.19,
+      2.96
+    ]
+  },
+  "third_source": {
+    "name": "OpenStreetMap via Overpass API (crowd-sourced)",
+    "licence": "ODbL 1.0",
+    "url": "https://overpass-api.de/api/interpreter",
+    "query": "[out:json][timeout:60];node(52.08670,5.10532,52.08951,5.10925)[~\".\"~\".\"];out body;",
+    "osm_base": "2026-10-12T08:02:41Z",
+    "n": 49,
+    "by_type": {
+      "natural=tree": 43,
+      "amenity=bench": 4,
+      "amenity=waste_basket": 2
+    },
+    "items": [
+      {
+        "x_rd": 135762.87,
+        "y_rd": 455550.28,
+        "type": "amenity=waste_basket",
+        "osm_id": 4326877459
+      },
+      {
+        "x_rd": 135798.27,
+        "y_rd": 455662.07,
+        "type": "amenity=waste_basket",
+        "osm_id": 4326877485
+      },
+      {
+        "x_rd": 135881.45,
+        "y_rd": 455486.12,
+        "type": "amenity=bench",
+        "osm_id": 7825601354
+      },
+      {
+        "x_rd": 135802.18,
+        "y_rd": 455651.82,
+        "type": "natural=tree",
+        "osm_id": 10560046337
+      },
+      {
+        "x_rd": 135782.57,
+        "y_rd": 455662.73,
+        "type": "natural=tree",
+        "osm_id": 10560046338
+      },
+      {
+        "x_rd": 135792.66,
+        "y_rd": 455648.12,
+        "type": "natural=tree",
+        "osm_id": 10560046339
+      },
+      {
+        "x_rd": 135799.5,
+        "y_rd": 455644.73,
+        "type": "natural=tree",
+        "osm_id": 10560046340
+      },
+      {
+        "x_rd": 135789.27,
+        "y_rd": 455639.62,
+        "type": "natural=tree",
+        "osm_id": 10560046341
+      },
+      {
+        "x_rd": 135778.62,
+        "y_rd": 455629.4,
+        "type": "natural=tree",
+        "osm_id": 10560046342
+      },
+      {
+        "x_rd": 135771.37,
+        "y_rd": 455626.08,
+        "type": "natural=tree",
+        "osm_id": 10560046343
+      },
+      {
+        "x_rd": 135762.18,
+        "y_rd": 455655.07,
+        "type": "natural=tree",
+        "osm_id": 10560046344
+      },
+      {
+        "x_rd": 135754.99,
+        "y_rd": 455652.9,
+        "type": "natural=tree",
+        "osm_id": 10560046345
+      },
+      {
+        "x_rd": 135787.79,
+        "y_rd": 455475.06,
+        "type": "natural=tree",
+        "osm_id": 10560046419
+      },
+      {
+        "x_rd": 135778.04,
+        "y_rd": 455477.55,
+        "type": "natural=tree",
+        "osm_id": 10560046421
+      },
+      {
+        "x_rd": 135752.81,
+        "y_rd": 455522.92,
+        "type": "natural=tree",
+        "osm_id": 10560046422
+      },
+      {
+        "x_rd": 135757.24,
+        "y_rd": 455515.42,
+        "type": "natural=tree",
+        "osm_id": 10560046423
+      },
+      {
+        "x_rd": 135761.61,
+        "y_rd": 455506.96,
+        "type": "natural=tree",
+        "osm_id": 10560046424
+      },
+      {
+        "x_rd": 135774.1,
+        "y_rd": 455511.49,
+        "type": "natural=tree",
+        "osm_id": 10560046425
+      },
+      {
+        "x_rd": 135769.29,
+        "y_rd": 455520.27,
+        "type": "natural=tree",
+        "osm_id": 10560046426
+      },
+      {
+        "x_rd": 135765.56,
+        "y_rd": 455527.32,
+        "type": "natural=tree",
+        "osm_id": 10560046427
+      },
+      {
+        "x_rd": 135760.61,
+        "y_rd": 455535.59,
+        "type": "natural=tree",
+        "osm_id": 10560046428
+      },
+      {
+        "x_rd": 135739.05,
+        "y_rd": 455576.11,
+        "type": "natural=tree",
+        "osm_id": 10560046429
+      },
+      {
+        "x_rd": 135738.89,
+        "y_rd": 455568.62,
+        "type": "natural=tree",
+        "osm_id": 10560046430
+      },
+      {
+        "x_rd": 135744.43,
+        "y_rd": 455563.7,
+        "type": "natural=tree",
+        "osm_id": 10560046431
+      },
+      {
+        "x_rd": 135739.44,
+        "y_rd": 455559.73,
+        "type": "natural=tree",
+        "osm_id": 10560046432
+      },
+      {
+        "x_rd": 135715.09,
+        "y_rd": 455582.0,
+        "type": "natural=tree",
+        "osm_id": 10560046437
+      },
+      {
+        "x_rd": 135724.02,
+        "y_rd": 455584.54,
+        "type": "natural=tree",
+        "osm_id": 10560046438
+      },
+      {
+        "x_rd": 135716.49,
+        "y_rd": 455593.22,
+        "type": "natural=tree",
+        "osm_id": 10560046439
+      },
+      {
+        "x_rd": 135721.32,
+        "y_rd": 455603.39,
+        "type": "natural=tree",
+        "osm_id": 10560046440
+      },
+      {
+        "x_rd": 135792.65,
+        "y_rd": 455480.2,
+        "type": "natural=tree",
+        "osm_id": 12336821573
+      },
+      {
+        "x_rd": 135914.76,
+        "y_rd": 455477.29,
+        "type": "natural=tree",
+        "osm_id": 12783593225
+      },
+      {
+        "x_rd": 135912.04,
+        "y_rd": 455520.0,
+        "type": "natural=tree",
+        "osm_id": 12783593235
+      },
+      {
+        "x_rd": 135905.44,
+        "y_rd": 455531.01,
+        "type": "natural=tree",
+        "osm_id": 12783593236
+      },
+      {
+        "x_rd": 135899.48,
+        "y_rd": 455541.6,
+        "type": "natural=tree",
+        "osm_id": 12783593237
+      },
+      {
+        "x_rd": 135890.94,
+        "y_rd": 455549.45,
+        "type": "natural=tree",
+        "osm_id": 12783593238
+      },
+      {
+        "x_rd": 135897.24,
+        "y_rd": 455552.82,
+        "type": "natural=tree",
+        "osm_id": 12783593239
+      },
+      {
+        "x_rd": 135906.06,
+        "y_rd": 455557.7,
+        "type": "natural=tree",
+        "osm_id": 12783593240
+      },
+      {
+        "x_rd": 135910.07,
+        "y_rd": 455560.16,
+        "type": "natural=tree",
+        "osm_id": 12783593241
+      },
+      {
+        "x_rd": 135882.6,
+        "y_rd": 455543.87,
+        "type": "natural=tree",
+        "osm_id": 12783593242
+      },
+      {
+        "x_rd": 135878.32,
+        "y_rd": 455541.48,
+        "type": "natural=tree",
+        "osm_id": 12783593243
+      },
+      {
+        "x_rd": 135882.49,
+        "y_rd": 455533.37,
+        "type": "natural=tree",
+        "osm_id": 12783593244
+      },
+      {
+        "x_rd": 135888.8,
+        "y_rd": 455521.45,
+        "type": "natural=tree",
+        "osm_id": 12783593245
+      },
+      {
+        "x_rd": 135894.92,
+        "y_rd": 455511.41,
+        "type": "natural=tree",
+        "osm_id": 12783593246
+      },
+      {
+        "x_rd": 135901.76,
+        "y_rd": 455498.58,
+        "type": "natural=tree",
+        "osm_id": 12783593247
+      },
+      {
+        "x_rd": 135908.71,
+        "y_rd": 455487.57,
+        "type": "natural=tree",
+        "osm_id": 12783593248
+      },
+      {
+        "x_rd": 135717.19,
+        "y_rd": 455584.84,
+        "type": "amenity=bench",
+        "osm_id": 13373428530
+      },
+      {
+        "x_rd": 135719.15,
+        "y_rd": 455602.39,
+        "type": "amenity=bench",
+        "osm_id": 13373428531
+      },
+      {
+        "x_rd": 135720.16,
+        "y_rd": 455590.92,
+        "type": "amenity=bench",
+        "osm_id": 13373428532
+      },
+      {
+        "x_rd": 135721.32,
+        "y_rd": 455595.92,
+        "type": "natural=tree",
+        "osm_id": 13373477619
+      }
+    ],
+    "trees_within_2m_of_bgt_tree": 41
+  },
+  "trees": {
+    "n": 43,
+    "by_type": {
+      "boom": 43
+    },
+    "n_first_registered_after_flight": 15,
+    "source": "BGT vegetatieobject_punt (current versions)",
+    "pipeline_vegetation_clusters": 683
+  },
+  "notes": [
+    "BGT returns all versions of an object; only versions without eind_registratie / termination_date count",
+    "bbox query = geometry intersects the box; then kept strictly x0 <= x < x1, y0 <= y < y1 like the crop",
+    "BGT 'type' for these objects is 'niet-bgt' (optional IMGeo plus-content kept by the municipality); plus_type is the type shown",
+    "first_created after the AHN flight (2023-04-05) means the object may not have stood there when flown",
+    "points above 1.5 m within 0.6 m can also be tree canopy or a roof over the pole; see ahn_classes_above (AHN class 6 = building, 26 = civil structure / kunstwerk)",
+    "the OVL export is from 25 Nov 2021 and lists municipal lights only",
+    "OSM is crowd-sourced; no highway=street_lamp is mapped here"
+  ]
+}

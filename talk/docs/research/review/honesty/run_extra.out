@@ -1,0 +1,7 @@
+1239310 -> 316342
+s10 variant line: ['        0.3, 3, 1000, 1.0)'] maxlen 34
+s10 probability=1.0: identical: True time [0.26, 0.26] s
+pcd has colors before: False
+colour-trick: voxel share of multi-return points, min/mean/max 0.0 0.442 1.0 | fraction strictly between 0 and 1: 0.123
+voxel_down_sample_and_trace: points 317840 trace lists 317840 first list type IntVector len 1
+same count as voxel_down_sample: False

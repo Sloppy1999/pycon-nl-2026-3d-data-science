@@ -1,0 +1,1443 @@
+1790890546
+DEBUG Searching for user configuration in: `~/.config/uv/uv.toml`
+DEBUG uv 0.12.6 (x86_64-unknown-linux-gnu)
+DEBUG Marking explicit source tree for reinstall: `scratchpad/libraries/pt3d-src-cxx20`
+DEBUG Checking for Python interpreter at path `../pt3d-venv/bin/python`
+Using Python 3.13.15 environment at: scratchpad/libraries/pt3d-venv
+DEBUG Using request connect timeout of 10s and read timeout of 30s
+DEBUG No `pyproject.toml` available for: file://scratchpad/libraries/pt3d-src-cxx20
+DEBUG Computed cache info: Timestamp(SystemTime { tv_sec: 1790890538, tv_nsec: 905049120 }), None, None, {}, {"src": None}. Most recently modified: setup.py
+DEBUG Preparing metadata for: file://scratchpad/libraries/pt3d-src-cxx20
+DEBUG Assessing Python executable as base candidate: ~/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13
+DEBUG Proceeding without build isolation
+DEBUG Locking the source tree for setuptools
+DEBUG Calling `setuptools.build_meta:__legacy__.prepare_metadata_for_build_wheel()`
+DEBUG running dist_info
+DEBUG creating ~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info
+DEBUG writing ~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/PKG-INFO
+DEBUG writing dependency_links to ~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/dependency_links.txt
+DEBUG writing entry points to ~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/entry_points.txt
+DEBUG writing requirements to ~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/requires.txt
+DEBUG writing top-level names to ~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/top_level.txt
+DEBUG writing manifest file '~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/SOURCES.txt'
+DEBUG reading manifest file '~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/SOURCES.txt'
+DEBUG adding license file 'LICENSE'
+DEBUG adding license file 'LICENSE-3RD-PARTY'
+DEBUG writing manifest file '~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d.egg-info/SOURCES.txt'
+DEBUG creating '~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d-0.7.9.dist-info'
+DEBUG Prepared metadata for: file://scratchpad/libraries/pt3d-src-cxx20
+DEBUG Solving with installed Python version: 3.13.15
+DEBUG Solving with target Python version: >=3.13.15
+DEBUG Adding direct dependency: pytorch3d*
+DEBUG Searching for a compatible version of pytorch3d @ file://scratchpad/libraries/pt3d-src-cxx20 (*)
+DEBUG Adding transitive dependency for pytorch3d==0.7.9: iopath*
+DEBUG Found fresh response for: https://pypi.org/simple/iopath/
+DEBUG Searching for a compatible version of iopath (*)
+DEBUG Selecting: iopath==0.1.10 [installed] (installed)
+DEBUG Adding transitive dependency for iopath==0.1.10: tqdm*
+DEBUG Adding transitive dependency for iopath==0.1.10: typing-extensions*
+DEBUG Adding transitive dependency for iopath==0.1.10: portalocker*
+DEBUG Found fresh response for: https://pypi.org/simple/tqdm/
+DEBUG Found fresh response for: https://pypi.org/simple/typing-extensions/
+DEBUG Searching for a compatible version of tqdm (*)
+DEBUG Selecting: tqdm==4.70.1 [installed] (installed)
+DEBUG Searching for a compatible version of typing-extensions (*)
+DEBUG Selecting: typing-extensions==4.16.0 [installed] (installed)
+DEBUG Found fresh response for: https://pypi.org/simple/portalocker/
+DEBUG Searching for a compatible version of portalocker (*)
+DEBUG Selecting: portalocker==4.4.0 [installed] (installed)
+DEBUG Tried 5 versions: iopath 1, portalocker 1, pytorch3d 1, tqdm 1, typing-extensions 1
+DEBUG marker environment resolution took 0.010s
+Resolved 5 packages in 1.13s
+DEBUG Must revalidate requirement: pytorch3d
+DEBUG Requirement already installed: portalocker==4.4.0
+DEBUG Requirement already installed: tqdm==4.70.1
+DEBUG Requirement already installed: typing-extensions==4.16.0
+DEBUG Requirement already installed: iopath==0.1.10
+DEBUG Unnecessary package: filelock==3.32.3
+DEBUG Unnecessary package: fsspec==2026.7.0
+DEBUG Unnecessary package: jinja2==3.1.6
+DEBUG Unnecessary package: markupsafe==3.0.3
+DEBUG Unnecessary package: mpmath==1.3.0
+DEBUG Unnecessary package: networkx==3.6.1
+DEBUG Unnecessary package: ninja==1.13.2
+DEBUG Unnecessary package: numpy==2.5.3
+DEBUG Unnecessary package: packaging==26.3
+DEBUG Unnecessary package: setuptools==78.1.0
+DEBUG Unnecessary package: sympy==1.14.0
+DEBUG Unnecessary package: torch==2.14.1+cpu
+DEBUG Unnecessary package: wheel==0.48.0
+DEBUG Computed cache info: Timestamp(SystemTime { tv_sec: 1790890538, tv_nsec: 905049120 }), None, None, {}, {"src": None}. Most recently modified: setup.py
+   Building pytorch3d @ file://scratchpad/libraries/pt3d-src-cxx20
+DEBUG Building: pytorch3d @ file://scratchpad/libraries/pt3d-src-cxx20
+DEBUG Assessing Python executable as base candidate: ~/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13
+DEBUG Reusing existing build environment for: pytorch3d @ file://scratchpad/libraries/pt3d-src-cxx20
+DEBUG Locking the source tree for setuptools
+DEBUG Calling `setuptools.build_meta:__legacy__.build_wheel(__import__("os").fsdecode(b"~/.cache/uv/builds-v0/.tmpG3pdz0"), {}, __import__("os").fsdecode(b"~/.cache/uv/builds-v0/.tmpg8IQ7J/metadata_directory/pytorch3d-0.7.9.dist-info"))`
+DEBUG running bdist_wheel
+DEBUG running build
+DEBUG running build_py
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d
+DEBUG copying pytorch3d/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d
+DEBUG creating build/lib.linux-x86_64-cpython-313/projects
+DEBUG copying projects/__init__.py -> build/lib.linux-x86_64-cpython-313/projects
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/vis
+DEBUG copying pytorch3d/vis/texture_vis.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/vis
+DEBUG copying pytorch3d/vis/plotly_vis.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/vis
+DEBUG copying pytorch3d/vis/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/vis
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/utils
+DEBUG copying pytorch3d/utils/torus.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/utils
+DEBUG copying pytorch3d/utils/ico_sphere.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/utils
+DEBUG copying pytorch3d/utils/checkerboard.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/utils
+DEBUG copying pytorch3d/utils/camera_conversions.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/utils
+DEBUG copying pytorch3d/utils/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/utils
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG copying pytorch3d/transforms/transform3d.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG copying pytorch3d/transforms/so3.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG copying pytorch3d/transforms/se3.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG copying pytorch3d/transforms/rotation_conversions.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG copying pytorch3d/transforms/math.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG copying pytorch3d/transforms/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/transforms
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/structures
+DEBUG copying pytorch3d/structures/volumes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/structures
+DEBUG copying pytorch3d/structures/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/structures
+DEBUG copying pytorch3d/structures/pointclouds.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/structures
+DEBUG copying pytorch3d/structures/meshes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/structures
+DEBUG copying pytorch3d/structures/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/structures
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/splatter_blend.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/materials.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/lighting.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/fisheyecameras.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/compositing.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/cameras.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/camera_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/camera_conversions.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/blending.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG copying pytorch3d/renderer/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/vert_align.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/subdivide_meshes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/sample_points_from_meshes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/sample_farthest_points.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/points_to_volumes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/points_normals.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/points_alignment.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/perspective_n_points.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/packed_to_padded.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/mesh_filtering.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/mesh_face_areas_normals.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/marching_cubes_data.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/marching_cubes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/laplacian_matrices.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/knn.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/iou_box3d.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/interp_face_attrs.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/graph_conv.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/cubify.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/cameras_alignment.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/ball_query.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG copying pytorch3d/ops/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/ops
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG copying pytorch3d/loss/point_mesh_distance.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG copying pytorch3d/loss/mesh_normal_consistency.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG copying pytorch3d/loss/mesh_laplacian_smoothing.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG copying pytorch3d/loss/mesh_edge_loss.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG copying pytorch3d/loss/chamfer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG copying pytorch3d/loss/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/loss
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/ply_io.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/pluggable_formats.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/pluggable.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/off_io.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/obj_io.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/mtl_io.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/experimental_gltf_io.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG copying pytorch3d/io/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/io
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron
+DEBUG copying pytorch3d/implicitron/eval_demo.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron
+DEBUG copying pytorch3d/implicitron/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/datasets
+DEBUG copying pytorch3d/datasets/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets
+DEBUG copying pytorch3d/datasets/shapenet_base.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets
+DEBUG copying pytorch3d/datasets/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/common
+DEBUG copying pytorch3d/common/linear_with_repeat.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common
+DEBUG copying pytorch3d/common/datatypes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common
+DEBUG copying pytorch3d/common/compat.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common
+DEBUG copying pytorch3d/common/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points
+DEBUG copying pytorch3d/renderer/points/renderer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points
+DEBUG copying pytorch3d/renderer/points/rasterizer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points
+DEBUG copying pytorch3d/renderer/points/rasterize_points.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points
+DEBUG copying pytorch3d/renderer/points/compositor.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points
+DEBUG copying pytorch3d/renderer/points/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl
+DEBUG copying pytorch3d/renderer/opengl/rasterizer_opengl.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl
+DEBUG copying pytorch3d/renderer/opengl/opengl_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl
+DEBUG copying pytorch3d/renderer/opengl/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/textures.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/shading.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/shader.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/renderer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/rasterizer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/rasterize_meshes.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/clip.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG copying pytorch3d/renderer/mesh/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/sample_pdf.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/renderer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/raysampling.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/raymarching.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/harmonic_embedding.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG copying pytorch3d/renderer/implicit/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar
+DEBUG copying pytorch3d/renderer/points/pulsar/unified.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar
+DEBUG copying pytorch3d/renderer/points/pulsar/renderer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar
+DEBUG copying pytorch3d/renderer/points/pulsar/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/vis_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/video_writer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/stats.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/rasterize_mc.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/point_cloud_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/model_io.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/metric_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/image_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/eval_video_trajectory.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/depth_cleanup.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/config.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/circle_fitting.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/camera_utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG copying pytorch3d/implicitron/tools/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party
+DEBUG copying pytorch3d/implicitron/third_party/pytorch_prototyping.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party
+DEBUG copying pytorch3d/implicitron/third_party/hyperlayers.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party
+DEBUG copying pytorch3d/implicitron/third_party/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/overfit_model.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/model_dbir.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/metrics.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/generic_model.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/base_model.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG copying pytorch3d/implicitron/models/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation
+DEBUG copying pytorch3d/implicitron/evaluation/evaluator.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation
+DEBUG copying pytorch3d/implicitron/evaluation/evaluate_new_view_synthesis.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation
+DEBUG copying pytorch3d/implicitron/evaluation/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/visualize.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/types.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/train_eval_data_loader_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/sql_dataset_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/sql_dataset.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/single_sequence_dataset.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/scene_batch_sampler.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/rendered_mesh_dataset_map_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/orm_types.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/load_llff.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/load_blender.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/llff_dataset_map_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/json_index_dataset_map_provider_v2.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/json_index_dataset_map_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/json_index_dataset.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/frame_data.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/dataset_map_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/dataset_base.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/data_source.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/data_loader_map_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/blender_dataset_map_provider.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG copying pytorch3d/implicitron/dataset/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/visualization
+DEBUG copying pytorch3d/implicitron/models/visualization/render_flyaround.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/visualization
+DEBUG copying pytorch3d/implicitron/models/visualization/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/visualization
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler
+DEBUG copying pytorch3d/implicitron/models/view_pooler/view_sampler.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler
+DEBUG copying pytorch3d/implicitron/models/view_pooler/view_pooler.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler
+DEBUG copying pytorch3d/implicitron/models/view_pooler/feature_aggregator.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler
+DEBUG copying pytorch3d/implicitron/models/view_pooler/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/sdf_renderer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/rgb_net.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/raymarcher.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/ray_tracing.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/ray_sampler.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/ray_point_refiner.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/multipass_ea.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/lstm_renderer.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/base.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG copying pytorch3d/implicitron/models/renderer/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/voxel_grid_implicit_function.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/voxel_grid.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/scene_representation_networks.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/neural_radiance_field.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/idr_feature_field.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/decoding_functions.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/base.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG copying pytorch3d/implicitron/models/implicit_function/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder
+DEBUG copying pytorch3d/implicitron/models/global_encoder/global_encoder.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder
+DEBUG copying pytorch3d/implicitron/models/global_encoder/autodecoder.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder
+DEBUG copying pytorch3d/implicitron/models/global_encoder/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor
+DEBUG copying pytorch3d/implicitron/models/feature_extractor/resnet_feature_extractor.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor
+DEBUG copying pytorch3d/implicitron/models/feature_extractor/feature_extractor.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor
+DEBUG copying pytorch3d/implicitron/models/feature_extractor/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet
+DEBUG copying pytorch3d/datasets/shapenet/shapenet_core.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet
+DEBUG copying pytorch3d/datasets/shapenet/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2
+DEBUG copying pytorch3d/datasets/r2n2/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2
+DEBUG copying pytorch3d/datasets/r2n2/r2n2.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2
+DEBUG copying pytorch3d/datasets/r2n2/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround
+DEBUG copying pytorch3d/common/workaround/utils.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround
+DEBUG copying pytorch3d/common/workaround/symeig3x3.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround
+DEBUG copying pytorch3d/common/workaround/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround
+DEBUG creating build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer
+DEBUG copying projects/implicitron_trainer/visualize_reconstruction.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer
+DEBUG copying projects/implicitron_trainer/experiment.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer
+DEBUG copying projects/implicitron_trainer/__init__.py -> build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer
+DEBUG copying pytorch3d/datasets/shapenet/shapenet_synset_dict_v2.json -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet
+DEBUG copying pytorch3d/datasets/shapenet/shapenet_synset_dict_v1.json -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet
+DEBUG copying pytorch3d/datasets/r2n2/r2n2_synset_dict.json -> build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2
+DEBUG running build_ext
+DEBUG building 'pytorch3d._C' extension
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ball_query
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/blending
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/face_areas_normals
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/gather_scatter
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/knn
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/marching_cubes
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/packed_to_padded_tensor
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/point_mesh
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/points_to_volumes
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_meshes
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_points
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_farthest_points
+DEBUG creating scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_pdf
+DEBUG [1/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/gather_scatter/gather_scatter_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/gather_scatter/gather_scatter_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/gather_scatter/gather_scatter_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [2/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency/mesh_normal_consistency_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency/mesh_normal_consistency_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency/mesh_normal_consistency_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency/mesh_normal_consistency_cpu.cpp: In function ‘at::Tensor MeshNormalConsistencyFindVerticesCpu(const at::Tensor&)’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency/mesh_normal_consistency_cpu.cpp:46:35: warning: comparison of integer expressions of different signedness: ‘int64_t’ {aka ‘long int’} and ‘std::vector<std::pair<long int, long int> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG    46 |   for (int64_t i_pair = 0; i_pair < pairs.size(); ++i_pair) {
+DEBUG       |                            ~~~~~~~^~~~~~~~~~~~~~
+DEBUG [3/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ball_query/ball_query_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ball_query/ball_query_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ball_query/ball_query_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [4/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/weighted_sum_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/weighted_sum_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/weighted_sum_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [5/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/knn/knn_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/knn/knn_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/knn/knn_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [6/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/blending/sigmoid_alpha_blend_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/blending/sigmoid_alpha_blend_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/blending/sigmoid_alpha_blend_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [7/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/norm_weighted_sum_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/norm_weighted_sum_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/norm_weighted_sum_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [8/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/packed_to_padded_tensor/packed_to_padded_tensor_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/packed_to_padded_tensor/packed_to_padded_tensor_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/packed_to_padded_tensor/packed_to_padded_tensor_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [9/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/alpha_composite_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/alpha_composite_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/alpha_composite_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [10/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.cpp:12:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_utils.h: In function ‘float BoxVolume(const face_verts&, const vec3<float>&)’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_utils.h:320:21: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::vector<vec3<float> > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG   320 |   for (int t = 0; t < box_tris.size(); ++t) {
+DEBUG       |                   ~~^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_utils.h: In function ‘face_verts BoxIntersections(const face_verts&, const face_verts&, const vec3<float>&)’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_utils.h:721:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::vector<vec3<float> > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG   721 |     for (int t = 0; t < out_tris.size(); ++t) {
+DEBUG       |                     ~~^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_utils.h:725:25: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::vector<vec3<float> > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG   725 |       for (int v = 0; v < tri_updated.size(); ++v) {
+DEBUG       |                       ~~^~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.cpp: In function ‘std::tuple<at::Tensor, at::Tensor> IoUBox3DCpu(const at::Tensor&, const at::Tensor&)’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.cpp:77:29: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::vector<vec3<float> > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG    77 |         for (int b1 = 0; b1 < box1_intersect.size(); ++b1) {
+DEBUG       |                          ~~~^~~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.cpp:78:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::vector<vec3<float> > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG    78 |           for (int b2 = 0; b2 < box2_intersect.size(); ++b2) {
+DEBUG       |                            ~~~^~~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.cpp:90:29: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::vector<vec3<float> > >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG    90 |         for (int b2 = 0; b2 < box2_intersect.size(); ++b2) {
+DEBUG       |                          ~~~^~~~~~~~~~~~~~~~~~~~~~~
+DEBUG [11/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/marching_cubes/marching_cubes_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/marching_cubes/marching_cubes_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/marching_cubes/marching_cubes_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [12/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/face_areas_normals/face_areas_normals_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/face_areas_normals/face_areas_normals_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/face_areas_normals/face_areas_normals_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [13/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/point_mesh/point_mesh_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/point_mesh/point_mesh_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/point_mesh/point_mesh_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [14/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.cpp:10:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/./pulsar/global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/./pulsar/global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/./pulsar/global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/Exceptions.h:13,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/python.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/extension.h:10,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/./pulsar/global.h:57:
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/pybind11/pybind11.h: In instantiation of ‘class pybind11::class_<pulsar::pytorch::Renderer, std::shared_ptr<pulsar::pytorch::Renderer> >’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.cpp:107:70:   required from here
+DEBUG   107 |       std::shared_ptr<pulsar::pytorch::Renderer>>(m, "PulsarRenderer")
+DEBUG       |                                                                      ^
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/pybind11/pybind11.h:2314:7: warning: ‘pybind11::class_<pulsar::pytorch::Renderer, std::shared_ptr<pulsar::pytorch::Renderer> >’ declared with greater visibility than its base ‘pybind11::detail::generic_type’ [-Wattributes]
+DEBUG  2314 | class class_ : public detail::generic_type {
+DEBUG       |       ^~~~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/pybind11/pybind11.h: In instantiation of ‘pybind11::class_< <template-parameter-1-1>, <template-parameter-1-2> >::class_(pybind11::handle, const char*, const Extra& ...) [with Extra = {}; type_ = pulsar::pytorch::Renderer; options = {std::shared_ptr<pulsar::pytorch::Renderer>}]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.cpp:107:70:   required from here
+DEBUG   107 |       std::shared_ptr<pulsar::pytorch::Renderer>>(m, "PulsarRenderer")
+DEBUG       |                                                                      ^
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/pybind11/pybind11.h:2412:30: warning: ‘pybind11::class_<pulsar::pytorch::Renderer, std::shared_ptr<pulsar::pytorch::Renderer> >::class_<>(pybind11::handle, const char*)::<lambda(pybind11::detail::internals&)>’ declared with greater visibility than the type of its field ‘pybind11::class_<pulsar::pytorch::Renderer, std::shared_ptr<pulsar::pytorch::Renderer> >::class_<>(pybind11::handle, const char*)::<lambda(pybind11::detail::internals&)>::<record capture>’ [-Wattributes]
+DEBUG  2412 |             with_internals([&](internals &internals) {
+DEBUG       |                              ^
+DEBUG [15/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/headeronly/core/DeviceType.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/core/DeviceType.h:8,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/core/Device.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/core/TensorBody.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/core/Tensor.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/Tensor.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/function_hook.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/cpp_hook.h:3,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/variable.h:7,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/autograd.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/autograd.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/all.h:8,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/extension.h:6,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:57:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h: In instantiation of ‘void pulsar::Renderer::backward(Renderer*, const float*, const float*, const float*, const float*, const float*, const float*, const pulsar::CamInfo&, const float&, float, const uint&, const float*, const size_t&, const uint&, const bool&, const bool&, const bool&, const bool&, const bool&, cudaStream_t) [with bool DEV = false; uint = unsigned int; size_t = long unsigned int; cudaStream_t = void*]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward.instantiate.h:34:24:   required from here
+DEBUG    34 |     cudaStream_t stream);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h:48:34: warning: comparison of integer expressions of different signedness: ‘const size_t’ {aka ‘const long unsigned int’} and ‘int’ [-Wsign-compare]
+DEBUG    48 |       num_balls > 0 && num_balls <= self->max_num_balls,
+DEBUG       |                        ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/headeronly/macros/Macros.h:211:64: note: in definition of macro ‘C10_UNLIKELY’
+DEBUG   211 | #define C10_UNLIKELY(expr) (__builtin_expect(static_cast<bool>(expr), 0))
+DEBUG       |                                                                ^~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/util/Exception.h:627:7: note: in expansion of macro ‘C10_UNLIKELY_OR_CONST’
+DEBUG   627 |   if (C10_UNLIKELY_OR_CONST(!(cond))) {            \
+DEBUG       |       ^~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:160:3: note: in expansion of macro ‘TORCH_CHECK’
+DEBUG   160 |   TORCH_CHECK(cond, "invalid argument ", argN, ": ", __VA_ARGS__)
+DEBUG       |   ^~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h:47:3: note: in expansion of macro ‘ARGCHECK’
+DEBUG    47 |   ARGCHECK(
+DEBUG       |   ^~~~~~~~
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:32:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:334:9: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct pulsar::CamGradInfo’; use assignment or value-initialization instead [-Wclass-memaccess]
+DEBUG   334 |   memset((VAR), (VAL), sizeof(TYPE) * (SIZE))
+DEBUG       |   ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h:106:3: note: in expansion of macro ‘MEMSET’
+DEBUG   106 |   MEMSET(self->grad_cam_buf_d, 0, CamGradInfo, num_balls, stream);
+DEBUG       |   ^~~~~~
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././camera.h:65:8: note: ‘struct pulsar::CamGradInfo’ declared here
+DEBUG    65 | struct CamGradInfo {
+DEBUG       |        ^~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h: In instantiation of ‘void SUM_WS(T*, T*, size_t, char*, size_t, cudaStream_t) [with T = pulsar::CamGradInfo; size_t = long unsigned int; cudaStream_t = void*]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h:149:11:   required from ‘void pulsar::Renderer::backward(Renderer*, const float*, const float*, const float*, const float*, const float*, const float*, const pulsar::CamInfo&, const float&, float, const uint&, const float*, const size_t&, const uint&, const bool&, const bool&, const bool&, const bool&, const bool&, cudaStream_t) [with bool DEV = false; uint = unsigned int; size_t = long unsigned int; cudaStream_t = void*]’
+DEBUG   149 |     SUM_WS(
+DEBUG       |     ~~~~~~^
+DEBUG   150 |         self->grad_cam_buf_d,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~
+DEBUG   151 |         reinterpret_cast<CamGradInfo*>(self->grad_cam_d),
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG   152 |         static_cast<int>(num_balls),
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG   153 |         self->workspace_d,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~
+DEBUG   154 |         self->workspace_size,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~
+DEBUG   155 |         stream);
+DEBUG       |         ~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward.instantiate.h:34:24:   required from here
+DEBUG    34 |     cudaStream_t stream);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:285:21: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG   285 |   for (int i = 0; i < (NUM_OBJECTS); ++i) {
+DEBUG       |                   ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h: In instantiation of ‘void SUM_WS(T*, T*, size_t, char*, size_t, cudaStream_t) [with T = int; size_t = long unsigned int; cudaStream_t = void*]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward.device.h:157:11:   required from ‘void pulsar::Renderer::backward(Renderer*, const float*, const float*, const float*, const float*, const float*, const float*, const pulsar::CamInfo&, const float&, float, const uint&, const float*, const size_t&, const uint&, const bool&, const bool&, const bool&, const bool&, const bool&, cudaStream_t) [with bool DEV = false; uint = unsigned int; size_t = long unsigned int; cudaStream_t = void*]’
+DEBUG   157 |     SUM_WS(
+DEBUG       |     ~~~~~~^
+DEBUG   158 |         self->ids_sorted_d,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~
+DEBUG   159 |         self->n_grad_contributions_d,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG   160 |         static_cast<int>(num_balls),
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG   161 |         self->workspace_d,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~
+DEBUG   162 |         self->workspace_size,
+DEBUG       |         ~~~~~~~~~~~~~~~~~~~~~
+DEBUG   163 |         stream);
+DEBUG       |         ~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward.instantiate.h:34:24:   required from here
+DEBUG    34 |     cudaStream_t stream);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:285:21: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG   285 |   for (int i = 0; i < (NUM_OBJECTS); ++i) {
+DEBUG       |                   ~~^~~~~~~~~~~~~~~
+DEBUG [16/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/points_to_volumes/points_to_volumes_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/points_to_volumes/points_to_volumes_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/points_to_volumes/points_to_volumes_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [17/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward_dbg.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward_dbg.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward_dbg.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward_dbg.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward_dbg.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward_dbg.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/headeronly/core/DeviceType.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/core/DeviceType.h:8,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/core/Device.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/core/TensorBody.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/core/Tensor.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/Tensor.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/function_hook.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/cpp_hook.h:3,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/variable.h:7,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/autograd.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/autograd.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/all.h:8,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/extension.h:6,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../global.h:57:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward_dbg.device.h: In instantiation of ‘void pulsar::Renderer::backward_dbg(Renderer*, const float*, const float*, const float*, const float*, const float*, const float*, const pulsar::CamInfo&, const float&, float, const uint&, const float*, const size_t&, const uint&, const bool&, const bool&, const bool&, const bool&, const bool&, const uint&, const uint&, cudaStream_t) [with bool DEV = false; uint = unsigned int; size_t = long unsigned int; cudaStream_t = void*]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward_dbg.instantiate.h:36:24:   required from here
+DEBUG    36 |     cudaStream_t stream);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward_dbg.device.h:50:34: warning: comparison of integer expressions of different signedness: ‘const size_t’ {aka ‘const long unsigned int’} and ‘int’ [-Wsign-compare]
+DEBUG    50 |       num_balls > 0 && num_balls <= self->max_num_balls,
+DEBUG       |                        ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/headeronly/macros/Macros.h:211:64: note: in definition of macro ‘C10_UNLIKELY’
+DEBUG   211 | #define C10_UNLIKELY(expr) (__builtin_expect(static_cast<bool>(expr), 0))
+DEBUG       |                                                                ^~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/util/Exception.h:627:7: note: in expansion of macro ‘C10_UNLIKELY_OR_CONST’
+DEBUG   627 |   if (C10_UNLIKELY_OR_CONST(!(cond))) {            \
+DEBUG       |       ^~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:160:3: note: in expansion of macro ‘TORCH_CHECK’
+DEBUG   160 |   TORCH_CHECK(cond, "invalid argument ", argN, ": ", __VA_ARGS__)
+DEBUG       |   ^~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward_dbg.device.h:49:3: note: in expansion of macro ‘ARGCHECK’
+DEBUG    49 |   ARGCHECK(
+DEBUG       |   ^~~~~~~~
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:32:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:334:9: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct pulsar::CamGradInfo’; use assignment or value-initialization instead [-Wclass-memaccess]
+DEBUG   334 |   memset((VAR), (VAL), sizeof(TYPE) * (SIZE))
+DEBUG       |   ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward_dbg.device.h:106:3: note: in expansion of macro ‘MEMSET’
+DEBUG   106 |   MEMSET(self->grad_cam_buf_d, 0, CamGradInfo, num_balls, stream);
+DEBUG       |   ^~~~~~
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././camera.h:65:8: note: ‘struct pulsar::CamGradInfo’ declared here
+DEBUG    65 | struct CamGradInfo {
+DEBUG       |        ^~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h: In instantiation of ‘void SUM_WS(T*, T*, size_t, char*, size_t, cudaStream_t) [with T = pulsar::CamGradInfo; size_t = long unsigned int; cudaStream_t = void*]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.backward_dbg.device.h:142:9:   required from ‘void pulsar::Renderer::backward_dbg(Renderer*, const float*, const float*, const float*, const float*, const float*, const float*, const pulsar::CamInfo&, const float&, float, const uint&, const float*, const size_t&, const uint&, const bool&, const bool&, const bool&, const bool&, const bool&, const uint&, const uint&, cudaStream_t) [with bool DEV = false; uint = unsigned int; size_t = long unsigned int; cudaStream_t = void*]’
+DEBUG   142 |   SUM_WS(
+DEBUG       |   ~~~~~~^
+DEBUG   143 |       self->grad_cam_buf_d,
+DEBUG       |       ~~~~~~~~~~~~~~~~~~~~~
+DEBUG   144 |       reinterpret_cast<CamGradInfo*>(self->grad_cam_d),
+DEBUG       |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DEBUG   145 |       static_cast<int>(1),
+DEBUG       |       ~~~~~~~~~~~~~~~~~~~~
+DEBUG   146 |       self->workspace_d,
+DEBUG       |       ~~~~~~~~~~~~~~~~~~
+DEBUG   147 |       self->workspace_size,
+DEBUG       |       ~~~~~~~~~~~~~~~~~~~~~
+DEBUG   148 |       stream);
+DEBUG       |       ~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.backward_dbg.instantiate.h:36:24:   required from here
+DEBUG    36 |     cudaStream_t stream);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:285:21: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+DEBUG   285 |   for (int i = 0; i < (NUM_OBJECTS); ++i) {
+DEBUG       |                   ~~^~~~~~~~~~~~~~~
+DEBUG [18/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/util.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/util.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/util.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [19/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/warnings.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/warnings.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/warnings.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [20/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.destruct.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.destruct.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.destruct.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.destruct.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.destruct.instantiate.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.destruct.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.destruct.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [21/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.create_selector.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.create_selector.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.create_selector.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.create_selector.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.create_selector.instantiate.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.create_selector.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.create_selector.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [22/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_signature.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_signature.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_signature.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.calc_signature.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.calc_signature.instantiate.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_signature.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.calc_signature.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [23/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_gradients.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_gradients.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_gradients.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.calc_gradients.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.calc_gradients.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_gradients.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.calc_gradients.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:32:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.calc_gradients.device.h: In instantiation of ‘void pulsar::Renderer::calc_gradients(pulsar::CamInfo, const float*, float, const float3*, const float*, const float*, const float*, uint, const float*, const float*, const DrawInfo*, const IntersectInfo*, bool, bool, bool, bool, bool, float*, float*, float3*, pulsar::CamGradInfo*, float*, int*, int, uint, uint) [with bool DEV = false; uint = unsigned int]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.calc_gradients.instantiate.h:45:22:   required from here
+DEBUG    45 |     const uint offs_y);
+DEBUG       |                      ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../host/commands.h:349:8: warning: variable ‘blockDim’ set but not used [-Wunused-but-set-variable=]
+DEBUG   349 |   int2 blockDim;                                                  \
+DEBUG       |        ^~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.calc_gradients.device.h:61:3: note: in expansion of macro ‘GET_PARALLEL_IDS_2D’
+DEBUG    61 |   GET_PARALLEL_IDS_2D(coord_x_base, coord_y_base, limit_x, limit_y);
+DEBUG       |   ^~~~~~~~~~~~~~~~~~~
+DEBUG [24/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.fill_bg.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.fill_bg.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.fill_bg.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.fill_bg.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.fill_bg.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.fill_bg.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.fill_bg.device.h:14:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.fill_bg.device.h: In instantiation of ‘void pulsar::Renderer::fill_bg(Renderer, pulsar::CamInfo, const float*, float, uint) [with bool DEV = false; uint = unsigned int]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.fill_bg.instantiate.h:19:20:   required from here
+DEBUG    19 |     const uint mode);
+DEBUG       |                    ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.fill_bg.device.h:49:25: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const uint’ {aka ‘const unsigned int’} [-Wsign-compare]
+DEBUG    49 |       for (int i = 0; i < cam.n_channels; ++i) {
+DEBUG       |                       ~~^~~~~~~~~~~~~~~~
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:32:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../host/commands.h:349:8: warning: variable ‘blockDim’ set but not used [-Wunused-but-set-variable=]
+DEBUG   349 |   int2 blockDim;                                                  \
+DEBUG       |        ^~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.fill_bg.device.h:27:3: note: in expansion of macro ‘GET_PARALLEL_IDS_2D’
+DEBUG    27 |   GET_PARALLEL_IDS_2D(coord_x, coord_y, cam.film_width, cam.film_height);
+DEBUG       |   ^~~~~~~~~~~~~~~~~~~
+DEBUG [25/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_sphere_gradients.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_sphere_gradients.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_sphere_gradients.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.norm_sphere_gradients.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.norm_sphere_gradients.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_sphere_gradients.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.norm_sphere_gradients.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././commands.h:32:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.norm_sphere_gradients.device.h: In instantiation of ‘void pulsar::Renderer::norm_sphere_gradients(Renderer, int) [with bool DEV = false]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.norm_sphere_gradients.instantiate.h:16:24:   required from here
+DEBUG    16 |     const int num_balls);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././../host/commands.h:347:34: warning: comparison of integer expressions of different signedness: ‘uint’ {aka ‘unsigned int’} and ‘const int’ [-Wsign-compare]
+DEBUG   347 |   for (uint VARNAME = 0; VARNAME < (N); ++VARNAME) {
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.norm_sphere_gradients.device.h:28:3: note: in expansion of macro ‘GET_PARALLEL_IDX_1D’
+DEBUG    28 |   GET_PARALLEL_IDX_1D(idx, num_balls);
+DEBUG       |   ^~~~~~~~~~~~~~~~~~~
+DEBUG [26/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.construct.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.construct.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.construct.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.construct.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.construct.instantiate.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.construct.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.construct.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [27/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_cam_gradients.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_cam_gradients.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_cam_gradients.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.norm_cam_gradients.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.norm_cam_gradients.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_cam_gradients.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.norm_cam_gradients.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [28/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.render.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.render.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.render.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.render.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.render.instantiate.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.render.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.render.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.render.device.h: In instantiation of ‘void pulsar::Renderer::render(const size_t*, const IntersectInfo*, const DrawInfo*, const float*, const int*, const float*, pulsar::CamInfo, float, float, uint, const float*, uint, int, int, int, int, float*, float*, int) [with bool DEV = false; size_t = long unsigned int; uint = unsigned int]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.render.instantiate.h:42:1:   required from here
+DEBUG    42 | );
+DEBUG       | ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.render.device.h:178:39: warning: comparison of integer expressions of different signedness: ‘int’ and ‘uint’ {aka ‘unsigned int’} [-Wsign-compare]
+DEBUG   178 |        !loading_done && n_pixels_done < thread_block.size();
+DEBUG       |                         ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.render.device.h:285:32: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const uint’ {aka ‘const unsigned int’} [-Wsign-compare]
+DEBUG   285 |           tracker.get_n_hits() >= max_n_hits;
+DEBUG       |           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+DEBUG [29/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.forward.cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.forward.cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.forward.cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.forward.instantiate.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.forward.cpu.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/././camera.device.h:14,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:13:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/headeronly/core/DeviceType.h:9,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/core/DeviceType.h:8,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/core/Device.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/core/TensorBody.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/core/Tensor.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/ATen/Tensor.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/function_hook.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/cpp_hook.h:3,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/variable.h:7,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/autograd/autograd.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/autograd.h:4,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include/torch/all.h:8,
+DEBUG                  from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/extension.h:6,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./../global.h:57:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h: In instantiation of ‘void pulsar::Renderer::forward(Renderer*, const float*, const float*, const float*, const pulsar::CamInfo&, const float&, float, const uint&, const float*, const float*, const size_t&, const uint&, cudaStream_t) [with bool DEV = false; uint = unsigned int; size_t = long unsigned int; cudaStream_t = void*]’:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/renderer.forward.instantiate.h:27:24:   required from here
+DEBUG    27 |     cudaStream_t stream);
+DEBUG       |                        ^
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:43:34: warning: comparison of integer expressions of different signedness: ‘const size_t’ {aka ‘const long unsigned int’} and ‘int’ [-Wsign-compare]
+DEBUG    43 |       num_balls > 0 && num_balls <= self->max_num_balls,
+DEBUG       |                        ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/headeronly/macros/Macros.h:211:64: note: in definition of macro ‘C10_UNLIKELY’
+DEBUG   211 | #define C10_UNLIKELY(expr) (__builtin_expect(static_cast<bool>(expr), 0))
+DEBUG       |                                                                ^~~~
+DEBUG scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/c10/util/Exception.h:627:7: note: in expansion of macro ‘C10_UNLIKELY_OR_CONST’
+DEBUG   627 |   if (C10_UNLIKELY_OR_CONST(!(cond))) {            \
+DEBUG       |       ^~~~~~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:160:3: note: in expansion of macro ‘TORCH_CHECK’
+DEBUG   160 |   TORCH_CHECK(cond, "invalid argument ", argN, ": ", __VA_ARGS__)
+DEBUG       |   ^~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:42:3: note: in expansion of macro ‘ARGCHECK’
+DEBUG    42 |   ARGCHECK(
+DEBUG       |   ^~~~~~~~
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././commands.h:32:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:206:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   206 |     for (int i = 0; i < (NUM_OBJECTS); ++i) {                           \
+DEBUG       |                     ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:235:3: note: in expansion of macro ‘SORT_ASCENDING’
+DEBUG   235 |   SORT_ASCENDING(          \
+DEBUG       |   ^~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:96:3: note: in expansion of macro ‘SORT_ASCENDING_WS’
+DEBUG    96 |   SORT_ASCENDING_WS(
+DEBUG       |   ^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:209:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   209 |     for (int i = 0; i < (NUM_OBJECTS); ++i) {                           \
+DEBUG       |                     ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:235:3: note: in expansion of macro ‘SORT_ASCENDING’
+DEBUG   235 |   SORT_ASCENDING(          \
+DEBUG       |   ^~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:96:3: note: in expansion of macro ‘SORT_ASCENDING_WS’
+DEBUG    96 |   SORT_ASCENDING_WS(
+DEBUG       |   ^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:206:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   206 |     for (int i = 0; i < (NUM_OBJECTS); ++i) {                           \
+DEBUG       |                     ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:235:3: note: in expansion of macro ‘SORT_ASCENDING’
+DEBUG   235 |   SORT_ASCENDING(          \
+DEBUG       |   ^~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:106:3: note: in expansion of macro ‘SORT_ASCENDING_WS’
+DEBUG   106 |   SORT_ASCENDING_WS(
+DEBUG       |   ^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:209:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   209 |     for (int i = 0; i < (NUM_OBJECTS); ++i) {                           \
+DEBUG       |                     ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:235:3: note: in expansion of macro ‘SORT_ASCENDING’
+DEBUG   235 |   SORT_ASCENDING(          \
+DEBUG       |   ^~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:106:3: note: in expansion of macro ‘SORT_ASCENDING_WS’
+DEBUG   106 |   SORT_ASCENDING_WS(
+DEBUG       |   ^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:206:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   206 |     for (int i = 0; i < (NUM_OBJECTS); ++i) {                           \
+DEBUG       |                     ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:235:3: note: in expansion of macro ‘SORT_ASCENDING’
+DEBUG   235 |   SORT_ASCENDING(          \
+DEBUG       |   ^~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:116:3: note: in expansion of macro ‘SORT_ASCENDING_WS’
+DEBUG   116 |   SORT_ASCENDING_WS(
+DEBUG       |   ^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:209:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   209 |     for (int i = 0; i < (NUM_OBJECTS); ++i) {                           \
+DEBUG       |                     ~~^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:235:3: note: in expansion of macro ‘SORT_ASCENDING’
+DEBUG   235 |   SORT_ASCENDING(          \
+DEBUG       |   ^~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:116:3: note: in expansion of macro ‘SORT_ASCENDING_WS’
+DEBUG   116 |   SORT_ASCENDING_WS(
+DEBUG       |   ^~~~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:241:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   241 |     for (int i = 0; i < (NUM_ITEMS); ++i) {                               \
+DEBUG       |                     ~~^~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:254:3: note: in expansion of macro ‘REDUCE’
+DEBUG   254 |   REDUCE(REDUCE_PTR, RESULT_PTR, NUM_ITEMS, REDUCE_OP, REDUCE_INIT)
+DEBUG       |   ^~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:135:3: note: in expansion of macro ‘REDUCE_WS’
+DEBUG   135 |   REDUCE_WS(
+DEBUG       |   ^~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:268:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   268 |     for (int i = 0; i < NUM_ITEMS; ++i) {   \
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:208:9: note: in expansion of macro ‘SELECT_FLAGS_WS’
+DEBUG   208 |         SELECT_FLAGS_WS(
+DEBUG       |         ^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:268:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   268 |     for (int i = 0; i < NUM_ITEMS; ++i) {   \
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:218:9: note: in expansion of macro ‘SELECT_FLAGS_WS’
+DEBUG   218 |         SELECT_FLAGS_WS(
+DEBUG       |         ^~~~~~~~~~~~~~~
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./././../host/commands.h:268:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘const size_t’ {aka ‘const long unsigned int’} [-Wsign-compare]
+DEBUG   268 |     for (int i = 0; i < NUM_ITEMS; ++i) {   \
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/../include/./renderer.forward.device.h:228:9: note: in expansion of macro ‘SELECT_FLAGS_WS’
+DEBUG   228 |         SELECT_FLAGS_WS(
+DEBUG       |         ^~~~~~~~~~~~~~~
+DEBUG [30/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/camera.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/camera.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/camera.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./camera.h:13,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/camera.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/math.h:13,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/camera.cpp:10:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/./commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/./commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/./commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [31/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/tensor_util.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/tensor_util.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/tensor_util.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [32/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/renderer.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/renderer.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/renderer.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./renderer.h:12,
+DEBUG                  from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/renderer.cpp:9:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./../global.h:55: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    55 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./../global.h:56: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    56 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/./../global.h:58: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    58 | #pragma clang diagnostic pop
+DEBUG In file included from scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/renderer.cpp:10:
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/commands.h:29: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    29 | #pragma clang diagnostic push
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/commands.h:30: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    30 | #pragma clang diagnostic ignored "-Weverything"
+DEBUG scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/../include/commands.h:31: warning: ignoring ‘#pragma clang diagnostic’ [-Wunknown-pragmas]
+DEBUG    31 | #pragma clang diagnostic pop
+DEBUG [33/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_farthest_points/sample_farthest_points_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_farthest_points/sample_farthest_points_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_farthest_points/sample_farthest_points_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [34/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_pdf/sample_pdf_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_pdf/sample_pdf_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_pdf/sample_pdf_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [35/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_meshes/rasterize_meshes_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_meshes/rasterize_meshes_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_meshes/rasterize_meshes_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG [36/36] c++ -MMD -MF scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_points/rasterize_points_cpu.o.d -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -fPIC -Iscratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include -Iscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/include/torch/csrc/api/include -Iscratchpad/libraries/pt3d-venv/include -I~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/include/python3.13 -c -c scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_points/rasterize_points_cpu.cpp -o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_points/rasterize_points_cpu.o -std=c++20 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C
+DEBUG c++ -pthread -fno-strict-overflow -Wsign-compare -Wunreachable-code -DNDEBUG -g -O3 -Wall -O3 -fstack-protector -fstack-clash-protection -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fPIC -pthread -shared -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--build-id=sha1 -Wl,--exclude-libs,ALL scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ball_query/ball_query_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/blending/sigmoid_alpha_blend_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/alpha_composite_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/norm_weighted_sum_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/compositing/weighted_sum_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/ext.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/face_areas_normals/face_areas_normals_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/gather_scatter/gather_scatter_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/iou_box3d/iou_box3d_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/knn/knn_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/marching_cubes/marching_cubes_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/mesh_normal_consistency/mesh_normal_consistency_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/packed_to_padded_tensor/packed_to_padded_tensor_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/point_mesh/point_mesh_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/points_to_volumes/points_to_volumes_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.backward_dbg.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_gradients.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.calc_signature.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.construct.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.create_selector.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.destruct.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.fill_bg.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.forward.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_cam_gradients.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.norm_sphere_gradients.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/host/renderer.render.cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/camera.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/renderer.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/tensor_util.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/pytorch/util.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/pulsar/warnings.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_meshes/rasterize_meshes_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/rasterize_points/rasterize_points_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_farthest_points/sample_farthest_points_cpu.o scratchpad/libraries/pt3d-src-cxx20/build/temp.linux-x86_64-cpython-313scratchpad/libraries/pt3d-src-cxx20/pytorch3d/csrc/sample_pdf/sample_pdf_cpu.o -Lscratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/torch/lib -L~/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/lib -lc10 -ltorch -ltorch_cpu -ltorch_python -o build/lib.linux-x86_64-cpython-313/pytorch3d/_C.cpython-313-x86_64-linux-gnu.so
+DEBUG installing to build/bdist.linux-x86_64/wheel
+DEBUG running install
+DEBUG running install_lib
+DEBUG creating build/bdist.linux-x86_64/wheel
+DEBUG creating build/bdist.linux-x86_64/wheel/projects
+DEBUG copying build/lib.linux-x86_64-cpython-313/projects/__init__.py -> build/bdist.linux-x86_64/wheel/./projects
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/_C.cpython-313-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./pytorch3d
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron_trainer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron_trainer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer/experiment.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron_trainer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron_trainer/visualize_reconstruction.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron_trainer
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/common
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/common/workaround
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common/workaround
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround/symeig3x3.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common/workaround
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/workaround/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common/workaround
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/compat.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/datatypes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/common/linear_with_repeat.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/common
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/datasets
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/datasets/r2n2
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2/r2n2_synset_dict.json -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/r2n2
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/r2n2
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2/r2n2.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/r2n2
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/r2n2/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/r2n2
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/datasets/shapenet
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet/shapenet_synset_dict_v1.json -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/shapenet
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet/shapenet_synset_dict_v2.json -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/shapenet
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/shapenet
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet/shapenet_core.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets/shapenet
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/shapenet_base.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/datasets/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/datasets
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/blender_dataset_map_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/data_loader_map_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/data_source.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/dataset_base.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/dataset_map_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/frame_data.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/json_index_dataset.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/json_index_dataset_map_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/json_index_dataset_map_provider_v2.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/llff_dataset_map_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/load_blender.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/load_llff.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/orm_types.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/rendered_mesh_dataset_map_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/scene_batch_sampler.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/single_sequence_dataset.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/sql_dataset.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/sql_dataset_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/train_eval_data_loader_provider.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/types.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/dataset/visualize.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/dataset
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/evaluation
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/evaluation
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation/evaluate_new_view_synthesis.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/evaluation
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/evaluation/evaluator.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/evaluation
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models/feature_extractor
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/feature_extractor
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor/feature_extractor.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/feature_extractor
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/feature_extractor/resnet_feature_extractor.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/feature_extractor
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models/global_encoder
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/global_encoder
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder/autodecoder.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/global_encoder
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/global_encoder/global_encoder.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/global_encoder
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/base.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/decoding_functions.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/idr_feature_field.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/neural_radiance_field.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/scene_representation_networks.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/voxel_grid.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/implicit_function/voxel_grid_implicit_function.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/implicit_function
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/base.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/lstm_renderer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/multipass_ea.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/ray_point_refiner.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/ray_sampler.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/ray_tracing.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/raymarcher.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/rgb_net.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/renderer/sdf_renderer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/renderer
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models/view_pooler
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/view_pooler
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler/feature_aggregator.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/view_pooler
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler/view_pooler.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/view_pooler
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/view_pooler/view_sampler.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/view_pooler
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/models/visualization
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/visualization/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/visualization
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/visualization/render_flyaround.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models/visualization
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/base_model.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/generic_model.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/metrics.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/model_dbir.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/overfit_model.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/models/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/models
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/third_party
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/third_party
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party/hyperlayers.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/third_party
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/third_party/pytorch_prototyping.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/third_party
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/camera_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/circle_fitting.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/config.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/depth_cleanup.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/eval_video_trajectory.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/image_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/metric_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/model_io.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/point_cloud_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/rasterize_mc.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/stats.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/video_writer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/tools/vis_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron/tools
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/implicitron/eval_demo.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/implicitron
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/experimental_gltf_io.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/mtl_io.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/obj_io.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/off_io.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/pluggable.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/pluggable_formats.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/ply_io.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/io/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/io
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/loss
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/loss/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/loss
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/loss/chamfer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/loss
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/loss/mesh_edge_loss.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/loss
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/loss/mesh_laplacian_smoothing.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/loss
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/loss/mesh_normal_consistency.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/loss
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/loss/point_mesh_distance.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/loss
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/ball_query.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/cameras_alignment.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/cubify.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/graph_conv.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/interp_face_attrs.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/iou_box3d.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/knn.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/laplacian_matrices.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/marching_cubes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/marching_cubes_data.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/mesh_face_areas_normals.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/mesh_filtering.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/packed_to_padded.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/perspective_n_points.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/points_alignment.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/points_normals.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/points_to_volumes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/sample_farthest_points.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/sample_points_from_meshes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/subdivide_meshes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/ops/vert_align.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/ops
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/renderer
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/harmonic_embedding.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/raymarching.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/raysampling.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/renderer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/sample_pdf.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/implicit/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/implicit
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/clip.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/rasterize_meshes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/rasterizer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/renderer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/shader.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/shading.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/textures.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/mesh/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/mesh
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/renderer/opengl
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/opengl
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl/opengl_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/opengl
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/opengl/rasterizer_opengl.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/opengl
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/renderer/points
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/renderer/points/pulsar
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points/pulsar
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar/renderer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points/pulsar
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/pulsar/unified.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points/pulsar
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/compositor.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/rasterize_points.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/rasterizer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/points/renderer.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer/points
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/blending.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/camera_conversions.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/camera_utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/cameras.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/compositing.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/fisheyecameras.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/lighting.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/materials.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/splatter_blend.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/renderer/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/renderer
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/structures
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/structures/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/structures
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/structures/meshes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/structures
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/structures/pointclouds.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/structures
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/structures/utils.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/structures
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/structures/volumes.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/structures
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/transforms
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/transforms/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/transforms
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/transforms/math.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/transforms
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/transforms/rotation_conversions.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/transforms
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/transforms/se3.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/transforms
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/transforms/so3.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/transforms
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/transforms/transform3d.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/transforms
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/utils
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/utils/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/utils
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/utils/camera_conversions.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/utils
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/utils/checkerboard.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/utils
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/utils/ico_sphere.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/utils
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/utils/torus.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/utils
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d/vis
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/vis/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/vis
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/vis/plotly_vis.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/vis
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/vis/texture_vis.py -> build/bdist.linux-x86_64/wheel/./pytorch3d/vis
+DEBUG copying build/lib.linux-x86_64-cpython-313/pytorch3d/__init__.py -> build/bdist.linux-x86_64/wheel/./pytorch3d
+DEBUG running install_egg_info
+DEBUG running egg_info
+DEBUG creating pytorch3d.egg-info
+DEBUG writing pytorch3d.egg-info/PKG-INFO
+DEBUG writing dependency_links to pytorch3d.egg-info/dependency_links.txt
+DEBUG writing entry points to pytorch3d.egg-info/entry_points.txt
+DEBUG writing requirements to pytorch3d.egg-info/requires.txt
+DEBUG writing top-level names to pytorch3d.egg-info/top_level.txt
+DEBUG writing manifest file 'pytorch3d.egg-info/SOURCES.txt'
+DEBUG reading manifest file 'pytorch3d.egg-info/SOURCES.txt'
+DEBUG adding license file 'LICENSE'
+DEBUG adding license file 'LICENSE-3RD-PARTY'
+DEBUG writing manifest file 'pytorch3d.egg-info/SOURCES.txt'
+DEBUG Copying pytorch3d.egg-info to build/bdist.linux-x86_64/wheel/./pytorch3d-0.7.9-py3.13.egg-info
+DEBUG running install_scripts
+DEBUG creating build/bdist.linux-x86_64/wheel/pytorch3d-0.7.9.dist-info/WHEEL
+DEBUG creating '~/.cache/uv/builds-v0/.tmpG3pdz0/.tmp-th179ntr/pytorch3d-0.7.9-cp313-cp313-linux_x86_64.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+DEBUG adding 'projects/__init__.py'
+DEBUG adding 'pytorch3d/_C.cpython-313-x86_64-linux-gnu.so'
+DEBUG adding 'pytorch3d/__init__.py'
+DEBUG adding 'pytorch3d/common/__init__.py'
+DEBUG adding 'pytorch3d/common/compat.py'
+DEBUG adding 'pytorch3d/common/datatypes.py'
+DEBUG adding 'pytorch3d/common/linear_with_repeat.py'
+DEBUG adding 'pytorch3d/common/workaround/__init__.py'
+DEBUG adding 'pytorch3d/common/workaround/symeig3x3.py'
+DEBUG adding 'pytorch3d/common/workaround/utils.py'
+DEBUG adding 'pytorch3d/datasets/__init__.py'
+DEBUG adding 'pytorch3d/datasets/shapenet_base.py'
+DEBUG adding 'pytorch3d/datasets/utils.py'
+DEBUG adding 'pytorch3d/datasets/r2n2/__init__.py'
+DEBUG adding 'pytorch3d/datasets/r2n2/r2n2.py'
+DEBUG adding 'pytorch3d/datasets/r2n2/r2n2_synset_dict.json'
+DEBUG adding 'pytorch3d/datasets/r2n2/utils.py'
+DEBUG adding 'pytorch3d/datasets/shapenet/__init__.py'
+DEBUG adding 'pytorch3d/datasets/shapenet/shapenet_core.py'
+DEBUG adding 'pytorch3d/datasets/shapenet/shapenet_synset_dict_v1.json'
+DEBUG adding 'pytorch3d/datasets/shapenet/shapenet_synset_dict_v2.json'
+DEBUG adding 'pytorch3d/implicitron/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/eval_demo.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/blender_dataset_map_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/data_loader_map_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/data_source.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/dataset_base.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/dataset_map_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/frame_data.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/json_index_dataset.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/json_index_dataset_map_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/json_index_dataset_map_provider_v2.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/llff_dataset_map_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/load_blender.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/load_llff.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/orm_types.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/rendered_mesh_dataset_map_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/scene_batch_sampler.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/single_sequence_dataset.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/sql_dataset.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/sql_dataset_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/train_eval_data_loader_provider.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/types.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/utils.py'
+DEBUG adding 'pytorch3d/implicitron/dataset/visualize.py'
+DEBUG adding 'pytorch3d/implicitron/evaluation/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/evaluation/evaluate_new_view_synthesis.py'
+DEBUG adding 'pytorch3d/implicitron/evaluation/evaluator.py'
+DEBUG adding 'pytorch3d/implicitron/models/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/base_model.py'
+DEBUG adding 'pytorch3d/implicitron/models/generic_model.py'
+DEBUG adding 'pytorch3d/implicitron/models/metrics.py'
+DEBUG adding 'pytorch3d/implicitron/models/model_dbir.py'
+DEBUG adding 'pytorch3d/implicitron/models/overfit_model.py'
+DEBUG adding 'pytorch3d/implicitron/models/utils.py'
+DEBUG adding 'pytorch3d/implicitron/models/feature_extractor/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/feature_extractor/feature_extractor.py'
+DEBUG adding 'pytorch3d/implicitron/models/feature_extractor/resnet_feature_extractor.py'
+DEBUG adding 'pytorch3d/implicitron/models/global_encoder/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/global_encoder/autodecoder.py'
+DEBUG adding 'pytorch3d/implicitron/models/global_encoder/global_encoder.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/base.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/decoding_functions.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/idr_feature_field.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/neural_radiance_field.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/scene_representation_networks.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/utils.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/voxel_grid.py'
+DEBUG adding 'pytorch3d/implicitron/models/implicit_function/voxel_grid_implicit_function.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/base.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/lstm_renderer.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/multipass_ea.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/ray_point_refiner.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/ray_sampler.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/ray_tracing.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/raymarcher.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/rgb_net.py'
+DEBUG adding 'pytorch3d/implicitron/models/renderer/sdf_renderer.py'
+DEBUG adding 'pytorch3d/implicitron/models/view_pooler/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/view_pooler/feature_aggregator.py'
+DEBUG adding 'pytorch3d/implicitron/models/view_pooler/view_pooler.py'
+DEBUG adding 'pytorch3d/implicitron/models/view_pooler/view_sampler.py'
+DEBUG adding 'pytorch3d/implicitron/models/visualization/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/models/visualization/render_flyaround.py'
+DEBUG adding 'pytorch3d/implicitron/third_party/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/third_party/hyperlayers.py'
+DEBUG adding 'pytorch3d/implicitron/third_party/pytorch_prototyping.py'
+DEBUG adding 'pytorch3d/implicitron/tools/__init__.py'
+DEBUG adding 'pytorch3d/implicitron/tools/camera_utils.py'
+DEBUG adding 'pytorch3d/implicitron/tools/circle_fitting.py'
+DEBUG adding 'pytorch3d/implicitron/tools/config.py'
+DEBUG adding 'pytorch3d/implicitron/tools/depth_cleanup.py'
+DEBUG adding 'pytorch3d/implicitron/tools/eval_video_trajectory.py'
+DEBUG adding 'pytorch3d/implicitron/tools/image_utils.py'
+DEBUG adding 'pytorch3d/implicitron/tools/metric_utils.py'
+DEBUG adding 'pytorch3d/implicitron/tools/model_io.py'
+DEBUG adding 'pytorch3d/implicitron/tools/point_cloud_utils.py'
+DEBUG adding 'pytorch3d/implicitron/tools/rasterize_mc.py'
+DEBUG adding 'pytorch3d/implicitron/tools/stats.py'
+DEBUG adding 'pytorch3d/implicitron/tools/utils.py'
+DEBUG adding 'pytorch3d/implicitron/tools/video_writer.py'
+DEBUG adding 'pytorch3d/implicitron/tools/vis_utils.py'
+DEBUG adding 'pytorch3d/implicitron_trainer/__init__.py'
+DEBUG adding 'pytorch3d/implicitron_trainer/experiment.py'
+DEBUG adding 'pytorch3d/implicitron_trainer/visualize_reconstruction.py'
+DEBUG adding 'pytorch3d/io/__init__.py'
+DEBUG adding 'pytorch3d/io/experimental_gltf_io.py'
+DEBUG adding 'pytorch3d/io/mtl_io.py'
+DEBUG adding 'pytorch3d/io/obj_io.py'
+DEBUG adding 'pytorch3d/io/off_io.py'
+DEBUG adding 'pytorch3d/io/pluggable.py'
+DEBUG adding 'pytorch3d/io/pluggable_formats.py'
+DEBUG adding 'pytorch3d/io/ply_io.py'
+DEBUG adding 'pytorch3d/io/utils.py'
+DEBUG adding 'pytorch3d/loss/__init__.py'
+DEBUG adding 'pytorch3d/loss/chamfer.py'
+DEBUG adding 'pytorch3d/loss/mesh_edge_loss.py'
+DEBUG adding 'pytorch3d/loss/mesh_laplacian_smoothing.py'
+DEBUG adding 'pytorch3d/loss/mesh_normal_consistency.py'
+DEBUG adding 'pytorch3d/loss/point_mesh_distance.py'
+DEBUG adding 'pytorch3d/ops/__init__.py'
+DEBUG adding 'pytorch3d/ops/ball_query.py'
+DEBUG adding 'pytorch3d/ops/cameras_alignment.py'
+DEBUG adding 'pytorch3d/ops/cubify.py'
+DEBUG adding 'pytorch3d/ops/graph_conv.py'
+DEBUG adding 'pytorch3d/ops/interp_face_attrs.py'
+DEBUG adding 'pytorch3d/ops/iou_box3d.py'
+DEBUG adding 'pytorch3d/ops/knn.py'
+DEBUG adding 'pytorch3d/ops/laplacian_matrices.py'
+DEBUG adding 'pytorch3d/ops/marching_cubes.py'
+DEBUG adding 'pytorch3d/ops/marching_cubes_data.py'
+DEBUG adding 'pytorch3d/ops/mesh_face_areas_normals.py'
+DEBUG adding 'pytorch3d/ops/mesh_filtering.py'
+DEBUG adding 'pytorch3d/ops/packed_to_padded.py'
+DEBUG adding 'pytorch3d/ops/perspective_n_points.py'
+DEBUG adding 'pytorch3d/ops/points_alignment.py'
+DEBUG adding 'pytorch3d/ops/points_normals.py'
+DEBUG adding 'pytorch3d/ops/points_to_volumes.py'
+DEBUG adding 'pytorch3d/ops/sample_farthest_points.py'
+DEBUG adding 'pytorch3d/ops/sample_points_from_meshes.py'
+DEBUG adding 'pytorch3d/ops/subdivide_meshes.py'
+DEBUG adding 'pytorch3d/ops/utils.py'
+DEBUG adding 'pytorch3d/ops/vert_align.py'
+DEBUG adding 'pytorch3d/renderer/__init__.py'
+DEBUG adding 'pytorch3d/renderer/blending.py'
+DEBUG adding 'pytorch3d/renderer/camera_conversions.py'
+DEBUG adding 'pytorch3d/renderer/camera_utils.py'
+DEBUG adding 'pytorch3d/renderer/cameras.py'
+DEBUG adding 'pytorch3d/renderer/compositing.py'
+DEBUG adding 'pytorch3d/renderer/fisheyecameras.py'
+DEBUG adding 'pytorch3d/renderer/lighting.py'
+DEBUG adding 'pytorch3d/renderer/materials.py'
+DEBUG adding 'pytorch3d/renderer/splatter_blend.py'
+DEBUG adding 'pytorch3d/renderer/utils.py'
+DEBUG adding 'pytorch3d/renderer/implicit/__init__.py'
+DEBUG adding 'pytorch3d/renderer/implicit/harmonic_embedding.py'
+DEBUG adding 'pytorch3d/renderer/implicit/raymarching.py'
+DEBUG adding 'pytorch3d/renderer/implicit/raysampling.py'
+DEBUG adding 'pytorch3d/renderer/implicit/renderer.py'
+DEBUG adding 'pytorch3d/renderer/implicit/sample_pdf.py'
+DEBUG adding 'pytorch3d/renderer/implicit/utils.py'
+DEBUG adding 'pytorch3d/renderer/mesh/__init__.py'
+DEBUG adding 'pytorch3d/renderer/mesh/clip.py'
+DEBUG adding 'pytorch3d/renderer/mesh/rasterize_meshes.py'
+DEBUG adding 'pytorch3d/renderer/mesh/rasterizer.py'
+DEBUG adding 'pytorch3d/renderer/mesh/renderer.py'
+DEBUG adding 'pytorch3d/renderer/mesh/shader.py'
+DEBUG adding 'pytorch3d/renderer/mesh/shading.py'
+DEBUG adding 'pytorch3d/renderer/mesh/textures.py'
+DEBUG adding 'pytorch3d/renderer/mesh/utils.py'
+DEBUG adding 'pytorch3d/renderer/opengl/__init__.py'
+DEBUG adding 'pytorch3d/renderer/opengl/opengl_utils.py'
+DEBUG adding 'pytorch3d/renderer/opengl/rasterizer_opengl.py'
+DEBUG adding 'pytorch3d/renderer/points/__init__.py'
+DEBUG adding 'pytorch3d/renderer/points/compositor.py'
+DEBUG adding 'pytorch3d/renderer/points/rasterize_points.py'
+DEBUG adding 'pytorch3d/renderer/points/rasterizer.py'
+DEBUG adding 'pytorch3d/renderer/points/renderer.py'
+DEBUG adding 'pytorch3d/renderer/points/pulsar/__init__.py'
+DEBUG adding 'pytorch3d/renderer/points/pulsar/renderer.py'
+DEBUG adding 'pytorch3d/renderer/points/pulsar/unified.py'
+DEBUG adding 'pytorch3d/structures/__init__.py'
+DEBUG adding 'pytorch3d/structures/meshes.py'
+DEBUG adding 'pytorch3d/structures/pointclouds.py'
+DEBUG adding 'pytorch3d/structures/utils.py'
+DEBUG adding 'pytorch3d/structures/volumes.py'
+DEBUG adding 'pytorch3d/transforms/__init__.py'
+DEBUG adding 'pytorch3d/transforms/math.py'
+DEBUG adding 'pytorch3d/transforms/rotation_conversions.py'
+DEBUG adding 'pytorch3d/transforms/se3.py'
+DEBUG adding 'pytorch3d/transforms/so3.py'
+DEBUG adding 'pytorch3d/transforms/transform3d.py'
+DEBUG adding 'pytorch3d/utils/__init__.py'
+DEBUG adding 'pytorch3d/utils/camera_conversions.py'
+DEBUG adding 'pytorch3d/utils/checkerboard.py'
+DEBUG adding 'pytorch3d/utils/ico_sphere.py'
+DEBUG adding 'pytorch3d/utils/torus.py'
+DEBUG adding 'pytorch3d/vis/__init__.py'
+DEBUG adding 'pytorch3d/vis/plotly_vis.py'
+DEBUG adding 'pytorch3d/vis/texture_vis.py'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/licenses/LICENSE'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/licenses/LICENSE-3RD-PARTY'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/METADATA'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/WHEEL'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/entry_points.txt'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/top_level.txt'
+DEBUG adding 'pytorch3d-0.7.9.dist-info/RECORD'
+DEBUG removing build/bdist.linux-x86_64/wheel
+DEBUG Built `pytorch3d @ file://scratchpad/libraries/pt3d-src-cxx20` into `pytorch3d-0.7.9-cp313-cp313-linux_x86_64.whl`
+      Built pytorch3d @ file://scratchpad/libraries/pt3d-src-cxx20
+Prepared 1 package in 1m 54s
+DEBUG Failed to reflink `~/.cache/uv/archive-v0/0Pk6mYITE8LFJw8A/pytorch3d/implicitron/dataset/visualize.py` to `scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/pytorch3d/implicitron/dataset/visualize.py`: Invalid cross-device link (os error 18), falling back
+DEBUG Failed to hard link `~/.cache/uv/archive-v0/0Pk6mYITE8LFJw8A/pytorch3d/implicitron/dataset/visualize.py` to `scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/pytorch3d/implicitron/dataset/visualize.py`: failed to hardlink file from scratchpad/libraries/pt3d-venv/lib/python3.13/site-packages/pytorch3d/implicitron/dataset/visualize.py to ~/.cache/uv/archive-v0/0Pk6mYITE8LFJw8A/pytorch3d/implicitron/dataset/visualize.py: Invalid cross-device link (os error 18); falling back to copy
+warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
+         If the cache and target directories are on different filesystems, hardlinking may not be supported.
+         If this is intentional, set `export UV_LINK_MODE=copy` or use `--link-mode=copy` to suppress this warning.
+Installed 1 package in 75ms
+ + pytorch3d==0.7.9 (from file://scratchpad/libraries/pt3d-src-cxx20)
+EXIT 0
+1790890662

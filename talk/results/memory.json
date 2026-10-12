@@ -1,0 +1,318 @@
+{
+  "label": "FINAL",
+  "conditions": {
+    "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
+    "cores": 8,
+    "threads": 16,
+    "ram_gib": 31.3,
+    "os": "Omarchy",
+    "kernel": "7.2.5-3-omarchy",
+    "governor": "performance",
+    "boost": "on",
+    "python": "3.13.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "open3d": "0.20.0",
+    "laspy": "2.7.0",
+    "load_avg_before": [
+      0.88,
+      1.25,
+      1.1
+    ],
+    "load_avg_after": [
+      3.54,
+      1.98,
+      1.36
+    ],
+    "date_utc": "2026-10-11T20:10:28Z",
+    "data": "data/AHN5_C_135000_455000.COPC.LAZ",
+    "n": 21013926,
+    "runs": 3,
+    "warmup": 0,
+    "statistic": "median over 3 fresh subprocesses per case (min and max under tile_1km.cases)",
+    "extra": {
+      "boost_sources": {
+        "/sys/devices/system/cpu/cpufreq/boost": "1",
+        "/sys/devices/system/cpu/cpufreq/policy*/boost": "1"
+      },
+      "scaling_driver": "amd-pstate-epp",
+      "energy_performance_preference": "performance",
+      "cpu_max_mhz": 4666,
+      "cpu_temp_c_at_collect": 50.5,
+      "ram_available_gib_at_collect": 24.7,
+      "affinity_cpus": 16,
+      "python_implementation": "CPython",
+      "python_full": "3.13.15 (main, Aug 25 2026, 14:01:07) [Clang 22.1.3 ]",
+      "gil_enabled": true,
+      "lazrs": "0.8.2",
+      "psutil": "7.2.2",
+      "thread_env": {
+        "OMP_NUM_THREADS": null,
+        "OPENBLAS_NUM_THREADS": null,
+        "MKL_NUM_THREADS": null,
+        "NUMEXPR_NUM_THREADS": null
+      },
+      "transparent_hugepage": "[always] madvise never",
+      "malloc": "MALLOC_MMAP_THRESHOLD_=1048576 in every case subprocess (blocks >= 1 MiB are mmapped and returned to the OS on free)",
+      "malloc_threshold_fixed_all_cases": true,
+      "malloc_trim_all_cases": true,
+      "rss_method": "/proc/self/clear_refs=5, then VmHWM (peak) and VmRSS (retained, after gc.collect() and malloc_trim(0); untrimmed value also kept) from /proc/self/status, minus VmRSS after imports; fresh subprocess per case; imports numpy, laspy, open3d in every case",
+      "case_order": "seeded (numpy default_rng 20261015) permutation per repeat"
+    }
+  },
+  "tile_1km": {
+    "file": "data/AHN5_C_135000_455000.COPC.LAZ",
+    "points": 21013926,
+    "point_format": 6,
+    "record_bytes": 30,
+    "bytes_per_point": {
+      "laspy_read_peak": 38.300873049614815,
+      "laspy_read_retained": 30.415840619216038,
+      "xyz_float64": 24.03830678760361,
+      "open3d_points": 24.00029770733941,
+      "pipeline_retained": 86.07165971746545
+    },
+    "naive_peak_mb": 3093.3671875,
+    "chunked_peak_mb": 839.11328125,
+    "voxel": 0.5,
+    "chunk_size": 1000000,
+    "chunked_equals_reference": true,
+    "units": "bytes per point = median delta over the post-import baseline / points; MB = MiB (2^20 bytes)",
+    "bytes_per_point_peak": {
+      "xyz_float64": 48.05809633097594,
+      "open3d_points": 48.02067200579273,
+      "open3d_points_v_alive": 48.00741755729034,
+      "pipeline": 154.3562393814464
+    },
+    "open3d_points_v_alive_retained": 48.00040049631849,
+    "bytes_per_point_untrimmed": {
+      "laspy_read_retained": 31.67033518629503,
+      "xyz_float64": 24.04142548136888,
+      "open3d_points": 24.00049262569974,
+      "pipeline_retained": 147.73544743614306
+    },
+    "retained_method": "VmRSS after gc.collect() and malloc_trim(0) (live data); *_untrimmed = VmRSS before the trim (includes freed blocks the allocator keeps)",
+    "naive_retained_mb": 1724.9140625,
+    "chunked_retained_mb": 582.61328125,
+    "baseline_mb_after_imports": 258.56640625,
+    "naive_kept_open3d_centroids": 6622843,
+    "chunked_kept_first_points": 6616281,
+    "chunked_chunks": 22,
+    "chunked_survivors_over_kept": 1.5243566589750344,
+    "chunked_equals_reference_per_repeat": [
+      true,
+      true,
+      true
+    ],
+    "laz_backend_default": "LazrsParallel",
+    "snippet": {
+      "file": "snippets/s21_chunked.py",
+      "source": "v, keys, pts = 0.5, [], []                      # voxel size: 0.5 m\nwith laspy.open(path) as f:\n    lo, hi = f.header.mins, f.header.maxs       # local origin, extent\n    dims = ((hi - lo) // v).astype(np.int64) + 1  # voxels per axis\n    for c in f.chunk_iterator(1_000_000):       # a million points\n        xyz = np.c_[c.x, c.y, c.z] - lo\n        ijk = (xyz // v).astype(np.int64).T     # voxel index per axis\n        key = np.ravel_multi_index(ijk, dims)   # one int64 per voxel\n        k, first = np.unique(key, return_index=True)\n        keys.append(k); pts.append(xyz[first])  # first per voxel\nk, first = np.unique(np.concatenate(keys), return_index=True)\npoints = np.concatenate(pts)[first]             # earliest chunk wins\n",
+      "budget": {
+        "lines": 12,
+        "max_chars": 70,
+        "ok": true,
+        "budget": {
+          "lines": 12,
+          "chars": 70
+        }
+      }
+    },
+    "cases": {
+      "read": {
+        "peak": {
+          "median": 804851712,
+          "min": 803299328,
+          "max": 805265408
+        },
+        "retained": {
+          "median": 639156224,
+          "min": 639078400,
+          "max": 639164416
+        },
+        "retained_untrimmed": {
+          "median": 665518080,
+          "min": 665214976,
+          "max": 666083328
+        },
+        "seconds": {
+          "median": 0.7153747690026648,
+          "min": 0.7063408430003619,
+          "max": 0.7252291190015967
+        },
+        "baseline": {
+          "median": 271069184,
+          "min": 271065088,
+          "max": 271253504
+        }
+      },
+      "xyz": {
+        "peak": {
+          "median": 1009889280,
+          "min": 1009606656,
+          "max": 1010012160
+        },
+        "retained": {
+          "median": 505139200,
+          "min": 505106432,
+          "max": 505139200
+        },
+        "retained_untrimmed": {
+          "median": 505204736,
+          "min": 505167872,
+          "max": 505204736
+        },
+        "seconds": {
+          "median": 0.33193110700085526,
+          "min": 0.3272792890020355,
+          "max": 0.3513270330004161
+        },
+        "baseline": {
+          "median": 910331904,
+          "min": 910213120,
+          "max": 910487552
+        }
+      },
+      "o3d": {
+        "peak": {
+          "median": 1009102848,
+          "min": 1009012736,
+          "max": 1009274880
+        },
+        "retained": {
+          "median": 504340480,
+          "min": 504340480,
+          "max": 504340480
+        },
+        "retained_untrimmed": {
+          "median": 504344576,
+          "min": 504340480,
+          "max": 504344576
+        },
+        "seconds": {
+          "median": 0.2750907179979549,
+          "min": 0.27123706200291053,
+          "max": 0.27772651000123005
+        },
+        "baseline": {
+          "median": 1415385088,
+          "min": 1415356416,
+          "max": 1415585792
+        }
+      },
+      "o3d_v_alive": {
+        "peak": {
+          "median": 1008824320,
+          "min": 1008680960,
+          "max": 1008844800
+        },
+        "retained": {
+          "median": 1008676864,
+          "min": 1008676864,
+          "max": 1008676864
+        },
+        "retained_untrimmed": {
+          "median": 1008680960,
+          "min": 1008676864,
+          "max": 1008680960
+        },
+        "seconds": {
+          "median": 0.27342563400088693,
+          "min": 0.27329823300169664,
+          "max": 0.28453096900193486
+        },
+        "baseline": {
+          "median": 1415512064,
+          "min": 1415303168,
+          "max": 1415626752
+        }
+      },
+      "pipeline": {
+        "peak": {
+          "median": 3243630592,
+          "min": 3243548672,
+          "max": 3243724800
+        },
+        "retained": {
+          "median": 1808703488,
+          "min": 1808678912,
+          "max": 1808752640
+        },
+        "retained_untrimmed": {
+          "median": 3104501760,
+          "min": 3104407552,
+          "max": 3104587776
+        },
+        "seconds": {
+          "median": 8.345551233996957,
+          "min": 8.255424881997897,
+          "max": 8.622927563999838
+        },
+        "baseline": {
+          "median": 271126528,
+          "min": 271065088,
+          "max": 271253504
+        }
+      },
+      "chunked": {
+        "peak": {
+          "median": 879874048,
+          "min": 878854144,
+          "max": 880021504
+        },
+        "retained": {
+          "median": 610914304,
+          "min": 610754560,
+          "max": 611954688
+        },
+        "retained_untrimmed": {
+          "median": 637587456,
+          "min": 636825600,
+          "max": 637861888
+        },
+        "seconds": {
+          "median": 4.376586702001077,
+          "min": 4.339322683998034,
+          "max": 4.404171760997997
+        },
+        "baseline": {
+          "median": 271183872,
+          "min": 271147008,
+          "max": 271261696
+        }
+      }
+    }
+  },
+  "big_file": {
+    "name": "2023_C_31HZ2.LAZ",
+    "points": 926203338,
+    "source": "LAS header, 64 KB range request",
+    "computed_gb": {
+      "las_records": 25.877822320908308,
+      "laspy_read_peak": 33.038106250453254,
+      "plus_xyz": 46.580080177634954,
+      "our_pipeline": 74.24490390114173
+    },
+    "computed_gb_extra": {
+      "our_pipeline_peak": 133.1467778945553,
+      "our_pipeline_untrimmed": 127.43572197507997
+    },
+    "status": "computed, not run",
+    "formulas": {
+      "las_records": "30 B (PF6 record, laspy.PointFormat) x points",
+      "laspy_read_peak": "measured laspy_read_peak B/pt on the tile x points",
+      "plus_xyz": "las_records + 24 B (3 x float64) x points",
+      "our_pipeline": "measured pipeline_retained B/pt on the tile x points",
+      "unit": "GiB (2^30 bytes)"
+    },
+    "url": "https://basisdata.nl/hwh-ahn/AHN5/01_LAZ/2023_C_31HZ2.LAZ",
+    "point_format": 6,
+    "verified_against": null
+  },
+  "ram_reference_gb": [
+    16,
+    32
+  ],
+  "script": "bench/bench_memory.py",
+  "runtime_s": 80.06125967800108
+}

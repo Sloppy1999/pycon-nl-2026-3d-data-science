@@ -1,0 +1,252 @@
+{
+ "source": "session scratchpad (research reports and prototype runs)",
+ "copied": [
+  {
+   "path": "dataset/copc_remote.py",
+   "bytes": 1957,
+   "sha256": "4a08e5286fcbf7583d9b5612f716e807836cde17262ddfddb696cab99914b23b"
+  },
+  {
+   "path": "dataset/copc_remote.txt",
+   "bytes": 836,
+   "sha256": "3c7b819a2f84686ebcda3ce5919fef6c501139d62aef12ddddaa95385bfd864d"
+  },
+  {
+   "path": "dataset/pole_analysis.json",
+   "bytes": 1833,
+   "sha256": "372a27a08ddd9c01cb38c91d95c561a75b8cbfd117b0d46ca4e7455b51646942"
+  },
+  {
+   "path": "dataset/top_tile_headers.txt",
+   "bytes": 499,
+   "sha256": "7d6c86385f2edd8f6e24cc44688197daa7c776aed3a5a6487866ae485668c2ac"
+  },
+  {
+   "path": "libraries/01_laspy_io.py",
+   "bytes": 5448,
+   "sha256": "20994f37513abd43a749e6392eecaf71e6a6e5bd56418345bbb96ae45400557d"
+  },
+  {
+   "path": "libraries/03_open3d_tensor.py",
+   "bytes": 3903,
+   "sha256": "8f45ac3d7fb51f97ae96b6b8e98a35fb85aa7f0dbfcae821856432629611cd07"
+  },
+  {
+   "path": "libraries/04_pyvista_render.py",
+   "bytes": 4544,
+   "sha256": "aa3b74a474b30bf1ab9a9650d982959eefccbb69ccad7de8b45ee5f2cbc87b4c"
+  },
+  {
+   "path": "libraries/06_trimesh_interop.py",
+   "bytes": 4151,
+   "sha256": "f1648daef263ee07248601780b69784aff7efbe22a731cc8edc09c4c9b0c4224"
+  },
+  {
+   "path": "libraries/07_torch_pytorch3d_interop.py",
+   "bytes": 3217,
+   "sha256": "e6d9a407d412ea981485c1265a094a658a677a9782ceb4fe19ae25e28142dd4e"
+  },
+  {
+   "path": "libraries/08_extra_checks.py",
+   "bytes": 2100,
+   "sha256": "aeef6f0e1673fcd115368eb0080f0860b842f0cd1629e6200327af6c8a19d7d3"
+  },
+  {
+   "path": "libraries/11_ransac_probability.py",
+   "bytes": 1210,
+   "sha256": "a45a70379b2b20c9c575f2d2dcc930100c5e7cd36d289efe65e971496bbacac3"
+  },
+  {
+   "path": "libraries/out_03_open3d_tensor.txt",
+   "bytes": 1278,
+   "sha256": "4683d3181b1f5b112d737c3470da733ed63ac5e479d34867470496d44bad9cf3"
+  },
+  {
+   "path": "libraries/out_07_torch.txt",
+   "bytes": 990,
+   "sha256": "f6ece7c34fd568d45666e6cc91a4284eafb0d32aa1f50047c245e1c1d9bbcde5"
+  },
+  {
+   "path": "libraries/out_09_laspy_no_backend.txt",
+   "bytes": 119,
+   "sha256": "48f192259858556500a943cd14b4f9e3915ef8b1a52667671eb0e1642e4b0c01"
+  },
+  {
+   "path": "libraries/pt3d_build2.log",
+   "bytes": 1976241,
+   "sha256": "5b371645fadd978f4b97e2c014cbd9f3b01333c3bb7ba26f9e64ba32c5b47a28"
+  },
+  {
+   "path": "libraries/pt3d_build3_cxx20.log",
+   "bytes": 265437,
+   "sha256": "75bac4aaae2f41b6e24c24ed4412c4832a46e8b0f60348c1b27cddae6428e0ae"
+  },
+  {
+   "path": "libraries/pt3d_cxx20.patch",
+   "bytes": 799,
+   "sha256": "cfa521485c19ab6fde4a3e9553cc6e0ba81b1316f48d0348a5bf462a0bbcdb52"
+  },
+  {
+   "path": "libraries/pypi/laspy.json",
+   "bytes": 74032,
+   "sha256": "fe91d549c5ebd714ce834094c19a3fbdf05b996a62e40b43218a306f4cde7949"
+  },
+  {
+   "path": "libraries/pypi/lazrs.json",
+   "bytes": 548820,
+   "sha256": "5082c59e783918b9a1e4516773f37aeac6a5d81446396b8a30abecacc637edb1"
+  },
+  {
+   "path": "libraries/pypi/numpy.json",
+   "bytes": 3672920,
+   "sha256": "40bad754effea010689914df20e0310d227058384ac2e3b7387e883d7c61fde0"
+  },
+  {
+   "path": "libraries/pypi/open3d-cpu.json",
+   "bytes": 24752,
+   "sha256": "be0d3673c0bee58b910c656f68146ad2600cf8c1cc0814238a00d53aa91092b2"
+  },
+  {
+   "path": "libraries/pypi/open3d.json",
+   "bytes": 210476,
+   "sha256": "a48e2161bfb41af25c9e6a4d06aa85a813f7c6541187cd0533699c2f851fdf44"
+  },
+  {
+   "path": "libraries/pypi/pytorch3d.json",
+   "bytes": 50630,
+   "sha256": "e03dfd8d3b238b6d387722d9d7b10b18d3bf32fba09cffa36e461e2d18cffaad"
+  },
+  {
+   "path": "libraries/pypi/pyvista.json",
+   "bytes": 174093,
+   "sha256": "e492d2795a102ce10058663e375631b8aacab6ab0b23083090d1272a855a9435"
+  },
+  {
+   "path": "libraries/pypi/scipy.json",
+   "bytes": 2293966,
+   "sha256": "a9536ee9b16019746a6ae0e47388eb39311914ff676960cc42beb45cbafe4ed5"
+  },
+  {
+   "path": "libraries/pypi/torch.json",
+   "bytes": 870628,
+   "sha256": "cad63dc8aa6714ea2133a44b64985d87b3e4ebea217657f1e02e35481fa33b61"
+  },
+  {
+   "path": "libraries/pypi/trimesh.json",
+   "bytes": 958559,
+   "sha256": "4e3b42d9f4818220c73a93266d016a8831aa895ba6ee929caa2bdebac9304559"
+  },
+  {
+   "path": "libraries/pypi/vtk.json",
+   "bytes": 536978,
+   "sha256": "7356cd79795273ec031b2aee6f2deb6f8dbb45b2dfc47990d2174728cbf7f5f2"
+  },
+  {
+   "path": "libraries/web/pt3d_INSTALL.md",
+   "bytes": 5712,
+   "sha256": "9a7e37942f1d4d4e3d5883815487214917eca094b283a458b4b2758aaa556c54"
+  },
+  {
+   "path": "libraries/web/pt3d_releases.json",
+   "bytes": 18314,
+   "sha256": "4c4e31a158dfd23ef0d6cad60cd96b8aa9dfc2cd90c77b0aaa7842a20b285b3c"
+  },
+  {
+   "path": "notes/verify_facts.json",
+   "bytes": 2547,
+   "sha256": "48256a8b88739e9d74f19be06f8c1ba9caf1936312e35b3cf6edd78427af1db7"
+  },
+  {
+   "path": "reports/book.md",
+   "bytes": 15332,
+   "sha256": "bc01206bcac2d206aa827c65bd9c2c0cb1c39aa904156bc5a230b0b81438fa1a"
+  },
+  {
+   "path": "reports/build/pipeline.md",
+   "bytes": 7797,
+   "sha256": "66ca472e1c56842ca28c85e249828a3f3e1012e8a44b687057ad456a4c5ce8cf"
+  },
+  {
+   "path": "reports/critic.md",
+   "bytes": 12093,
+   "sha256": "a77d37a15db3097ecaccf49ecd7934a1b6e7686200c9598029300be443c46d83"
+  },
+  {
+   "path": "reports/dataset.md",
+   "bytes": 14424,
+   "sha256": "c6240b4ac11285ac5507f23200a4f79cea6b49edfd702b9520a85637d111c7cd"
+  },
+  {
+   "path": "reports/libraries.md",
+   "bytes": 18935,
+   "sha256": "8ee463c2d729448cc074a7dcecb3341682428e9f63e2fd9c96762ddd3317add9"
+  },
+  {
+   "path": "reports/memory.md",
+   "bytes": 14435,
+   "sha256": "951ee436568df6a65d60ed03a3bfc92b85a7eacd58b2d079819d37b4b14f4266"
+  },
+  {
+   "path": "reports/perf.md",
+   "bytes": 13158,
+   "sha256": "16475a805f3fb43552cfd4f381e3445c8b7b60a3f44e3dc157b67d529129fbed"
+  },
+  {
+   "path": "reports/review/coach.md",
+   "bytes": 11698,
+   "sha256": "50fae396583954a9065b4c0cd9ce39addda078817e263fe41f63eed92fd529aa"
+  },
+  {
+   "path": "reports/review/feasibility.md",
+   "bytes": 10056,
+   "sha256": "6a1c29d0c911161768197e8f0ed5ab122ad56dd4d7ed9665e736febace8981f5"
+  },
+  {
+   "path": "reports/review/honesty.md",
+   "bytes": 12796,
+   "sha256": "a3abb282d8938679b2e94174030909b03d02e88541296c7eecf0fb2873a2c710"
+  },
+  {
+   "path": "reports/review/rules.md",
+   "bytes": 9607,
+   "sha256": "efb5c435cf1377560b77d53e0c13a7e8a30a7535fb60888e0222d20ba7388a88"
+  },
+  {
+   "path": "review/feasibility/metrics_noprefilter.json",
+   "bytes": 1922,
+   "sha256": "454b4267e72f4c9d93bbac8768430c62a381f3b86f9f341589377fdaba7af596"
+  },
+  {
+   "path": "review/honesty/inspect_crop.out",
+   "bytes": 1324,
+   "sha256": "41fd9bddfaf5232b0cec914eba2ae93b8359e9fe97f127c15fd908b26f87bce0"
+  },
+  {
+   "path": "review/honesty/location_check.out",
+   "bytes": 547,
+   "sha256": "a156d4ab4bf639bcb720ab1ce25abfe22558aa1b6988345772f60993b1f8e605"
+  },
+  {
+   "path": "review/honesty/run_extra.out",
+   "bytes": 416,
+   "sha256": "7be730fc23ac456a0cc2cc20cb8141701efe7b6c4bf20f17251614c1b9393ae7"
+  },
+  {
+   "path": "review/honesty/run_s02.out",
+   "bytes": 213,
+   "sha256": "78e5dd2651516f17727585432ddd0589329181cbb5185acee69a4645de860a2d"
+  },
+  {
+   "path": "review/honesty/run_s16.out",
+   "bytes": 401,
+   "sha256": "24afe8d7388f00d6bbe77f867400742aee8af6014c8d64708b64423fa4931b88"
+  },
+  {
+   "path": "review/honesty/snippets/s10_default_probability.py",
+   "bytes": 288,
+   "sha256": "b9ed40d26643dc4933845197e4daf78198a2540eebae83d5cdddc5216f182bbf"
+  }
+ ],
+ "skipped_too_large": [],
+ "unresolved": []
+}

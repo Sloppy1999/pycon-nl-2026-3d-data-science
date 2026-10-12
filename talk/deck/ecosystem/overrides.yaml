@@ -1,0 +1,5 @@
+# Hand fixes applied by merge.py after merging part1 to part3 (kept here so a re-run keeps them).
+set:
+  open3d: {name: Open3D, group: processing}      # part1 listed it for its I/O module only
+  trimesh: {group: processing}
+  point-cloud-utils: {group: processing}

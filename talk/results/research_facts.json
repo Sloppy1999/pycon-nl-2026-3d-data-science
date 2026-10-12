@@ -1,0 +1,89 @@
+{
+ "label": "PILOT",
+ "note": "values copied verbatim from docs/research/ (single research runs) or computed from project files; nothing measured by this script",
+ "script": "docs/research/research_facts.py",
+ "ahn4_c_31hz2": {
+  "points": 1290104537,
+  "status": "verified",
+  "source": "dataset/top_tile_headers.txt (LAS header, AHN4 C_31HZ2.LAZ)"
+ },
+ "ahn5_c_31hz2": {
+  "bytes": 5068977788,
+  "gb": 5.068977788,
+  "points": 926203338,
+  "point_format": 6,
+  "width_km": 5.0,
+  "height_km": 6.25,
+  "status": "verified",
+  "units": "gb = decimal GB (10^9 bytes); km from the header mins and maxs",
+  "source": "dataset/top_tile_headers.txt (HTTP Content-Range total and LAS header)"
+ },
+ "tile_1km_file": {
+  "bytes": 130213150,
+  "mb": 130.21315,
+  "status": "verified",
+  "units": "mb = decimal MB (10^6 bytes)",
+  "source": "notes/verify_facts.json tile_file_bytes (AHN5_C_135000_455000.COPC.LAZ)"
+ },
+ "bytes_per_point": {
+  "float32_xyz": 12,
+  "float64_xyz": 24,
+  "float32_xyz_plus_uint8_class": 13,
+  "status": "arithmetic",
+  "source": "notes/verify_facts.json (numpy itemsize)"
+ },
+ "copc_crop": {
+  "mb": 36.2,
+  "requests": 55,
+  "seconds": 2.8,
+  "status": "pilot",
+  "units": "mb = decimal MB",
+  "source": "dataset/copc_remote.txt (dataset/copc_remote.py, single run)"
+ },
+ "voxel_0_1": {
+  "voxel_m": 0.1,
+  "kept_share": 0.93,
+  "status": "pilot",
+  "source": "reports/critic.md C3 (AHN crop, single run)"
+ },
+ "float32_step_m": {
+  "x": 0.015625,
+  "y": 0.03125,
+  "at_rd": [
+   135715.0,
+   455475.0
+  ],
+  "status": "arithmetic",
+  "source": "np.spacing(np.float32(v)) at results/pipeline.json crop.origin_local; same values in notes/verify_facts.json float32_spacing_m"
+ },
+ "open3d_tensor": {
+  "n_points": 1000000,
+  "voxel_cuda_first_ms": 98.0,
+  "voxel_cuda_second_ms": 4.2,
+  "voxel_cpu_ms": 250.0,
+  "plane_cuda_ms": 62.0,
+  "plane_cpu_ms": 68.0,
+  "dbscan_cuda_ms": 721.0,
+  "dbscan_cpu_ms": 748.0,
+  "status": "synthetic",
+  "source": "reports/libraries.md (Open3D tensor API table; libraries/03_open3d_tensor.py, raw output libraries/out_03_open3d_tensor.txt), single runs"
+ },
+ "pytorch3d_knn": {
+  "n_points": 100000,
+  "k": 8,
+  "knn_points_s": 29.4,
+  "scipy_ms": 55.0,
+  "status": "synthetic",
+  "source": "reports/libraries.md (libraries/07_torch_pytorch3d_interop.py), single run; a later single run in libraries/out_07_torch.txt gives similar values"
+ },
+ "b3_versions": {
+  "python": "3.13.15",
+  "torch": "2.14.1+cpu",
+  "pytorch3d": "0.7.9",
+  "open3d": "0.20.0",
+  "open3d_cuda": "12.6",
+  "scipy": "1.18.1",
+  "status": "verified",
+  "source": "libraries/out_07_torch.txt (first line); notes/verify_facts.json (o3d_build_cuda, versions)"
+ }
+}
