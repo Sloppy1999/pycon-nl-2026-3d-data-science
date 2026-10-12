@@ -63,8 +63,7 @@ slides:
     # the cup of the abstract is dropped: Fira Mono has no glyph for it (a fallback emoji font drew it differently on
     # every machine); the spoken "before your coffee went cold" carries the joke. "..." makes the loop valid Python
     # (a body of only a comment is an IndentationError); the speaker may restore the abstract's exact wording
-    subtitle_code: ["for point in point_cloud:", "    # 12 million times. see you tomorrow ☕"]   # the abstract's joke, word for word (speaker's choice, 2026-10-04)
-    presenter: "Sergio Peral · ML Engineer, Teqyard · github.com/Sloppy1999/pycon-nl-2026-3d-data-science"   # affiliation as plain text only (personal talk, no company branding)
+    presenter: "Sergio Peral · ML Engineer, Teqyard"   # affiliation as plain text only (personal talk, no company branding)
     logo: {file: assets/pycon_nl_2026_logo.png, alt: "PyCon NL 2026 logo: the Python snakes filled with a Dutch canal house, tulips and a windmill"}   # supplied by the speaker, 2026-10-04
     seconds: 20
 
@@ -81,9 +80,7 @@ slides:
             output: "{snippets.s02_pcl.cpp.output_line|nb}"}
     right: {kind: code, snippet: s02_python.py, lang: python, caption: "Python with Open3D",
             output: "{snippets.s02_python.py.output_line|nb}"}
-    # the one-line install under the Python code (resolves with uv 0.12.6, checked 2026-10-04; docs/QA_NOTES.md)
-    install: {text: ["# install", 'uv add open3d "laspy[lazrs]" pyvista'], lang: bash, alt: "Install line: uv add open3d, laspy with the lazrs extra, and pyvista."}
-    alt: "Two code blocks. Left, greyed out: loading a point cloud and voxel downsampling it with PCL in C++. Right: the same two operations in two lines of Python with Open3D, and under them the one-line install with uv."
+    alt: "Two code blocks. Left, greyed out: loading a point cloud and voxel downsampling it with PCL in C++. Right: the same two operations in two lines of Python with Open3D."
     seconds: 35
 
   - n: 3

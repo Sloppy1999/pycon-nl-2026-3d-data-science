@@ -105,7 +105,7 @@ def _lexer(lang: str):
         return CppLexer(stripnl=False, ensurenl=False)
     if lang == "pycon":
         return PythonConsoleLexer(stripnl=False, ensurenl=False)
-    if lang == "bash":                  # a shell command line (the slide 2 install line)
+    if lang == "bash":                  # a shell command line
         return BashLexer(stripnl=False, ensurenl=False)
     if lang == "console":               # "$ command" plus its output (the profile slide)
         return BashSessionLexer(stripnl=False, ensurenl=False)
