@@ -66,6 +66,17 @@ main deck still sums to 1800 s; the notes of slides 5, 6, 7, 11, 14, 18 and 24 p
 `literal_numbers` warns on C slides for ids and spec values (EPSG:7415, N×3, versions, 1 GB = 2^30 B, 80 %): reviewed,
 not measurements.
 
+**Update, same day:** C1 and C5 were promoted to main slides 6 and 20 (`concept: C1` and `concept: C5` in
+`content.yaml`, content still in `appendix.yaml`): 31 main slides, 7 hidden mental-model slides (C2 to C4, C6 to C9),
+still 1800 s (80 s taken from slides 5, 18, 21, 22 and 29, docs/TIMING.md). On the main deck the concept bullets are
+20 pt (the 16 pt of the hidden C slides failed `min_sizes`). The c5 histogram title now reads "middle 80 % of cells".
+The checkpoints and the skip-first list in `notes.yaml` use the new numbers.
+
+**Later the same day:** the former slide 5 (N×3 array and REPL close-up) was removed, C1 became slide 5 and a
+benefits-and-limits slide of the three representations (`build: tradeoffs`) became slide 6, 65 s, so slides 7 on keep their
+numbers. The C1 figure now uses 1 500 points (700 left gaps in the voxel grid). `renders/closeup.png` is still used by
+the laspy frame on slide 9; `snippets/s04_repl.py` no longer appears on a slide.
+
 ## State at a glance (re-checked 2026-10-04, after the re-theme)
 
 | Check | Result |

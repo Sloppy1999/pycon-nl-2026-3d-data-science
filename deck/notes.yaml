@@ -1,21 +1,21 @@
-# Speaker notes for the 29 main slides of "3D Data Science with Python" (PyCon NL 2026).
+# Speaker notes for the 32 main slides of "3D Data Science with Python" (PyCon NL 2026).
 # Approved storyboard: ../storyboard.md. On-screen words: content.yaml. Interfaces: ../CONTRACTS.md.
 #
 # Keys per slide (all required unless marked optional):
-#   n            slide number (1 to 29), same as content.yaml
-#   seconds      spoken time; equals content.yaml seconds; the 29 values sum to 1800
+#   n            slide number (1 to 32), same as content.yaml
+#   seconds      spoken time; equals content.yaml seconds; the 32 values sum to 1800
 #   ends_at      cumulative clock at the end of the slide (mm:ss), for rehearsal
 #   talk_track   first person, 2 to 5 short sentences, ends with the transition to the next slide
 #   question     the likely question or objection
 #   answer       a short, honest answer
 #   trace        files the slide's code, numbers or render come from (CONTRACTS.md paths)
 #   joke         optional: the humour line(s) of the slide (also inside talk_track or on the slide), for QA
-#   checkpoint   optional: timing checkpoint (slides 17 and 24); presenter view only, never spoken
-#   skip         optional: what to say if the slide is skipped (skip-first list: 23, 22, 24, 16, 9)
+#   checkpoint   optional: timing checkpoint (slides 18 and 26); presenter view only, never spoken
+#   skip         optional: what to say if the slide is skipped (skip-first list: 26, 25, 27, 18, 11)
 #   checks       optional: things to confirm before the talk. An item can be a plain string, or a conditional
 #                claim {if: "<file.key> <op> <value>", then: "...", else: "..."}: build_deck.py evaluates it
 #                against results/*.json and prints "then" when it holds, "else" otherwise (or when missing).
-#   candidate_gotchas  slide 26 only: gotchas observed in testing, CANDIDATES for the speaker to confirm
+#   candidate_gotchas  slide 28 only: gotchas observed in testing, CANDIDATES for the speaker to confirm
 #
 # Suggested presenter-view rendering (deck/build_deck.py):
 #   <talk_track>
@@ -32,13 +32,13 @@
 slides:
 - n: 1
   seconds: 20
-  ends_at: 0:20
+  ends_at: '0:20'
   talk_track: 'Quick show of hands: who has written this loop? Keep it up if it finished before your coffee went cold. In
     30 minutes you get a pipeline you can copy and the gotchas that cost me weeks; first, a confession about C++.'
   question: Does that loop really take until tomorrow on 12 million points?
   answer: 'The 12 million is the abstract''s joke, not our data: this crop has {pipeline.points_in|int} points and the 1
     km AHN file {memory.tile_1km.points|int}. I haven''t timed a 12 million point loop, so I don''t quote a time; what I
-    did measure is the cost per loop step, on slide 21.'
+    did measure is the cost per loop step, on slide 23.'
   checks:
   - 'The code line is the abstract''s joke word for word, as the speaker asked (it is a joke, not runnable: a loop body
     of only a comment would raise IndentationError). Fira Mono has no cup glyph: PowerPoint falls back to an emoji font;
@@ -51,7 +51,7 @@ slides:
 
 - n: 2
   seconds: 35
-  ends_at: 0:55
+  ends_at: '0:55'
   talk_track: 'For years, serious 3D work meant C++, like the greyed-out code on the left. Both programs on this slide are
     real: I compiled the PCL one and ran both on the same file from today''s case, and the output under each is what they
     printed. Twelve lines of C++ against three of Python for the same job: load the cloud and keep one average point per
@@ -78,6 +78,26 @@ slides:
 - n: 3
   seconds: 30
   ends_at: '1:25'
+  talk_track: "Let's see who's really behind the mask. Python is the interface. Take NumPy: when you add two arrays, a
+    compiled C core does the loop, with some C++ in parts. Open3D is C++, PyVista draws with VTK, also C++, and laspy
+    decodes with Rust. So the C++ never went away; you just call it from Python, and the next slides use exactly that."
+  question: Is Python really just a wrapper?
+  answer: 'For the heavy 3D libraries, yes: Open3D and VTK (under PyVista) are C++, NumPy''s core is C with some C++, and
+    the lazrs decoder behind laspy is Rust; Python calls compiled code. That is also why the hand-off between libraries
+    on slide 10 costs something.'
+  trace:
+  - 'deck/assets/meme/python_cpp_unmasking.png: the Scooby-Doo unmasking template with the Python and C++ logos added'
+  - 'Logos: Wikimedia Commons, Python-logo-notext.svg and ISO_C++_Logo.svg'
+  checks:
+  - 'NumPy is mostly C (its core), with C++ in parts and BLAS/LAPACK underneath; the slide says "a compiled C core, with
+    some C++" on purpose. Say "C++" for Open3D and VTK, which are C++ throughout'
+  - 'Legibility: the caption and both logos should read from the back of the room (check on the presenting projector).
+    The template and the logos belong to their owners; no endorsement is implied (small print on the slide)'
+  joke: Python is the mask; C++ is who is behind it.
+
+- n: 4
+  seconds: 30
+  ends_at: '1:55'
   talk_track: 'Before the hall: the Python 3D ecosystem, one row per layer, and only what this talk uses or names. The five
     with a blue outline are today''s pipeline: laspy, NumPy, SciPy, Open3D and PyVista. The rest come up later: PDAL and
     pyproj for AHN files and Dutch coordinates, Numba and Dask when NumPy or RAM runs out, trimesh for meshes, and scikit-learn
@@ -86,7 +106,7 @@ slides:
   answer: The wall is the selection this talk uses or mentions, from the {eco.n_entries|int} libraries and applications
     I checked. The full list is docs/ECOSYSTEM.md in the repo, with status, licence and release date per library. Open an
     issue or a pull request if one is missing.
-  skip: Not on the skip list (30 s); if very late at the start, say 'photograph this' and click on to slide 4.
+  skip: Not on the skip list (30 s); if very late at the start, say 'photograph this' and click on to slide 5.
   checks:
   - 'Logo use: logos are shown to identify projects; brand policies per file in deck/assets/logos/SOURCES.md and docs/OPEN_ITEMS.md.
     No company logos are on the wall. If one is not acceptable, remove its id from the wall row in content.yaml; the row
@@ -104,16 +124,16 @@ slides:
     paint-back), Open3D (voxels, RANSAC, DBSCAN), PyVista (renders)'
   - 'VTK: PyVista''s engine, drawn under it'
   - 'PDAL: the standard LiDAR pipeline tool for AHN and COPC files (backup B2 territory); pyproj: RD New (EPSG:28992) to
-    and from WGS84, slide 4; laspy''s header.parse_crs() needs it'
-  - Numba (B1, the escape hatch for a kernel that has no batched call) and Dask (arrays bigger than RAM, slides 24 to 26)
-  - 'trimesh and PyTorch3D: named on slide 7 as not in this pipeline; scikit-learn: the Random Forest of backup B5; PyTorch:
+    and from WGS84, slide 5; laspy''s header.parse_crs() needs it'
+  - Numba (B1, the escape hatch for a kernel that has no batched call) and Dask (arrays bigger than RAM, slides 26 to 28)
+  - 'trimesh and PyTorch3D: named on slide 9 as not in this pipeline; scikit-learn: the Random Forest of backup B5; PyTorch:
     backup B3'
   - 'Dropped on 2026-10-12 as not relevant to this talk: Potree, CloudCompare and QGIS (not Python libraries), GDAL (rasters),
     OpenCV, COLMAP and nerfstudio (images and photogrammetry), Matplotlib (not used), PyG and Pointcept (deep learning on
     point clouds, not covered)'
 
-- n: 4
-  seconds: 95
+- n: 5
+  seconds: 65
   ends_at: '3:00'
   talk_track: 'This is our case for the whole talk: a 200 by 200 metre square of Utrecht around the Jaarbeurs hall, the
     big flat roof under the arrow. The data set: {pipeline.crop.points|int} points, about 18 per square metre, from AHN5,
@@ -123,7 +143,7 @@ slides:
     and street furniture, and score ground and buildings against AHN''s own. First: what is this thing, as data?'
   question: Why this square and not a whole AHN file?
   answer: It's the venue, and it's small enough to run every step live in under a second, which is rule three, make it small
-    first. The whole 1 km file has 21 million points; slides 24 to 26 show what happens to memory when you load it, and
+    first. The whole 1 km file has 21 million points; slides 26 to 28 show what happens to memory when you load it, and
     how to stream it instead.
   checks:
   - Confirm which Jaarbeurs building the talk room is in. If it is this one, say 'the building we're sitting in'; the name
@@ -155,31 +175,39 @@ slides:
     used only to score'
   - 'Licence: CC BY 4.0, Het Waterschapshuis; attribution on every slide that shows the data'
 
-- n: 5
-  seconds: 80
-  ends_at: '4:20'
-  talk_track: 'Zoom in and the magic is gone: it''s just points. In Python, a point cloud is an N by 3 array of x, y and
-    z, here {pipeline.points_in|int} rows, plus one column per attribute: intensity, return number, number of returns and
-    a class code. There''s no colour column, by the way: this AHN file has no RGB. If you know NumPy, you already know the
-    data structure. Before the libraries, four rules of thumb I wish I''d had on day one.'
-  question: What do the class codes in las.classification mean?
-  answer: 'They are the class codes in AHN''s spec, mostly ASPRS LAS codes: 1 is overig, other (vegetation, street furniture,
-    cars, people), 2 ground, 6 building, 9 water, and 26 civil structures, a code of AHN''s own. This crop has {pipeline.crop.ahn_classes.1|int}
-    class 1, {pipeline.crop.ahn_classes.2|int} class 2 and {pipeline.crop.ahn_classes.6|int} class 6 points.'
-  trace:
-  - snippets/s04_repl.py
-  - 'results/snippets.json: s04_repl.py.ok'
-  - renders/closeup.png
-  - renders/render_spec.json
-  - 'results/pipeline.json: points_in, crop.ahn_classes'
-  - 'Point format 6, no RGB: crop header (research: review/honesty/inspect_crop.out, notes/verify_facts.json)'
-  - 'Class codes: AHN4 acquisition spec (research: reports/dataset.md); this crop has only classes 1, 2 and 6 (results/pipeline.json
-    crop.ahn_classes). Code 26 is AHN''s own: LAS 1.4 reserves codes 19 to 63'
-  mental_model: 'Hidden C1 (one object, three representations) if someone asks about meshes or voxels; one line: points measure, meshes connect, voxels index space.'
-
 - n: 6
+  seconds: 40
+  ends_at: '3:40'
+  talk_track: 'What is this thing, as data? One house, drawn three ways. A scanner gives you the left one, a point cloud: an N by 3 array of x, y and z plus a column per attribute, samples of the surface with nothing joining them. A mesh adds the connections, so area and volume exist. A voxel grid trades exact positions for a regular index of space. Today''s pipeline stays with points and uses voxels only to downsample. Each of the three trades something.'
+  question: Should I turn my point cloud into a mesh or voxels first?
+  answer: 'Only when the question needs it: area, volume or a solid render want a mesh; occupancy and neighbour lookups like voxels. Every conversion loses detail and adds a parameter you then have to defend, such as the voxel size or the meshing depth. This pipeline stays with points.'
+  trace:
+  - 'deck/appendix.yaml C1 (bullets, figure, citations; shown here as a main slide)'
+  - 'deck/concepts/make_figures.py: deck/assets/concepts/c1_representations.png, results/concepts.json c1'
+  - 'research: reports/mental_models.md section 1'
+
+- n: 7
+  seconds: 145
+  ends_at: '6:05'
+  talk_track: 'Whatever the data, a 3D project goes round the same ring, and each stage has its Python tool. The two dark blue
+    stages get the data. One, acquisition: a scanner, a camera or a depth sensor gives you raw points, and laspy reads them
+    from the LAZ file; this is what single points look like. Two, preparation: you clean the data and register scans into
+    one coordinate system, with NumPy and Open3D. NumPy is the glue throughout: every library hands the next one an N by 3
+    array. The two lighter blue stages understand it. Three, exploration: Open3D and SciPy give you voxels, planes and
+    clusters, here each cluster in its own colour. Four, analysis: you measure and monitor, again in NumPy and SciPy. The two
+    green stages deliver it. Five, visualisation: PyVista draws the result, because you need to see it to trust it. Six,
+    application: it ends up in a product. And the dashed arrows are the real story: you loop back, from analysis to
+    preparation, from a render to a re-scan, whenever the data surprises you. Today''s example is a small version of stages
+    one to five. First, four rules of thumb I wish I''d had on day one.'
+  question: Where does most of the time go?
+  answer: 'Preparation, nearly always. Registration, cleaning and checking coordinates take far longer than any model, which is
+    why the rules of thumb on the next slide are about getting the data small and trustworthy first.'
+  trace:
+  - 'content.yaml slide 7 stages (the former chain slide merged in: laspy, NumPy, Open3D, PyVista with an image each); simplified from Figure 1-12, "A high-level view of the 3D data science workflow", in the book 3D Data Science with Python (O''Reilly)'
+
+- n: 8
   seconds: 45
-  ends_at: '5:05'
+  ends_at: '6:50'
   talk_track: 'Four rules of thumb for 3D data; they''re the mental model for the rest of the talk, and I''ll bring them
     back at the end with numbers. One: think in arrays, not points: a point cloud is a table, so work on whole columns.
     Two: look before you compute: render it, check units, coordinates and classes, because most 3D bugs are silent. Three:
@@ -190,22 +218,22 @@ slides:
     a wrong coordinate system or float32 rounding doesn''t raise an error, it just moves your points by centimetres, and
     a loop over points is a loop over millions.'
   trace:
-  - content.yaml slide 6 rules; the same four rules close the talk on slide 28 with their evidence
+  - content.yaml slide 8 rules; the same four rules close the talk on slide 30 with their evidence
   where_in_the_talk:
-  - '1 Think in arrays: slides 5, 8 and 9 (N by 3 arrays, copy or view at every hand-off)'
-  - '2 Look before you compute: slides 4, 18 and 27 (AHN classes, street furniture against the BGT register, the gotchas)'
-  - '3 Make it small first: slides 12, 13 and 24 to 26 (voxels, tiles, streaming chunks)'
-  - '4 Let compiled code loop: slides 19 to 23 (the quiz, the toll, the profiler, free threads)'
-  mental_model: 'The rules rest on the hidden C1 to C9 section (mental models, with citations); C8 ranks the ideas and says where each joins the talk.'
+  - '1 Think in arrays: slides 6, 10 and 11 (N by 3 arrays, copy or view at every hand-off)'
+  - '2 Look before you compute: slides 5, 20 and 30 (AHN classes, street furniture against the BGT register, the gotchas)'
+  - '3 Make it small first: slides 13, 15 and 27 to 29 (voxels, tiles, streaming chunks)'
+  - '4 Let compiled code loop: slides 21 to 25 (the quiz, the toll, the profiler, free threads)'
+  mental_model: 'The rules rest on the hidden mental-models section (C2 to C9, with citations; C1 and C5 are slides 6 and 20; slide 7 is the workflow); C8 ranks the ideas and says where each joins the talk.'
 
-- n: 7
+- n: 9
   seconds: 55
-  ends_at: '6:00'
+  ends_at: '7:45'
   talk_track: 'Here''s the landscape, mapped onto the six steps we''re about to run, with NumPy carrying the arrays from
     step to step. laspy reads and writes LAS and LAZ, in chunks if you ask; Open3D does the heavy work: voxel downsampling,
     plane fitting and DBSCAN. SciPy''s KDTree answers neighbour questions for all points in one call, and PyVista renders
-    every image in this talk. trimesh and PyTorch3D sit apart: useful, just not in this pipeline. So which combinations
-    are actually worth the trouble?'
+    every image in this talk. trimesh and PyTorch3D sit apart: useful, just not in this pipeline. So how do these
+    libraries hand data to each other?'
   question: Why is PyTorch3D on the map if you don't use it?
   answer: 'Because people ask about it, and it does have a job: differentiable 3D operations on GPU tensors for training.
     It just isn''t a fit for a CPU pipeline on Python 3.13; the install status is on backup slide B3.'
@@ -216,42 +244,9 @@ slides:
   - 'trimesh convex_hull and bounding_box_oriented checked on one pole: research: reports/libraries.md section 2 (libraries/06_trimesh_interop.py)'
   mental_model: 'Hidden C7 (ideas outlive the library you use): the same idea spelled in Open3D, PyVista and trimesh.'
 
-- n: 8
-  seconds: 80
-  ends_at: '7:20'
-  talk_track: 'The combination that works, with what each library hands to the next. laspy reads the LAZ file: these are
-    single points as they come out of it. NumPy holds them as one N by 3 float64 array, here the first rows in local metres.
-    Open3D does the heavy lifting on that array, voxels, planes and clusters, and PyVista draws the result off-screen. Three
-    things didn''t earn a place: ask Open3D to read a .laz file and it politely hands you an empty point cloud, its GPU
-    build gave DBSCAN no real speed-up, and PyTorch3D has no documented install for Python 3.13. So how do these libraries
-    hand data to each other?'
-  question: So is Open3D's GPU support useless?
-  answer: 'No. In single test runs on an RTX 3060, voxel downsampling on CUDA was faster than on the CPU, already on the
-    first call and much more so on the second. Plane fitting and DBSCAN were barely faster, and their tensor docstrings
-    say why: they wrap a CPU implementation and copy the data. Details on backup slide B3.'
-  trace:
-  - 'research: reports/libraries.md (L/08_extra_checks.py: .laz read returns an empty cloud; L/03_open3d_tensor.py: CUDA
-    vs CPU, single runs; PyTorch3D install status)'
-  - 'research: review/honesty/run_s02.out (0 points and a warning on the real crop)'
-  - 'research: notes/verify_facts.json (open3d_read_laz_points = 0 on Open3D 0.20.0)'
-  joke: Ask Open3D to read a .laz file and it politely hands you an empty point cloud.
-  images:
-  - 'laspy: renders/closeup.png, the slide 5 close-up: single points as laspy reads them'
-  - 'NumPy: the first three rows of xyz = las.xyz - las.header.mins on the crop, np.set_printoptions(precision=1); shape
-    (722961, 3), float64 (checked 2026-10-12)'
-  - 'Open3D: renders/f4_clusters.png (slide 14), the clusters of DBSCAN on the voxels'
-  - 'PyVista: renders/f6_final.png (slides 16 and 17), the off-screen render of the labels'
-  worth_it:
-  - 'SciPy KDTree for neighbours: height above ground, distances between clusters, paint-back; one batched query each'
-  - 'NumPy for per-cluster features: np.bincount over cluster ids, no loop over points'
-  not_in_this_pipeline:
-  - 'Open3D reading LAZ: o3d.io.read_point_cloud(''crop.laz'') returns 0 points with only a warning; laspy loads'
-  - 'Open3D GPU for DBSCAN: barely faster than CPU in single test runs (backup B3)'
-  - 'PyTorch3D on Python 3.13: no documented install (backup B3)'
-
-- n: 9
+- n: 10
   seconds: 70
-  ends_at: '8:30'
+  ends_at: '8:55'
   talk_track: 'The chain works because Python passes whole arrays, not points, and every hand-off is either a copy or a
     view. The legend is the one idea: a copy is new memory, two names on two blocks, so it costs time and RAM, and changing
     one leaves the other alone. A view is two names on one block: free, but a write through one shows up in the other. las.xyz
@@ -264,7 +259,7 @@ slides:
     on the way back is a view into it, which is why writes reach the cloud. The fast way in is a C-ordered float64 array:
     {facts.timings.v3d_float64_c.median_ms|ms}, against {facts.timings.v3d_float64_f.median_ms|ms} for laspy''s column-ordered
     one and {facts.timings.v3d_float32.median_ms|ms} for float32.'
-  skip: 'Skip-first number 5 (decide at the end of slide 8). If skipped, say on slide 10: "between the libraries Python
+  skip: 'Skip-first number 5 (decide at the end of slide 9). If skipped, say on slide 11: "between the libraries Python
     passes whole arrays; Vector3dVector copies, np.asarray gives you a view".'
   trace:
   - 'bench/python_facts.py (copy or view: write to one side, read the other, and np.shares_memory; timings 1 warm-up and
@@ -275,11 +270,11 @@ slides:
   - 'snippets/s06b_handoffs.py (the four calls on the crop, with asserts); results/snippets.json: s06b_handoffs.py.ok'
   - pv.PolyData of laspy's F-ordered array does not share memory (results/python_facts.json polydata.shares_memory_f_float64);
     the slide's pts is Open3D's C-ordered view
-  - Candidate gotchas 'las.xyz' and 'Vector3dVector(float32)' on slide 27 are measured here
+  - Candidate gotchas 'las.xyz' and 'Vector3dVector(float32)' on slide 29 are measured here
   why_it_matters:
   - 'Memory: one float64 xyz copy is {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point (results/memory.json);
     21 013 926 points × 24 B = 0.47 GB per copy of a 1 km AHN file, and the load-everything pipeline holds several (slide
-    24)'
+    25)'
   - 'Time: copying the crop into Open3D takes {facts.timings.v3d_float64_c.median_ms|ms} from a C-ordered float64 array,
     {facts.timings.v3d_float64_f.median_ms|ms} from laspy''s column-ordered one and {facts.timings.v3d_float32.median_ms|ms}
     from float32; np.asarray(pcd.points) takes {facts.timings.asarray_points.median_ms|ms}, because it copies nothing'
@@ -287,9 +282,9 @@ slides:
     points); a write to a copy is silently lost (las.xyz[:] = 0 changes nothing in the file data)'
   - 'Rule of thumb: name an array once, pass it on, and copy only on purpose (astype, np.ascontiguousarray)'
 
-- n: 10
+- n: 11
   seconds: 25
-  ends_at: '8:55'
+  ends_at: '9:20'
   talk_track: 'Six steps turn this point cloud into labels: load, voxel downsampling, ground removal, clustering, labelling
     and visualisation. It''s the same area and the same camera in every frame, so you can watch it change from slide to
     slide. Let''s start with step one.'
@@ -301,7 +296,7 @@ slides:
   - renders/render_spec.json (one camera for all frames)
   why_several_tools_in_one_step:
   - No library has a fast, batched call for every part of a step, so each part goes to the library that has one; because
-    they all take and give NumPy arrays (slide 9), mixing them costs at most one copy
+    they all take and give NumPy arrays (slide 10), mixing them costs at most one copy
   - 'Clustering, Open3D and SciPy: DBSCAN is Open3D''s cluster_dbscan, but first SciPy''s KDTree answers ''how high is each
     voxel above the ground?'' (height_above, one query on all cores), so only voxels clearly above the ground go into DBSCAN;
     left in, the ground would link the whole scene into one cluster'
@@ -313,9 +308,9 @@ slides:
   - Load and ground removal use one library each for the work (laspy, Open3D), with NumPy for the arithmetic around the
     calls
 
-- n: 11
+- n: 12
   seconds: 65
-  ends_at: '10:00'
+  ends_at: '10:25'
   talk_track: 'Step one: laspy reads the LAZ file and gives you plain NumPy arrays. The first thing I do is subtract a local
     origin, the minimum corner from the file header. Dutch RD coordinates run to hundreds of thousands of metres, and at
     that size float32 can only step {research.float32_step_m.x|cm} in x and {research.float32_step_m.y|cm} in y; Open3D''s
@@ -339,7 +334,7 @@ slides:
   - 'las = laspy.read("crop.laz"): decompresses the whole file (lazrs backend) into a LasData object; every dimension becomes
     a NumPy array'
   - 'xyz = las.xyz - las.header.mins (key line): an N by 3 float64 array in metres, shifted so the minimum corner of the
-    file is the origin; las.xyz is already a new array (slide 9), the subtraction makes one more'
+    file is the origin; las.xyz is already a new array (slide 10), the subtraction makes one more'
   - 'v = o3d.utility.Vector3dVector(xyz): copies the array into Open3D''s own C++ vector of 3D points (float64, fastest
     from a C-ordered array)'
   - 'pcd = o3d.geometry.PointCloud(v): the point cloud object every later Open3D call works on'
@@ -348,16 +343,16 @@ slides:
     comes off first: some tools cast to float32 without telling you.'
   mental_model: 'Hidden C2 (every array needs a frame) and C3 (a transform is a matrix, order matters) go deeper on the local origin.'
 
-- n: 12
+- n: 13
   seconds: 55
-  ends_at: '10:55'
+  ends_at: '11:20'
   talk_track: 'Step two: lay a grid of {pipeline.params.voxel|m} voxels over the crop and replace all the points inside
     each voxel with their average. That leaves {pipeline.kept_share|pct1} as many points, and every step after this gets
     cheaper. One catch: the average is a new point, not one of yours, and LAS attributes such as returns and class are dropped
     unless you carry them along. I store the multiple-return flag as a colour, so each voxel keeps its share of multiple
     returns for step five. Next, the ground.'
   question: Why average? Why not keep one real point per voxel?
-  answer: 'You can, and on slide 25 I do exactly that, because it streams. Open3D''s voxel_down_sample returns the centroid:
+  answer: 'You can, and on slide 27 I do exactly that, because it streams. Open3D''s voxel_down_sample returns the centroid:
     I checked that it equals the per-voxel mean, on a grid anchored half a voxel below the minimum corner.'
   trace:
   - snippets/s09_voxel.py
@@ -380,9 +375,9 @@ slides:
     average: one new point per voxel, and empty cells give nothing. Dense areas shrink most, which is why every later step
     gets cheaper.'
 
-- n: 13
+- n: 14
   seconds: 75
-  ends_at: '12:10'
+  ends_at: '12:35'
   talk_track: 'Step three. Every Dutch person in this room will tell you Utrecht is flat, and around the Jaarbeurs they
     are right: one plane for this whole crop scores {pipeline.single_plane.ground.recall|pct1} recall against AHN''s ground,
     the tiles {pipeline.ground.recall|pct1}, a tie. On the street where I built this, one plane scored {pipeline.previous_street.one_plane.ground.recall|pct1}
@@ -395,7 +390,7 @@ slides:
     per tile is one Open3D call you can read on a slide, and its inner test, distance to a plane, is exactly the benchmark
     in the next section.
   checks:
-  - 'The slide 13 title no longer says ''Utrecht isn''t flat'': on the Jaarbeurs crop one plane ties with the tiles (results/pipeline.json
+  - 'The slide 14 title no longer says ''Utrecht isn''t flat'': on the Jaarbeurs crop one plane ties with the tiles (results/pipeline.json
     single_plane); the joke now runs the other way'
   trace:
   - snippets/s10_ground.py
@@ -435,9 +430,9 @@ slides:
     Each tile fits its own straight plane through its ground points, so the line can bend at the tile edge where the street
     does.'
 
-- n: 14
+- n: 15
   seconds: 55
-  ends_at: '13:05'
+  ends_at: '13:30'
   talk_track: 'Step four: DBSCAN chains together points that sit within {pipeline.params.eps|m} of each other, so ''touches''
     really means ''closer than eps''. On the voxels that aren''t ground and sit more than {pipeline.params.cluster_min_height_m|m}
     above it, I get {pipeline.n_clusters|int} clusters, and {pipeline.noise_share|pct} of those voxels are noise that belong
@@ -468,9 +463,9 @@ slides:
     grey point has none and is noise. DBSCAN needs no number of clusters, only how close is close.
   mental_model: 'Hidden C4 (neighbourhood size changes the answer): eps, the voxel size and normal radii are the same kind of choice.'
 
-- n: 15
+- n: 16
   seconds: 70
-  ends_at: '14:15'
+  ends_at: '14:40'
   talk_track: 'Step five names the blobs with a few rules per cluster: how tall it is, how big its footprint is, and what
     share of its points had more than one return. That last one is the clue for trees: AHN''s spec asks for a leaf-off flight,
     and this one was flown in early April, so pulses slip between bare branches and a tree echoes several times, while roads
@@ -493,7 +488,7 @@ slides:
   - 'results/snippets.json: s12_label.py.ok'
   - 'results/pipeline.json: params.rules, n_objects, label_points, buildings.precision, buildings.recall'
   - renders/f5_labels.png
-  - 'renders/labels.json: f6_final (the same chip anchors as slides 16 and 17; checked on f5_labels.png)'
+  - 'renders/labels.json: f6_final (the same chip anchors as slides 17 and 18; checked on f5_labels.png)'
   - 'Leaf-off flight: AHN5 acquisition spec not checked; the AHN4 spec requires a leaf-off flight (''bladloze seizoen'');
     this crop was flown in the night of 2023-04-05 to 2023-04-06, about 01:51 CEST, one strip (point source id 1110; GPS
     time of the crop''s points, checked 2026-10-11; the first example street was about 01:35, research: reports/dataset.md)'
@@ -521,16 +516,16 @@ slides:
   sketch: 'Three cluster shapes and the class each one gets: a crown with many echoes becomes vegetation, a wide flat block
     a building, a thin pole street furniture. The rules only look at shape and echoes, never at AHN''s labels.'
 
-- n: 16
+- n: 17
   seconds: 40
-  ends_at: '14:55'
+  ends_at: '15:20'
   talk_track: 'Step six: the labels live on the {pipeline.points_after_voxel|int} voxel points, so one KDTree query gives
     each of the {pipeline.points_in|int} original points the label of its nearest voxel point. PyVista then renders off-screen
     with one fixed camera, one PNG per step, which is why every frame in this talk lines up. Let''s put all six steps together.'
   question: Why not Open3D's own viewer?
   answer: Open3D's draw_geometries opens a window and blocks until you close it. I needed identical frames from a script,
     without a window, and PyVista does that off-screen; in testing it also rendered headless, through EGL.
-  skip: 'Skip-first number 4. If skipped, say on slide 17: "every render here is PyVista, off-screen, one fixed camera".'
+  skip: 'Skip-first number 4. If skipped, say on slide 18: "every render here is PyVista, off-screen, one fixed camera".'
   trace:
   - snippets/s13_render.py
   - 'results/snippets.json: s13_render.py.ok'
@@ -555,9 +550,9 @@ slides:
     colour of its nearest voxel point, the grey lines. That is the paint-back: the labels were computed on {pipeline.points_after_voxel|int}
     voxels and land on all {pipeline.points_in|int} points.'
 
-- n: 17
-  seconds: 75
-  ends_at: '16:10'
+- n: 18
+  seconds: 65
+  ends_at: '16:25'
   talk_track: So what did the six steps do? laspy loaded {pipeline.points_in|int} points, Open3D cut them to {pipeline.points_after_voxel|int}
     voxels, fitted the ground at {pipeline.ground.precision|pct} precision against AHN and found {pipeline.n_clusters|int}
     clusters, NumPy's rules turned the clusters into four classes, and SciPy painted those back onto every point. From file
@@ -565,10 +560,10 @@ slides:
     loop over points. First, a confession about street furniture.
   question: Can I run this on my own AHN file?
   answer: Yes, that's what the repo is for. For a whole 1 km AHN file or larger, start with the chunked read from slide
-    25, and expect to retune voxel size, tile size and eps for a different point density. Not in the Netherlands? Backup
+    26, and expect to retune voxel size, tile size and eps for a different point density. Not in the Netherlands? Backup
     B6 lists other open sources.
-  checkpoint: 'Skip-first order: 23, 22, 24, 16, 9. Target: leave this slide by 16:10. Leaving after 17:10: skip 23 and
-    22. Leaving after 18:40: also skip 24, and tell only one story on 27. Further on: reach slide 24 by 23:30, otherwise
+  checkpoint: 'Skip-first order: 26, 25, 27, 18, 11. Target: leave this slide by 16:25. Leaving after 17:25: skip 26 and
+    25. Leaving after 18:55: also skip 27, and tell only one story on 30. Further on: reach slide 26 by 23:45, otherwise
     skip it. To skip: one sentence, then click.'
   checks:
   - Repo URL is still a placeholder (content.yaml)
@@ -594,17 +589,16 @@ slides:
     labels {pipeline.timings_s.label|sms}, paint-back {pipeline.timings_s.paint_back|sms}; total {pipeline.timings_s.total|sms},
     renders not included'
 
-- n: 18
+- n: 19
   seconds: 40
-  ends_at: '16:50'
+  ends_at: '17:05'
   talk_track: 'Expectation versus reality. The expectation isn''t made up: the BGT, the Dutch large-scale topography register
     kept by the municipality, lists {bgt.collections.paal.n|int} poles inside this exact square, {bgt.collections.paal.by_type.lichtmast|int}
     lamp posts and {bgt.collections.paal.by_type.afsluitpaal|int} bollards, the small rings. Reality: my pipeline found
     {pipeline.n_objects.street_furniture|int} objects, the big rings, and two of them do stand on a registered lamp post.
     The data explains it: {bgt.pole_points_histogram.0|int} of the {bgt.collections.paal.n|int} poles don''t get a single
     LiDAR point more than 1.5 metres above the ground, and only {bgt.poles_with_6_voxels|int} leave DBSCAN the six voxels
-    it needs. Rule two in action: look at your data before you blame your algorithm. Now, one simple question about every
-    point.'
+    it needs. Rule two in action: look at your data before you blame your algorithm. So why do poles get so few points?'
   question: Isn't the register out of date, or the flight too old?
   answer: 'Partly: {bgt.poles_first_registered_after_flight|int} of the poles were first registered after the April 2023
     flight, so they may not have existed yet. That doesn''t change the picture: most poles that did exist are a few points
@@ -630,11 +624,23 @@ slides:
   - 'Our objects against the BGT: clusters 435 and 710 within 0.51 m and 0.49 m of a lamp post; cluster 719 is 4.97 m from
     the nearest one'
   - 'Map: 60 of the 61 poles project inside the render (one falls just outside the frame)'
-  mental_model: 'Hidden C5 (a point cloud samples the surface unevenly): the density map of this crop explains why poles get few points.'
+  mental_model: 'Slide 20 (a point cloud samples the surface unevenly) follows: the density map of this crop explains why poles get few points.'
 
-- n: 19
-  seconds: 90
-  ends_at: '18:20'
+- n: 20
+  seconds: 40
+  ends_at: '17:45'
+  talk_track: 'Why so few points on a pole? Because a scanner doesn''t see the city, it samples it. This map counts points per square metre in our crop, median {concept.c5.median_per_m2|int}. Walls and tree crowns stack points into bright lines and spots, and some bands are thin, so a thin pole can fall between the samples. A radius tuned in one corner can fail in the next: measure density and error before you tune anything. Now, one simple question about every point.'
+  question: Is the density on the map the density of the surface?
+  answer: 'Not quite: a map cell counts every point above it, so walls and tree crowns look denser than they are as surfaces; a per-surface density needs normals. And the published accuracy is a specification for the whole data set, not a guarantee for each point.'
+  trace:
+  - 'deck/appendix.yaml C5 (bullets, figure, citations; shown here as a main slide)'
+  - 'deck/concepts/make_figures.py: deck/assets/concepts/c5_density.png, results/concepts.json c5'
+  - 'data/utrecht_jaarbeurs_200m.laz'
+  - 'research: reports/mental_models.md section 6'
+
+- n: 21
+  seconds: 75
+  ends_at: '19:00'
   talk_track: 'Quiz time. Both blocks compute the same thing: the distance of all {bench.plane.n|int} points to the ground
     plane, and they give exactly the same numbers. A loops over the rows in Python; B is one NumPy expression on whole columns.
     Hands up if you think A is faster. And B? Now the real question: by how much, roughly 2, 10, 100 or 1000 times? Keep
@@ -660,9 +666,9 @@ slides:
   - 'B: x, y, z = P.T (three column views, no copy); h = np.abs(a*x + b*y + c*z + d) (key line: a handful of NumPy calls,
     each on all points)'
 
-- n: 20
-  seconds: 105
-  ends_at: '20:05'
+- n: 22
+  seconds: 80
+  ends_at: '20:20'
   talk_track: 'The answer: on {bench.plane.n|int} points the loop takes {bench.plane.loop_numpy_rows.median_ms|ms} and the
     single expression {bench.plane.vectorised.median_ms|ms}: (click) that''s {bench.plane.factor.median|x}, so if you said
     100, you win. The axis is logarithmic, otherwise the grey bar would barely show. Same data, same machine, same result;
@@ -673,7 +679,7 @@ slides:
   answer: 'For this per-point arithmetic: {bench.plane.factor.median|x}, with an IQR-bounded range of {bench.plane.factor.iqr_low|x}
     to {bench.plane.factor.iqr_high|x}. For KDTree queries the cliff is smaller, {bench.knn.factor_loop_vs_1t.median|x}
     on one thread, because each call does more real work; it grows to {bench.knn.factor_loop_vs_all.median|x} once the single
-    call uses all cores. More on slide 21 and B4. That is on the column-ordered array laspy gives you; on a row-ordered
+    call uses all cores. More on slide 23 and B4. That is on the column-ordered array laspy gives you; on a row-ordered
     copy the expression slows to {bench.plane.sensitivity.vectorised_c_contiguous.median_ms|ms} and the factor drops to
     {bench.plane.sensitivity.factor_c_contiguous.median|x} ({bench.plane.sensitivity.factor_c_contiguous.iqr_low|x} to {bench.plane.sensitivity.factor_c_contiguous.iqr_high|x}).'
   checks:
@@ -681,7 +687,7 @@ slides:
     then: 'Checked: bench.plane.factor.iqr_low = {bench.plane.factor.iqr_low|x}, at least 100×, so ''two orders of magnitude''
       may be said, for this loop over NumPy rows only (it is not on the slide)'
     else: 'Do not say ''two orders of magnitude'': bench.plane.factor.iqr_low is below 100'
-  - The {bench.plane.factor.median|x} hero holds for laspy's column-ordered array (slide 11 code), not for a C-ordered copy
+  - The {bench.plane.factor.median|x} hero holds for laspy's column-ordered array (slide 12 code), not for a C-ordered copy
   trace:
   - bench/bench_cliff.py
   - 'results/bench_cliff.json: plane.n, plane.loop_numpy_rows, plane.vectorised, plane.loop_python_floats, plane.factor
@@ -690,9 +696,9 @@ slides:
     dtype, layout: the conditions line)'
   - Chart data embedded by deck/build_deck.py from these keys
 
-- n: 21
+- n: 23
   seconds: 95
-  ends_at: '21:40'
+  ends_at: '21:55'
   talk_track: 'Here''s where the time goes: Python above the line, compiled code below. Each loop step makes several small
     calls into NumPy, a row, three elements, a few scalar operations, and together they cost about {bench.plane.per_step_ns_loop|ns}
     per point; the same loop on plain Python floats, one NumPy call per step, still costs {bench.plane.per_step_ns_python_floats|ns};
@@ -714,9 +720,9 @@ slides:
   - Diagram drawn natively by deck/build_deck.py
   joke: It's like sending every point through the toll booth in its own car, when NumPy puts them all on one bus.
 
-- n: 22
+- n: 24
   seconds: 55
-  ends_at: '22:35'
+  ends_at: '22:50'
   talk_track: 'You don''t guess where the time goes; you ask a profiler. I used Scalene, a profiler for Python that shows
     time per line. One command, on the loop from the quiz. Each bar is one line of code, and its length is its share of the
     whole run: navy for time in the Python interpreter, blue for time in native code, here NumPy. The line that computes the
@@ -737,9 +743,9 @@ slides:
     itself; the plane from results/bench_cliff.json plane.coefficients; each function called 30 times so Scalene gets
     enough samples)
   - 'results/profile_scalene.json (label FINAL): lines.for, lines.unpack, lines.loop_body, lines.vectorised (python, native, system, total, samples), loop_native_fraction, factor_loop_vs_vectorised, rest_percent, conditions'
-  - 'Cross-check, not on the slide: cProfile, results/profile_loop.json and .txt (bench/profile_loop.py). The loop is {profile.loop.cumtime_s|s1} of a {profile.total_s|s1} run there; unprofiled, slide 20 gives the loop against the expression'
+  - 'Cross-check, not on the slide: cProfile, results/profile_loop.json and .txt (bench/profile_loop.py). The loop is {profile.loop.cumtime_s|s1} of a {profile.total_s|s1} run there; unprofiled, slide 22 gives the loop against the expression'
   how_to_read_it:
-  - 'Rows: the lines of the slide-19 loop (for, unpack, distance) and the one-expression version; bars: percent of the whole
+  - 'Rows: the lines of the slide-18 loop (for, unpack, distance) and the one-expression version; bars: percent of the whole
     profiled run, 100 % being the full bar width'
   - 'Colours: navy = time in the Python interpreter, blue = time in native code that the line calls (NumPy here), grey =
     system (waiting, I/O)'
@@ -748,15 +754,15 @@ slides:
     on single np.float64 values: compiled code, but called {profile.abs.ncalls|int} times, one point per call, which is the toll'
   - 'The rest of the run ({prof.rest_percent|f1} %) is imports and reading the LAZ file'
   - 'The NumPy expression: {prof.lines.vectorised.total|f1} % of the run; Scalene says the loop line is {prof.factor_loop_vs_vectorised|int} times
-    the expression line, slide 20 measured {bench.plane.factor.median|x}'
+    the expression line, slide 22 measured {bench.plane.factor.median|x}'
   - 'Sampling: every {prof.sampling_rate_s|sms}, 30 repeats of both functions; loop line shares of the three runs {prof.loop_line_shares_all_runs.0|f1},
     {prof.loop_line_shares_all_runs.1|f1} and {prof.loop_line_shares_all_runs.2|f1} %'
   - 'Run it: uv run --group profile scalene run --cpu-only -o out.json bench/cpuprof/loop.py, then scalene view out.json.
     Scalene skips any path with "scalene" in it; the directory is cpuprof for that reason'
 
-- n: 23
+- n: 25
   seconds: 50
-  ends_at: '23:25'
+  ends_at: '23:40'
   talk_track: 'Python 3.14 ships a free-threaded build, so I split the same loop over threads. With the GIL, {ft.summary.best_threads_ft|int}
     threads gain nothing; on Python 3.14t, without the GIL, they make the loop {ft.summary.ft_speedup_best_vs_loop.median|x}
     faster. One NumPy call on one thread is still {ft.summary.ft_vectorised_vs_best_threads.median|x} faster than that.
@@ -766,7 +772,7 @@ slides:
     measured, {ft.builds.free_threaded.timings.threads_8.median_ms|ms}; all {ft.conditions.threads|int} hardware threads
     took {ft.builds.free_threaded.timings.threads_16.median_ms|ms}. I didn't benchmark multiprocessing; it would also have
     to copy or share the array.
-  skip: 'Skip-first number 1. If skipped, say on slide 24: ''free-threaded Python spreads the toll over your cores but doesn''t
+  skip: 'Skip-first number 1. If skipped, say on slide 26: ''free-threaded Python spreads the toll over your cores but doesn''t
     remove it; now, memory''.'
   checks:
   - Say 'free-threaded build' (3.14t). The default CPython build still has the GIL
@@ -781,9 +787,9 @@ slides:
   - 1 warm-up round and 7 timed rounds, variants in a seeded random order per round; load average below 1.0 before each
     build
 
-- n: 24
+- n: 26
   seconds: 55
-  ends_at: '24:20'
+  ends_at: '24:35'
   talk_track: A 1 km AHN file has {memory.tile_1km.points|int} points, but the full-size files are {research.ahn5_c_31hz2.width_km|f2t}
     by {research.ahn5_c_31hz2.height_km|f2t} km, and the one with this area, 2023_C_31HZ2, has {memory.big_file.points|int}.
     At the {memory.tile_1km.bytes_per_point.pipeline_retained|int} bytes per point I measured for our pipeline, that's about
@@ -794,8 +800,8 @@ slides:
     and keeps {memory.tile_1km.bytes_per_point.laspy_read_retained|int} bytes per point, the float64 xyz array adds {memory.tile_1km.bytes_per_point.xyz_float64|int},
     Open3D''s own copy adds {memory.tile_1km.bytes_per_point.open3d_points|int}, and the downsampled cloud makes up the
     rest. Scaling to billions of points is on backup slide B2.'
-  checkpoint: 'Arrive here by 23:30. Later than that: skip this slide.'
-  skip: 'Skip-first number 3. If skipped, say the one fact on slide 25: "a full-size AHN file has {memory.big_file.points|int}
+  checkpoint: 'Arrive here by 23:45. Later than that: skip this slide.'
+  skip: 'Skip-first number 3. If skipped, say the one fact on slide 27: "a full-size AHN file has {memory.big_file.points|int}
     points".'
   trace:
   - bench/bench_memory.py
@@ -803,7 +809,7 @@ slides:
     ram_reference_gb'
   - 'results/memory.json: big_file.formulas (las_records uses the record size, our_pipeline the measured bytes per point)'
   - 'Our pipeline = bench/bench_memory.py case ''pipeline'': laspy.read, xyz, Open3D copy, voxel_down_sample, everything
-    kept (slides 11 and 12); the rest of the {memory.tile_1km.bytes_per_point.pipeline_retained|int} B per point: the kept
+    kept (slides 12 and 13); the rest of the {memory.tile_1km.bytes_per_point.pipeline_retained|int} B per point: the kept
     centroids, results/memory.json tile_1km.naive_kept_open3d_centroids'
   - 'big_file.points: LAS header via a 64 KB range request; the header bounds contain the crop (research: dataset/top_tile_headers.txt;
     size in km: results/research_facts.json ahn5_c_31hz2)'
@@ -828,15 +834,15 @@ slides:
   - 'Units: GB = 2^30 bytes; memory figures are the increase over the process after its imports'
   mental_model: 'Hidden C6 (memory follows N and the algorithm): linear storage against quadratic pairwise distances.'
 
-- n: 25
+- n: 27
   seconds: 75
-  ends_at: '25:35'
+  ends_at: '25:50'
   talk_track: 'The fix is to never hold the whole file: laspy reads it in chunks of {memory.tile_1km.chunk_size|int} points,
     each chunk keeps one point per {memory.tile_1km.voxel|m} voxel, and one np.unique at the end merges the chunks. On the
-    1 km file the load-everything pipeline from slides 11 and 12 peaks at {memory.tile_1km.naive_peak_mb|gb1} on top of
+    1 km file the load-everything pipeline from slides 12 and 13 peaks at {memory.tile_1km.naive_peak_mb|gb1} on top of
     what the imports already use; this loop peaks at {memory.tile_1km.chunked_peak_mb|gb1}, and its points are exactly those
     of a load-everything first-point-per-voxel reference. It keeps the first point per voxel, not the average from slide
-    12, because a first point is a real point and it streams. So why does it work?'
+    13, because a first point is a real point and it streams. So why does it work?'
   question: Does that always keep memory small?
   answer: 'No, there are two limits. It only helps if the voxel removes most points: on aerial data like AHN, very fine
     voxels keep almost everything, so output and memory stay large. And it only works for per-point steps; ground removal
@@ -872,9 +878,9 @@ slides:
     its first occurrence'
   - 'points = np.concatenate(pts)[first]: the result, one real point per voxel; the earliest chunk wins'
 
-- n: 26
+- n: 28
   seconds: 55
-  ends_at: '26:30'
+  ends_at: '26:45'
   talk_track: 'Here''s why, and this time I let a profiler show it: Scalene, a memory profiler for Python, on the same
     1 km file. Grey, load everything: the file, the float64 xyz and Open3D''s copy already take about 2 gigabytes, and
     voxel_down_sample on all 21 million points pushes it to {scalene.cases.load_everything.peak_mib|gb1}. Blue, chunked:
@@ -887,7 +893,7 @@ slides:
     voxels keep almost everything, so output and memory stay large. And it only works for per-point steps; ground removal
     or clustering need neighbours, so those run on tiles with an overlap. More on B2.'
   trace:
-  - bench/bench_memory_scalene.py runs `scalene run -o OUT.json TARGET --- tile` three times per case (alternating) on
+  - bench/bench_memory_scalene.py runs `scalene run -o OUT.json 16:25 --- tile` three times per case (alternating) on
     bench/memprof/load_everything.py and bench/memprof/chunked.py (the slide lines of snippets/s21_chunked.py, verbatim,
     checked by the script itself); the run with the median peak is stored
   - 'results/memory_scalene.json (label FINAL): cases.load_everything, cases.chunked (t_s, mem_mib, markers, peak_mib, lines: per source line peak, MB allocated, CPU share)'
@@ -900,7 +906,7 @@ slides:
     is on the line `down = pcd.voxel_down_sample(0.5)`, which is also the line that takes most CPU time'
   - 'Blue: 22 chunks of one million points; it saws up and down as chunks come and go and as keys and pts collect every
     chunk''s voxels, peaks late in the loop ({scalene.cases.chunked.peak_mib|gb1}) and falls at the final merge'
-  - 'Why the numbers differ from slides 24 and 25: those are the process''s peak resident memory (VmHWM) over the process
+  - 'Why the numbers differ from slides 26 and 27: those are the process''s peak resident memory (VmHWM) over the process
     after imports: {memory.tile_1km.naive_peak_mb|gb1} and {memory.tile_1km.chunked_peak_mb|gb1}. Scalene counts
     allocations (mallocs minus frees it sees), so memory freed by code it cannot see, most likely the Rust LAZ decoder,
     stays in its footprint: the chunked curve sits above the RSS peak, the load-everything curve close to it. Scalene
@@ -910,8 +916,8 @@ slides:
     memory), and its memory mode hangs in laspy''s parallel LAZ decoder, so the targets use the single-threaded Lazrs
     backend'
 
-- n: 27
-  seconds: 100
+- n: 29
+  seconds: 85
   ends_at: '28:10'
   talk_track: 'Six gotchas I hit while building this, and this is the slide to photograph. The one that cost me most: Open3D
     reads a .laz file without complaining and hands you an empty point cloud, and I spent an evening debugging the steps
@@ -923,7 +929,7 @@ slides:
   answer: 'This slide, with the evidence for each in the speaker notes, and the repo on the last slide. [SPEAKER: add a
     GOTCHAS.md to the repo before saying it is there.]'
   trace:
-  - Six of the candidates below, chosen on 2026-10-12 because each was reproduced in this project; content.yaml slide 27
+  - Six of the candidates below, chosen on 2026-10-12 because each was reproduced in this project; content.yaml slide 29
     table
   - 'candidate_gotchas: the full list observed in testing, with evidence'
   candidate_gotchas:
@@ -934,7 +940,7 @@ slides:
     status: CANDIDATE, speaker to confirm
   - code_token: o3d.io.read_point_cloud("x.laz")
     gotcha: Open3D 0.20.0 returns an empty point cloud for .las/.laz with only a warning, no exception (already the slide
-      8 joke).
+      9 joke).
     suggested_consequence: Empty cloud, no error
     evidence: 'research: reports/libraries.md (08_extra_checks.py), review/honesty/run_s02.out, notes/verify_facts.json'
     status: CANDIDATE, speaker to confirm
@@ -948,11 +954,11 @@ slides:
   - code_token: Vector3dVector(float32)
     gotcha: 'float32 input is accepted but takes a slow path: {facts.factor_v3d_float32_vs_float64_f.median|x} slower than
       laspy''s float64 array and {facts.factor_v3d_float32_vs_float64_c.median|x} slower than a C-ordered float64 copy on
-      the crop; cast with astype(np.float64) first (now on slide 9).'
+      the crop; cast with astype(np.float64) first (now on slide 10).'
     suggested_consequence: Copy hundreds of times slower
     evidence: 'results/python_facts.json (bench/python_facts.py: 1 warm-up and 7 runs, median); research: reports/libraries.md
       (08_extra_checks.py), reports/critic.md section 2'
-    status: CANDIDATE, speaker to confirm (measured; already shown on slide 9)
+    status: CANDIDATE, speaker to confirm (measured; already shown on slide 10)
   - code_token: classification == 1
     gotcha: 'AHN class 1 is not vegetation: it also holds facades, cars, poles and street furniture.'
     suggested_consequence: Class 1 is not trees
@@ -999,7 +1005,7 @@ slides:
     status: CANDIDATE, speaker to confirm
   - code_token: las.xyz
     gotcha: A fresh F-ordered float64 copy on every access ({facts.timings.las_xyz_access.median_ms|ms} each on the crop);
-      chunks from chunk_iterator have no .xyz at all (now on slide 9).
+      chunks from chunk_iterator have no .xyz at all (now on slide 10).
     suggested_consequence: Hidden copies everywhere
     evidence: 'results/python_facts.json las_xyz, timings.las_xyz_access; research: reports/libraries.md (01_laspy_io.py)'
     status: CANDIDATE, speaker to confirm
@@ -1026,22 +1032,22 @@ slides:
     status: CANDIDATE from research, speaker to confirm
   gotchas:
   - 'read_point_cloud("x.laz"): Open3D 0.20.0 returns 0 points for .las and .laz with only a warning, no exception; load
-    with laspy and hand over the array (slide 8). Evidence: snippets/s02_python.py check; research: reports/libraries.md
+    with laspy and hand over the array (slide 10). Evidence: snippets/s02_python.py check; research: reports/libraries.md
     (08_extra_checks.py), notes/verify_facts.json'
   - 'pip install laspy: without the lazrs or laszip extra laspy raises LaspyException: No LazBackend selected on a LAZ file;
     install laspy[lazrs]. Evidence: research: reports/libraries.md (out_09_laspy_no_backend.txt)'
   - 'xyz.astype(np.float32): at RD coordinates float32 steps {research.float32_step_m.x|cm} in x and {research.float32_step_m.y|cm}
-    in y; subtract header.mins first (slide 11). Evidence: results/research_facts.json float32_step_m (np.spacing)'
+    in y; subtract header.mins first (slide 12). Evidence: results/research_facts.json float32_step_m (np.spacing)'
   - 'Vector3dVector(float32): accepted, but {facts.factor_v3d_float32_vs_float64_f.median|x} slower than laspy''s float64
     array ({facts.timings.v3d_float32.median_ms|ms} against {facts.timings.v3d_float64_f.median_ms|ms}); cast with astype(np.float64).
     Evidence: results/python_facts.json'
   - 'segment_plane(seed): o3d.utility.random.seed(0) alone does not make RANSAC reproducible; with the default probability
-    two seeded runs differ, with probability=1.0 they match (slide 13). Evidence: results/pipeline.json checks.ransac_default_probability'
+    two seeded runs differ, with probability=1.0 they match (slide 14). Evidence: results/pipeline.json checks.ransac_default_probability'
   - 'classification == 1: AHN''s class 1 is ''overig'', other: vegetation, but also facades, cars, poles and street furniture;
-    there is no vegetation class to score against (slides 4 and 18). Evidence: research: reports/dataset.md, results/pipeline.json
+    there is no vegetation class to score against (slides 5 and 19). Evidence: research: reports/dataset.md, results/pipeline.json
     label_vs_ahn'
 
-- n: 28
+- n: 30
   seconds: 60
   ends_at: '29:10'
   talk_track: 'So, the four rules again, now with the evidence from this talk. Think in arrays: {pipeline.crop.points|int}
@@ -1053,12 +1059,12 @@ slides:
   answer: Three of them are plain data engineering, and the compiled-loop one holds wherever Python calls into compiled
     code, because the toll is per call. But I only measured them in this pipeline, so that's the evidence I can show.
   trace:
-  - 'content.yaml slide 28 rules (the rules of slide 6 with evidence); tokens: results/pipeline.json crop.points and n_objects,
+  - 'content.yaml slide 30 rules (the rules of slide 8 with evidence); tokens: results/pipeline.json crop.points and n_objects,
     results/bgt_street_furniture.json collections.paal.n, results/memory.json tile_1km peaks, results/bench_cliff.json plane.factor'
   - Replaces the old 'Three habits' tiles and the 'Loop over tiles, never over points' statement slide (both removed on
     2026-10-12)
 
-- n: 29
+- n: 31
   seconds: 50
   ends_at: '30:00'
   talk_track: 'Everything you saw is in the repo behind this QR code: the pipeline, the snippets and the benchmarks. The
@@ -1072,7 +1078,7 @@ slides:
   - Publish the repo URL and QR only after the repo clean-up listed in the open items (docs/OPEN_ITEMS.md, section f)
   - If the optional book-credit small print is dropped from the slide, say the credit aloud
   trace:
-  - 'content.yaml slide 29: qr.url is null, contact and repo URL are placeholders'
+  - 'content.yaml slide 31: qr.url is null, contact and repo URL are placeholders'
   - 'content.yaml meta.source_ahn (licence: research: reports/dataset.md)'
   - 'Book title and year: research: reports/book.md'
   - 'Poux''s videos used for B5 and B6: research: reports/videos.md'

@@ -888,7 +888,7 @@ def main():
 
     # ---------------------------------------------------------------- licence: CC BY 4.0 linked, source lines present
     # CC BY 4.0 section 3(a)(1)(C): a URI or hyperlink to the licence. Every "CC BY 4.0" in slide text is a run
-    # linked to meta.licence_url; slide 24 also prints the readable URI (meta.licence_line).
+    # linked to meta.licence_url; slide 25 also prints the readable URI (meta.licence_line).
     lic_url = meta.get("licence_url", "https://creativecommons.org/licenses/by/4.0/")
     R_ID = "{%s}id" % NS["r"]
     link_bad, src_bad, render_slides = [], [], []

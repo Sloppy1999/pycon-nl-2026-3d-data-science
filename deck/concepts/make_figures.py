@@ -75,7 +75,7 @@ def sample_surface(v, f, n, rng):
 def c1():
     rng = np.random.default_rng(1)
     v, f = house()
-    pts = sample_surface(v, f, 700, rng)
+    pts = sample_surface(v, f, 1500, rng)
     pitch = 0.5
     ijk = np.unique(np.floor(pts / pitch).astype(int), axis=0)
     fig = plt.figure(figsize=SIZE)
@@ -267,7 +267,7 @@ def c5():
     ax2.set_xlabel("points per m²", fontsize=FS)
     ax2.set_yticks([])
     ax2.spines[["top", "right", "left"]].set_visible(False)
-    ax2.set_title(f"cells; middle 80 %:\n{p10:.0f} to {p90:.0f} per m²", fontsize=FS, color=C["slate"], loc="left")
+    ax2.set_title(f"middle 80 % of cells:\n{p10:.0f} to {p90:.0f} per m²", fontsize=FS, color=C["slate"], loc="left")
     save(fig, "c5_density.png")
     FACTS["c5"] = {"cell_m": cell, "median_per_m2": med, "p10_per_m2": p10, "p90_per_m2": p90,
                    "empty_cells_share": float((dens == 0).mean()), "source": str(CROP.relative_to(TALK))}

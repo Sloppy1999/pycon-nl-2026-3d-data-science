@@ -40,11 +40,11 @@ build), the other CSS bundles, and the pages `/speakers`, `/schedule`, `/practic
   (`text-transform:uppercase; font-family:Caveat Brush`) in `12.hnByEAV9.css`, the speaker initials on the
   "delfts-blauw" (Delft blue tile) speaker cards of `/speakers`. The deck does not use Caveat Brush: it would
   carry no meaning on a slide, and no Dutch motif is needed.
-- **Third-party logos (slide 3, 2026-10-11)**: the ecosystem wall shows other projects' and companies' logos in their
+- **Third-party logos (slide 4, 2027-11-12)**: the ecosystem wall shows other projects' and companies' logos in their
   own colours, unaltered, on white (light grey for companies) tiles. An approved exception to the palette; terms and
   policies per file in deck/assets/logos/SOURCES.md, open points in OPEN_ITEMS k1.
 - **Logo**: the site logo is `/logo-sopra4.svg` (a square 375 x 375 viewBox with embedded rasters). It is not in
-  the deck: no file and no permission yet, so slides 1 and 24 keep a labelled placeholder in the logo zone.
+  the deck: no file and no permission yet, so slides 1 and 25 keep a labelled placeholder in the logo zone.
   Its colours (approximate, read from the embedded raster to plan the logo zone): navy about #203060, mid blue
   about #4070A0, pale blue about #B0D0E0. Its navy parts would disappear on the navy title and closing slides,
   so when the file arrives it needs a light version or a white tile the size of the logo zone.
@@ -58,7 +58,7 @@ Nine values from the site, eight of them in the deck (`content.yaml` `meta.palet
 
 | Name | Hex | Theme slot | Source | Role in the deck |
 |---|---|---|---|---|
-| navy | `#1C325B` | dk2 (tx2), accent3 | CSS `north`, `.fill-north` | dark backgrounds (slides 1, 19, 24), titles on white |
+| navy | `#1C325B` | dk2 (tx2), accent3 | CSS `north`, `.fill-north` | dark backgrounds (slides 1, 20, 25), titles on white |
 | blue | `#2B6797` | accent1, hlink, folHlink | CSS `north2`, `.fill-north2` | the highlight on white: highlighted series, key-line edge, accent bar, links |
 | sage | `#B1CAC5` | accent2 | CSS `north3`, `.fill-north3` | the highlight on navy; small print and footer on navy; code joke on slide 1 |
 | white | `#FFFFFF` | lt1 (bg1) | CSS `bg-white`, `text-white` | content slide background; text on navy; QR tile |
@@ -149,7 +149,7 @@ with English names, numbered as `content.yaml` uses them. Language en-GB on ever
 
 - Outer margin 0.600 on all sides; content right edge 12.733; content width 12.133; column gap 0.500.
 - Accent bar 0.550 x 0.070 at y 0.600 on content layouts (blue on white, sage on navy), left-aligned with the
-  title. It marks where the title starts, so slide 8 to 14 Morph frames keep a fixed anchor.
+  title. It marks where the title starts, so slide 9 to 15 Morph frames keep a fixed anchor.
 - Title top y 0.800 on every content layout (L2, L4, L5, L7, L8, L9, L10) and on L11. Title boxes are
   top-anchored, so the first line never moves when a title wraps. Title style: 32 pt Fira Sans SemiBold, navy,
   100 % line spacing (one line 0.533 in, two lines 1.067 in).
@@ -234,7 +234,7 @@ references: bg1 = white, tx1 = ink, tx2 = navy, accent2 = sage, accent4 = slate.
 | 11 | ftr | Footer | 0.600 | 6.950 | 8.000 | 0.250 | b | 12 pt sage |
 | 12 | sldNum | Slide number | 11.733 | 6.950 | 1.000 | 0.250 | b | 12 pt sage, right |
 
-**L7 Text left, media right** (white; slides 8 to 14 and 17)
+**L7 Text left, media right** (white; slides 9 to 15 and 18)
 
 | idx | type | name | x | y | w | h | anchor | text |
 |---|---|---|---|---|---|---|---|---|
@@ -288,7 +288,7 @@ references: bg1 = white, tx1 = ink, tx2 = navy, accent2 = sage, accent4 = slate.
 | 16 | pic | Logo zone | 9.833 | 0.600 | 2.900 | 1.300 | | labelled placeholder, top right |
 | 17 | pic | QR code | 10.033 | 3.300 | 2.500 | 2.500 | | inside the white tile (0.200 in quiet zone) |
 
-Example slides 1 to 11 (one per layout, in a section "Layout examples") carry sample text, the footer and the
+Example slides 1 to 12 (one per layout, in a section "Layout examples") carry sample text, the footer and the
 slide-number field; their picture placeholders are left empty, so python-pptx `insert_picture` works on the
 duplicates. `deck/lib/structure.py` maps them by their layout relationship and rebuilds the sections from the
 plan. The notes master uses the same theme (Fira Sans 12 pt notes).

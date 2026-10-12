@@ -1,9 +1,9 @@
 {
   "c1": {
-    "points": 700,
+    "points": 1500,
     "vertices": 10,
     "triangles": 16,
-    "voxels": 174,
+    "voxels": 182,
     "pitch_m": 0.5,
     "note": "synthetic house, 4 x 3 x 2 m box with a gable roof to 3 m"
   },

@@ -1,9 +1,81 @@
 # Timing
 
-The talk is planned for **1800 s (30:00)**: the 29 `seconds` values in `deck/content.yaml`, the same in
+The talk is planned for **1800 s (30:00)**: the 32 `seconds` (31 before the meme slide, 29 before the mental-model slides) values in `deck/content.yaml`, the same in
 `deck/notes.yaml`, whose `ends_at` gives the running clock. The brief's slot is 10:45 to 11:25 (40 minutes including
 Q&A and changeover; whether Q&A is included is not confirmed yet, OPEN_ITEMS d1), with about 7 minutes of Q&A after
 the talk. The backup slides B1 to B7 are hidden slides 30 to 36 and carry no time.
+
+## 2026-10-13: workflow ring replaces the trade-offs and chain slides (31 slides, still 1800 s)
+
+Slide 7 is now the six-stage workflow ring (Acquisition to Application, with loops back), with the tools of the old
+chain slide (laspy, NumPy, Open3D, SciPy, PyVista) under their stage and three pipeline renders beside them. The old
+slide 10 (laspy loads, Open3D computes, PyVista draws) is gone and its 80 s went to slide 7 (65 to 145 s), so every
+`ends_at` from slide 9 on is unchanged; slides 11 and later moved down by one (old 11 is now 10, B-slides unchanged).
+The tables below are older snapshots with the previous numbering.
+
+## 2026-10-12 (later): the meme slide (32 slides, still 1800 s)
+
+A new slide 3, the Python-and-C++ unmasking meme (30 s), follows the code comparison (now slide 2): the code slide says
+the C++ is still there underneath, the meme and its bullets show where (NumPy's C core, Open3D and VTK in C++, laspy's
+Rust decoder). Every slide from the old 3 on moved by one. The 30 s came from the old slide 4 (the Jaarbeurs case, now
+slide 5, 95 to 65 s; its talk track was the slowest at 77 wpm, 113 wpm now), so the clock at the end of slide 5 is still
+3:00 and every later `ends_at`, checkpoint and skip target is unchanged. The skip-first list is now 26, 25, 27, 18, 11.
+The table below is regenerated from `deck/notes.yaml`; the tables further down are older snapshots with the previous
+numbering.
+
+## 2026-10-12: mental-model slides join the main deck (31 slides, still 1800 s)
+
+"One object, three representations" (C1, now slide 6) and "A point cloud samples the surface unevenly" (C5, now slide
+20) moved from the hidden section into the main deck, 40 s each. Later the former slide 5 (the N×3 array close-up, 65 s) was removed and a benefits-and-limits slide of the three representations (new slide 6, 65 s) added after C1, which became slide 5; slides 7 and later kept their numbers. The 80 s came from the slowest talk tracks: slide 5
+(80 to 65 s), slide 18 (75 to 65 s), slide 21 (90 to 75 s), slide 22 (105 to 80 s) and slide 29 (100 to 85 s). Every
+slide after 5 moved by one, every slide after 19 by two; the skip-first list and the checkpoints in the notes use the new
+numbers. The table below is generated from `deck/notes.yaml` (words are the spoken talk track, wpm at the planned
+seconds). The older tables further down are the 2026-10-04 snapshot with the old numbering and are kept as history.
+
+| Slide | Title | Section | Seconds | Starts | Ends | wpm |
+|---|---|---|---|---|---|---|
+| 1 | 3D Data Science with Python | Hook | 20 | 0:00 | 0:20 | 126 |
+| 2 | 3D used to mean C++. Not anymore | Hook | 35 | 0:20 | 0:55 | 153 |
+| 3 | Python is the interface. C++ does the work | Hook | 30 | 0:55 | 1:25 | 126 |
+| 4 | The Python 3D ecosystem at a glance | Hook | 30 | 1:25 | 1:55 | 160 |
+| 5 | Today's case: the Jaarbeurs hall, from a plane | Hook | 65 | 1:55 | 3:00 | 113 |
+| 6 | One object, three representations | Hook | 40 | 3:00 | 3:40 | 124 |
+| 7 | A 3D project moves through six stages | Hook | 65 | 3:40 | 4:45 | 96 |
+| 8 | Four rules of thumb for 3D data | Hook | 45 | 4:45 | 5:30 | 137 |
+| 9 | No single library does the whole job | Landscape | 55 | 5:30 | 6:25 | 89 |
+| 10 | laspy loads, Open3D computes, PyVista draws | Landscape | 80 | 6:25 | 7:45 | 83 |
+| 11 | Python passes the array, not the points | Landscape | 70 | 7:45 | 8:55 | 116 |
+| 12 | Six steps turn a point cloud into labels | Pipeline | 25 | 8:55 | 9:20 | 103 |
+| 13 | 1 Load: laspy hands you NumPy | Pipeline | 65 | 9:20 | 10:25 | 73 |
+| 14 | 2 Voxel downsampling: one average per voxel | Pipeline | 55 | 10:25 | 11:20 | 93 |
+| 15 | 3 Ground removal: one plane per tile | Pipeline | 75 | 11:20 | 12:35 | 87 |
+| 16 | 4 Clustering: DBSCAN groups what touches | Pipeline | 55 | 12:35 | 13:30 | 75 |
+| 17 | 5 Labelling: rules name the clusters | Pipeline | 70 | 13:30 | 14:40 | 126 |
+| 18 | 6 Visualisation: PyVista paints every point | Pipeline | 40 | 14:40 | 15:20 | 84 |
+| 19 | What the six steps did | Pipeline | 65 | 15:20 | 16:25 | 70 |
+| 20 | Expectation vs reality: street furniture | Pipeline | 40 | 16:25 | 17:05 | 162 |
+| 21 | A point cloud samples the surface unevenly | Pipeline | 40 | 17:05 | 17:45 | 120 |
+| 22 | Quiz: which is faster, and by how much? | Performance | 75 | 17:45 | 19:00 | 55 |
+| 23 | How much slower is the loop over rows? | Performance | 80 | 19:00 | 20:20 | 64 |
+| 24 | Every trip into compiled code pays a toll | Performance | 95 | 20:20 | 21:55 | 81 |
+| 25 | Profile before you vectorise | Performance | 55 | 21:55 | 22:50 | 111 |
+| 26 | Will free-threaded Python save my loop? | Performance | 50 | 22:50 | 23:40 | 78 |
+| 27 | Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GB | RAM | 55 | 23:40 | 24:35 | 75 |
+| 28 | Stream chunks, keep the first point per voxel | RAM | 75 | 24:35 | 25:50 | 82 |
+| 29 | Why it works: memory over time | RAM | 55 | 25:50 | 26:45 | 125 |
+| 30 | Six gotchas I hit building this | Close | 85 | 26:45 | 28:10 | 73 |
+| 31 | Take the four rules home | Close | 60 | 28:10 | 29:10 | 77 |
+| 32 | Copy the pipeline | Close | 50 | 29:10 | 30:00 | 77 |
+| | **Total** | | **1800** | | **30:00** | **92** |
+
+| Section | Slides | Seconds |
+|---|---|---|
+| Hook | 1 to 7 | 330 s |
+| Landscape | 8 to 10 | 205 s |
+| Pipeline | 11 to 20 | 530 s |
+| Performance | 21 to 25 | 355 s |
+| RAM | 26 to 28 | 185 s |
+| Close | 29 to 31 | 195 s |
 
 **2026-10-04, Python-and-memes extension:** five slides added (3 xkcd 353, 8 hand-offs copy or view, 17 expectation
 vs reality, 22 profile, 23 free-threaded; 200 s together). The time came from slide 6 (old 5, -40 s), 7 (old 6,
