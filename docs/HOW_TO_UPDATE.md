@@ -55,7 +55,7 @@ the highlighted key line. Numbers are tokens `{file.key|format}` (formats are li
 | Slide | Code (`snippets/`) | Picture | Numbers on screen (result keys) |
 |---|---|---|---|
 | 1 | none (the joke is text in `content.yaml`) | none | none |
-| 2 | `s02_pcl.cpp` (NOT RUN), `s02_python.py`; install line is text in `content.yaml` `install` | none | none |
+| 2 | `s02_pcl.cpp` (NOT RUN), `s02_python.py` | none | none |
 | 3 | none (logo wall: ids in `content.yaml`, logos in `deck/assets/logos/`) | `deck/ecosystem/ecosystem.yaml` entries and orgs | `eco.n_entries` (small print) |
 | 4 | none | `f1_load.png`, `f6_final.png`; chips from `labels.json` `f6_final`, edge arrow from `f1_load.jaarbeurs_edge` | none |
 | 5 | `s04_repl.py`, shown as its transcript `s04_repl.txt` | `closeup.png` | `pipeline.points_in` (alt text) |

@@ -46,7 +46,7 @@ Verified text: "Flat is better than nested." is line 7 of `python -c "import thi
 2.5.3's `np.vectorize` docstring, Notes: "The `vectorize` function is provided primarily for convenience, not for
 performance. The implementation is essentially a for loop." (notes slide 24); `import antigravity` calls
 `webbrowser.open("https://xkcd.com/353/")` (CPython Lib/antigravity.py; slide removed 2026-10-11). The install
-line `uv add open3d "laspy[lazrs]" pyvista` resolved in a fresh uv project (uv 0.12.6, `--no-sync`).
+line `uv add open3d "laspy[lazrs]" pyvista` was on slide 2 and resolved in a fresh uv project (uv 0.12.6, `--no-sync`); the line was removed from slide 2 on 2026-10-12.
 
 **xkcd licence (HISTORY: the comic left slide 3 on 2026-10-11, file and snippet deleted):** `deck/assets/xkcd_353_python.png` (518 × 588 px, grayscale) downloaded 2026-10-04 from
 https://imgs.xkcd.com/comics/python.png. xkcd.com/license.html: Creative Commons Attribution-NonCommercial 2.5;

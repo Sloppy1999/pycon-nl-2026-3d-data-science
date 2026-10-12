@@ -21,7 +21,7 @@
 > not the points" (copy or view at each hand-off, results/python_facts.json, 60 s), 17 "Expectation vs reality:
 > street furniture" (20 s), 22 "Profile before you vectorise" (Scalene per-line CPU profile, results/profile_scalene.json, 55 s; cProfile kept as a cross-check),
 > 23 "Will free-threaded Python save my loop?" (3.14t vs 3.14, results/bench_freethreaded.json, 50 s). Changed: 2
-> (uv add install line), 12 (`>>> import this` callout), 19 (Drake format redrawn, replaces the captions), 24
+> 12 (`>>> import this` callout), 19 (Drake format redrawn, replaces the captions), 24
 > (second line "np.vectorize is a for loop in disguise"), 25 ("It works on my machine" line), 29 (coffee callback).
 > Old slides 3 to 24 are now 4 to 7, 9 to 16, 18 to 21 and 24 to 29; the table below keeps the OLD numbers. Timing,
 > skip-first list and checkpoints: docs/TIMING.md; Morph chain is now 10 to 16.

@@ -74,7 +74,6 @@ slides:
     build_cmd'
   - 'Grid anchoring: PCL filters/impl/voxel_grid.hpp floor(p * inverse_leaf); Open3D PointCloud::VoxelDownSample, GetMinBound()
     - voxel_size / 2; both re-implemented in NumPy on crop.pcd give the same counts'
-  - 'Install line: uv add open3d "laspy[lazrs]" pyvista resolved in a fresh uv project with uv 0.12.6 on 2026-10-04 (docs/QA_NOTES.md)'
 
 - n: 3
   seconds: 30
@@ -1030,7 +1029,7 @@ slides:
     with laspy and hand over the array (slide 8). Evidence: snippets/s02_python.py check; research: reports/libraries.md
     (08_extra_checks.py), notes/verify_facts.json'
   - 'pip install laspy: without the lazrs or laszip extra laspy raises LaspyException: No LazBackend selected on a LAZ file;
-    install laspy[lazrs] (the uv add line on slide 2). Evidence: research: reports/libraries.md (out_09_laspy_no_backend.txt)'
+    install laspy[lazrs]. Evidence: research: reports/libraries.md (out_09_laspy_no_backend.txt)'
   - 'xyz.astype(np.float32): at RD coordinates float32 steps {research.float32_step_m.x|cm} in x and {research.float32_step_m.y|cm}
     in y; subtract header.mins first (slide 11). Evidence: results/research_facts.json float32_step_m (np.spacing)'
   - 'Vector3dVector(float32): accepted, but {facts.factor_v3d_float32_vs_float64_f.median|x} slower than laspy''s float64

@@ -919,7 +919,9 @@ class Builder:
     def slide_title(self, s, spec, n, L):
         self.set_title(s, n, spec["title"], L)
         sub = placeholder(s, 1)
-        if sub is not None:
+        if sub is not None and not spec.get("subtitle_code"):
+            drop_placeholder(s, 1)   # no code joke: no empty prompt box
+        elif sub is not None:
             # the layout's subtitle slot (Fira Mono 24 pt, two lines fit); geometry inherited from the layout
             tf = sub.text_frame
             p = clear_text_frame(tf)
