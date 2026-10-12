@@ -64,7 +64,7 @@ slides:
     # every machine); the spoken "before your coffee went cold" carries the joke. "..." makes the loop valid Python
     # (a body of only a comment is an IndentationError); the speaker may restore the abstract's exact wording
     subtitle_code: ["for point in point_cloud:", "    # 12 million times. see you tomorrow ☕"]   # the abstract's joke, word for word (speaker's choice, 2026-10-04)
-    presenter: "Sergio Peral · ML Engineer, Teqyard · [repo URL]"   # affiliation as plain text only (personal talk, no company branding)
+    presenter: "Sergio Peral · ML Engineer, Teqyard · github.com/Sloppy1999/pycon-nl-2026-3d-data-science"   # affiliation as plain text only (personal talk, no company branding)
     logo: {file: assets/pycon_nl_2026_logo.png, alt: "PyCon NL 2026 logo: the Python snakes filled with a Dutch canal house, tulips and a windmill"}   # supplied by the speaker, 2026-10-04
     seconds: 20
 
@@ -675,9 +675,9 @@ slides:
     layout: 11           # Closing (navy)
     transition: fade
     title: "Copy the pipeline"
-    support: "[repo URL]"             # readable link next to the QR code (storyboard support line)
-    contact: ["Sergio Peral", "[email]", "[GitHub / LinkedIn handle]"]
-    qr: {url: null, placeholder: "QR: [repo URL]"}
+    support: "github.com/Sloppy1999/pycon-nl-2026-3d-data-science"             # readable link next to the QR code (storyboard support line)
+    contact: ["Sergio Peral", "sergioperalgarijo99@gmail.com", "github.com/Sloppy1999"]
+    qr: {url: "https://github.com/Sloppy1999/pycon-nl-2026-3d-data-science", placeholder: "QR: repo URL"}
     logo: {file: assets/pycon_nl_2026_logo.png, alt: "PyCon NL 2026 logo: the Python snakes filled with a Dutch canal house, tulips and a windmill"}   # supplied by the speaker, 2026-10-04
     small_print:
       - ahn_licence        # the AHN source line plus meta.licence_line (readable licence URI)
