@@ -11,26 +11,26 @@ performance and memory slides and the generator of the slide deck.
 the ground found by tiled RANSAC, DBSCAN clusters, and the final labels. Rebuild the picture with
 `uv run python docs/img/make_readme_banner.py`.*
 
-| | |
-|---|---|
-| Points in, after 0.5 m voxel downsampling | 722 961, 232 180 |
-| Ground vs AHN class 2 | precision 0.98, recall 0.94 |
-| Buildings vs AHN class 6 | precision 0.83 (a lower bound, AHN files many facade points elsewhere), recall 0.99 |
-| Objects found | 58 building roofs, 683 vegetation clusters, 3 street furniture |
-| Whole pipeline, load to paint-back | 0.6 s on one laptop |
+Results on that crop: 722 961 points in, 232 180 after 0.5 m voxel downsampling. Ground matches AHN class 2 with
+precision 0.98 and recall 0.94. Buildings match AHN class 6 with precision 0.83 (a lower bound, because AHN files many
+facade points elsewhere) and recall 0.99. The pipeline finds 58 building roofs, 683 vegetation clusters and 3 street
+furniture objects, and runs from load to paint-back in 0.6 s on one laptop.
 
 ## License
 
-| Part | License |
-|---|---|
-| Code (`pipeline/`, `snippets/`, `bench/`, `deck/`, `tests/`) | [MIT](LICENSE) |
-| Point cloud (`data/`) and anything derived from it | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), AHN5 from Het Waterschapshuis |
-| Logos in `deck/assets/logos/` | Belong to their owners (see its `SOURCES.md`), not covered by MIT |
+MIT
+
+The code in this repository is licensed under [MIT](LICENSE). Third-party material retains its own license and
+copyright notices:
+
+- The AHN5 point cloud in `data/`, and anything derived from it, is licensed under
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by Het Waterschapshuis. What was changed and where the
+  licence is stated: [data/DATA_LICENSE.md](data/DATA_LICENSE.md).
+- The logos in `deck/assets/logos/` belong to their owners (see its `SOURCES.md`) and are not covered by MIT.
 
 Wherever the data or anything derived from it is shown, attribute it:
 
 > Point cloud: AHN5, Actueel Hoogtebestand Nederland (ahn.nl), Het Waterschapshuis, CC BY 4.0.
 > AHN file 135000_455000, cropped and processed.
 
-What was changed and where the licence is stated: [data/DATA_LICENSE.md](data/DATA_LICENSE.md). This project is not
-endorsed by Het Waterschapshuis or AHN.
+This project is not endorsed by Het Waterschapshuis or AHN. The MIT licence does not amend the third-party licences.
