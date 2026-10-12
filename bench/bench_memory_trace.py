@@ -31,7 +31,6 @@ import ast
 import gc
 import json
 import os
-import statistics
 import subprocess
 import sys
 import threading

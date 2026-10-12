@@ -25,9 +25,7 @@ at the first sample of named lines, and `lines` (per source line: peak, bytes al
 from __future__ import annotations
 
 import argparse
-import json
 import statistics
-import subprocess
 import sys
 import tempfile
 import time
@@ -35,7 +33,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import conditions as cond  # noqa: E402
-from _common import DATA_TILE, RESULTS, TALK, rel, write_json  # noqa: E402
+from _common import DATA_TILE, RESULTS, TALK, rel, scalene_run, scalene_version, write_json  # noqa: E402
 
 REPEATS = 3
 TARGETS = {"load_everything": TALK / "bench" / "memprof" / "load_everything.py",
@@ -46,15 +44,10 @@ MARKERS = {"load_everything": {"Open3D copy": "PointCloud("}, "chunked": {"chunk
 
 
 def run_scalene(case: str, outdir: Path, i: int) -> dict:
-    out = outdir / f"{case}_{i}.json"
     t0 = time.perf_counter()
-    r = subprocess.run([sys.executable, "-m", "scalene", "run", "-o", str(out), str(TARGETS[case]), "---", "tile"],
-                       capture_output=True, text=True, cwd=TALK)
-    if not out.exists() or "points kept" not in r.stdout:
-        raise SystemExit(f"scalene run failed for {case}:\n{r.stdout[-800:]}\n{r.stderr[-800:]}")
-    d = json.loads(out.read_text())
+    d, stdout = scalene_run(TARGETS[case], outdir / f"{case}_{i}.json", target_args=("tile",), expect="points kept")
     d["_wall_s"] = time.perf_counter() - t0
-    d["_kept"] = int(r.stdout.split(" points kept")[0].split()[-1])
+    d["_kept"] = int(stdout.split(" points kept")[0].split()[-1])
     return d
 
 
@@ -110,17 +103,17 @@ def main() -> None:
         med = sorted(rs, key=lambda r: max(x[1] for x in r["samples"]))[len(rs) // 2]
         cases[case] = summarise(case, med) | {"peaks_all_runs_mib": [round(p, 1) for p in pk]}
         peaks[case] = statistics.median(pk)
-    scalene_version = subprocess.run([sys.executable, "-m", "scalene", "--version"], capture_output=True, text=True).stdout.split()[2]
+    version = scalene_version()
     result = {
         "label": "FINAL" if args.final else "SMOKE",
         "conditions": cond.collect(
             data=rel(DATA_TILE), n=n, runs=args.repeats, warmup=0,
             statistic="the run with the median peak of the runs per case",
             load_avg_before=before, load_avg_after=cond.load_avg(),
-            extra={"scalene": scalene_version, "laz_backend": "Lazrs (single-threaded; LazrsParallel hangs under Scalene)"}),
+            extra={"scalene": version, "laz_backend": "Lazrs (single-threaded; LazrsParallel hangs under Scalene)"}),
         "data": rel(DATA_TILE), "points": n,
         "units": {"mem_mib": "Scalene footprint, MiB (2^20 B), not RSS", "t_s": "progress through the run, percent of Scalene's memory samples (not wall time)"},
-        "scalene": scalene_version,
+        "scalene": version,
         "cases": cases,
         "peak_ratio": peaks["load_everything"] / peaks["chunked"],
         "script": rel(Path(__file__)), "runtime_s": time.perf_counter() - t0,

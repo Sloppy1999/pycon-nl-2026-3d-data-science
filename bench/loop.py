@@ -11,35 +11,19 @@ shows the loop and not RANSAC.
 """
 
 import json
-import textwrap
-from pathlib import Path
 
 import laspy
 import numpy as np
 
-TALK = Path(__file__).resolve().parents[1]
-SNIPPETS = TALK / "snippets"
+from _common import DATA_CROP, RESULTS, SNIPPETS, region_function
 
 
-def region(name):
-    lines = (SNIPPETS / name).read_text().splitlines()
-    i, j = lines.index("# --- slide ---"), lines.index("# --- end ---")
-    return "\n".join(ln.removesuffix("  # <<") for ln in lines[i + 1:j]) + "\n"
+loop, _ = region_function(SNIPPETS / "s16_loop.py", ("P", "plane"), "h", name="loop")
+vectorised, _ = region_function(SNIPPETS / "s16_vec.py", ("P", "plane"), "h", name="vectorised")
 
-
-def compile_fn(name, snippet, result="h"):
-    code = f"def {name}(P, plane):\n{textwrap.indent(region(snippet), '    ')}    return {result}\n"
-    ns = {"np": np}
-    exec(compile(code, f"snippets/{snippet}", "exec"), ns)
-    return ns[name]
-
-
-loop = compile_fn("loop", "s16_loop.py")
-vectorised = compile_fn("vectorised", "s16_vec.py")
-
-las = laspy.read(TALK / "data" / "utrecht_jaarbeurs_200m.laz")
+las = laspy.read(DATA_CROP)
 P = las.xyz - las.header.mins  # local origin, as on slide 8
-bench = json.loads((TALK / "results" / "bench_cliff.json").read_text())
+bench = json.loads((RESULTS / "bench_cliff.json").read_text())
 plane = tuple(float(v) for v in bench["plane"]["coefficients"])
 
 h_loop = loop(P, plane)

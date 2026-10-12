@@ -20,7 +20,6 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
-import importlib.util
 import io
 import json
 import sys
@@ -37,12 +36,9 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import DATA_CROP, RESULTS, write_json  # noqa: E402
+from _common import DATA_CROP, RESULTS, fetch_ahn5, write_json  # noqa: E402
 
-TALK = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("fetch_ahn5", TALK / "data" / "fetch_ahn5.py")
-F = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(F)
+F = fetch_ahn5()
 
 CACHE = Path(tempfile.gettempdir()) / "talk_bgt_cache"
 UA = "pycon-nl-2026-talk-3d-data-science (research script)"
@@ -64,8 +60,9 @@ LICENCE_NGR = ("https://www.nationaalgeoregister.nl/geonetwork/srv/api/records/"
 R_POLE, ABOVE, R_GROUND, VOXEL, MIN_POINTS = 0.6, 1.5, 3.0, 0.5, 6
 
 
-def fetch(url: str, *, offline: bool, data: bytes | None = None) -> bytes:
-    """GET (or POST `data`) with a file cache keyed by the request; --offline reads the cache only."""
+def fetch(url: str, *, offline: bool, data: bytes | None = None, valid=None) -> bytes:
+    """GET (or POST `data`) with a file cache keyed by the request; --offline reads the cache only.
+    A body for which `valid(body)` is false raises ValueError and is not cached."""
     key = hashlib.sha256(url.encode() + (data or b"")).hexdigest()[:20]
     path = CACHE / key
     if path.exists():
@@ -75,8 +72,12 @@ def fetch(url: str, *, offline: bool, data: bytes | None = None) -> bytes:
     req = urllib.request.Request(url, data=data, headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=120) as r:
         body = r.read()
+    if valid is not None and not valid(body):
+        raise ValueError(f"{url}: unusable reply, not cached: {body[:200]!r}")
     CACHE.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(body)
+    tmp = path.with_suffix(".part")  # an interrupted write must not leave a truncated cache entry
+    tmp.write_bytes(body)
+    tmp.replace(path)
     return body
 
 
@@ -198,11 +199,12 @@ def osm(offline: bool, M: np.ndarray) -> dict:
     n, e = corners[:, 1].max() + 0.0005, corners[:, 0].max() + 0.0005
     q = f"[out:json][timeout:60];node({s:.5f},{w:.5f},{n:.5f},{e:.5f})[~\".\"~\".\"];out body;"
     body = urllib.parse.urlencode({"data": q}).encode()
-    for attempt in range(3):  # the public Overpass server answers 504 when busy
+    for attempt in range(3):  # when busy, the public Overpass server answers 504, or 200 with a "remark" and no data
         try:
-            raw = json.loads(fetch(OVERPASS, offline=offline, data=body))
+            raw = json.loads(fetch(OVERPASS, offline=offline, data=body,
+                                   valid=lambda b: "remark" not in json.loads(b)))
             break
-        except urllib.error.HTTPError:
+        except (urllib.error.HTTPError, ValueError):
             if attempt == 2:
                 raise
             time.sleep(10)
@@ -376,8 +378,8 @@ def main() -> int:
             "OSM is crowd-sourced; no highway=street_lamp is mapped here",
         ],
     }
-    path = RESULTS / "bgt_street_furniture.json" if args.final else Path("/dev/stdout")
-    write_json(path, out, final=args.final)
+    if args.final:
+        write_json(RESULTS / "bgt_street_furniture.json", out, final=True)
     summary = {k: out[k] for k in ("pole_points_histogram", "poles_with_6_voxels", "pole_points_histogram_by_type",
                                    "poles_with_6_voxels_by_type", "our_objects_vs_bgt")}
     summary["collections"] = {c: (d["n"], d["by_type"]) for c, d in out["collections"].items()}

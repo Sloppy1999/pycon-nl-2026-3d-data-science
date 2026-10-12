@@ -2040,17 +2040,17 @@
    ]
   }
  ],
- "runtime_s": 0.616,
+ "runtime_s": 0.624,
  "runtime_note": "single run, load to paint-back, indicative only",
  "timings_s": {
-  "load": 0.056,
+  "load": 0.057,
   "to_open3d": 0.016,
-  "downsample": 0.083,
+  "downsample": 0.084,
   "remove_ground": 0.081,
-  "cluster": 0.134,
-  "label": 0.146,
+  "cluster": 0.137,
+  "label": 0.151,
   "paint_back": 0.099,
-  "total": 0.616
+  "total": 0.624
  },
  "param_choice": [
   {
@@ -2070,7 +2070,7 @@
    "noise_share": 0.102,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 276,
+    "buildings": 58,
     "vegetation": 683,
     "street_furniture": 3,
     "unlabelled": 62
@@ -2094,7 +2094,7 @@
    "noise_share": 0.0996,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 285,
+    "buildings": 58,
     "vegetation": 683,
     "street_furniture": 3,
     "unlabelled": 60
@@ -2118,7 +2118,7 @@
    "noise_share": 0.1012,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 282,
+    "buildings": 57,
     "vegetation": 682,
     "street_furniture": 3,
     "unlabelled": 71
@@ -2142,7 +2142,7 @@
    "noise_share": 0.107,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 269,
+    "buildings": 58,
     "vegetation": 677,
     "street_furniture": 3,
     "unlabelled": 58
@@ -2166,7 +2166,7 @@
    "noise_share": 0.1011,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 285,
+    "buildings": 58,
     "vegetation": 683,
     "street_furniture": 3,
     "unlabelled": 77
@@ -2190,7 +2190,7 @@
    "noise_share": 0.101,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 276,
+    "buildings": 58,
     "vegetation": 683,
     "street_furniture": 3,
     "unlabelled": 56
@@ -2238,7 +2238,7 @@
    "noise_share": 0.0234,
    "largest_cluster": 52702,
    "n_objects": {
-    "buildings": 92,
+    "buildings": 22,
     "vegetation": 370,
     "street_furniture": 1,
     "unlabelled": 43
@@ -2262,7 +2262,7 @@
    "noise_share": 0.0652,
    "largest_cluster": 46684,
    "n_objects": {
-    "buildings": 294,
+    "buildings": 51,
     "vegetation": 859,
     "street_furniture": 5,
     "unlabelled": 62
@@ -2286,7 +2286,7 @@
    "noise_share": 0.6992,
    "largest_cluster": 2136,
    "n_objects": {
-    "buildings": 521,
+    "buildings": 49,
     "vegetation": 318,
     "street_furniture": 165,
     "unlabelled": 805
@@ -2310,7 +2310,7 @@
    "noise_share": 0.0988,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 288,
+    "buildings": 58,
     "vegetation": 682,
     "street_furniture": 3,
     "unlabelled": 53
@@ -2332,10 +2332,10 @@
    "probability_default_0.99999999": {
     "runs": 5,
     "voxels_differing_from_run_1": [
-     855,
-     865,
-     762,
-     703
+     288,
+     342,
+     482,
+     712
     ]
    },
    "note": "o3d.utility.random.seed(0) before every run. With probability < 1 RANSAC may stop early and the early stop races between threads, so seeded runs differ; with probability=1.0 they agree."

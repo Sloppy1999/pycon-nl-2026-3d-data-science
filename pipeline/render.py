@@ -26,8 +26,8 @@ Conventions:
   the voxel frames would look smoother than the raw frame instead of sparser. With the raw frame's own 3 px the
   only change from f1 to f2 is the number of points, and the gaps of the voxel grid show (coverage of the crop's
   footprint is measured and written too). f6 paints the labels back onto every point and is dense again.
-- The one street furniture object (9 points, 8 voxels) is its own actor at PS_FURNITURE px on f5, f6 and the
-  hook: a deliberate visibility choice, recorded in render_spec.json; at 3 px it is a speck on the slides.
+- The street furniture objects (a few dozen points) are their own actor at PS_FURNITURE px on f5, f6 and the
+  hook: a deliberate visibility choice, recorded in render_spec.json; at 3 px they are specks on the slides.
 """
 
 from __future__ import annotations
@@ -76,7 +76,6 @@ assert (W_WIDE - W_FRAME) % 2 == 0
 # The first example street (until 2026-10-11) used position [123, -106, 398], focal point [99, 120, 4].
 CAMERA = dict(position=[73.5, -17.5, 462.0], focal_point=[105.0, 100.0, 8.0], view_up=[0.0, 0.0, 1.0],
               view_angle=30.0)
-REVIEWED_CAMERA = CAMERA  # one pose only since 2026-10-11 (kept so render_spec.json keeps its shape)
 CLOSEUP_VIEW_ANGLE = 7.5
 # The close-up (slide 5) keeps the camera position and aims the narrow view at the trees and street furniture north-west
 # of the hall (a flat roof would show only a uniform field of points); focal point in crop-local metres.
@@ -298,16 +297,11 @@ def coverage(d: Data, cam: dict) -> dict:
     hall = ((d.v_class == S.BUILDINGS) & (d.V[:, 0] + d.origin[0] >= hx0) & (d.V[:, 0] + d.origin[0] <= hx1)
             & (d.V[:, 1] + d.origin[1] >= hy0) & (d.V[:, 1] + d.origin[1] <= hy1))
     out["jaarbeurs_hall"] = round(float(inside[hall].mean()), 3)
-    sf = d.V[d.v_class == S.STREET_FURNITURE]
-    sf_xy = xy[d.v_class == S.STREET_FURNITURE].mean(axis=0) if len(sf) else None
     plw = probe(W_WIDE, cam)
     wxy, _ = world_to_pixel(plw, d.V)
     plw.close()
     lo, hi = np.percentile(wxy[:, 0], [0.1, 99.9])
     return dict(share_of_voxels_inside_frame=out,
-                street_furniture_px_frame=[round(float(v)) for v in sf_xy] if sf_xy is not None else None,
-                street_furniture_px_wide=(round(float(sf_xy[0] + (W_WIDE - W_FRAME) / 2)) if sf_xy is not None
-                                          else None),
                 wide_empty_columns_left_right=[round(float(lo)), round(float(W_WIDE - hi))],
                 rule="voxels projected with the renderer's camera matrices; inside = more than 20 px from every "
                      "frame edge; wide empty columns = columns left of the 0.1st and right of the 99.9th "
@@ -400,7 +394,6 @@ def anchors_on_class(img: np.ndarray, anchors: dict, col: Colours) -> dict:
 # ----------------------------------------------------------------------------------------------- colours
 class Colours:
     def __init__(self, pal: dict):
-        self.pal = pal
         self.cls = np.stack([hex_rgb(pal[n]) for n in S.CLASS_NAMES])  # index = class code
         self.bg = hex_rgb(pal["background"])
 
@@ -805,7 +798,7 @@ def main() -> int:
     want = (lambda k: full or k in only)
     OUT.mkdir(parents=True, exist_ok=True)
     t_start = time.perf_counter()
-    pal, pal_src = PAL, PALETTE_SOURCE
+    pal = PAL
     col = Colours(pal)
     bg = pal["background"]
     d = Data()
@@ -814,7 +807,6 @@ def main() -> int:
     ramp_vox = ramp_colours(d.V[:, 2], zr, pal["height_ramp"])
     sf_v = d.v_class == S.STREET_FURNITURE
     sf_p = d.p_class == S.STREET_FURNITURE
-    ps_sf_v = ps_sf_p = PS_FURNITURE
     frames, checks, labels = {}, dict(camera_unchanged={}), {}
     imgs = {}
     half = W_WIDE // 2
@@ -865,13 +857,13 @@ def main() -> int:
     bad_cl, excl_info = anchor_excluded_vegetation(d)
     if want("f5"):
         rgb = col.classes(d.v_class)
-        layers = [(d.V[~sf_v], rgb[~sf_v], PS_VOXEL), (d.V[sf_v], rgb[sf_v], ps_sf_v)]
+        layers = [(d.V[~sf_v], rgb[~sf_v], PS_VOXEL), (d.V[sf_v], rgb[sf_v], PS_FURNITURE)]
         img, _, ok = render(layers)
         done("f5", "f5_labels.png", img, ok, points=len(d.V), point_size_px=PS_VOXEL, footprint_coverage=fcov(img),
-             street_furniture_point_size_px=ps_sf_v, street_furniture_visible=sf_visibility(img, col),
+             street_furniture_point_size_px=PS_FURNITURE, street_furniture_visible=sf_visibility(img, col),
              shows="labelling: the four classes on the voxels")
         idrgb = id_colours(d.v_class, d.v_cluster, bad_cl, col)
-        id_img, pl, _ = render([(d.V[~sf_v], idrgb[~sf_v], PS_VOXEL), (d.V[sf_v], idrgb[sf_v], ps_sf_v)], keep=True)
+        id_img, pl, _ = render([(d.V[~sf_v], idrgb[~sf_v], PS_VOXEL), (d.V[sf_v], idrgb[sf_v], PS_FURNITURE)], keep=True)
         assert np.array_equal(np.all(id_img == col.bg, -1), np.all(img == col.bg, -1)), "ID pass differs"
         usable = ~((d.v_class == S.VEGETATION) & (d.v_cluster >= 0) & bad_cl[np.maximum(d.v_cluster, 0)])
         f5_anchor_job = (img, id_img, pl, usable)  # picked after f6, near the f6 anchors (Morph 12 -> 13)
@@ -881,13 +873,13 @@ def main() -> int:
     p_cluster = d.v_cluster[d.p_voxel]
     usable_p = ~((d.p_class == S.VEGETATION) & (p_cluster >= 0) & bad_cl[np.maximum(p_cluster, 0)])
     rgb_p = col.classes(d.p_class)
-    lab_layers = [(d.xyz[~sf_p], rgb_p[~sf_p], PS_RAW), (d.xyz[sf_p], rgb_p[sf_p], ps_sf_p)]
+    lab_layers = [(d.xyz[~sf_p], rgb_p[~sf_p], PS_RAW), (d.xyz[sf_p], rgb_p[sf_p], PS_FURNITURE)]
     idrgb_p = id_colours(d.p_class, p_cluster, bad_cl, col)
-    id_layers = [(d.xyz[~sf_p], idrgb_p[~sf_p], PS_RAW), (d.xyz[sf_p], idrgb_p[sf_p], ps_sf_p)]
+    id_layers = [(d.xyz[~sf_p], idrgb_p[~sf_p], PS_RAW), (d.xyz[sf_p], idrgb_p[sf_p], PS_FURNITURE)]
     if want("f6"):
         img, _, ok = render(lab_layers)
         done("f6", "f6_final.png", img, ok, points=len(d.xyz), point_size_px=PS_RAW, footprint_coverage=fcov(img),
-             street_furniture_point_size_px=ps_sf_p, street_furniture_visible=sf_visibility(img, col),
+             street_furniture_point_size_px=PS_FURNITURE, street_furniture_visible=sf_visibility(img, col),
              shows="visualisation: the voxel labels painted back onto every original point (one KDTree query)")
         id_img, pl, _ = render(id_layers, keep=True)
         labels["f6_final"] = pick_anchors(id_img, pl, d.xyz, d.p_class, usable_p, col, (200, W_FRAME - 200),
@@ -913,7 +905,7 @@ def main() -> int:
         split[:, half:] = lab_w[:, half:]
         split[:, divider_cols] = hex_rgb(OVERLAY["divider"])
         done("hook", "hook_split.png", split, ok1 and ok2, points=len(d.xyz), point_size_px=PS_RAW,
-             street_furniture_point_size_px=ps_sf_p,
+             street_furniture_point_size_px=PS_FURNITURE,
              street_furniture_visible_right_half=sf_visibility(split, col, x_from=half, skip_cols=divider_cols),
              divider=dict(colour=OVERLAY["divider"], px=DIVIDER_PX, columns=[divider_cols[0], divider_cols[-1]]),
              shows="left half: all points on the height ramp; right half: the painted-back labels (as f6)")
@@ -985,7 +977,7 @@ def main() -> int:
         label="FINAL",
         generated_by="pipeline/render.py",
         inputs=dict(labels_npz=str(NPZ.relative_to(ROOT)), labels_npz_sha256=d.npz_sha256, crop=d.crop_file,
-                    pipeline_json_label=d.pipeline.get("label"), palette_source=pal_src),
+                    pipeline_json_label=d.pipeline.get("label"), palette_source=PALETTE_SOURCE),
         versions=dict(python=platform.python_version(), numpy=np.__version__, pyvista=pv.__version__, vtk=vtk_v,
                       scipy=version("scipy"), pillow=version("pillow")),
         coordinates=dict(frame="crop-local metres: xyz - LAS header.mins (as in the slide 8 code)",
@@ -1019,11 +1011,13 @@ def main() -> int:
             raw_and_painted_back=PS_RAW, voxels=PS_VOXEL, street_furniture=PS_FURNITURE,
             street_furniture_actor="own actor drawn after the rest, on f5, f6 and the hook's labelled half",
             street_furniture_reason=(
-                "deliberate visibility choice: the class has one object (observations.street_furniture); at the "
-                "3 px of the other points it is a speck (street_furniture_drawn_alone) that disappears when the "
-                "frame is scaled down on a slide. Drawn larger so it can be seen and labelled; it stays where its "
-                "own points project. Nothing hides it from this camera (compare street_furniture_drawn_alone with "
-                "frames.f6_final.png.street_furniture_visible). The deck's small print states 1 object, 9 points."),
+                f"deliberate visibility choice: the class has {len(d.sf_clusters)} objects, "
+                f"{int(np.count_nonzero(sf_p))} points (observations.street_furniture); at the 3 px of the other "
+                "points they are specks (street_furniture_drawn_alone) that disappear when the frame is scaled down "
+                "on a slide. Drawn larger so they can be seen and labelled; they stay where their own points "
+                "project. Nothing hides them from this camera (compare street_furniture_drawn_alone with "
+                "frames.f6_final.png.street_furniture_visible). The deck's small print reads both numbers from "
+                "results/pipeline.json."),
             street_furniture_drawn_alone=sf_alone,
             voxels_reason=(
                 "voxel frames use the raw frame's 3 px, so f2 differs from f1 only in the number of points. From "

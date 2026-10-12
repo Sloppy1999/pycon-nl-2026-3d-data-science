@@ -58,7 +58,6 @@ class Geometry:
         self._ph: dict[int, dict[int, Box]] = {}
         self._title: dict[int, Box] = {}
         self._bar: dict[int, Box] = {}
-        self._tile: dict[int, Box] = {}
         for li, lay in enumerate(prs.slide_layouts, 1):
             self.layout_names[li] = lay.name
             phs = {}
@@ -74,8 +73,6 @@ class Geometry:
                     continue
                 if sh.name == "Accent bar":
                     self._bar[li] = _box(sh)
-                elif sh.name == "QR tile":
-                    self._tile[li] = _box(sh)
         body = self.ph(4, 1)
         self.margin = body.x                       # 0.600
         self.content_w = body.w                    # 12.133
@@ -103,9 +100,6 @@ class Geometry:
 
     def bar(self, layout: int) -> Box | None:
         return self._bar.get(layout)
-
-    def qr_tile(self, layout: int) -> Box | None:
-        return self._tile.get(layout)
 
     def body(self, layout: int) -> Box:
         """The layout's main content placeholder: idx 1 (L2 to L6, L10), idx 14 (L7, L8) or idx 18 (L9)."""

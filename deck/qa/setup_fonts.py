@@ -47,13 +47,14 @@ def ensure_fonts(verbose: bool = True) -> list[str]:
             continue
         if verbose:
             print("download", name)
+        part = p.with_name(p.name + ".part")  # a broken download never takes the real name
         try:
-            with urllib.request.urlopen(url, timeout=60) as r, open(p, "wb") as fh:
+            with urllib.request.urlopen(url, timeout=60) as r, open(part, "wb") as fh:
                 shutil.copyfileobj(r, fh)
+            part.replace(p)
         except Exception as exc:  # noqa: BLE001 - offline: the render falls back to system fonts; QA must flag it
             notes.append(f"{name} missing and download failed: {exc}")
-            if p.exists() and p.stat().st_size == 0:
-                p.unlink()
+            part.unlink(missing_ok=True)
     return notes
 
 

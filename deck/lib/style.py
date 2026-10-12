@@ -31,7 +31,6 @@ import yaml
 from pptx.dml.color import RGBColor
 
 EMU_PER_IN = 914400
-EMU_PER_PT = 12700
 CONTENT_YAML = Path(__file__).resolve().parents[1] / "content.yaml"
 
 PALETTE_KEYS = ("navy", "blue", "sage", "white", "grey", "slate", "ink", "light")

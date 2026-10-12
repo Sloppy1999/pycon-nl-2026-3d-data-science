@@ -1,5 +1,6 @@
 """trimesh 5.1.0 + interop (laspy -> numpy -> Open3D -> PyVista, trimesh <-> Open3D, trimesh -> PyVista).
-Checks which conversions share memory (zero-copy) and which copy."""
+Checks which conversions share memory (zero-copy) and which copy.
+Run: uv run --group research python docs/research/libraries/06_trimesh_interop.py"""
 import gc
 import time
 import warnings

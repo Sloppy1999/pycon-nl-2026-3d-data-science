@@ -92,6 +92,8 @@ def format_value(v: Any, fmt: str | None) -> str:
     if fmt == "x":
         return (f"{v:.1f}" if abs(v) < 10 else fmt_int(v)) + TIMES
     if fmt == "ms":
+        if v < 1:
+            return f"{v * 1000:.0f}{NBSP}{MICRO}s"
         if v < 10:
             return f"{v:.1f}{NBSP}ms"
         if v < 1000:
@@ -226,10 +228,3 @@ class Resolver:
         if isinstance(obj, list):
             return [self.resolve_tree(v, where) for v in obj]
         return self.resolve(obj, where)
-
-
-def unresolved_in(text: str) -> list[str]:
-    """Tokens that survived resolution (should never happen) and [file.key] placeholders."""
-    out = [m.group(0) for m in TOKEN_RE.finditer(text)]
-    out += re.findall(r"\[(?:pipeline|bench|memory|snippets|research|facts|profile|ft)\.[A-Za-z0-9_.\-]+\]", text)
-    return out

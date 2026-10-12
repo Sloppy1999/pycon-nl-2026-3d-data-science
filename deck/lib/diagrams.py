@@ -1,31 +1,28 @@
-"""Native diagrams for the deck (by content.yaml `build`: ecosystem, chain_lists, filmstrip, handoffs,
-expectation, toll, gotchas, tiles; the Drake rows use render_icon_png).
+"""Native diagrams for the deck (by content.yaml `build`: ecosystem, chain_images, filmstrip, handoffs, toll,
+gotchas, logo_wall).
 
 Every function has the shape ``f(slide, box, spec, style[, extra])``:
 
 * ``box``   (left, top, width, height) in EMU; the diagram is laid out inside it
-* ``spec``  the slide's ``visual`` / ``left`` / ``table`` / ``tiles`` dict from content.yaml, with
+* ``spec``  the slide's ``visual`` / ``left`` / ``table`` dict from content.yaml, with
             an optional resolved ``alt`` string and optional ``name``
 * ``style`` ``lib.style.STYLE`` (``None`` uses it)
 
-All shapes are native (editable) PowerPoint shapes; only the slide 6 icons are pictures (outline
-icons rendered from the Lucide set, see ICON_SET, named in the title slide's notes). Text: Fira Sans for labels,
-Fira Sans SemiBold for headings, Fira Sans Medium for the habit tiles, Fira Mono for code (the PyCon NL site
+All shapes are native (editable) PowerPoint shapes, except the logo and render pictures. Text: Fira Sans for labels,
+Fira Sans SemiBold for headings, Fira Mono for code (the PyCon NL site
 font family, docs/DESIGN.md). Body text >= 20 pt, code >= 18 pt, small print 12 pt. Colours are palette roles
-from lib.style: highlight blue (arrows, ticks, rules, icons), muted grey (outlines, work blocks, greyed bullets),
+from lib.style: highlight blue (arrows, ticks, rules), muted grey (outlines, work blocks, greyed bullets),
 slate for secondary text on white. No dashes in any text produced here.
 Every visible word comes from ``spec`` (content.yaml). There are no built-in default words: a
 missing word is drawn as a visible ``[visual.<key>]`` placeholder (see ``_word``).
 
-Grouping: the ecosystem map, toll diagram, tiles and list column are returned as one group with
+Grouping: the ecosystem map and toll diagram are returned as one group with
 the alt text on the group. The filmstrip is NOT grouped, because its first picture is the Morph
 target (``!!render``) and Morph matching inside groups is UNVERIFIED.
 """
 
 from __future__ import annotations
 
-import io
-import re
 from pathlib import Path
 
 from lxml import etree
@@ -54,81 +51,7 @@ def _word(spec, key):
 
 # Geometry, inches
 RADIUS = 0.08      # corner radius, same in the whole deck
-INSET = 0.20       # text inset in tiles
 GAP = 0.500        # gutter between tiles: the master's column gap (L5 columns, docs/DESIGN.md section 5)
-
-# ------------------------------------------------------------------------------------------
-# Icons: Lucide outline set, rendered locally to PNG (no SVG renderer needed)
-# ------------------------------------------------------------------------------------------
-
-ICON_SET = ("Lucide v1.49.0 (lucide.dev, lucide-static on npm), outline style, stroke 2 on the "
-            "24 px grid, round caps and joins; icons 'check' and 'x' (ISC licence; both derive "
-            "from Feather, MIT licence). Rendered to 512 px PNG by deck/lib/diagrams.py.")
-
-# Path data copied verbatim from lucide-static 1.49.0 icons/check.svg and icons/x.svg
-LUCIDE_PATHS = {
-    "check": ["M20 6 9 17l-5-5"],
-    "x": ["M18 6 6 18", "m6 6 12 12"],
-}
-
-
-def _parse_polyline(d: str):
-    """Minimal SVG path parser for M/m/L/l (with implicit line-tos): enough for Lucide check/x."""
-    tokens = re.findall(r"[MmLl]|-?\d*\.?\d+", d)
-    pts, cmd, cur, i = [], "M", (0.0, 0.0), 0
-    subpaths = []
-    while i < len(tokens):
-        tok = tokens[i]
-        if tok in "MmLl":
-            cmd = tok
-            i += 1
-            continue
-        x, y = float(tokens[i]), float(tokens[i + 1])
-        i += 2
-        rel = cmd.islower()
-        nxt = (cur[0] + x, cur[1] + y) if rel else (x, y)
-        if cmd in "Mm":
-            if pts:
-                subpaths.append(pts)
-            pts = [nxt]
-            cmd = "l" if rel else "L"  # implicit line-to after a move-to
-        else:
-            pts.append(nxt)
-        cur = nxt
-    if pts:
-        subpaths.append(pts)
-    return subpaths
-
-
-def render_icon_png(name: str, color_hex: str, px: int = 512, stroke: float = 2.0) -> bytes:
-    """Render a Lucide outline icon to a transparent PNG (bytes), 4x supersampled."""
-    from PIL import Image, ImageDraw
-
-    ss = 4
-    size = px * ss
-    scale = size / 24.0
-    width = stroke * scale
-    rgb = tuple(int(color_hex.lstrip("#")[k:k + 2], 16) for k in (0, 2, 4))
-    img = Image.new("RGBA", (size, size), rgb + (0,))
-    draw = ImageDraw.Draw(img)
-    r = width / 2
-    ink = rgb + (255,)
-    for d in LUCIDE_PATHS[name]:
-        for poly in _parse_polyline(d):
-            pts = [(x * scale, y * scale) for x, y in poly]
-            for (xa, ya), (xb, yb) in zip(pts, pts[1:]):  # each segment as an exact quad
-                dx, dy = xb - xa, yb - ya
-                ln = (dx * dx + dy * dy) ** 0.5 or 1.0
-                nx, ny = -dy / ln * r, dx / ln * r
-                draw.polygon([(xa + nx, ya + ny), (xb + nx, yb + ny),
-                              (xb - nx, yb - ny), (xa - nx, ya - ny)], fill=ink)
-            for x, y in pts:  # round caps and joins
-                draw.ellipse([x - r, y - r, x + r, y + r], fill=ink)
-    img = img.resize((px, px), Image.LANCZOS)
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return buf.getvalue()
-
 
 # ------------------------------------------------------------------------------------------
 # Text and shape helpers
@@ -563,64 +486,6 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
 
 
 # ------------------------------------------------------------------------------------------
-# Slide 23: three habit tiles
-# ------------------------------------------------------------------------------------------
-
-def add_tiles(slide, box, spec, style=None):
-    """2 to 4 light tiles, the habit in Fira Sans Medium and a small slate reference line ("slides 17 to 19") at
-    the bottom of each tile. No rule or accent per tile: the slide's accent bar is its only decoration.
-
-    Layout keys (all optional, set by the builder, not words): ``tile_h_in`` (default: the
-    master's tall-tile height 2.283 in), ``valign`` "top" | "centre" (default "centre": centred
-    in the box), ``text_pt`` (default 24; with ``fit`` true the largest of 36/32/28/24 pt at
-    which every habit fits in ``max_lines`` lines, default 3), ``ref_pt`` (default 12).
-
-    spec: ``tiles`` [{text, ref?}], ``alt``?, ``name``?
-    """
-    st = Style(style)
-    x0, y0, W, H = emu_box(box)
-    tiles = spec["tiles"]
-    n = len(tiles)
-    tw = (W - (n - 1) * GAP) / n
-    th = min(H, float(spec.get("tile_h_in", 2.283)))
-    ty = y0 if spec.get("valign") == "top" else y0 + (H - th) / 2
-    ref_pt = float(spec.get("ref_pt", 12))
-    text_pt = float(spec.get("text_pt", 24))
-    if spec.get("fit"):
-        text_pt = _fit_tile_text([t["text"] for t in tiles], tw - 2 * INSET, int(spec.get("max_lines", 3)),
-                                 tuple(spec.get("sizes", (36, 32, 28, 24))))
-    name = spec.get("name", "habit_tiles")
-    alt = spec.get("alt") or "Tiles: " + "; ".join(t["text"] for t in tiles)
-    grp = _group(slide, name, alt)
-    S = grp.shapes
-    ref_h = ref_pt * 1.25 / 72 + 0.04
-    for i, t in enumerate(tiles):
-        x = x0 + i * (tw + GAP)
-        tile = _box(S, x, ty, tw, th, fill=st.light, name=f"tile_{i + 1}")
-        _frame(tile.text_frame, anchor=MSO_ANCHOR.TOP,
-               margins=(INSET, INSET + 0.05, INSET, INSET + ref_h + 0.10))
-        _paras(tile.text_frame, st, [{"text": t["text"], "size": text_pt, "font": st.medium_font,
-                                      "color": st.text}])
-        if t.get("ref"):
-            _textbox(S, st, x + INSET, ty + th - INSET - ref_h, tw - 2 * INSET, ref_h,
-                     [{"text": t["ref"], "size": ref_pt, "color": st.text_small}],
-                     anchor=MSO_ANCHOR.BOTTOM, name=f"tile_ref_{i + 1}")
-    return _finish_group(grp, alt, name)
-
-
-def _fit_tile_text(texts, width_in_, max_lines, sizes):
-    """Largest size at which every text wraps to at most ``max_lines`` lines (Fira Sans Medium, measured)."""
-    try:
-        from .measure import wrap_lines
-    except ImportError:  # pragma: no cover
-        from measure import wrap_lines  # type: ignore
-    for size in sizes:
-        if all(len(wrap_lines(t, size, width_in_, font="medium", bold=False)) <= max_lines for t in texts):
-            return size
-    return sizes[-1]
-
-
-# ------------------------------------------------------------------------------------------
 # Slide 22: gotcha table
 # ------------------------------------------------------------------------------------------
 
@@ -704,72 +569,6 @@ def add_gotcha_table(slide, box, spec, style=None):
             etree.SubElement(tcPr, qn("a:noFill"))
     set_alt(gf, spec.get("alt"), spec.get("name", "gotcha_table"))
     return [gf]
-
-
-# ------------------------------------------------------------------------------------------
-# Slide 6: list column with an outline icon
-# ------------------------------------------------------------------------------------------
-
-def add_list_column(slide, box, spec, style=None, icon_in=0.45):
-    """Heading (Fira Sans SemiBold) next to an outline icon (Lucide check / x, PNG 512 px), then the items
-    (Fira Sans, blue round bullets as in the master's body style). ``muted: true`` sets the heading, items and
-    icon in slate (text on white must not be grey) and the bullets in grey. Keep ``icon_in`` the same for every
-    column on a slide.
-
-    spec: ``heading``, ``icon`` ("check" | "x" | None), ``items`` [str], ``muted``?, ``alt``?, ``name``?;
-    sizes (set by the builder, not words): ``heading_pt`` (default 24), ``item_pt`` (default 20),
-    ``item_gap_pt`` (space before items 2.., default 10).
-    """
-    st = Style(style)
-    x0, y0, W, H = emu_box(box)
-    muted = bool(spec.get("muted"))
-    text_c = st.text_small if muted else st.text
-    icon_hex = st.hex["text_small"] if muted else st.hex["highlight"]
-    bullet_hex = st.hex["muted"] if muted else st.hex["highlight"]
-    head_pt = float(spec.get("heading_pt", 24))
-    item_pt = float(spec.get("item_pt", 20))
-    gap_pt = float(spec.get("item_gap_pt", 10))
-    name = spec.get("name", f"list_{spec.get('icon') or 'plain'}")
-    alt = spec.get("alt") or f"{spec['heading']}: " + "; ".join(spec.get("items", []))
-    grp = _group(slide, name, alt)
-    S = grp.shapes
-    head_h = max(icon_in, head_pt * 1.25 / 72 + 0.05)
-    hx = x0
-    if spec.get("icon"):
-        png = render_icon_png(spec["icon"], icon_hex)
-        pic = S.add_picture(io.BytesIO(png), inch(x0), inch(y0 + (head_h - icon_in) / 2),
-                            inch(icon_in), inch(icon_in))
-        label = {"check": "Check mark icon", "x": "Cross icon"}.get(spec["icon"], spec["icon"])
-        set_alt(pic, label, f"{name}_icon")
-        hx = x0 + icon_in + 0.18
-    _textbox(S, st, hx, y0, x0 + W - hx, head_h,
-             [{"text": spec["heading"], "size": head_pt, "font": st.title_font,
-               "color": text_c}], anchor=MSO_ANCHOR.MIDDLE, name=f"{name}_heading")
-    tb = S.add_textbox(inch(x0), inch(y0 + head_h + 0.20), inch(W), inch(max(0.5, H - head_h - 0.20)))
-    tb.name = f"{name}_items"
-    tf = _frame(tb.text_frame)
-    for i, item in enumerate(spec.get("items", [])):
-        p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
-        p.space_before = Pt(0 if i == 0 else gap_pt)
-        pPr = p._p.get_or_add_pPr()
-        pPr.set("marL", str(int(0.30 * 914400)))
-        pPr.set("indent", str(int(-0.30 * 914400)))
-        bc = etree.SubElement(pPr, qn("a:buClr"))
-        etree.SubElement(bc, qn("a:srgbClr"), val=bullet_hex)
-        etree.SubElement(pPr, qn("a:buFont"), typeface=st.minor)
-        etree.SubElement(pPr, qn("a:buChar"), char="\u2022")
-        _add_runs(p, item, st, size=item_pt, color=text_c)
-    return _finish_group(grp, alt, name)
-
-
-def list_column_height(spec, icon_in=0.45) -> float:
-    """Height in inches that add_list_column needs for ``spec`` (one line per item)."""
-    head_pt = float(spec.get("heading_pt", 24))
-    item_pt = float(spec.get("item_pt", 20))
-    gap_pt = float(spec.get("item_gap_pt", 10))
-    head_h = max(icon_in, head_pt * 1.25 / 72 + 0.05)
-    n = len(spec.get("items", []))
-    return head_h + 0.20 + n * item_pt * 1.2 / 72 + max(0, n - 1) * gap_pt / 72
 
 
 # ------------------------------------------------------------------------------------------
@@ -859,51 +658,8 @@ def add_handoff_rows(slide, box, spec, style=None):
     return _finish_group(grp, alt, name)
 
 
-# ------------------------------------------------------------------------------------------
-# Expectation vs reality slide: the "expectation" panel, a street with a row of lamp posts
-# ------------------------------------------------------------------------------------------
-
-def add_lamp_street(slide, box, spec, style=None):
-    """A navy panel (the renders' background) with a slate street across its lower third and ``posts`` lamp
-    posts standing along it: white poles and arms, a white lamp with a sage glow. Palette shapes only; one group
-    with the alt text.
-
-    spec: ``posts`` (default 4), ``alt``?, ``name``?   Returns [group].
-    """
-    st = Style(style)
-    x0, y0, W, H = emu_box(box)
-    n = int(spec.get("posts", 4))
-    name = spec.get("name", "expectation_street")
-    alt = spec.get("alt") or "A street with a row of lamp posts"
-    grp = _group(slide, name, alt)
-    S = grp.shapes
-    _box(S, x0, y0, W, H, fill=st.navy, rounded=False, name=f"{name}_sky")
-    street_y = y0 + H * 0.66
-    _box(S, x0, street_y, W, y0 + H - street_y, fill=st.slate, rounded=False, name=f"{name}_street")
-    _box(S, x0, street_y, W, 0.05, fill=st.grey, rounded=False, name=f"{name}_kerb")
-    step = W / n
-    pole_h = H * 0.42
-    for i in range(n):
-        cx = x0 + step * (i + 0.35)          # poles left of centre: the arm and lamp reach right
-        base = street_y
-        top = base - pole_h
-        _box(S, cx - 0.03, top, 0.06, pole_h, fill=st.white, rounded=False, name=f"{name}_pole_{i + 1}")
-        _box(S, cx - 0.03, top, 0.24, 0.05, fill=st.white, rounded=False, name=f"{name}_arm_{i + 1}")
-        for r_, col, nm in ((0.15, st.sage, "glow"), (0.08, st.white, "lamp")):
-            lamp = S.add_shape(MSO_SHAPE.OVAL, inch(cx + 0.21 - r_), inch(top + 0.10 - r_), inch(2 * r_),
-                               inch(2 * r_))
-            lamp.fill.solid()
-            lamp.fill.fore_color.rgb = col
-            lamp.line.fill.background()
-            lamp.shadow.inherit = False
-            lamp.name = f"{name}_{nm}_{i + 1}"
-    return _finish_group(grp, alt, name)
-
-
-__all__ = ["add_ecosystem_map", "add_filmstrip", "add_toll_diagram", "add_tiles",
-           "add_gotcha_table", "add_list_column", "list_column_height", "add_chain", "render_icon_png",
-           "add_handoff_rows", "add_lamp_street", "ICON_SET", "LUCIDE_PATHS",
-           "DEFAULT_WORDS", "FRAME_ASPECT"]
+__all__ = ["add_ecosystem_map", "add_filmstrip", "add_toll_diagram", "add_gotcha_table", "add_chain",
+           "add_handoff_rows", "DEFAULT_WORDS", "FRAME_ASPECT"]
 
 
 # ------------------------------------------------------------------------------------------
@@ -952,9 +708,9 @@ def add_logo_wall(slide, box, spec, style=None, logos_dir=None):
         for ci, item in enumerate(row["items"]):
             x = x_start + ci * (tw + gap)
             used = bool(item.get("used"))      # used in the talk's pipeline: blue 2.25 pt outline
-            tile = _box(S, x, y, tw, th, fill=st.light if company else st.white,
-                        line=st.highlight if used else st.light, line_w=2.25 if used else 1.0,
-                        name=f"wall_tile_{ri + 1}_{ci + 1}")
+            _box(S, x, y, tw, th, fill=st.light if company else st.white,
+                   line=st.highlight if used else st.light, line_w=2.25 if used else 1.0,
+                   name=f"wall_tile_{ri + 1}_{ci + 1}")
             path = ldir / item["file"] if ldir and item.get("file") else None
             if path is not None and path.is_file():
                 with Image.open(path) as im:

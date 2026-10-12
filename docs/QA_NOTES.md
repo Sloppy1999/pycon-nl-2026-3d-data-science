@@ -172,8 +172,7 @@ placeholders: repo URL, QR code, contact, PyCon NL logo, the slide 22 gotchas, t
 - [x] No text overflows its box or the slide: all 28 renders inspected at full resolution after the final build.
   With PowerPoint and the Fira fonts on the presenting laptop: UNVERIFIED (OPEN_ITEMS e).
 - [x] No dashes: `no_dashes` and `notes_no_dashes` pass. en-GB on every run (`lang_en_gb`, chart text included).
-- [x] Icons in outline style, same size per slide, icon set named: slide 6 uses Lucide `check` and `x`, both 0.45 in;
-  set, version and licence in the title slide's notes.
+- [x] Icons: the deck uses none (the Lucide `check` and `x` icons left with the slides that drew them).
 - [x] `validate.py ... --original pycon_nl_2026_master.pptx` without new errors: passed.
 - [x] File name `20261015_PyCon-NL_3D-Data-Science.pptx`, delivered as .pptx plus PDF. The PDF in `deck/out/` is a
   LibreOffice export; the final PDF should be exported from PowerPoint (OPEN_ITEMS e).
@@ -306,8 +305,7 @@ Creative Commons Naamsvermelding 4.0"), the Nationaal Georegister record `4995e3
 - The close-up render (slide 4) shows the roof junction of a building (renders build report); at this density
   nothing in it can identify a person.
 
-**Other third-party material:** Lucide icons (ISC; `check` and `x` derive from Feather, MIT), named in the title
-slide's notes. Fira Sans and Fira Mono (SIL OFL 1.1) are the deck fonts; the QA copies live in `deck/qa/fonts/`, git-ignored. The BAG and PDOK
+**Other third-party material:** Fira Sans and Fira Mono (SIL OFL 1.1) are the deck fonts; the QA copies live in `deck/qa/fonts/`, git-ignored. The BAG and PDOK
 lookups for the venue check appear only in a research file, not on a slide. The talk title is shared with Florent
 Poux's O'Reilly book (2025); the optional credit on slide 24 is the speaker's decision (OPEN_ITEMS d5).
 

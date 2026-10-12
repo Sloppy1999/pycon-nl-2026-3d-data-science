@@ -60,11 +60,6 @@
      "unlabelled": 0.992,
      "jaarbeurs_hall": 1.0
     },
-    "street_furniture_px_frame": [
-     403,
-     628
-    ],
-    "street_furniture_px_wide": 1704,
     "wide_empty_columns_left_right": [
      1260,
      1264
@@ -141,7 +136,7 @@
   "voxels": 3,
   "street_furniture": 24,
   "street_furniture_actor": "own actor drawn after the rest, on f5, f6 and the hook's labelled half",
-  "street_furniture_reason": "deliberate visibility choice: the class has one object (observations.street_furniture); at the 3 px of the other points it is a speck (street_furniture_drawn_alone) that disappears when the frame is scaled down on a slide. Drawn larger so it can be seen and labelled; it stays where its own points project. Nothing hides it from this camera (compare street_furniture_drawn_alone with frames.f6_final.png.street_furniture_visible). The deck's small print states 1 object, 9 points.",
+  "street_furniture_reason": "deliberate visibility choice: the class has 3 objects, 53 points (observations.street_furniture); at the 3 px of the other points they are specks (street_furniture_drawn_alone) that disappear when the frame is scaled down on a slide. Drawn larger so they can be seen and labelled; they stay where their own points project. Nothing hides them from this camera (compare street_furniture_drawn_alone with frames.f6_final.png.street_furniture_visible). The deck's small print reads both numbers from results/pipeline.json.",
   "street_furniture_drawn_alone": {
    "3_px": {
     "pixels": 191,
@@ -1239,5 +1234,5 @@
   },
   "known_errors_from_pipeline": []
  },
- "seconds": 16.1
+ "seconds": 16.3
 }
