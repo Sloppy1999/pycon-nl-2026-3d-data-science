@@ -1,5 +1,19 @@
 # 3D Data Science with Python (PyCon NL 2026)
 
+![The pipeline on the Jaarbeurs crop: load, ground removal, clusters, labels](docs/img/pipeline.png)
+
+*One 200 m AHN5 crop around the Jaarbeurs hall in Utrecht (722 961 points), seen from above: the raw points,
+the ground found by tiled RANSAC, DBSCAN clusters, and the final labels. Rebuild the picture with
+`uv run python docs/img/make_readme_banner.py`.*
+
+| | |
+|---|---|
+| Points in, after 0.5 m voxel downsampling | 722 961, 232 180 |
+| Ground vs AHN class 2 | precision 0.98, recall 0.94 |
+| Buildings vs AHN class 6 | precision 0.83 (a lower bound, AHN files many facade points elsewhere), recall 0.99 |
+| Objects found | 58 building roofs, 683 vegetation clusters, 3 street furniture |
+| Whole pipeline, load to paint-back | 0.6 s on one laptop |
+
 Everything behind the 30-minute talk "3D Data Science with Python" by Sergio Peral at PyCon NL 2026 (15 October,
 Jaarbeurs Utrecht): the Jaarbeurs hall in Utrecht and its surroundings, scanned from the air for AHN, turned into labelled objects (ground,
 buildings, vegetation, street furniture) entirely in Python, plus the benchmarks behind the performance and memory
