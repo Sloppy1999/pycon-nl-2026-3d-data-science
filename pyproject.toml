@@ -31,6 +31,9 @@ ml = [
 profile = [
     "scalene>=2.3.0",
 ]
+test = [
+    "pytest>=8",
+]
 figures = [
     "matplotlib>=3.11",  # deck/concepts/make_figures.py only
 ]
