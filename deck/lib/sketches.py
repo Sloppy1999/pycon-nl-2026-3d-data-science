@@ -543,25 +543,26 @@ def add_line_profile(slide, box, spec, style=None):
     S = grp.shapes
     tag_w = max((_width(r.get("tag") or "", 20) for r in rows), default=0) + 0.25
     code_w = max(len(r["code"]) for r in rows) * 0.6 * pt / 72 + 0.25            # Fira Mono advance 0.6 em
-    pct_w = max(_width(r["total_text"], 20, bold=True) for r in rows) + 0.15
+    pct_w = max(_width(r["total_text"], 28, bold=True) for r in rows) + 0.15
+    time_w = max((_width(r.get("time_text", ""), 24) for r in rows), default=0) + 0.2
     bar_x = x0 + tag_w + code_w
-    bar_w = W - tag_w - code_w - pct_w - 0.15
+    bar_w = W - tag_w - code_w - pct_w - time_w - 0.15
     # legend row on top: swatch + word, right-aligned over the bar area
-    colours = {"python": st.navy, "native": st.highlight, "system": st.slate}
-    lh = 0.34
-    leg_w = sum(0.28 + _width(spec["legend"][k], 20) + 0.1 + 0.30 for k in ("python", "native", "system")) - 0.30
+    colours = {"python": st.navy, "native": st.highlight, "system": st.grey}   # grey: distinct from navy, bars are non-text
+    lh = 0.40
+    leg_w = sum(0.34 + _width(spec["legend"][k], 22) + 0.1 + 0.40 for k in ("python", "native", "system")) - 0.40
     lx = x0 + W - leg_w                      # right-aligned: the legend must not run off the slide
     for k in ("python", "native", "system"):
         word = spec["legend"][k]
-        _box(S, lx, y0 + 0.07, 0.20, 0.20, fill=colours[k], rounded=False, name=f"legend {k} swatch")
-        ww = _width(word, 20) + 0.1
-        _textbox(S, st, lx + 0.28, y0, ww, lh, [{"text": word, "size": 20, "color": st.text}],
+        _box(S, lx, y0 + 0.07, 0.26, 0.26, fill=colours[k], rounded=False, name=f"legend {k} swatch")
+        ww = _width(word, 22) + 0.1
+        _textbox(S, st, lx + 0.34, y0, ww, lh, [{"text": word, "size": 22, "color": st.text}],
                  anchor=MSO_ANCHOR.MIDDLE, wrap=False, name=f"legend {k}")
-        lx += 0.28 + ww + 0.30
+        lx += 0.34 + ww + 0.40
     gap_h = 0.14
     n_gaps = sum(1 for r in rows if r.get("gap"))
     top = y0 + lh + 0.12
-    rh = min(0.62, (H - (top - y0) - n_gaps * gap_h) / len(rows))
+    rh = min(0.85, (H - (top - y0) - n_gaps * gap_h) / len(rows))
     y = top
     for r in rows:
         if r.get("gap"):
@@ -580,8 +581,12 @@ def add_line_profile(slide, box, spec, style=None):
             bx += w_k
         tot = float(r["python"]) + float(r["native"]) + float(r["system"])
         _textbox(S, st, bar_x + bar_w * min(tot, 100.0) / 100.0 + 0.12, y, pct_w, rh,
-                 [{"text": r["total_text"], "size": 20, "color": st.highlight if r.get("key") else st.text,
+                 [{"text": r["total_text"], "size": 28 if r.get("key") else 20, "color": st.highlight if r.get("key") else st.text,
                    "bold": bool(r.get("key"))}], anchor=MSO_ANCHOR.MIDDLE, wrap=False, name="share")
+        if r.get("time_text"):                   # time on the line, after the share
+            tx = bar_x + bar_w * min(tot, 100.0) / 100.0 + 0.12 + _width(r["total_text"], 28 if r.get("key") else 20, bold=bool(r.get("key"))) + 0.2
+            _textbox(S, st, tx, y, time_w, rh, [{"text": r["time_text"], "size": 24, "color": st.text_small}],
+                     anchor=MSO_ANCHOR.MIDDLE, wrap=False, name="time")
         y += rh
     return _finish_group(grp, alt, name)
 
@@ -624,3 +629,61 @@ def add_spec_table(slide, box, spec, style=None):
 
 __all__ = ["add_step_sketch", "add_copy_view_legend", "copy_view_legend_height", "add_rule_tiles", "add_line_profile",
            "add_spec_table", "add_step_table"]
+
+
+# ------------------------------------------------------------------------------------------
+# chunk stream (slide 27)
+# ------------------------------------------------------------------------------------------
+
+def add_chunk_stream(slide, box, spec, style=None):
+    """Four chunks of points read one after the other, each on a 3 x 3 voxel grid with its first point per voxel
+    in blue, then the kept points (earliest chunk wins). spec: ``chunk_labels`` (4 words), ``kept_label``, ``alt``,
+    ``name``?   Returns [group]."""
+    st = Style(style)
+    x0, y0, W, H = emu_box(box)
+    name = spec.get("name", "Chunk stream")
+    alt = spec.get("alt") or "Chunks of points, the first point per voxel kept"
+    grp = _group(slide, name, alt)
+    S = grp.shapes
+    labels = spec["chunk_labels"]
+    n, gap, rw, arrow_w, cells = len(labels), 0.10, 1.25, 0.45, 3
+    ch = H - CAPTION_PT * 1.2 / 72 - 0.08
+    cw = (W - rw - arrow_w - (n - 1) * gap) / n
+    seed, kept = 7, {}
+
+    def grid(gx, gy, w, h, fill, line):
+        _box(S, gx, gy, w, h, fill=fill, line=line, line_w=2.25 if line is st.blue else 0.75, name="chunk")
+        for c in range(1, cells):
+            _connector(S, gx + c * w / cells, gy + 0.04, gx + c * w / cells, gy + h - 0.04, st.grey, 0.5, name="grid v")
+            _connector(S, gx + 0.04, gy + c * h / cells, gx + w - 0.04, gy + c * h / cells, st.grey, 0.5, name="grid h")
+
+    for i in range(n):
+        gx = x0 + i * (cw + gap)
+        grid(gx, y0, cw, ch, st.white if i == 0 else st.blue_tint, st.blue if i == 0 else None)
+        seen = set()
+        for _ in range(14):                      # fixed pseudo-random points, the same on every build
+            seed = (seed * 1103515245 + 12345) % 2 ** 31
+            u = 0.08 + 0.84 * (seed % 1000) / 1000
+            seed = (seed * 1103515245 + 12345) % 2 ** 31
+            v = 0.08 + 0.84 * (seed % 1000) / 1000
+            cell = (int(u * cells), int(v * cells))
+            px, py = gx + u * cw, y0 + v * ch
+            if cell in seen:
+                _dot(S, px, py, 0.06, st.grey, name="point")
+            else:
+                seen.add(cell)
+                _dot(S, px, py, 0.13, st.blue, line=st.white, name="first point")
+                kept.setdefault(cell, (u, v))    # earliest chunk wins
+        _textbox(S, st, gx, y0 + ch + 0.06, cw, CAPTION_PT * 1.2 / 72,
+                 [{"text": labels[i], "size": CAPTION_PT, "color": st.slate if i else st.navy, "bold": i == 0}],
+                 align=PP_ALIGN.CENTER, wrap=False, name=f"label {i + 1}")
+    rx = x0 + W - rw
+    _connector(S, x0 + W - rw - arrow_w + 0.05, y0 + ch / 2, rx - 0.05, y0 + ch / 2, st.blue, 3.0, arrow=True,
+               name="to kept")
+    grid(rx, y0, rw, ch, st.white, st.blue)
+    for u, v in kept.values():
+        _dot(S, rx + u * rw, y0 + v * ch, 0.13, st.blue, line=st.white, name="kept point")
+    _textbox(S, st, rx - 0.2, y0 + ch + 0.06, rw + 0.4, CAPTION_PT * 1.2 / 72,
+             [{"text": spec["kept_label"], "size": CAPTION_PT, "color": st.navy, "bold": True}],
+             align=PP_ALIGN.CENTER, wrap=False, name="label kept")
+    return _finish_group(grp, alt, name)

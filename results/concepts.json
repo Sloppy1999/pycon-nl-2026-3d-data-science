@@ -138,5 +138,11 @@
     },
     "pairwise_gb_crop": 3894.214388139546,
     "xyz_gb_big_file": 20.702257856726646
+  },
+  "load_origin": {
+    "x_rd_m": 135914.6,
+    "x_local_m": 199.6,
+    "float32_step_rd_cm": 1.6,
+    "float32_step_local_um": 15
   }
 }

@@ -301,9 +301,48 @@ def c6():
                    "pairwise_gb_crop": marks[0][1] ** 2 * 8 / gib, "xyz_gb_big_file": marks[2][1] * 24 / gib}
 
 
+# ------------------------------------------------------------------ slide 12: the same points, before and after the origin shift
+def load_origin():
+    """Two strips on one picture: the crop's points 135 914 m from the RD origin, then after `- header.mins`."""
+    las = laspy.read(CROP)
+    mins = np.array(las.header.mins)
+    xyz = np.column_stack([las.x, las.y])[::600]
+    loc = xyz - mins[:2]
+    x0 = float(las.x[0])
+    step_rd, step_loc = (float(np.spacing(np.float32(v))) for v in (x0, x0 - mins[0]))
+    W, H = 8.3, 1.85
+    fig = plt.figure(figsize=(W, H))
+    pw = 0.58                                              # strips take the left 60 %, the note box the rest
+    for k, (label, lo, hi, pts, tick) in enumerate([
+            ("RD", 0, 150_000, xyz, f"{x0:,.1f} m".replace(",", "\u202f")),
+            ("local", 0, 200, loc, "200 m")]):
+        ax = fig.add_axes([0.04, 0.60 - 0.60 * k, pw - 0.03, 0.38])
+        ax.set(xlim=(lo, hi), ylim=(0, 1), clip_on=False)
+        ax.set_axis_off()
+        ax.plot([lo, hi], [0.0, 0.0], color=C["grey"], lw=1.5)
+        y = (pts[:, 1] - pts[:, 1].min()) / np.ptp(pts[:, 1]) * 0.8 + 0.1
+        ax.scatter(pts[:, 0], y, s=9, c=C["blue"], linewidths=0)
+        ax.text(lo - (hi - lo) * 0.012, 0.5, "0", ha="right", va="center", fontsize=18, color=C["slate"])
+        ax.text(pts[:, 0].min() - (hi - lo) * 0.015, 0.5, tick if k == 0 else "", ha="right", va="center",
+                fontsize=18, weight="semibold", color=C["navy"])
+    fig.text(0.04 + pw / 2, 0.50, "\u2193  \u2212 header.mins", ha="center", va="center", fontsize=18,
+             family="Fira Mono", color=C["navy"])
+    box = plt.Rectangle((0.66, 0.10), 0.33, 0.80, transform=fig.transFigure, facecolor=C["blue_tint"],
+                        edgecolor=C["blue"], linewidth=1.5, joinstyle="round")
+    fig.add_artist(box)
+    fig.text(0.825, 0.80, "float32 step", ha="center", va="center", fontsize=18, color=C["slate"])
+    fig.text(0.825, 0.50, f"{step_rd * 100:.1f} cm \u2192\nafter origin shift:", ha="center", va="center",
+             fontsize=18, color=C["navy"])
+    fig.text(0.825, 0.22, f"{step_loc * 1e6:.0f} \u00b5m", ha="center", va="center", fontsize=24, weight="bold",
+             color=C["navy"])
+    save(fig, "f1_load_origin.png")
+    FACTS["load_origin"] = {"x_rd_m": round(x0, 1), "x_local_m": round(x0 - float(mins[0]), 1),
+                            "float32_step_rd_cm": round(step_rd * 100, 1), "float32_step_local_um": round(step_loc * 1e6)}
+
+
 def main():
     setup()
-    for fn in (c1, c2, c3, c4, c5, c6):
+    for fn in (c1, c2, c3, c4, c5, c6, load_origin):
         fn()
     (TALK / "results" / "concepts.json").write_text(json.dumps(FACTS, indent=2) + "\n", encoding="utf-8")
     print("wrote", ", ".join(sorted(p.name for p in OUT.glob("*.png"))))

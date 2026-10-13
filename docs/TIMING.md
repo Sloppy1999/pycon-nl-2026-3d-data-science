@@ -37,7 +37,7 @@ seconds). The older tables further down are the 2026-10-04 snapshot with the old
 | 1 | 3D Data Science with Python | Hook | 20 | 0:00 | 0:20 | 126 |
 | 2 | 3D used to mean C++. Not anymore | Hook | 35 | 0:20 | 0:55 | 153 |
 | 3 | Python is the interface. C++ does the work | Hook | 30 | 0:55 | 1:25 | 126 |
-| 4 | The Python 3D ecosystem at a glance | Hook | 30 | 1:25 | 1:55 | 160 |
+| 4 | The Python 3D ecosystem | Hook | 30 | 1:25 | 1:55 | 160 |
 | 5 | Today's case: the Jaarbeurs hall, from a plane | Hook | 65 | 1:55 | 3:00 | 113 |
 | 6 | One object, three representations | Hook | 40 | 3:00 | 3:40 | 124 |
 | 7 | A 3D project moves through six stages | Hook | 65 | 3:40 | 4:45 | 96 |
@@ -92,7 +92,7 @@ seconds. Slide 27's count is its placeholder text only.
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | 3D Data Science with Python | Hook | 20 | 0:00 | 0:20 |  |  | 42 | 126 |
 | 2 | 3D used to mean C++. Not anymore | Hook | 25 | 0:20 | 0:45 |  |  | 54 | 130 |
-| 3 | The Python 3D ecosystem at a glance | Hook | 30 | 0:45 | 1:15 |  |  | 67 | 134 |
+| 3 | The Python 3D ecosystem | Hook | 30 | 0:45 | 1:15 |  |  | 67 | 134 |
 | 4 | The Jaarbeurs hall, scanned from a plane | Hook | 80 | 1:15 | 2:35 |  |  | 100 | 75 |
 | 5 | A point cloud is just an N×3 array | Hook | 80 | 2:35 | 3:55 |  |  | 76 | 57 |
 | 6 | No single library does the whole job | Landscape | 65 | 3:55 | 5:00 |  |  | 82 | 76 |

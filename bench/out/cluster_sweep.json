@@ -1,0 +1,60 @@
+{
+  "kmeans": {
+    "64": {
+      "clusters": 64,
+      "noise_share": 0.0,
+      "seconds": 0.3,
+      "ari": 0.119
+    },
+    "256": {
+      "clusters": 256,
+      "noise_share": 0.0,
+      "seconds": 0.8,
+      "ari": 0.04
+    },
+    "1024": {
+      "clusters": 1024,
+      "noise_share": 0.0,
+      "seconds": 3.7,
+      "ari": 0.013
+    },
+    "4096": {
+      "clusters": 4096,
+      "noise_share": 0.0,
+      "seconds": 25.7,
+      "ari": 0.004
+    }
+  },
+  "hdbscan": {
+    "3": {
+      "clusters": 7452,
+      "noise_share": 0.188,
+      "seconds": 76.8,
+      "ari": 0.397
+    },
+    "6": {
+      "clusters": 636,
+      "noise_share": 0.056,
+      "seconds": 75.1,
+      "ari": 0.886
+    },
+    "12": {
+      "clusters": 206,
+      "noise_share": 0.039,
+      "seconds": 74.7,
+      "ari": 0.862
+    },
+    "24": {
+      "clusters": 121,
+      "noise_share": 0.072,
+      "seconds": 74.2,
+      "ari": 0.865
+    },
+    "48": {
+      "clusters": 86,
+      "noise_share": 0.113,
+      "seconds": 74.2,
+      "ari": 0.828
+    }
+  }
+}

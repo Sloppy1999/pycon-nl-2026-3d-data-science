@@ -1,9 +1,9 @@
-# Speaker notes for the 32 main slides of "3D Data Science with Python" (PyCon NL 2026).
+# Speaker notes for the 28 main slides of "3D Data Science with Python" (PyCon NL 2026).
 # Approved storyboard: ../storyboard.md. On-screen words: content.yaml. Interfaces: ../CONTRACTS.md.
 #
 # Keys per slide (all required unless marked optional):
-#   n            slide number (1 to 32), same as content.yaml
-#   seconds      spoken time; equals content.yaml seconds; the 32 values sum to 1800
+#   n            slide number (1 to 28), same as content.yaml
+#   seconds      spoken time; equals content.yaml seconds; the 28 values sum to the talk length
 #   ends_at      cumulative clock at the end of the slide (mm:ss), for rehearsal
 #   talk_track   first person, 2 to 5 short sentences, ends with the transition to the next slide
 #   question     the likely question or objection
@@ -11,11 +11,11 @@
 #   trace        files the slide's code, numbers or render come from (CONTRACTS.md paths)
 #   joke         optional: the humour line(s) of the slide (also inside talk_track or on the slide), for QA
 #   checkpoint   optional: timing checkpoint (slides 18 and 26); presenter view only, never spoken
-#   skip         optional: what to say if the slide is skipped (skip-first list: 26, 25, 27, 18, 11)
+#   skip         optional: what to say if the slide is skipped (skip-first list: 26, 25, 18, 11)
 #   checks       optional: things to confirm before the talk. An item can be a plain string, or a conditional
 #                claim {if: "<file.key> <op> <value>", then: "...", else: "..."}: build_deck.py evaluates it
 #                against results/*.json and prints "then" when it holds, "else" otherwise (or when missing).
-#   candidate_gotchas  slide 28 only: gotchas observed in testing, CANDIDATES for the speaker to confirm
+#   candidate_gotchas  removed with the old slides 27 to 29: gotchas observed in testing, CANDIDATES for the speaker to confirm
 #
 # Suggested presenter-view rendering (deck/build_deck.py):
 #   <talk_track>
@@ -88,6 +88,7 @@ slides:
   trace:
   - 'deck/assets/meme/python_cpp_unmasking.png: the Scooby-Doo unmasking template with the Python and C++ logos added'
   - 'Logos: Wikimedia Commons, Python-logo-notext.svg and ISO_C++_Logo.svg'
+  - 'Credit (was the slide caption, moved here 2026-10-13): meme template: the Scooby-Doo unmasking scene (Hanna-Barbera). Python and C++ logos belong to their owners; no endorsement implied.'
   checks:
   - 'NumPy is mostly C (its core), with C++ in parts and BLAS/LAPACK underneath; the slide says "a compiled C core, with
     some C++" on purpose. Say "C++" for Open3D and VTK, which are C++ throughout'
@@ -114,6 +115,7 @@ slides:
   - Logos are in their own colours (an exception to the palette, docs/DESIGN.md); the tiles are white or light grey so each
     logo stays legible
   trace:
+  - 'Small print: Blue outline: used in today''s pipeline. Logos belong to their owners; no endorsement implied. {eco.n_entries|int} libraries checked on PyPI and GitHub: docs/ECOSYSTEM.md in the repo.'
   - 'deck/ecosystem/ecosystem.yaml (merged by deck/ecosystem/merge.py from part1 to part3; each entry''s evidence list:
     PyPI JSON and GitHub API, 2026-10-11)'
   - 'results/ecosystem.json: n_entries'
@@ -125,9 +127,9 @@ slides:
   - 'VTK: PyVista''s engine, drawn under it'
   - 'PDAL: the standard LiDAR pipeline tool for AHN and COPC files (backup B2 territory); pyproj: RD New (EPSG:28992) to
     and from WGS84, slide 5; laspy''s header.parse_crs() needs it'
-  - Numba (B1, the escape hatch for a kernel that has no batched call) and Dask (arrays bigger than RAM, slides 26 to 28)
-  - 'trimesh and PyTorch3D: named on slide 9 as not in this pipeline; scikit-learn: the Random Forest of backup B5; PyTorch:
-    backup B3'
+  - Numba (B1, the escape hatch for a kernel that has no batched call) and Dask (arrays bigger than RAM, slide 26)
+  - 'trimesh and PyTorch3D: named on slide 9 as not in this pipeline; scikit-learn: the Random Forest of backup B5. PyTorch (backup B3)
+    is dropped from the wall, PyTorch3D covers the Learn row'
   - 'Dropped on 2026-10-12 as not relevant to this talk: Potree, CloudCompare and QGIS (not Python libraries), GDAL (rasters),
     OpenCV, COLMAP and nerfstudio (images and photogrammetry), Matplotlib (not used), PyG and Pointcept (deep learning on
     point clouds, not covered)'
@@ -143,7 +145,7 @@ slides:
     and street furniture, and score ground and buildings against AHN''s own. First: what is this thing, as data?'
   question: Why this square and not a whole AHN file?
   answer: It's the venue, and it's small enough to run every step live in under a second, which is rule three, make it small
-    first. The whole 1 km file has 21 million points; slides 26 to 28 show what happens to memory when you load it, and
+    first. The whole 1 km file has 21 million points; slide 26 shows what happens to memory when you load it, and
     how to stream it instead.
   checks:
   - Confirm which Jaarbeurs building the talk room is in. If it is this one, say 'the building we're sitting in'; the name
@@ -218,11 +220,11 @@ slides:
     a wrong coordinate system or float32 rounding doesn''t raise an error, it just moves your points by centimetres, and
     a loop over points is a loop over millions.'
   trace:
-  - content.yaml slide 8 rules; the same four rules close the talk on slide 30 with their evidence
+  - content.yaml slide 8 rules; the same four rules close the talk on slide 27 with their evidence
   where_in_the_talk:
   - '1 Think in arrays: slides 6, 10 and 11 (N by 3 arrays, copy or view at every hand-off)'
-  - '2 Look before you compute: slides 5, 20 and 30 (AHN classes, street furniture against the BGT register, the gotchas)'
-  - '3 Make it small first: slides 13, 15 and 27 to 29 (voxels, tiles, streaming chunks)'
+  - '2 Look before you compute: slides 5, 20 and 26 (AHN classes, street furniture against the BGT register, the gotchas)'
+  - '3 Make it small first: slides 13 and 15 (voxels, tiles, streaming chunks)'
   - '4 Let compiled code loop: slides 21 to 25 (the quiz, the toll, the profiler, free threads)'
   mental_model: 'The rules rest on the hidden mental-models section (C2 to C9, with citations; C1 and C5 are slides 6 and 20; slide 7 is the workflow); C8 ranks the ideas and says where each joins the talk.'
 
@@ -232,11 +234,7 @@ slides:
   talk_track: 'Here''s the landscape, mapped onto the six steps we''re about to run, with NumPy carrying the arrays from
     step to step. laspy reads and writes LAS and LAZ, in chunks if you ask; Open3D does the heavy work: voxel downsampling,
     plane fitting and DBSCAN. SciPy''s KDTree answers neighbour questions for all points in one call, and PyVista renders
-    every image in this talk. trimesh and PyTorch3D sit apart: useful, just not in this pipeline. So how do these
-    libraries hand data to each other?'
-  question: Why is PyTorch3D on the map if you don't use it?
-  answer: 'Because people ask about it, and it does have a job: differentiable 3D operations on GPU tensors for training.
-    It just isn''t a fit for a CPU pipeline on Python 3.13; the install status is on backup slide B3.'
+    every image in this talk. So how do these libraries hand data to each other?'
   trace:
   - 'research: reports/libraries.md section 1 (PyPI JSON fetched 2026-10-01, libraries/pypi/*.json)'
   - 'pipeline/run.py, pipeline/steps.py (imports: no trimesh; per-cluster features use NumPy, pipeline/steps.py cluster_features)'
@@ -270,7 +268,7 @@ slides:
   - 'snippets/s06b_handoffs.py (the four calls on the crop, with asserts); results/snippets.json: s06b_handoffs.py.ok'
   - pv.PolyData of laspy's F-ordered array does not share memory (results/python_facts.json polydata.shares_memory_f_float64);
     the slide's pts is Open3D's C-ordered view
-  - Candidate gotchas 'las.xyz' and 'Vector3dVector(float32)' on slide 29 are measured here
+  - Candidate gotchas 'las.xyz' and 'Vector3dVector(float32)' are measured here (their slide is removed)
   why_it_matters:
   - 'Memory: one float64 xyz copy is {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point (results/memory.json);
     21 013 926 points × 24 B = 0.47 GB per copy of a 1 km AHN file, and the load-everything pipeline holds several (slide
@@ -352,9 +350,10 @@ slides:
     unless you carry them along. I store the multiple-return flag as a colour, so each voxel keeps its share of multiple
     returns for step five. Next, the ground.'
   question: Why average? Why not keep one real point per voxel?
-  answer: 'You can, and on slide 27 I do exactly that, because it streams. Open3D''s voxel_down_sample returns the centroid:
+  answer: 'You can, and in the chunked read (backup B2) I do exactly that, because it streams. Open3D''s voxel_down_sample returns the centroid:
     I checked that it equals the per-voxel mean, on a grid anchored half a voxel below the minimum corner.'
   trace:
+  - 'Sketch caption: {pipeline.params.voxel|m} voxels'
   - snippets/s09_voxel.py
   - 'results/snippets.json: s09_voxel.py.ok'
   - 'results/pipeline.json: points_in, points_after_voxel, kept_share, params.voxel'
@@ -393,6 +392,7 @@ slides:
   - 'The slide 14 title no longer says ''Utrecht isn''t flat'': on the Jaarbeurs crop one plane ties with the tiles (results/pipeline.json
     single_plane); the joke now runs the other way'
   trace:
+  - 'Sketch caption: one plane per tile'
   - snippets/s10_ground.py
   - 'results/snippets.json: s10_ground.py.ok'
   - 'results/pipeline.json: ground.precision, ground.recall, n_tiles, params.tile, params.ransac_threshold, params.ransac_n,
@@ -442,6 +442,7 @@ slides:
     points become noise, too large and buildings fuse with their trees; prototype runs showed both. Here it is eps {pipeline.params.eps|m}
     with min_points {pipeline.params.min_points|int} on {pipeline.params.voxel|m} voxels.'
   trace:
+  - 'Sketch caption: eps = {pipeline.params.eps|m}'
   - snippets/s11_cluster.py
   - 'results/snippets.json: s11_cluster.py.ok'
   - 'results/pipeline.json: n_clusters, noise_share, params.eps, params.min_points, params.voxel'
@@ -482,6 +483,8 @@ slides:
     balanced accuracy, my rules {eigen.rules.points_balanced_accuracy|pct}. But AHN files facades under class 1 and my rules
     call them building, so part of that gap is the forest copying AHN''s convention.'
   trace:
+  - 'Sketch caption: shape → class'
+  - 'Small print: Street furniture: {pipeline.n_objects.street_furniture|int} objects, {pipeline.label_points.street_furniture|int} points, drawn enlarged. Poles nearly vanish.'
   - snippets/s12_label.py
   - 'ML alternative: bench/eigen_features.py; results/eigen_features.json rules, forest_eigen_plus_rule_inputs (balanced
     accuracy weighted by points, spatial cross-validation); idea: research: reports/videos.md V3'
@@ -527,6 +530,8 @@ slides:
     without a window, and PyVista does that off-screen; in testing it also rendered headless, through EGL.
   skip: 'Skip-first number 4. If skipped, say on slide 18: "every render here is PyVista, off-screen, one fixed camera".'
   trace:
+  - 'Sketch caption: nearest voxel''s label'
+  - 'Small print: Street furniture: {pipeline.n_objects.street_furniture|int} objects, {pipeline.label_points.street_furniture|int} points, drawn enlarged. Poles nearly vanish.'
   - snippets/s13_render.py
   - 'results/snippets.json: s13_render.py.ok'
   - results/labels_crop.npz
@@ -559,16 +564,16 @@ slides:
     to labels that's {pipeline.runtime_s|f1} seconds on this crop, one run, so take it as indicative, and not a single Python
     loop over points. First, a confession about street furniture.
   question: Can I run this on my own AHN file?
-  answer: Yes, that's what the repo is for. For a whole 1 km AHN file or larger, start with the chunked read from slide
-    26, and expect to retune voxel size, tile size and eps for a different point density. Not in the Netherlands? Backup
+  answer: Yes, that's what the repo is for. For a whole 1 km AHN file or larger, start with the chunked read (backup B2), and expect to retune voxel size, tile size and eps for a different point density. Not in the Netherlands? Backup
     B6 lists other open sources.
-  checkpoint: 'Skip-first order: 26, 25, 27, 18, 11. Target: leave this slide by 16:25. Leaving after 17:25: skip 26 and
-    25. Leaving after 18:55: also skip 27, and tell only one story on 30. Further on: reach slide 26 by 23:45, otherwise
+  checkpoint: 'Skip-first order: 26, 25, 18, 11. Target: leave this slide by 16:25. Leaving after 17:25: skip 26 and
+    25. Leaving after 18:55: also skip 18, and tell only one story on 26. Further on: reach slide 26 by 23:45, otherwise
     skip it. To skip: one sentence, then click.'
   checks:
   - Repo URL is still a placeholder (content.yaml)
   - 'Other open sources (B6): research: reports/videos.md V1'
   trace:
+  - 'Small print: One run, indicative; renders not included. Street furniture drawn enlarged.'
   - snippets/s14_pipeline.py
   - pipeline/run.py
   - 'results/snippets.json: s14_pipeline.py.ok'
@@ -605,6 +610,9 @@ slides:
     or none from the air. The municipality''s own 2021 street-light export disagrees with the BGT too, so registers aren''t
     ground truth either.'
   trace:
+  - 'Photo credit: 2021 · Robot8A · CC BY-SA 4.0'
+  - 'Photo credit: 2014 · V. van Werkhooven · CC BY 3.0'
+  - 'Small print: Poles: BGT (Kadaster, CC BY 4.0) via PDOK, 2026-10-12. Points: within 0.6 m, over 1.5 m above ground. Photos: Jaarbeursplein, Wikimedia Commons.'
   - bench/bgt_street_furniture.py, results/bgt_street_furniture.json (label FINAL)
   - 'BGT licence: CC BY 4.0 per the national geo register record (attribution Kadaster, BGT), CC0 1.0 on the PDOK API landing
     page; the slide credits Kadaster, BGT'
@@ -801,9 +809,10 @@ slides:
     Open3D''s own copy adds {memory.tile_1km.bytes_per_point.open3d_points|int}, and the downsampled cloud makes up the
     rest. Scaling to billions of points is on backup slide B2.'
   checkpoint: 'Arrive here by 23:45. Later than that: skip this slide.'
-  skip: 'Skip-first number 3. If skipped, say the one fact on slide 27: "a full-size AHN file has {memory.big_file.points|int}
+  skip: 'Skip-first number 3. If skipped, say the one fact on slide 26: "a full-size AHN file has {memory.big_file.points|int}
     points".'
   trace:
+  - 'Small print: Bytes per point measured on the 1 km AHN file 135000_455000 ({memory.tile_1km.points|int} points); totals for 2023_C_31HZ2.LAZ computed, not run. Our pipeline: load and voxel downsampling (slides 12 and 13), all arrays kept, after gc.collect() and malloc_trim(0); peak {memory.tile_1km.bytes_per_point_peak.pipeline|int} B per point.'
   - bench/bench_memory.py
   - 'results/memory.json: tile_1km.points, tile_1km.bytes_per_point (all five keys), big_file.points, big_file.computed_gb,
     ram_reference_gb'
@@ -835,219 +844,6 @@ slides:
   mental_model: 'Hidden C6 (memory follows N and the algorithm): linear storage against quadratic pairwise distances.'
 
 - n: 27
-  seconds: 75
-  ends_at: '25:50'
-  talk_track: 'The fix is to never hold the whole file: laspy reads it in chunks of {memory.tile_1km.chunk_size|int} points,
-    each chunk keeps one point per {memory.tile_1km.voxel|m} voxel, and one np.unique at the end merges the chunks. On the
-    1 km file the load-everything pipeline from slides 12 and 13 peaks at {memory.tile_1km.naive_peak_mb|gb1} on top of
-    what the imports already use; this loop peaks at {memory.tile_1km.chunked_peak_mb|gb1}, and its points are exactly those
-    of a load-everything first-point-per-voxel reference. It keeps the first point per voxel, not the average from slide
-    13, because a first point is a real point and it streams. So why does it work?'
-  question: Does that always keep memory small?
-  answer: 'No, there are two limits. It only helps if the voxel removes most points: on aerial data like AHN, very fine
-    voxels keep almost everything, so output and memory stay large. And it only works for per-point steps; ground removal
-    or clustering need neighbours, so those run on tiles with an overlap. More on B2.'
-  checks:
-  - if: memory.tile_1km.chunked_equals_reference == true
-    then: 'Checked: memory.tile_1km.chunked_equals_reference = true (results/memory.json), so ''exactly those of'' may be
-      said'
-    else: Say 'exactly those of a load-everything reference' only if results/memory.json tile_1km.chunked_equals_reference
-      is true
-  trace:
-  - snippets/s21_chunked.py
-  - 'results/snippets.json: s21_chunked.py.ok'
-  - bench/bench_memory.py
-  - 'results/memory.json: tile_1km.chunk_size, tile_1km.voxel, tile_1km.naive_peak_mb, tile_1km.chunked_peak_mb, tile_1km.chunked_equals_reference'
-  - 'Fine voxels keep almost everything on AHN: research: reports/critic.md C3 and C4 (pilot)'
-  - 'results/memory.json: tile_1km.cases.pipeline (the naive peak), tile_1km.naive_kept_open3d_centroids, tile_1km.chunked_kept_first_points'
-  - Peaks are increases over the process after imports (results/memory.json tile_1km.units, conditions.extra.rss_method;
-    tile_1km.baseline_mb_after_imports)
-  line_by_line:
-  - 'v, keys, pts = 0.5, [], []: the voxel size, and two lists that collect each chunk''s voxel keys and points'
-  - 'with laspy.open(path) as f: opens the file without reading the points'
-  - 'lo, hi = f.header.mins, f.header.maxs: the local origin and the extent, from the header alone'
-  - 'dims = ((hi - lo) // v).astype(np.int64) + 1: the number of voxels along x, y and z'
-  - 'for c in f.chunk_iterator(1_000_000) (key line): decompresses one million points at a time; only one chunk is in memory'
-  - 'xyz = np.c_[c.x, c.y, c.z] - lo: the chunk''s coordinates, local (a chunk has no .xyz, gotcha)'
-  - 'ijk = (xyz // v).astype(np.int64).T: each point''s voxel index per axis'
-  - 'key = np.ravel_multi_index(ijk, dims): one int64 per voxel, so voxels compare as single numbers (faster than np.unique
-    on rows)'
-  - 'k, first = np.unique(key, return_index=True): the chunk''s voxels and the first point in each'
-  - 'keys.append(k); pts.append(xyz[first]): keep only those, the rest of the chunk is freed'
-  - 'k, first = np.unique(np.concatenate(keys), return_index=True): merge the chunks; a voxel split over two chunks keeps
-    its first occurrence'
-  - 'points = np.concatenate(pts)[first]: the result, one real point per voxel; the earliest chunk wins'
-
-- n: 28
-  seconds: 55
-  ends_at: '26:45'
-  talk_track: 'Here''s why, and this time I let a profiler show it: Scalene, a memory profiler for Python, on the same
-    1 km file. Grey, load everything: the file, the float64 xyz and Open3D''s copy already take about 2 gigabytes, and
-    voxel_down_sample on all 21 million points pushes it to {scalene.cases.load_everything.peak_mib|gb1}. Blue, chunked:
-    one million points at a time, so it stays lower, {scalene.cases.chunked.peak_mib|gb1} at its peak. Scalene counts
-    allocations, so its numbers run a bit higher than the peaks on the last two slides, and the shape is the point: load
-    everything and memory follows the file; stream it and memory follows what you keep. That brings me to the gotchas
-    that cost me weeks.'
-  question: Does streaming always keep memory small?
-  answer: 'No, there are two limits. It only helps if the voxel removes most points: on aerial data like AHN, very fine
-    voxels keep almost everything, so output and memory stay large. And it only works for per-point steps; ground removal
-    or clustering need neighbours, so those run on tiles with an overlap. More on B2.'
-  trace:
-  - bench/bench_memory_scalene.py runs `scalene run -o OUT.json 16:25 --- tile` three times per case (alternating) on
-    bench/memprof/load_everything.py and bench/memprof/chunked.py (the slide lines of snippets/s21_chunked.py, verbatim,
-    checked by the script itself); the run with the median peak is stored
-  - 'results/memory_scalene.json (label FINAL): cases.load_everything, cases.chunked (t_s, mem_mib, markers, peak_mib, lines: per source line peak, MB allocated, CPU share)'
-  - 'Cross-check, not on a slide: results/memory_trace.json (RSS sampled every 5 ms from the parent, bench/bench_memory_trace.py): peaks {trace.cases.load_everything.peak_mib|gb1} and {trace.cases.chunked.peak_mib|gb1}'
-  how_to_read_it:
-  - 'x: progress through Scalene''s memory samples, in percent. Scalene''s timeline is the order of its samples, not wall
-    time (the runs took {scalene.cases.load_everything.duration_s|f1} s and {scalene.cases.chunked.duration_s|f1} s under
-    Scalene); y: Scalene''s footprint in GB (2^30 bytes); one line per version, the run with the median peak of three'
-  - 'Grey: the climb to about 2 GB is laspy.read, the float64 xyz and the Open3D copy; the peak, {scalene.cases.load_everything.peak_mib|gb1},
-    is on the line `down = pcd.voxel_down_sample(0.5)`, which is also the line that takes most CPU time'
-  - 'Blue: 22 chunks of one million points; it saws up and down as chunks come and go and as keys and pts collect every
-    chunk''s voxels, peaks late in the loop ({scalene.cases.chunked.peak_mib|gb1}) and falls at the final merge'
-  - 'Why the numbers differ from slides 26 and 27: those are the process''s peak resident memory (VmHWM) over the process
-    after imports: {memory.tile_1km.naive_peak_mb|gb1} and {memory.tile_1km.chunked_peak_mb|gb1}. Scalene counts
-    allocations (mallocs minus frees it sees), so memory freed by code it cannot see, most likely the Rust LAZ decoder,
-    stays in its footprint: the chunked curve sits above the RSS peak, the load-everything curve close to it. Scalene
-    says {scalene.peak_ratio|f1} times less for chunked, RSS says {memory.tile_1km.naive_peak_mb|int} against {memory.tile_1km.chunked_peak_mb|int} MB'
-  - 'Run it yourself: uv run --group profile scalene run -o out.json bench/memprof/chunked.py --- tile, then scalene view
-    out.json (browser) or scalene view --cli out.json. Two gotchas: Scalene skips any path containing "scalene" (records no
-    memory), and its memory mode hangs in laspy''s parallel LAZ decoder, so the targets use the single-threaded Lazrs
-    backend'
-
-- n: 29
-  seconds: 85
-  ends_at: '28:10'
-  talk_track: 'Six gotchas I hit while building this, and this is the slide to photograph. The one that cost me most: Open3D
-    reads a .laz file without complaining and hands you an empty point cloud, and I spent an evening debugging the steps
-    after it. Install laspy without lazrs and LAZ files won''t open at all. Cast RD coordinates to float32 and your points
-    snap to {research.float32_step_m.x|cm} steps, silently. Hand Open3D float32 and the copy is {facts.factor_v3d_float32_vs_float64_f.median|x}
-    slower. A seeded segment_plane still differs between runs unless you pass probability=1.0. And AHN''s class 1 isn''t
-    trees: it''s everything nobody classified. Four rules sum it all up.'
-  question: Is there a written list I can take home?
-  answer: 'This slide, with the evidence for each in the speaker notes, and the repo on the last slide. [SPEAKER: add a
-    GOTCHAS.md to the repo before saying it is there.]'
-  trace:
-  - Six of the candidates below, chosen on 2026-10-12 because each was reproduced in this project; content.yaml slide 29
-    table
-  - 'candidate_gotchas: the full list observed in testing, with evidence'
-  candidate_gotchas:
-  - code_token: probability=1.0
-    gotcha: A seeded segment_plane is reproducible only with probability=1.0; with the default, seeded runs differ.
-    suggested_consequence: Seeded runs still differ
-    evidence: 'research: reports/libraries.md FLAG 1 (11_ransac_probability.py), review/honesty/snippets/s10_default_probability.py'
-    status: CANDIDATE, speaker to confirm
-  - code_token: o3d.io.read_point_cloud("x.laz")
-    gotcha: Open3D 0.20.0 returns an empty point cloud for .las/.laz with only a warning, no exception (already the slide
-      9 joke).
-    suggested_consequence: Empty cloud, no error
-    evidence: 'research: reports/libraries.md (08_extra_checks.py), review/honesty/run_s02.out, notes/verify_facts.json'
-    status: CANDIDATE, speaker to confirm
-  - code_token: xyz - header.mins
-    gotcha: float32 at RD coordinates steps {research.float32_step_m.x|cm} in x and {research.float32_step_m.y|cm} in y;
-      subtract a local origin first.
-    suggested_consequence: Silent centimetre steps
-    evidence: 'results/research_facts.json float32_step_m; research: reports/dataset.md, reports/libraries.md (04_pyvista_render.py
-      striping), notes/verify_facts.json'
-    status: CANDIDATE, speaker to confirm
-  - code_token: Vector3dVector(float32)
-    gotcha: 'float32 input is accepted but takes a slow path: {facts.factor_v3d_float32_vs_float64_f.median|x} slower than
-      laspy''s float64 array and {facts.factor_v3d_float32_vs_float64_c.median|x} slower than a C-ordered float64 copy on
-      the crop; cast with astype(np.float64) first (now on slide 10).'
-    suggested_consequence: Copy hundreds of times slower
-    evidence: 'results/python_facts.json (bench/python_facts.py: 1 warm-up and 7 runs, median); research: reports/libraries.md
-      (08_extra_checks.py), reports/critic.md section 2'
-    status: CANDIDATE, speaker to confirm (measured; already shown on slide 10)
-  - code_token: classification == 1
-    gotcha: 'AHN class 1 is not vegetation: it also holds facades, cars, poles and street furniture.'
-    suggested_consequence: Class 1 is not trees
-    evidence: 'research: reports/dataset.md (AHN4 spec ''overig'', crop analysis)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: cluster_dbscan(eps=...)
-    gotcha: eps must be clearly larger than the voxel size, or most points become noise; too large and buildings fuse with
-      trees.
-    suggested_consequence: Everything becomes noise
-    evidence: 'research: reports/review/honesty.md row 11, reports/review/feasibility.md section 2 (prototype runs)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: voxel_down_sample
-    gotcha: Returns averaged new points and drops every LAS attribute (returns, class).
-    suggested_consequence: Returns and classes lost
-    evidence: 'research: reports/review/honesty.md rows 9 and 12, reports/critic.md section 2'
-    status: CANDIDATE, speaker to confirm
-  - code_token: np.unique(axis=0)
-    gotcha: On voxel rows it is no faster than a Python dict loop; pack the voxel coordinates into one int64 key.
-    suggested_consequence: Vectorised, still slow
-    evidence: 'research: reports/critic.md section 2 (1 M points), reports/perf.md voxel table (synthetic)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: np.isin + np.union1d
-    gotcha: Merging chunk keys this way was several times slower than one np.unique at the end (synthetic, 30 M points).
-    suggested_consequence: Merge step crawls
-    evidence: 'research: reports/memory.md gotcha 6 (synthetic)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: segment_plane per tile
-    gotcha: Without a low-height pre-filter, some tiles fit a roof instead of the ground.
-    suggested_consequence: Roofs become ground
-    evidence: 'research: reports/review/feasibility.md section 2 (metrics_noprefilter.json, prototype)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: pts @ n + d
-    gotcha: 'Whether it matches the loop bit for bit depends on memory layout: identical on laspy''s column-ordered array
-      (results/bench_cliff.json plane.matmul_reference), tiny rounding differences on a row-ordered copy (research pilot).'
-    suggested_consequence: Layout changes the bits
-    evidence: 'results/bench_cliff.json plane.matmul_reference; research: review/honesty/run_s16.out (np.ascontiguousarray
-      copy), reports/review/rules.md'
-    status: CANDIDATE, speaker to confirm
-  - code_token: LasData(copc_header)
-    gotcha: 'Writing a crop with the COPC file''s header raises NotImplementedError: Writing COPC is not supported; build
-      a fresh header.'
-    suggested_consequence: Crop write fails
-    evidence: 'research: reports/dataset.md section 3'
-    status: CANDIDATE, speaker to confirm
-  - code_token: las.xyz
-    gotcha: A fresh F-ordered float64 copy on every access ({facts.timings.las_xyz_access.median_ms|ms} each on the crop);
-      chunks from chunk_iterator have no .xyz at all (now on slide 10).
-    suggested_consequence: Hidden copies everywhere
-    evidence: 'results/python_facts.json las_xyz, timings.las_xyz_access; research: reports/libraries.md (01_laspy_io.py)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: PointCloud.from_legacy
-    gotcha: Open3D's tensor point cloud converts to float32 by default.
-    suggested_consequence: float32 sneaks in
-    evidence: 'research: reports/libraries.md (03_open3d_tensor.py)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: pip install laspy
-    gotcha: 'Without lazrs or laszip, laspy cannot read LAZ (LaspyException: No LazBackend selected).'
-    suggested_consequence: LAZ will not open
-    evidence: 'research: reports/libraries.md (out_09_laspy_no_backend.txt)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: fixed_radius_search
-    gotcha: Returns (indices, distances, splits); its docstring lists a different order.
-    suggested_consequence: Wrong array unpacked
-    evidence: 'research: reports/perf.md (verified gotchas)'
-    status: CANDIDATE, speaker to confirm
-  - code_token: clf.predict(box)
-    gotcha: 'A classifier only knows the classes it was trained on: in Poux''s demo a box, never seen in training, comes
-      back as ''sphere'' with full confidence. Our rules have an honest ''unlabelled''.'
-    suggested_consequence: Confidently wrong class
-    evidence: 'research: reports/videos.md V3 (31:00 to 31:50); NOT observed in this project, from the video'
-    status: CANDIDATE from research, speaker to confirm
-  gotchas:
-  - 'read_point_cloud("x.laz"): Open3D 0.20.0 returns 0 points for .las and .laz with only a warning, no exception; load
-    with laspy and hand over the array (slide 10). Evidence: snippets/s02_python.py check; research: reports/libraries.md
-    (08_extra_checks.py), notes/verify_facts.json'
-  - 'pip install laspy: without the lazrs or laszip extra laspy raises LaspyException: No LazBackend selected on a LAZ file;
-    install laspy[lazrs]. Evidence: research: reports/libraries.md (out_09_laspy_no_backend.txt)'
-  - 'xyz.astype(np.float32): at RD coordinates float32 steps {research.float32_step_m.x|cm} in x and {research.float32_step_m.y|cm}
-    in y; subtract header.mins first (slide 12). Evidence: results/research_facts.json float32_step_m (np.spacing)'
-  - 'Vector3dVector(float32): accepted, but {facts.factor_v3d_float32_vs_float64_f.median|x} slower than laspy''s float64
-    array ({facts.timings.v3d_float32.median_ms|ms} against {facts.timings.v3d_float64_f.median_ms|ms}); cast with astype(np.float64).
-    Evidence: results/python_facts.json'
-  - 'segment_plane(seed): o3d.utility.random.seed(0) alone does not make RANSAC reproducible; with the default probability
-    two seeded runs differ, with probability=1.0 they match (slide 14). Evidence: results/pipeline.json checks.ransac_default_probability'
-  - 'classification == 1: AHN''s class 1 is ''overig'', other: vegetation, but also facades, cars, poles and street furniture;
-    there is no vegetation class to score against (slides 5 and 19). Evidence: research: reports/dataset.md, results/pipeline.json
-    label_vs_ahn'
-
-- n: 30
   seconds: 60
   ends_at: '29:10'
   talk_track: 'So, the four rules again, now with the evidence from this talk. Think in arrays: {pipeline.crop.points|int}
@@ -1059,17 +855,17 @@ slides:
   answer: Three of them are plain data engineering, and the compiled-loop one holds wherever Python calls into compiled
     code, because the toll is per call. But I only measured them in this pipeline, so that's the evidence I can show.
   trace:
-  - 'content.yaml slide 30 rules (the rules of slide 8 with evidence); tokens: results/pipeline.json crop.points and n_objects,
+  - 'content.yaml slide 27 rules (the rules of slide 8 with evidence); tokens: results/pipeline.json crop.points and n_objects,
     results/bgt_street_furniture.json collections.paal.n, results/memory.json tile_1km peaks, results/bench_cliff.json plane.factor'
   - Replaces the old 'Three habits' tiles and the 'Loop over tiles, never over points' statement slide (both removed on
     2026-10-12)
 
-- n: 31
+- n: 28
   seconds: 50
   ends_at: '30:00'
   talk_track: 'Everything you saw is in the repo behind this QR code: the pipeline, the snippets and the benchmarks. The
-    point cloud is AHN5 from Het Waterschapshuis under CC BY 4.0, so you can use it too, as long as you credit it. And if
-    you still write that loop: it''s still running, and your coffee is cold. Thank you; I''m happy to take questions.'
+    point cloud is AHN5 from Het Waterschapshuis under CC BY 4.0, so you can use it too, as long as you credit it. Thank
+    you to the Python community and to all of you for being here. I''m happy to take questions.'
   question: Is this talk based on the O'Reilly book with the same title?
   answer: 'No. The title is shared with Florent Poux''s O''Reilly book from 2025; this talk and its code are independent.
     His YouTube channel is a good next step: backup B5 tests his PCA plus Random Forest idea on this area, and B6 lists
@@ -1078,7 +874,7 @@ slides:
   - Publish the repo URL and QR only after the repo clean-up listed in the open items (docs/OPEN_ITEMS.md, section f)
   - If the optional book-credit small print is dropped from the slide, say the credit aloud
   trace:
-  - 'content.yaml slide 31: qr.url is null, contact and repo URL are placeholders'
+  - 'content.yaml slide 28: qr.url is null, contact and repo URL are placeholders'
   - 'content.yaml meta.source_ahn (licence: research: reports/dataset.md)'
   - 'Book title and year: research: reports/book.md'
   - 'Poux''s videos used for B5 and B6: research: reports/videos.md'

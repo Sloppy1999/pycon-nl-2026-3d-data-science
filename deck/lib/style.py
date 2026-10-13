@@ -33,7 +33,7 @@ from pptx.dml.color import RGBColor
 EMU_PER_IN = 914400
 CONTENT_YAML = Path(__file__).resolve().parents[1] / "content.yaml"
 
-PALETTE_KEYS = ("navy", "blue", "sage", "white", "grey", "slate", "ink", "light")
+PALETTE_KEYS = ("navy", "blue", "sage", "white", "grey", "slate", "ink", "light", "blue_tint", "warn")
 RENDER_KEYS = ("background", "ground", "buildings", "vegetation", "street_furniture", "unlabelled")
 RENDER_EXTRA_KEYS = ("height_ramp", "clusters", "noise")
 _HEX = re.compile(r"^#?[0-9A-Fa-f]{6}$")

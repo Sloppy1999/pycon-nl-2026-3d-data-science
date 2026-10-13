@@ -50,7 +50,7 @@ Fourth class: [street furniture | cars and small objects], see question 1.
 | 2 | Hook | L5 | Left, greyed: C++ (PCL) load + voxel grid. Right: the same in 2 lines of Open3D, key line highlighted | fade | 3D used to mean C++. Not anymore | – | Code both sides (C++ NOT RUN) | 25 (0:45) |
 | 3 | Hook | L4 | Wide split render of the street: left raw (height ramp), right our labels; edge arrow "Jaarbeurs halls [27 m]" | fade | This street is right next to Jaarbeurs | AHN's labels hidden, rebuilt in Python, scored against AHN. | Source line: AHN5, CC BY 4.0 | 90 (2:15) |
 | 4 | Hook | L8 | Close-up of the same street (same camera, narrow view angle), single points visible; REPL on the right | fade | A point cloud is just an N×3 array | Plus one column per attribute: intensity, returns, class. | Code: `las.xyz.shape` → `(722961, 3)`; `las.classification[:5]` | 90 (3:45) |
-| 5 | Landscape | L4 | Native map: six step chips in a row, each library tile under the steps it serves; PyTorch3D dashed grey, "not in this pipeline" | fade | No single library does the whole job | – | – | 120 (5:45) |
+| 5 | Landscape | L4 | Native map: six step chips in a row, each library tile under the steps it serves; only the five pipeline libraries (no dashed tiles) | fade | No single library does the whole job | – | – | 120 (5:45) |
 | 6 | Landscape | L5 | Left "Worth it": laspy → NumPy → Open3D → PyVista, plus SciPy KDTree, trimesh. Right "Not for this pipeline": 3 grey ✗ items | fade | laspy loads, Open3D computes, PyVista draws | – | – | 120 (7:45) |
 | 7 | Pipeline | L4 | Filmstrip of six thumbnails (the frames of 8 to 13) with step names; thumbnail 1 zooms into slide 8 | fade | Six steps turn a point cloud into labels | – | – | 40 (8:25) |
 | 8 | Pipeline | L7 | Code left; frame 1 right: point cloud, height ramp | Morph | 1 Load: laspy hands you NumPy | Subtract a local origin before anything else. | Code, 6 lines: `laspy.read`, `xyz - mins`, `Vector3dVector` | 65 (9:30) |
@@ -69,7 +69,7 @@ Fourth class: [street furniture | cars and small objects], see question 1.
 | 21 | RAM | L4 | Full-width code: chunked read, first point per voxel (12 lines, ran on the crop and the 1 km tile); hero on the right | fade | Stream chunks, keep the first point per voxel | Memory now follows the output, not the input. | Hero: peak [3.3 GB] → [1.0 GB] | 100 (25:45) |
 | 22 | Close | L10 | Table on the right: 5 rows, code token + consequence in ≤ 4 words | fade | These [N] gotchas cost me weeks | – | [GOTCHA 1 to 5: speaker supplies] | 130 (27:55) |
 | 23 | Close | L4 | Three tiles, one habit each, each pointing back to its evidence slide | fade | Three habits save you those weeks | – | – | 75 (29:10) |
-| 24 | Close | L11 | QR code on a white tile (right), contact block (left), credits in 12 pt | fade | Copy the pipeline | [repo URL] | – | 50 (30:00) |
+| 24 | Close | L11 | QR code on a white tile (right), contact block (left), credits in 12 pt | fade | Thank you (community and attendees) | [repo URL] | – | 50 (30:00) |
 
 Sections: S1 225 s (brief 240), S2 240 s (300), S3 480 s (480), S4 420 s (420), S5 180 s (180),
 S6 255 s (180, runs 75 s over on purpose: the gotchas are half the promise). Total 1800 s.

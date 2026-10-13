@@ -421,10 +421,10 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
     grp = _group(slide, name, alt)
     S = grp.shapes
 
-    chip_h, work_h, lane_w = 0.52, 0.32, 1.75
+    chip_h, work_h, lane_w, cap_h = 0.52, 0.32, 1.75, 0.36
     label_w = 2.0     # lane labels: "compiled code" fits on one line at 20 pt; ends left of the loop code box
     chip_y = y0 + 0.05
-    free = max(1.2, H - 0.05 - chip_h - work_h - 0.10)  # vertical room for the arrows
+    free = max(0.8, H - 0.05 - chip_h - work_h - cap_h - 0.10)  # vertical room for the arrows
     y_line = chip_y + chip_h + 0.55 * free   # the boundary
     work_y = y_line + 0.45 * free            # top of the work blocks
 
@@ -436,22 +436,23 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
     _textbox(S, st, x0, y_line + 0.10, label_w, 0.45,
              [{"text": lane_bot, "size": 20, "bold": True, "color": st.navy}],
              anchor=MSO_ANCHOR.TOP, margins=(0.0, 0.0, 0.0, 0.0), name="toll_lane_bottom")
-    _connector(S, x0, y_line, x0 + W, y_line, st.navy, 1.5, dash=MSO_LINE_DASH_STYLE.DASH,
+    _connector(S, x0, y_line, x0 + W, y_line, st.highlight, 2.25, dash=MSO_LINE_DASH_STYLE.DASH,
                name="toll_boundary")
 
-    def call(xd, xu, w_left, w_right, idx, tag):
+    def call(xd, xu, w_left, w_right, idx, tag, aw=1.25):
         """One call: arrow down at xd, work block, arrow up at xu, toll tick at xd."""
         top = chip_y + chip_h + 0.06
         # arrows slate, so the blue toll ticks on them stay the slide's one highlight (with the hero)
-        _connector(S, xd, top, xd, work_y - 0.03, st.text_small, 2.0, arrow=True, name=f"{tag}_down_{idx}")
-        _box(S, w_left, work_y, w_right - w_left, work_h, fill=st.muted, rounded=False,
+        _connector(S, xd, top, xd, work_y - 0.03, st.text_small, aw, arrow=True, name=f"{tag}_down_{idx}")
+        _box(S, w_left, work_y, w_right - w_left, work_h, fill=st.muted, rounded=True,
              name=f"{tag}_work_{idx}")
-        _connector(S, xu, work_y - 0.03, xu, top, st.text_small, 2.0, arrow=True, name=f"{tag}_up_{idx}")
+        _connector(S, xu, work_y - 0.03, xu, top, st.text_small, aw, arrow=True, name=f"{tag}_up_{idx}")
         _box(S, xd - 0.16, y_line - 0.07, 0.32, 0.14, fill=st.highlight, rounded=False,
              name=f"{tag}_toll_{idx}")
 
     # left: the loop, n_pairs calls
-    pitch, pair = 0.60, 0.24
+    n_pairs = 9
+    pitch, pair = 0.38, 0.16
     lx = x0 + lane_w + 0.35
     span = (n_pairs - 1) * pitch + pair
     char_w = 0.6 * 18 / 72              # Fira Mono at 18 pt: 0.6 em per character
@@ -463,7 +464,7 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
     px0 = lx + 0.20
     for i in range(n_pairs):
         xd = px0 + i * pitch
-        call(xd, xd + pair, xd - 0.06, xd + pair + 0.06, i + 1, "loop")
+        call(xd, xd + pair, xd - 0.04, xd + pair + 0.04, i + 1, "loop")
     _textbox(S, st, px0 + span + 0.18, work_y - 0.05, 1.2, work_h + 0.10,
              [{"text": times, "size": 24, "bold": True, "color": st.navy}],
              anchor=MSO_ANCHOR.MIDDLE, name="toll_times")
@@ -481,7 +482,30 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
     _paras(chip.text_frame, st, [{"text": spec["call_code"], "size": 18, "mono": True,
                                   "color": st.text}])
     xd = rx + 0.20
-    call(xd, xd + pair, xd - 0.06, x0 + W - 0.05, 1, "call")
+    call(xd, xd + 0.5, xd - 0.06, x0 + W - 0.05, 1, "call", aw=5.0)
+    # captions under the work blocks (words from content.yaml)
+    cy = work_y + work_h + 0.06
+    _textbox(S, st, lx, cy, rx - lx - 0.3, cap_h,
+             [{"text": _word(spec, "caption_loop"), "size": 18, "color": st.text}], name="toll_caption_loop")
+    _textbox(S, st, rx, cy, x0 + W - rx, cap_h,
+             [{"text": _word(spec, "caption_call"), "size": 18, "color": st.text}], name="toll_caption_call")
+
+    # legend, stacked top right above the boundary (words from content.yaml): what the tick, bar and arrow mean
+    row_h = 0.30
+    items = [("toll", _word(spec, "legend_toll")), ("work", _word(spec, "legend_work")),
+             ("arrow", _word(spec, "legend_arrow"))]
+    lgx = x0 + W - max(_width(w, 16) for _, w in items) - 0.45
+    for i, (kind, word) in enumerate(items):
+        cy_mid = chip_y + i * row_h + row_h / 2
+        if kind == "toll":
+            _box(S, lgx, cy_mid - 0.07, 0.32, 0.14, fill=st.highlight, rounded=False, name="legend_toll_swatch")
+        elif kind == "work":
+            _box(S, lgx, cy_mid - 0.09, 0.32, 0.18, fill=st.muted, rounded=True, name="legend_work_swatch")
+        else:
+            _connector(S, lgx, cy_mid, lgx + 0.32, cy_mid, st.text_small, 1.25, arrow=True, name="legend_arrow_swatch")
+        _textbox(S, st, lgx + 0.42, chip_y + i * row_h, _width(word, 16) + 0.1, row_h,
+                 [{"text": word, "size": 16, "color": st.text}], anchor=MSO_ANCHOR.MIDDLE, wrap=False,
+                 name=f"legend_{kind}")
     return _finish_group(grp, alt, name)
 
 
