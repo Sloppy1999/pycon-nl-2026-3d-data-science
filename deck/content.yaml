@@ -747,7 +747,7 @@ slides:
       - {head: "Think in arrays, not points", evidence: "{memory.tile_1km.bytes_per_point.xyz_float64|int} B per point per xyz copy", ref: "slides 14, 15"}
       - {head: "Make it small first", evidence: "{memory.tile_1km.naive_peak_mb|gb1} → {memory.tile_1km.chunked_peak_mb|gb1} peak", ref: "slides 16, 17, 19, 22, 23"}
       - {head: "Let compiled code loop", evidence: "{bench.plane.factor.median|x} faster than a loop", ref: "slides 24 to 28"}
-      - {head: "Look before you compute", evidence: "{bgt.collections.paal.n|int} poles on the register, {pipeline.n_objects.street_furniture|int} found", ref: "slides 29, 30"}
+      - {head: "Look before you compute", evidence: "{bgt.collections.paal.n|int} poles on the register, {pipeline.n_objects.street_furniture|int}\u00a0found", ref: "slides 29, 30"}
     alt: "The four rules of thumb again, each with its evidence from the talk. Think in arrays, not points: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} bytes per point. Make it small first: {memory.tile_1km.naive_peak_mb|gb1} to {memory.tile_1km.chunked_peak_mb|gb1} peak memory. Let compiled code loop: {bench.plane.factor.median|x} faster than a loop over rows. Look before you compute: {bgt.collections.paal.n|int} poles on the register, {pipeline.n_objects.street_furniture|int} found."
     seconds: 75
 

@@ -337,6 +337,10 @@ def add_rule_tiles(slide, box, spec, style=None):
     gx, gy = 0.50, 0.30
     tw, th = (W - gx) / 2, (H - gy) / 2
     disc = 0.56
+    # one head size for all tiles: the largest that keeps every head on one line (a second line pushes the
+    # explanation out of the tile)
+    txw0 = tw - 0.25 - disc - 0.25 - 0.25
+    head_pt = next((pt for pt in (28, 26, 24) if all(len(_wrap_title(r["head"], pt, txw0 - 0.05)) == 1 for r in rules)), 24)
     for i, r in enumerate(rules):
         if per_tile:
             grp = _group(slide, f"{name} {i + 1}", r["head"])
@@ -351,7 +355,6 @@ def add_rule_tiles(slide, box, spec, style=None):
                align=PP_ALIGN.CENTER)
         tx = x + 0.25 + disc + 0.25
         txw = x + tw - 0.25 - tx
-        head_pt = 28
         head_lines = _wrap_title(r["head"], head_pt, txw - 0.05)
         head_h = len(head_lines) * head_pt * 1.2 / 72
         hy = y + 0.25 + max(0.0, (disc - head_h) / 2) if len(head_lines) == 1 else y + 0.22
