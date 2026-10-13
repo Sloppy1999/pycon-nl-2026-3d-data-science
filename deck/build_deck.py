@@ -78,6 +78,7 @@ L7_TEXT, L8_TEXT = GEO.ph(7, 14), GEO.ph(8, 14)                 # text columns b
 MEDIA_R = GEO.ph(7, 18).t()                                     # L7 media idx 18, exact 1588:1792
 MEDIA_L = GEO.ph(8, 18).t()                                     # L8 media idx 18
 SMALL_PT, SUPPORT_PT = SIZES["small"], SIZES["support"]
+NOTE_PT = 18          # label size, as the callouts and code captions
 LINE_EM = STYLE["line_height_em"]
 EXPECTED_PX = {"hook_split.png": (4190, 1792)}
 DEFAULT_PX = (1588, 1792)
@@ -455,7 +456,7 @@ class Builder:
             text = (f"Conditions: {cpu}, {ver} (--cpu-only, a sample every "
                     f"{float(ex.get('cpu_sampling_rate_s', 0.001)) * 1000:g}\u00a0ms); {n} points, both versions "
                     f"{ex.get('repeats_per_run')} times per run, median of {c.get('runs')} runs; AHN5 crop (CC BY 4.0). "
-                    f"Shares are of the whole run, imports and reading the file included. Full: results/profile_scalene.json.")
+                    f"Shares are of the whole run, imports and reading the file included; times are share \u00d7 the {self.res.lookup('prof.elapsed_s'):g}\u00a0s run. Full: results/profile_scalene.json.")
         else:
             text = (f"Conditions: {cpu}, {ver}; {n} points, median of {c.get('runs')} runs; AHN5 1\u00a0km file "
                     f"(CC BY 4.0). Scalene counts allocations, not resident memory (slide 26). "
@@ -1037,6 +1038,9 @@ class Builder:
                               name="Code install")
             if inst.get("alt"):
                 set_alt(box, self.R(inst["alt"], n))
+        if spec.get("note"):
+            # the note box in the bottom right, under the right column (content.yaml `note`, slide 2: why the counts differ)
+            self._note(s, n, spec["note"], XR, COL_W, BOTTOM, top + cap_h + side_h["right"] + 0.15)
         if support_y is not None and spec.get("support"):
             sup = self.R(spec["support"], n)
             sh = text_h(sup, SUPPORT_PT, FULL_W - 0.02)
@@ -1046,10 +1050,22 @@ class Builder:
             # 12 pt small print on the bottom edge
             self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
 
+    def _note(self, s, n, text, x, w, bottom, y_min):
+        """A note box of the blue tint with a navy outline, its bottom edge at `bottom` and its top not above `y_min`."""
+        text = self.R(text, n)
+        nh = text_h(text, NOTE_PT, w - 0.36) + 0.30
+        ny = bottom - nh
+        if ny < y_min:
+            self.warn(n, f"note box at {ny:.2f} in clashes with the content above it")
+        rect(s, x, ny, w, nh, fill="blue_tint", line="navy", line_pt=1.0, rounded=True, name="Note box")
+        text_block(s, x + 0.18, ny + 0.15, w - 0.36, nh - 0.30, text, size=NOTE_PT, colour="text_small", name="Note")
+
     def slide_two_code(self, s, spec, n, L):
         self._two_code(s, spec, n, L)
 
-    # handoffs -- rows "code | copy/view | consequence" (L4), conditions on the bottom edge
+    # handoffs -- takeaway band, copy/view panels, rows "code | copy/view | consequence" (L4), conditions at the bottom
+    TAKEAWAY_PT = 24
+
     def slide_handoffs(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1062,29 +1078,51 @@ class Builder:
         cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, note=spec.get("conditions_note"),
                                        short=bool(spec.get("conditions_short"))) if spec.get("conditions") else BOTTOM
         sub = self.helper_spec(spec, n, None)
-        rows_top, rows_bottom = top, cond_y - 0.25
+        rows_bottom = cond_y - 0.25
+        if spec.get("takeaway"):
+            # the one sentence to remember, as a blue band right under the title (2026-10-13): the slide's loudest text
+            tk = self.R(spec["takeaway"], n)
+            th = text_h(tk, self.TAKEAWAY_PT, FULL_W - 0.60, font="title") + 0.20
+            band = rect(s, X0, top, FULL_W, th, fill="highlight", rounded=True, name="Takeaway")
+            tf = band.text_frame
+            set_body_pr(tf, wrap=True, anchor="ctr", autofit="none", insets=(0.30, 0.0, 0.30, 0.0))
+            p = tf.paragraphs[0]
+            para_format(p, align="center")
+            add_run(p, tk, font="title", size=self.TAKEAWAY_PT, colour="white")
+            end_para_size(p, self.TAKEAWAY_PT)
+            set_alt(band, tk)
+            top += th + 0.25
+        rows_top = top
         if spec.get("legend"):
-            # what copy and view mean, drawn above the rows (2026-10-12): two names on two blocks, two on one
+            # problem (copy) left, solution (view) right, drawn above the rows (2026-10-12, panels 2026-10-13)
             lg = dict(sub["legend"])
             lg.update({"name": "Copy or view", "alt": "Legend. Copy: two names, each on its own block of memory; "
                        + lg["copy"]["text"] + ". View: two names on one block of memory; " + lg["view"]["text"] + "."})
             lh = self.sketches.copy_view_legend_height() if self.sketches else 1.2
             self.call_helper(s, n, "sketches", "add_copy_view_legend", (X0, top, FULL_W, lh), lg,
                              caption="DIAGRAM PENDING: copy or view legend")
-            rule = line(s, X0, top + lh + 0.08, X0 + FULL_W, top + lh + 0.08, colour="tile", width_pt=1.0,
+            rule = line(s, X0, top + lh + 0.12, X0 + FULL_W, top + lh + 0.12, colour="tile", width_pt=1.0,
                         name="Legend rule")
             mark_decorative(rule)
-            rows_top = top + lh + 0.16
-        if spec.get("support"):
-            sup = self.R(spec["support"], n)
-            sh = text_h(sup, SUPPORT_PT, FULL_W - 0.02)
-            sy = cond_y - 0.20 - sh
-            self.support(s, n, sup, (X0, sy, FULL_W, sh))
-            rows_bottom = sy - 0.30
+            rows_top = top + lh + 0.20
         sub = {"rows": sub["rows"], "pills": sub.get("pills"), "alt": sub.get("alt"), "name": "Handoffs",
-               **({"row_gap_in": 0.10} if spec.get("legend") else {})}
+               **{k: spec[k] for k in ("row_gap_in", "row_h_in", "code_pt", "text_pt") if k in spec}}
         self.call_helper(s, n, "diagrams", "add_handoff_rows", (X0, rows_top, FULL_W, rows_bottom - rows_top), sub,
                          caption="DIAGRAM PENDING: hand-off rows")
+        k = len(sub["rows"])
+        if spec.get("note"):
+            # note box in the free space right of the title, top right
+            nt = self.R(spec["note"], n)
+            nw = 2.45
+            nh = text_h(nt, SMALL_PT, nw - 0.34) + 0.16
+            nx = X0 + FULL_W - nw
+            ny = 0.95
+            box = rect(s, nx, ny, nw, nh, fill="blue_tint", name="Note box")
+            mark_decorative(box)
+            self.small(s, n, nt, (nx + 0.15, ny + 0.08, nw - 0.30, nh - 0.16), name="Note")
+        need = k * float(spec.get("row_h_in", 0.62)) + (k - 1) * float(spec.get("row_gap_in", 0.30))
+        if rows_bottom - rows_top < need:
+            self.warn(n, f"hand-off rows need {need:.2f} in, get {rows_bottom - rows_top:.2f} in")
 
     # profile -- the Scalene command and one bar per line of the slide-19 loop (L4)
     def slide_profile(self, s, spec, n, L):
@@ -1100,12 +1138,18 @@ class Builder:
         cmd = lp["command"]
         sn = Snippet(name="profile command", path=None, lines=[cmd], keys=[], key=None, ok=True, lang="console")
         ch = code_height_in(1)
-        add_code(s, sn, X0 - INSET_L, top, FULL_W + INSET_L, ch, name="Code profile command", hl_name="Key line profile")
+        term = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, E(X0 - INSET_L), E(top), E(FULL_W + INSET_L), E(ch))
+        term.fill.solid()
+        term.fill.fore_color.rgb = rgb("light")       # terminal strip behind the command
+        term.line.fill.background()
+        term.shadow.inherit = False
+        set_name(term, "Terminal background")
+        mark_decorative(term)
+        add_code(s, sn, X0 - INSET_L + 0.15, top, FULL_W + INSET_L - 0.15, ch, name="Code profile command", hl_name="Key line profile")
         cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, note=spec.get("conditions_note"),
                                        short=bool(spec.get("conditions_short"))) if spec.get("conditions") else BOTTOM
-        sup = self.R(spec["support"], n) if spec.get("support") else ""
-        sup_h = text_h(sup, SUPPORT_PT, FULL_W - 0.02) if sup else 0.0
-        sup_y = cond_y - 0.20 - sup_h
+        sup_y = cond_y - 0.20                     # no takeaway line (2026-10-13): the profile takes the space
+        el = float(self.res.lookup("prof.elapsed_s"))
         rows = []
         for r in lp["rows"]:
             d = self.res.lookup(f"prof.lines.{r['line']}")
@@ -1114,15 +1158,15 @@ class Builder:
                 continue
             tot = d["total"]
             txt = "0\u00a0%" if tot == 0 else (f"{tot:.0f}\u00a0%" if tot >= 10 else f"{tot:.1f}\u00a0%")
-            rows.append({"tag": r.get("tag"), "code": d["code"], "python": d["python"], "native": d["native"],
+            t = tot / 100 * el                      # seconds of the whole profiled run spent on the line
+            tt = "" if tot == 0 else (f"{t:.1f}\u00a0s" if t >= 1 else f"{t * 1000:.0f}\u00a0ms")
+            rows.append({"time_text": tt, "tag": r.get("tag"), "code": d["code"], "python": d["python"], "native": d["native"],
                          "system": d["system"], "total_text": txt, "key": r.get("key"), "gap": r.get("gap")})
         y = top + ch + 0.30
         h_lp = sup_y - 0.25 - y
         self.call_helper(s, n, "sketches", "add_line_profile", (X0, y, FULL_W, h_lp),
                          {"rows": rows, "legend": lp["legend"], "alt": self.R(lp.get("alt"), n),
                           "name": "Line profile"}, caption="CHART PENDING: line profile")
-        if sup:
-            self.support(s, n, sup, (X0, sup_y, FULL_W, sup_h))
 
     # split_renders -- two portrait frames side by side (L4): raw | labelled, same camera, same scale
     def _anchor(self, ref):
@@ -1159,6 +1203,10 @@ class Builder:
         src_h = text_h(src_txt, SMALL_PT, FULL_W - 0.02) if src_txt else 0
         sup_txt = self.R(spec.get("support"), n) if spec.get("support") else ""
         sup_h = text_h(sup_txt, SUPPORT_PT, FULL_W - 0.02) if sup_txt else 0
+        note_txt = self.R(spec.get("note"), n) if spec.get("note") else ""
+        if note_txt:                              # note box (as slide 2) in place of the support line
+            # the box spans the two frames (about 6.9 in), so the text wraps: reserve its lines at that width
+            sup_h = text_h(note_txt, NOTE_PT, 6.5) + 0.30
         src_y = BOTTOM - src_h
         # 0.17 in between support and source line (0.20 in between frames and support): the two text lines read as
         # separate blocks, and the frames shrink to about 4.2 in (centred, same scale)
@@ -1244,6 +1292,10 @@ class Builder:
                     self.warn(n, f"data set row {a_!r}: {b_!r} wider than the table ({table_w:.2f} in)")
         if sup_txt:
             self.support(s, n, sup_txt, (X0, sup_y, FULL_W, sup_h))
+        if note_txt:
+            # as wide as the two frames (left edge of the first to right edge of the second), bottom on the reserved line
+            self._note(s, n, note_txt, frames[0][0], frames[-1][0] + frames[-1][2] - frames[0][0],
+                       sup_y + sup_h, frame_y + frame_h)
         if src_txt:
             self.source(s, n, spec.get("source"), (X0, src_y, FULL_W, src_h))
 
@@ -1408,6 +1460,68 @@ class Builder:
         if sp:
             self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
 
+    # load_stack -- slide 12 stacked on L4 (2026-10-13): title, code, before/after figure, takeaway, source
+    def slide_load_stack(self, s, spec, n, L):
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        sn = self.snippet(n, spec["code"]["snippet"])
+        code_h = len(sn.lines) * LINE_PT * LINE_EM / 72 + INSET_T + INSET_B
+        self.code_or_pending(s, n, sn, X0, top, 8.0, code_h, name="Code", hl_name="Code key line")
+        src_h = lines_h(1, SMALL_PT)
+        tk_h = lines_h(1, 30) + 0.05
+        tk_y = BOTTOM - src_h - 0.08 - tk_h
+        fy = top + code_h + 0.12
+        rh = tk_y - 0.10 - top                                # the hall render fills the right column down to the takeaway
+        rw = rh * DEFAULT_PX[0] / DEFAULT_PX[1]
+        self.place_render(s, n, spec["visual"]["file"], (X0 + FULL_W - rw, top, rw, rh), name="Render",
+                          alt=self.R(spec["alt"], n))
+        path = DECK / "assets" / "concepts" / spec["figure"]["file"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        fh = tk_y - 0.10 - fy
+        fw = min(FULL_W - rw - 0.25, fh * iw / ih)
+        pic = s.shapes.add_picture(str(path), E(X0), E(fy), E(fw), E(fw * ih / iw))
+        set_name(pic, "Before and after")
+        set_alt(pic, self.R(spec["figure"]["alt"], n))
+        rect(s, X0, tk_y, 0.07, tk_h, fill="blue", name="Takeaway bar")
+        text_block(s, X0 + 0.2, tk_y, FULL_W - 0.2, tk_h, self.R(spec["takeaway"], n), size=30, colour="navy",
+                   bold=True, anchor="b", name="Takeaway")
+        self.source(s, n, spec.get("source"), (X0, BOTTOM - src_h, FULL_W, src_h), name="Source")
+
+    # step_stack -- slides 14 to 17 (L4, 2026-10-13): code left; right column the hall render with the support line
+    # beside it and the step sketch under it; the takeaway across the bottom; source line
+    def slide_step_stack(self, s, spec, n, L):
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        sn = self.snippet(n, spec["code"]["snippet"])
+        code_w = 6.6
+        code_h = len(sn.lines) * LINE_PT * LINE_EM / 72 + INSET_T + INSET_B
+        self.code_or_pending(s, n, sn, X0, top, code_w, code_h, name="Code", hl_name="Code key line")
+        src_h = lines_h(1, SMALL_PT)
+        bottom = BOTTOM - src_h - 0.08
+        tk_h = lines_h(2, 28) + 0.05                          # the takeaway under the code, up to two lines
+        tk_y = bottom - tk_h
+        if top + code_h > tk_y - 0.02:
+            self.warn(n, f"code ends {top + code_h:.2f} in, takeaway starts {tk_y:.2f} in")
+        rx = X0 + code_w + 0.3
+        cw = X0 + FULL_W - rx
+        path = DECK / "assets" / "concepts" / spec["figure"]["file"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        fh = cw * ih / iw
+        rh = bottom - top - 0.12 - fh
+        rw = rh * DEFAULT_PX[0] / DEFAULT_PX[1]
+        self.place_render(s, n, spec["visual"]["file"], (rx, top, rw, rh), name="Render", alt=self.R(spec["alt"], n))
+        if spec.get("support"):
+            self.support(s, n, spec["support"], (rx + rw + 0.2, top, cw - rw - 0.2, rh))
+        pic = s.shapes.add_picture(str(path), E(rx), E(top + rh + 0.12), E(cw), E(fh))
+        set_name(pic, "Step diagram")
+        set_alt(pic, self.R(spec["figure"]["alt"], n))
+        rect(s, X0, tk_y, 0.07, tk_h, fill="blue", name="Takeaway bar")
+        text_block(s, X0 + 0.2, tk_y, code_w - 0.2, tk_h, self.R(spec["takeaway"], n), size=28, colour="navy",
+                   bold=True, anchor="b", name="Takeaway")
+        self.source(s, n, spec.get("source"), (X0, BOTTOM - src_h, FULL_W, src_h), name="Source")
+
     # morph -- Morph chain (L7): identical names and boxes on every slide (self.morph)
     def slide_morph(self, s, spec, n, L):
         self.set_title(s, n, spec["title"], L, name="!!title")
@@ -1418,7 +1532,15 @@ class Builder:
         code = self.morph["code"]
         self.code_or_pending(s, n, sn, *code, name="!!code", hl_name="!!hl",
                              max_lines=int((code[3] - INSET_T - INSET_B) * 72 / LINE_PT + 1e-6))
-        self.support(s, n, spec.get("support"), self.morph["support"], name="!!support")
+        if spec.get("takeaway"):
+            # the slide's one message, big: bold 30 pt navy, bottom-aligned where the support line sits, blue bar left
+            sx, sy, sw, sh = self.morph["support"]
+            th = lines_h(2, 30) + 0.1
+            rect(s, sx, sy + sh - th, 0.07, th, fill="blue", name="Takeaway bar")
+            text_block(s, sx + 0.2, sy + sh - th, sw - 0.2, th, self.R(spec["takeaway"], n), size=30, colour="navy",
+                       bold=True, anchor="b", name="!!support")
+        else:
+            self.support(s, n, spec.get("support"), self.morph["support"], name="!!support")
         if spec.get("small_print"):
             # same box and name on every Morph slide that has one (12 to 14), so it stays still
             self.small(s, n, spec["small_print"], self.morph["small"], name="!!small")
@@ -1435,7 +1557,10 @@ class Builder:
             # Named per kind, not "!!", so Morph fades one sketch into the next instead of morphing shapes.
             sk = self.resolved_spec(spec["sketch"], n)
             sk["name"] = f"Sketch {sk['kind']}"
-            self.call_helper(s, n, "sketches", "add_step_sketch", self.SKETCH_RECT, sk,
+            rx, ry, rw, rh = self.SKETCH_RECT
+            if sk["kind"] in ("origin", "voxel"):   # the numbers are the proof on slide 12, the grid on 13: a larger panel
+                rx, rw, rh = rx - 0.9, rw + 0.9, rh + 0.3
+            self.call_helper(s, n, "sketches", "add_step_sketch", (rx, ry, rw, rh), sk,
                              caption=f"SKETCH PENDING: {sk['kind']}", dark=True)
         if spec.get("labels_from"):
             px = tuple(info.get("px") or DEFAULT_PX)
@@ -1482,6 +1607,41 @@ class Builder:
             self.snippet(n, spec["snippet"])            # recorded in the build report with its run status
         return box
 
+    # voxel_story -- slide 13 (L4): title, code, a before/after figure, the takeaway big, the source line.
+    # Figure: deck/concepts/make_voxel_figure.py (real points of one roof layer of the crop).
+    def slide_voxel_story(self, s, spec, n, L):
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        sn = self.snippet(n, spec["code"]["snippet"])
+        code_h = len(sn.lines) * LINE_PT * LINE_EM / 72 + INSET_T + INSET_B if sn.ok else 1.0
+        ty0 = BOTTOM - text_h(self.source_text(spec["source"]), SMALL_PT, FULL_W - 0.02) - 0.12 - lines_h(1, 32) - 0.1
+        rh = ty0 - 0.15 - top                      # the render (right) runs from the code's top to the takeaway
+        rw = rh * 1588 / 1792
+        left_w = FULL_W - rw - 0.3
+        self.place_render(s, n, spec["visual"]["file"], (X0 + FULL_W - rw, top, rw, rh), name="!!render",
+                          alt=self.R(spec.get("alt_render"), n), idx=None)
+        self.code_or_pending(s, n, sn, X0, top, left_w, code_h, name="!!code", hl_name="!!hl")
+        src_h = text_h(self.source_text(spec["source"]), SMALL_PT, FULL_W - 0.02)
+        th = lines_h(1, 32) + 0.1
+        ty = BOTTOM - src_h - 0.12 - th
+        fy = top + code_h + 0.15
+        path = DECK / "assets" / "concepts" / spec["figure"]["file"]
+        fh = ty - 0.15 - fy
+        if path.is_file():
+            with Image.open(path) as im:
+                iw, ih = im.size
+            w = min(left_w, fh * iw / ih)
+            pic = s.shapes.add_picture(str(path), E(X0), E(fy), E(w), E(w * ih / iw))
+            set_name(pic, "Voxel before and after")
+            set_alt(pic, self.R(spec.get("alt"), n))
+        else:
+            pending_box(s, X0, fy, FULL_W, fh, "FIGURE PENDING: deck/concepts/make_voxel_figure.py", path.name,
+                        name="PENDING voxel figure")
+        rect(s, X0, ty, 0.07, th, fill="blue", name="Takeaway bar")
+        text_block(s, X0 + 0.2, ty, FULL_W - 0.2, th, self.R(spec["takeaway"], n), size=32, colour="navy",
+                   bold=True, anchor="ctr", name="!!support")
+        self.source(s, n, spec["source"], (X0, BOTTOM - src_h, FULL_W, src_h), name="!!src")
+
     # chart_hero -- chart + hero (L7)
     def slide_chart_hero(self, s, spec, n, L):
         # always the content.yaml title: the measured factor holds for one loop on one memory layout, so the
@@ -1496,7 +1656,7 @@ class Builder:
         ch["alt"] = self.R(spec.get("alt"), n)
         self.chart(s, n, "add_column_log", MEDIA_R, ch, values, "CHART PENDING: column chart, log time axis")
         hero = spec.get("hero") or {}
-        hb, hh = self.hero(s, n, L7_TEXT.x, top, L7_TEXT.w, hero.get("value", ""), hero.get("label"), size=96)
+        hb, hh = self.hero(s, n, L7_TEXT.x, top, L7_TEXT.w, hero.get("value", ""), hero.get("label"), size=80)
         if hero.get("build_on_click"):
             self.click_build = hb
         # conditions on the bottom edge, the support line just above them (never into the hero)
@@ -1511,6 +1671,22 @@ class Builder:
             if y < top + hh + 0.15:
                 self.warn(n, f"support line at {y:.2f} in reaches into the hero (ends {top + hh:.2f} in)")
             self.support(s, n, sup, (L7_TEXT.x, max(y, top + hh + 0.15), L7_TEXT.w, sh))
+        ops = spec.get("ops")
+        if ops:
+            n_pts = int(self.res.number("bench.plane.n", f"slide {n} ops"))
+            loop_calls = ops["loop_per_row"] * n_pts
+            lines = [(f"{ops['loop_label']}: {ops['loop_per_row']} calls \u00d7 {fmt_int(n_pts)} rows"
+                      f" = {loop_calls / 1e6:.1f}\u00a0million calls", False)]
+            if ops.get("threads_label"):   # same calls, split over the threads: the count does not shrink
+                k = int(self.res.number(ops["threads"], f"slide {n} ops"))
+                lines.append((f"{k} {ops['threads_label']}: same calls,"
+                              f" {loop_calls / k / 1e6:.1f}\u00a0million each", False))
+            lines.append((f"{ops['vec_label']}: {ops['vectorised']} calls in total", True))
+            y_ops = top + hh + 0.30
+            for text, bold in lines:
+                text_block(s, L7_TEXT.x, y_ops, L7_TEXT.w, lines_h(1, 20), text, size=20, colour="text", bold=bold,
+                           name="Ops")
+                y_ops += lines_h(1, 20) + 0.10
 
     def _chart_spec(self, spec, n):
         """The chart sub-dict with tokens resolved in its words (bar labels, axis title); a bar `value` stays a
@@ -1570,11 +1746,21 @@ class Builder:
         sup = self.R(spec.get("support"), n) if spec.get("support") else ""
         sup_h = text_h(sup, SUPPORT_PT, FULL_W - 0.02) if sup else 0
         sup_y = cond_y - 0.15 - sup_h
+        take = spec.get("takeaway", "")
+        take_h = lines_h(1, 28) if take else 0
+        take_y = sup_y - 0.10 - take_h
         hero = spec.get("hero") or {}
         hero_pt = 60
         hero_h = lines_h(1, hero_pt)
-        hero_y = sup_y - 0.10 - hero_h
-        self.call_helper(s, n, "diagrams", "add_toll_diagram", (X0, top, FULL_W, hero_y - 0.20 - top),
+        hero_y = take_y - 0.05 - hero_h
+        ex = self.R(spec.get("example"), n) if spec.get("example") else ""
+        ex_h = lines_h(1, 20) if ex else 0
+        ex_y = hero_y - 0.10 - ex_h
+        if ex:
+            text_block(s, X0, ex_y, FULL_W, ex_h, ex, size=20, colour="text", name="Example")
+        if take:
+            text_block(s, X0, take_y, FULL_W, take_h, take, size=28, colour="text", bold=True, name="Takeaway")
+        self.call_helper(s, n, "diagrams", "add_toll_diagram", (X0, top, FULL_W, (ex_y if ex else hero_y) - 0.20 - top),
                          self.helper_spec(spec, n, "visual"),
                          caption="DIAGRAM PENDING: Python lane, compiled lane, toll per crossing")
         if hero.get("value"):
@@ -1594,6 +1780,7 @@ class Builder:
         ch = self._chart_spec(spec, n)
         values = [b["value"] if isinstance(b["value"], (int, float)) else self.res.number(b["value"], f"slide {n} chart")
                   for b in ch["bars"]]
+        values = [v * b.get("scale", 1) if v is not None else None for v, b in zip(values, ch["bars"])]
         ch["alt"] = self.R(spec.get("alt"), n)
         # the memory conditions run full width on the bottom edge (the right column has no room for them under
         # the hero, support line and small print); the chart ends above them
@@ -1615,28 +1802,45 @@ class Builder:
             lx = px + pw * ch["threshold_gb"] / ch["_axis_max"]
             y = py + (band * (ref_i + 0.5) + bar_h / 2 if ref_i is not None else 0.0)
             # a bar shorter than the threshold has its value label right where the line runs: skip its row
+            y = py                          # the line runs the full plot height, from the top
             segs = []
+            if ref_i is not None:           # but not over the RAM bar it starts from
+                segs.append((py, py + band * (ref_i + 0.5) - bar_h / 2 - 0.06))
+                y = py + band * (ref_i + 0.5) + bar_h / 2
             for i in range((ref_i or -1) + 1, k):
+                top_i = py + band * (i + 0.5) - bar_h / 2
                 if values[i] is not None and values[i] < ch["threshold_gb"]:
-                    top_i = py + band * (i + 0.5) - bar_h / 2
                     segs.append((y, top_i - 0.06))
                     y = top_i + bar_h + 0.06
+                elif values[i] is not None and i != ref_i:
+                    # the part of the bar past the RAM limit, in red
+                    ex = px + pw * values[i] / ch["_axis_max"]
+                    r = rect(s, lx, top_i, ex - lx, bar_h, fill="warn", name=f"Over the limit {i}")
+                    mark_decorative(r)
             segs.append((y, py + ph))
             for j, (y1, y2) in enumerate(segs, 1):
                 if y2 - y1 < 0.05:
                     continue
-                thr = line(s, lx, y1, lx, y2, colour="navy", width_pt=1.5, name=f"Threshold line {j}")
+                thr = line(s, lx, y1, lx, y2, colour="navy", width_pt=3, name=f"Threshold line {j}")
                 thr.line.dash_style = MSO_LINE_DASH_STYLE.DASH
                 mark_decorative(thr)
         hero = spec.get("hero") or {}
         col = L8_TEXT
-        hb, hh = self.hero(s, n, col.x, top, col.w, hero.get("value", ""), hero.get("label"), size=88)
+        hb, hh = self.hero(s, n, col.x, top, col.w, hero.get("value", ""), hero.get("label"), size=80)
         y = top + hh + 0.25
         sup = self.R(spec.get("support"), n)
         if sup:
             sh = text_h(sup, SUPPORT_PT, col.w - 0.02)
             self.support(s, n, sup, (col.x, y, col.w, sh))
             y += sh + 0.15
+        if spec.get("note"):
+            # note box (blue tint, as the deck's other note boxes) with 12 pt slate text
+            nt = self.R(spec["note"], n)
+            nh = text_h(nt, SMALL_PT, col.w - 0.34) + 0.16
+            box = rect(s, col.x, y, col.w, nh, fill="blue_tint", name="Note box")
+            mark_decorative(box)
+            self.small(s, n, nt, (col.x + 0.15, y + 0.08, col.w - 0.30, nh - 0.16), name="Note")
+            y += nh + 0.15
         if spec.get("small_print"):
             sp = self.R(spec["small_print"], n)
             sph = text_h(sp, SMALL_PT, col.w - 0.02)
@@ -1648,7 +1852,7 @@ class Builder:
             # the joke line (content.yaml machine_line), 20 pt slate, with room above it
             ml = self.R(spec["machine_line"], n)
             mh = text_h(ml, 20, col.w - 0.02)
-            y += 0.30
+            y += 0.15
             if y + mh > cond_y - 0.10:
                 self.warn(n, f"machine line ends at {y + mh:.2f} in, conditions start at {cond_y:.2f} in")
             text_block(s, col.x, y, col.w, mh, ml, size=20, colour="text_small", name="Machine line")
@@ -1686,6 +1890,15 @@ class Builder:
         if code_box is not None and spec.get("alt"):
             set_alt(code_box, self.R(spec["alt"], n))
         self.report.setdefault("slide21_layout", {}).update({"line_pt": line_pt, "hero_pt": hero_pt})
+        if spec.get("diagram"):         # slide 27: diagram left, hero (label under the value) right, in the room under the code
+            row_y, row_h = code_bottom + 0.12, cond_y - 0.10 - (code_bottom + 0.12)
+            dw = 6.4
+            self.call_helper(s, n, "sketches", "add_chunk_stream", (X0, row_y, dw, row_h), spec["diagram"],
+                             caption="chunk stream diagram")
+            hx = X0 + dw + 0.45
+            _, hh = self.hero(s, n, hx, row_y, FULL_W - dw - 0.45, hero.get("value", ""), hero.get("label"), size=60)
+            s.shapes[-1].top = E(row_y + max(0.0, row_h - hh) / 2)
+            return
         # the hero row sits in the middle of the room left between the code and what follows it
         hero_y = code_bottom + gap_above + max(0.0, room - hero_h) / 2
         self.hero_row(s, n, X0, hero_y, FULL_W, hero.get("value", ""), hero.get("label"), size=hero_pt,
@@ -1722,8 +1935,8 @@ class Builder:
             for i, (kind, ln) in enumerate(lines):
                 if i:
                     p = tf.add_paragraph()
-                # the readable repo link is the call to action: sage 28 pt, the one highlight on navy
-                size = 28 if kind == "support" else 24
+                # the readable repo link is the call to action: sage 24 pt, one line, the one highlight on navy
+                size = 24
                 para_format(p, align="left", space_after=14 if kind == "support" else 4)
                 add_text_runs(p, ln, font="minor", size=size,
                               colour="highlight_dark" if kind == "support" else "text_dark",
@@ -2151,8 +2364,12 @@ class Builder:
             self.support(s, n, tk, (x, y, cw, th))
             y += th + 0.30
         items = [self.R(t_, n) for t_ in spec.get("bullets") or []]
+        foot = BOTTOM - (sph + 0.15 if sp else 0.0)
         if items:
-            self._bullets(s, x, y, cw, BOTTOM - y - (sph + 0.15 if sp else 0.0), items, 20, "Meme bullets")
+            self._bullets(s, x, y, cw, foot - y, items, 20, "Meme bullets")
+        if spec.get("note"):
+            # the note at the foot of the right column, above the small print (content.yaml `note`, slide 3)
+            self._note(s, n, spec["note"], x, cw, foot, y + 0.30)
         if sp:
             self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
 

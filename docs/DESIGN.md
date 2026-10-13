@@ -68,6 +68,8 @@ Nine values from the site, eight of them in the deck (`content.yaml` `meta.palet
 | light | `#E0E0E0` | lt2 (bg2), accent6 | inline SVG fills (168) | tiles, code key-line bar, thin rules |
 | (paper) | `#FAFAFA` | not used | inline SVG fills (59) | not used (not in `content.yaml`) |
 
+Note boxes use `blue_tint` (`#DFE8EF`, the blue at 15 % on white), the one colour added to the palette for a background; it is not a site colour. Slide 2 and slide 5 use them (`note:` in content.yaml; on slide 5 the goal line, in place of a support line).
+
 There is no warm accent in the conference palette. Highlights use blue on white and sage on navy; "muted" is grey.
 
 ### Render palette (inside renders and on render label chips only)

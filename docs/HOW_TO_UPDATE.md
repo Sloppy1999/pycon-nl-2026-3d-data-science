@@ -38,7 +38,7 @@ default `deck` group.
 | `deck/ecosystem/merge.py` (reads `part1.yaml` to `part3.yaml` and `overrides.yaml`) | `deck/ecosystem/ecosystem.yaml`, `results/ecosystem.json`, `docs/ECOSYSTEM.md`, `deck/assets/logos/SOURCES.md` | slide 4, B7 |
 | `bench/eigen_features.py --final` (needs `--group ml`) | `results/eigen_features.json` (eigenvalue features per cluster, Random Forest vs rules against AHN) | B5, notes 14 and 29 |
 | `bench/bench_freethreaded.py --final` | `results/bench_freethreaded.json` (3.14t vs 3.14, threads vs NumPy) | slide 26, notes 25 and 30 |
-| `deck/concepts/make_figures.py` (needs `uv sync --group figures` and the QA fonts from `deck/qa/setup_fonts.py`) | `deck/assets/concepts/c1_representations.png` to `c6_scale.png`, `results/concepts.json` | C1 to C6 (figures, captions, `{concept.*}` tokens) |
+| `deck/concepts/make_figures.py` (needs `uv sync --group figures` and the QA fonts from `deck/qa/setup_fonts.py`) | `deck/assets/concepts/c1_representations.png` to `c6_scale.png`, `results/concepts.json` | C1 to C6 (figures, `{concept.*}` tokens) |
 | `docs/research/research_facts.py` | `results/research_facts.json` (PILOT: research numbers copied verbatim) | B2, B3, slide 28 alt text, a few notes |
 | `deck/build_deck.py` | `deck/out/20261015_PyCon-NL_3D-Data-Science.pptx`, `deck/out/build_report.json` | QA |
 | `deck/qa/render.py` | `deck/out/*.pdf`, `deck/out/png/slide-NN.png`, `deck/out/qa_render.json` | visual QA |
@@ -59,7 +59,7 @@ the highlighted key line. Numbers are tokens `{file.key|format}` (formats are li
 | 3 | none | `deck/assets/meme/python_cpp_unmasking.png` (the Scooby-Doo template with the Python and C++ logos, made once; replace the file to change it) | none |
 | 4 | none (logo wall: ids in `content.yaml`, logos in `deck/assets/logos/`) | `deck/ecosystem/ecosystem.yaml` entries and orgs | `eco.n_entries` (small print) |
 | 5 | none | `f1_load.png`, `f6_final.png`; chips from `labels.json` `f6_final`, edge arrow from `f1_load.jaarbeurs_edge` | none |
-| 6 | none (`concept: C1`, text in `appendix.yaml` C1) | `c1_representations.png` (`deck/concepts/make_figures.py`) | `concept.c1.*` (caption) |
+| 6 | none (`concept: C1`, text in `appendix.yaml` C1) | `c1_representations.png` (`deck/concepts/make_figures.py`) | none (figure has no caption) |
 | 7 | none (cards from `content.yaml` `stages`, `build: workflow`) | none | none |
 | 8, 9 | none (native diagrams from `content.yaml`) | none | none |
 | 10 | rows in `content.yaml` (checked by `s06b_handoffs.py`) | native rows | `facts.factor_v3d_float32_vs_float64_f.median`, `facts.timings.*`; each row's `verify` boolean; conditions |

@@ -21,7 +21,7 @@ pipeline/steps.score).
 * Random Forest (scikit-learn, 100 trees, random_state 0): spatial cross-validation, the folds are 50 m blocks of the
   crop (GroupKFold on the cluster centroid), so neighbouring fragments of one building never sit on both sides.
   Two feature sets: the four eigenvalue features alone, and those plus the rules' inputs (top, footprint, multiple
-  return share). Score: recall per class and balanced accuracy (the classes are unbalanced), weighted by points (every
+  return share). ``HistGradientBoostingClassifier`` runs on the same folds and feature sets. Score: recall per class and balanced accuracy (the classes are unbalanced), weighted by points (every
   original point counts once, the forest is trained with the same weights) and, for comparison, per cluster.
 """
 
@@ -95,7 +95,7 @@ def main() -> int:
     args = ap.parse_args()
 
     from sklearn import __version__ as sk_version
-    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
     from sklearn.model_selection import GroupKFold, cross_val_predict
 
     d = np.load(RESULTS / "labels_crop.npz")
@@ -147,16 +147,21 @@ def main() -> int:
     n_folds = int(min(5, len(np.unique(blocks))))
     cv = GroupKFold(n_splits=n_folds)
 
-    def forest(cols: tuple[str, ...]) -> dict:
+    def forest(cols: tuple[str, ...], boosted: bool = False) -> dict:
         X = np.column_stack([{**f, **rule_in}[c][keep] for c in cols])
-        rf = RandomForestClassifier(n_estimators=100, random_state=0, n_jobs=-1)
-        pred = cross_val_predict(rf, X, truth, cv=cv, groups=blocks, params={"sample_weight": w})
-        imp = rf.fit(X, truth, sample_weight=w).feature_importances_
-        return {"features": list(cols), **scores(pred),
-                "importance": {c: float(i) for c, i in zip(cols, imp)}}
+        model = (HistGradientBoostingClassifier(random_state=0) if boosted
+                 else RandomForestClassifier(n_estimators=100, random_state=0, n_jobs=-1))
+        pred = cross_val_predict(model, X, truth, cv=cv, groups=blocks, params={"sample_weight": w})
+        out = {"features": list(cols), **scores(pred)}
+        if not boosted:  # HistGradientBoosting has no feature_importances_
+            imp = model.fit(X, truth, sample_weight=w).feature_importances_
+            out["importance"] = {c: float(i) for c, i in zip(cols, imp)}
+        return out
 
     rf_eigen = forest(FEATURES)
     rf_all = forest(FEATURES + RULE_INPUTS)
+    hgb_eigen = forest(FEATURES, boosted=True)
+    hgb_all = forest(FEATURES + RULE_INPUTS, boosted=True)
 
     per_class = {}
     for code in (BUILDINGS, VEGETATION, STREET_FURNITURE, UNLABELLED):
@@ -189,9 +194,12 @@ def main() -> int:
         "rules": {**scores(rules), "note": "rule 2 or 3 = building; no training"},
         "forest_eigen_only": rf_eigen,
         "forest_eigen_plus_rule_inputs": rf_all,
+        "hgb_eigen_only": hgb_eigen,
+        "hgb_eigen_plus_rule_inputs": hgb_all,
         "cv": {"kind": "GroupKFold on 50 m blocks of the cluster centroid", "folds": n_folds,
                "blocks": int(len(np.unique(blocks))), "block_m": BLOCK_M,
-               "forest": "RandomForestClassifier(n_estimators=100, random_state=0, n_jobs=-1)"},
+               "forest": "RandomForestClassifier(n_estimators=100, random_state=0, n_jobs=-1)",
+               "hgb": "HistGradientBoostingClassifier(random_state=0)"},
         "caveats": [
             "AHN has no vegetation class: only building vs not is scored",
             "the rules were tuned on this crop, so their score is in-sample",
@@ -205,7 +213,8 @@ def main() -> int:
     print(f"wrote {path}")
     print({k: out[k] for k in ("features_identical_loop_vs_batched", "scored")})
     print("timing ms:", round(t_vec["median_ms"], 2), "batched;", round(t_loop["median_ms"], 2), "loop")
-    for name in ("rules", "forest_eigen_only", "forest_eigen_plus_rule_inputs"):
+    for name in ("rules", "forest_eigen_only", "forest_eigen_plus_rule_inputs", "hgb_eigen_only",
+                 "hgb_eigen_plus_rule_inputs"):
         print(name, {k: round(v, 3) for k, v in out[name].items() if isinstance(v, float)})
     print("per rule class", per_class)
     print("per AHN class", per_ahn)

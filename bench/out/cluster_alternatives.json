@@ -1,0 +1,22 @@
+{
+  "script": "bench/cluster_alternatives.py",
+  "voxels": 155690,
+  "scikit_learn": "1.9.1",
+  "dbscan_open3d": {
+    "clusters": 1024,
+    "noise_share": 0.10203609737298477,
+    "note": "ids from the pipeline"
+  },
+  "hdbscan": {
+    "clusters": 636,
+    "noise_share": 0.056214271950671205,
+    "seconds": 74.78297653699701,
+    "ari_vs_dbscan": 0.8861831871024458
+  },
+  "kmeans": {
+    "clusters": 1024,
+    "noise_share": 0.0,
+    "seconds": 3.9980378949985607,
+    "ari_vs_dbscan": 0.012909880330863755
+  }
+}

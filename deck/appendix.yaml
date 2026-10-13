@@ -139,7 +139,7 @@ appendix:
         - cells: ["Open3D NearestNeighborSearch", "Batched kNN, fixed-radius and hybrid search (tensor API)", "Many threads by default; radius search returns indices, distances, splits"]
           source: "research: reports/perf.md (variants E2 and E2_1t, verified gotchas); methods in notes/verify_facts.json"
           status: verified
-        - cells: ["Voxel grid hashing", "One int64 key per voxel, then np.unique (slide 27)", "Fixed cell size; np.unique(axis=0) is no faster than a dict loop"]
+        - cells: ["Voxel grid hashing", "One int64 key per voxel, then np.unique", "Fixed cell size; np.unique(axis=0) is no faster than a dict loop"]
           source: "research: reports/critic.md section 2 (1 M points), reports/perf.md voxel table; snippets/s21_chunked.py"
           status: verified
         - cells: ["Octree (o3d.geometry.Octree)", "Hierarchical cells for level of detail (in memory)", "Not benchmarked here; out-of-core octrees are what COPC files store (B2)"]
@@ -307,7 +307,6 @@ appendix:
     title: "One object, three representations"
     figure:
       file: c1_representations.png
-      caption: "Synthetic house, drawn three ways: {concept.c1.points|int} sampled points, {concept.c1.vertices|int} vertices and {concept.c1.triangles|int} triangles, {concept.c1.voxels|int} voxels of {concept.c1.pitch_m|m}."
       alt: "The same small house three times. Left, a point cloud: scattered dots on its walls and roof. Middle, a mesh: flat triangles joined at shared edges. Right, a voxel grid: stacked cubes, blocky, with no gaps."
     takeaway: "Points measure, meshes connect, voxels index space. Convert only when the task needs it."
     bullets:
@@ -344,7 +343,6 @@ appendix:
     title: "Coordinates mean nothing without a frame"
     figure:
       file: c2_frames.png
-      caption: "The crop's first point in RD New and in the local frame (data/utrecht_jaarbeurs_200m.laz). Right: Z up (LAS, RD + NAP, Blender) and Y up, left-handed (Unity)."
       alt: "Left, a map frame of the Netherlands in RD New with the crop as a tiny square far from the origin. Middle, the crop's own 200 m frame, with the same point near its top right corner. Below, the RD coordinate and the float32 step: 1.6 cm in RD, 15 micrometres local. Right, two axis triads: Z up as in LAS and RD with NAP, and Y up, left-handed, as in Unity."
     takeaway: "Every array needs a frame: reference system, units, origin and which axis is up."
     bullets:
@@ -380,7 +378,6 @@ appendix:
     title: "A transform is a matrix, and order matters"
     figure:
       file: c3_order.png
-      caption: "Synthetic footprint, top view. Column vectors: T @ R rotates first, R @ T translates first."
       alt: "Two panels with the same L-shaped footprint. Left, rotated 90 degrees about the origin and then shifted 5 m right: it lands right of the original. Right, shifted first and then rotated: it lands far above the original. Same rotation, same shift, different results."
     takeaway: "One four by four matrix moves a whole cloud; composing them is not commutative."
     bullets:
@@ -412,7 +409,6 @@ appendix:
     title: "Neighbourhood size changes the answer"
     figure:
       file: c4_scale.png
-      caption: "Synthetic gable roof, {concept.c4.density_per_m2|int} points per m², {concept.c4.noise_sigma_m|cm} noise. PCA normal of the points within the radius, SciPy KDTree."
       alt: "Line chart of normal error in degrees against neighbourhood radius in metres. Both curves start high at the smallest radius because of noise. The curve for a point far from the ridge falls towards zero. The curve for a point near the ridge reaches its lowest error around half a metre and then climbs again as the neighbourhood spills over the edge."
     takeaway: "Points have no neighbours until you choose a radius; that choice is a model parameter."
     bullets:
@@ -447,7 +443,6 @@ appendix:
     title: "A point cloud samples the surface unevenly"
     figure:
       file: c5_density.png
-      caption: "Points per m² in 2 m cells, this crop (AHN5). Walls stack many points in one map cell."
       alt: "Left, a map of point density over the 200 m crop: the hall and streets in mid blue, the hall's walls and other facades as bright lines, tree crowns as bright spots, and some darker bands with fewer points. Right, a histogram of the cells with a median of {concept.c5.median_per_m2|int} points per square metre."
     takeaway: "Density, noise and gaps vary within one file. Measure them before tuning anything."
     bullets:
@@ -482,7 +477,6 @@ appendix:
     title: "Memory follows N, and the algorithm"
     figure:
       file: c6_scale.png
-      caption: "Memory for N points: float64 xyz grows linearly, all pairwise distances quadratically. 1 GB = 2^30 B. Computed, not run."
       alt: "Log-log chart of memory against number of points. A solid line for the float64 coordinates crosses the {concept.c6.ram_gb|int} GB RAM line only near a billion points. A dashed line for all pairwise distances crosses it below a hundred thousand points. Dotted verticals mark this crop, the 1 km AHN file and the big AHN file."
     takeaway: "Linear work fits; anything quadratic in N never will. Pick algorithms by their growth."
     bullets:
@@ -492,8 +486,8 @@ appendix:
       - text: "Trees and grids keep neighbour search near N log N."
         source: "research: reports/mental_models.md section 7 (KD-tree complexity)"
         status: verified
-      - text: "Past RAM, stream: chunks, tiles and COPC boxes (slides 27, 29, B2)."
-        source: "slides 27 and 28; B2; research: reports/mental_models.md section 7 (laspy chunk_iterator, PDAL streaming)"
+      - text: "Past RAM, stream: chunks, tiles and COPC boxes (B2)."
+        source: "B2; research: reports/mental_models.md section 7 (laspy chunk_iterator, PDAL streaming)"
         status: verified
     notes: >-
       Before you ask how fast, ask how it grows. Storing the points is linear: twenty-four bytes per point for float64
