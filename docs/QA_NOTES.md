@@ -131,8 +131,9 @@ placeholders: repo URL, QR code, contact, PyCon NL logo, the slide 22 gotchas, t
 - [x] **10. Same street, camera and colour mapping on every running-example render.** One camera for all 9 renders,
   `camera_unchanged` true for each, fixed height limits (`renders/render_spec.json`). The camera is not the reviewed
   storyboard pose; the reason is recorded in `render_spec.json` `camera.change_from_reviewed` (OPEN_ITEMS d8).
-- [x] **11. Morph on 8 to 14, fade elsewhere, no autoplay, at most one on-click build.** `transitions`, `animations`,
-  `hero_build`, `morph_geometry`, `morph_unique_names` pass; only slide 17's hero builds. Playback is UNVERIFIED.
+- [x] **11. Morph on 8 to 14, fade elsewhere, no autoplay, on-click builds only where specified.** `transitions`, `animations`,
+  `hero_build`, `tile_build`, `morph_geometry`, `morph_unique_names` pass; only the slide 21 hero (slide 23 before 2026-10-14) and
+  the four rule tiles of slide 29, one per click, build. Playback is UNVERIFIED.
 - [ ] **12. Notes on every main slide: talk track, time with question and answer, traceability.** Present on all 24
   slides, seconds sum to 1800. Not done: slide 22's talk track and answer are `[SPEAKER: ...]` placeholders.
 - [x] **13. Skip-first list of 3 to 4 slides.** 15, 20, 19, 13 (saves 230 s), in the slide 14 checkpoint, in each

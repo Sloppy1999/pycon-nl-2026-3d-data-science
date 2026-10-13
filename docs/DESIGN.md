@@ -151,7 +151,7 @@ with English names, numbered as `content.yaml` uses them. Language en-GB on ever
 
 - Outer margin 0.600 on all sides; content right edge 12.733; content width 12.133; column gap 0.500.
 - Accent bar 0.550 x 0.070 at y 0.600 on content layouts (blue on white, sage on navy), left-aligned with the
-  title. It marks where the title starts, so slide 9 to 15 Morph frames keep a fixed anchor.
+  title. It marks where the title starts, so step slides 12 to 17 keep a fixed anchor.
 - Title top y 0.800 on every content layout (L2, L4, L5, L7, L8, L9, L10) and on L11. Title boxes are
   top-anchored, so the first line never moves when a title wraps. Title style: 32 pt Fira Sans SemiBold, navy,
   100 % line spacing (one line 0.533 in, two lines 1.067 in).
@@ -322,9 +322,20 @@ plan. The notes master uses the same theme (Fira Sans 12 pt notes).
   key line on a light `#E0E0E0` bar with a blue left edge. **Code on navy** (slide 1): default white, strings and
   highlights sage, comments grey or sage.
 - **Charts**: highlighted series blue, other series grey, data labels and category labels ink (20 pt), axis titles
-  slate, no gridlines, no legend where a direct label works; reference bars (RAM) navy.
+  slate, no gridlines, no legend where a direct label works; time columns (23, 26) on a linear axis with the axis
+  hidden, so bar length is the real ratio; a limit (RAM, 27) is a labelled dashed line, not a bar.
 - **Label chips on renders**: navy chip with white text, or a class swatch from the render palette next to the
   label; the label text carries the class, not the colour.
+- **The four rules as the motif** (2026-10-13; renumbered 2026-10-14 in the order the talk first proves them:
+  1 arrays, 2 small first, 3 compiled loop, 4 look before you compute): one badge, a blue number disc with the rule
+  beside it, on slide 4 (promise), top right on every evidence slide (`rule: [k]`, rule in navy SemiBold), and on
+  slide 29 (evidence, one tile per click). A chapter's last slide states its rule as a verdict line ("Rule k: …").
+  Step slides 12 to 18 show a six-step tracker (current step blue SemiBold, the rest slate), the same style as the
+  footer breadcrumb.
+- **Navigation** (2026-10-14): the footer breadcrumb lists the real chapters, Intro · Data · Toolbox · Pipeline ·
+  Speed · Memory · Reality · Wrap-up, with the current one highlighted on every slide that has a footer (2 to 30).
+- **Footnotes**: a fact that looks inconsistent across slides gets one line where it shows: a note box (slide 2) or
+  `footnote` in front of the Conditions line (23 to 26). No number changes.
 - **Decoration**: the accent bar is the only decorative element; it is marked decorative for screen readers.
   No sidebar, no logo on content slides, no Dutch motifs (none needed).
 - **Language**: en-GB on every run; no en or em dashes in on-screen text.

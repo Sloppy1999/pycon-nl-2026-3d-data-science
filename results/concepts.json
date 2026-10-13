@@ -144,5 +144,16 @@
     "x_local_m": 199.6,
     "float32_step_rd_cm": 1.6,
     "float32_step_local_um": 15
+  },
+  "acq": {
+    "points": 722961,
+    "pulses": 691011,
+    "seconds": 19.757248520851135,
+    "max_returns": 7,
+    "multi_share": 0.09856963238680924,
+    "angle_min_deg": 1.002,
+    "angle_max_deg": 12.0,
+    "strips": 1,
+    "source": "data/utrecht_jaarbeurs_200m.laz"
   }
 }

@@ -1,9 +1,234 @@
 # Timing
 
-The talk is planned for **1800 s (30:00)**: the 32 `seconds` (31 before the meme slide, 29 before the mental-model slides) values in `deck/content.yaml`, the same in
+The talk is planned for **1575 s (26:15)**: the 33 `seconds` values in `deck/content.yaml`, the same in
 `deck/notes.yaml`, whose `ends_at` gives the running clock. The brief's slot is 10:45 to 11:25 (40 minutes including
-Q&A and changeover; whether Q&A is included is not confirmed yet, OPEN_ITEMS d1), with about 7 minutes of Q&A after
-the talk. The backup slides B1 to B7 are hidden slides 30 to 36 and carry no time.
+Q&A and changeover; whether Q&A is included is not confirmed yet, OPEN_ITEMS d1); the 3:45 under 30:00 is buffer. The backup slides B1 to B14 are hidden and carry no time.
+
+## 2026-10-14 (restructure 2): 33 slides, 1575 s, Memory before Speed
+
+Thesis: in Python you write the plan and compiled code does the work, so four rules take a city scan from unnamed x, y, z
+to a checked class per point. Acts: Hook and context (Intro, Data, Toolbox) · Build (Pipeline, then does it fit, is it
+fast) · Reality check and take-home (is it right, rules, limits, close). Per chapter: Intro 180 s · Data 180 s · Toolbox
+100 s · Pipeline 460 s · Memory 115 s · Speed 300 s · Reality 75 s · Wrap-up 165 s. New: problem (3), agenda table (5,
+replaces the roadmap), scope and assumptions (9); the plane (6) now comes before the data set (7) and has a swath inset;
+the rules (10) open Toolbox; Memory moved before Speed so the rule badges run 1, 2, 3, 4; rule badges dropped on
+clustering, paint-back and the summary. Trims: rules 40 to 30, views 60 to 45 (two rows on screen), logo wall 45 to 35,
+toll 85 to 70, sampling 40 to 30, data set 50 to 45. Old to new: 1, 2 same; 3 to 4; 4 to 10; 5 to 5; 6 to 7; 7 to 6;
+8 same; 9 to 19 to 11 to 21; 20 to 24 to 24 to 28; 25, 26 to 22, 23; 27 to 31 to 29 to 33. Skip-first order: 28, 27,
+22, 20, 15.
+
+| Slide | Title | Chapter | Seconds | Starts | Ends |
+|---|---|---|---|---|---|
+| 1 | 3D Data Science with Python | Intro | 20 | 0:00 | 0:20 |
+| 2 | 3D meant C++; now Python drives it | Intro | 35 | 0:20 | 0:55 |
+| 3 | A city scan: millions of points, no names | Intro | 45 | 0:55 | 1:40 |
+| 4 | The goal: name every point, then check it | Intro | 40 | 1:40 | 2:20 |
+| 5 | Eight chapters, three questions | Intro | 40 | 2:20 | 3:00 |
+| 6 | A plane sweeps a strip with a laser | Data | 55 | 3:00 | 3:55 |
+| 7 | Today's case: the block around the Jaarbeurs | Data | 45 | 3:55 | 4:40 |
+| 8 | One object, three representations | Data | 40 | 4:40 | 5:20 |
+| 9 | What this talk does, and doesn't | Data | 40 | 5:20 | 6:00 |
+| 10 | Four rules this talk will prove | Toolbox | 30 | 6:00 | 6:30 |
+| 11 | Python already has a library for every layer | Toolbox | 35 | 6:30 | 7:05 |
+| 12 | Python plans; compiled code does the work | Toolbox | 35 | 7:05 | 7:40 |
+| 13 | Six steps: from LAZ file to labels | Pipeline | 40 | 7:40 | 8:20 |
+| 14 | 1 Load: subtract a local origin first | Pipeline | 55 | 8:20 | 9:15 |
+| 15 | 1 Load: pass views, not copies | Pipeline | 45 | 9:15 | 10:00 |
+| 16 | 2 Voxel downsampling: one average per voxel | Pipeline | 50 | 10:00 | 10:50 |
+| 17 | 3 Ground removal: one plane per tile | Pipeline | 70 | 10:50 | 12:00 |
+| 18 | 4 Clustering: DBSCAN groups points that touch | Pipeline | 50 | 12:00 | 12:50 |
+| 19 | 5 Labelling: the first rule that fires wins | Pipeline | 65 | 12:50 | 13:55 |
+| 20 | 6 Paint-back: every point takes its voxel's label | Pipeline | 35 | 13:55 | 14:30 |
+| 21 | Six steps label every point in {pipeline.runtime_s|f1} s | Pipeline | 50 | 14:30 | 15:20 |
+| 22 | A full AHN sheet would need {memory.big_file.computed_gb.our_pipeline|gb} | Memory | 55 | 15:20 | 16:15 |
+| 23 | Stream chunks, keep the first point per voxel | Memory | 60 | 16:15 | 17:15 |
+| 24 | Quiz: which is faster, and by how much? | Speed | 60 | 17:15 | 18:15 |
+| 25 | How much slower is the loop over rows? | Speed | 70 | 18:15 | 19:25 |
+| 26 | Every trip into compiled code pays a toll | Speed | 70 | 19:25 | 20:35 |
+| 27 | Profile before you vectorise | Speed | 50 | 20:35 | 21:25 |
+| 28 | Will free-threaded Python save my loop? | Speed | 50 | 21:25 | 22:15 |
+| 29 | The register has {bgt.collections.paal.n|int} poles; we found {pipeline.n_objects.street_furniture|int} | Reality | 45 | 22:15 | 23:00 |
+| 30 | From the air, the city is sampled unevenly | Reality | 30 | 23:00 | 23:30 |
+| 31 | Four rules, each backed by this talk's numbers | Wrap-up | 75 | 23:30 | 24:45 |
+| 32 | What this doesn't do yet, and what's next | Wrap-up | 45 | 24:45 | 25:30 |
+| 33 | Thank you | Wrap-up | 45 | 25:30 | 26:15 |
+| | **Total** | | **1575** | | **26:15** |
+
+## 2026-10-14 (Phase 3 restructure): 31 slides, 1545 s, three acts
+
+Thesis: in Python you write the plan and compiled code does the work, so four rules take a city scan from LAZ to a
+label per point, fast, within memory and honestly. Acts: Why (Intro, Data, Toolbox) · Build (Pipeline, then two
+questions: is it fast, does it fit) · Reality check and take-home (is it right, rules, limits, close). Per chapter:
+Intro 170 s · Data 140 s · Toolbox 80 s · Pipeline 475 s · Speed 315 s · Memory 115 s · Reality 85 s · Wrap-up 165 s. Changes: roadmap slide 5 (new, 25 s), the lifecycle ring cut to hidden backup B8 (60 s), slide 4 from 50 to 40 s,
+Reality moved after Memory (the twist), limits and next steps slide 30 (new, 45 s). The rules are renumbered in the
+order the talk first proves them (1 arrays, 2 small first, 3 compiled loop, 4 look before you compute). Old to new:
+1 to 4 same; 5, 6, 7 to 6, 7, 8; 8 to B8; 9 to 19 same; 22 to 26 to 20 to 24; 27, 28 to 25, 26; 20, 21 to 27, 28;
+29 same; 30 to 31. Skip-first order: 24, 23, 25, 18, 13 (the slide 19 checkpoint covers 24, 23 and 25).
+
+| Slide | Title | Chapter | Seconds | Starts | Ends | wpm |
+|---|---|---|---|---|---|---|
+| 1 | 3D Data Science with Python | Intro | 20 | 0:00 | 0:20 | 126 |
+| 2 | 3D meant C++; now Python drives it | Intro | 35 | 0:20 | 0:55 | 153 |
+| 3 | The goal: give every point a name | Intro | 50 | 0:55 | 1:45 | 143 |
+| 4 | Four rules this talk will prove | Intro | 40 | 1:45 | 2:25 | 206 |
+| 5 | One city block, six steps, three questions | Intro | 25 | 2:25 | 2:50 | 113 |
+| 6 | Today's case: the Jaarbeurs hall, from a plane | Data | 50 | 2:50 | 3:40 | 116 |
+| 7 | A plane scans the city with a laser | Data | 50 | 3:40 | 4:30 | 140 |
+| 8 | One object, three representations | Data | 40 | 4:30 | 5:10 | 136 |
+| 9 | Python already has a library for every layer | Toolbox | 45 | 5:10 | 5:55 | 115 |
+| 10 | Python plans; compiled code does the work | Toolbox | 35 | 5:55 | 6:30 | 130 |
+| 11 | Six steps: from LAZ file to labels | Pipeline | 40 | 6:30 | 7:10 | 86 |
+| 12 | 1 Load: subtract a local origin first | Pipeline | 55 | 7:10 | 8:05 | 91 |
+| 13 | 1 Load: pass views, not copies | Pipeline | 60 | 8:05 | 9:05 | 151 |
+| 14 | 2 Voxel downsampling: one average per voxel | Pipeline | 50 | 9:05 | 9:55 | 110 |
+| 15 | 3 Ground removal: one plane per tile | Pipeline | 70 | 9:55 | 11:05 | 93 |
+| 16 | 4 Clustering: DBSCAN groups points that touch | Pipeline | 50 | 11:05 | 11:55 | 95 |
+| 17 | 5 Labelling: the first rule that fires wins | Pipeline | 65 | 11:55 | 13:00 | 154 |
+| 18 | 6 Paint-back: every point takes its voxel's label | Pipeline | 35 | 13:00 | 13:35 | 108 |
+| 19 | Six steps label every point in 0.6 s | Pipeline | 50 | 13:35 | 14:25 | 120 |
+| 20 | Quiz: which is faster, and by how much? | Speed | 60 | 14:25 | 15:25 | 69 |
+| 21 | How much slower is the loop over rows? | Speed | 70 | 15:25 | 16:35 | 76 |
+| 22 | Every trip into compiled code pays a toll | Speed | 85 | 16:35 | 18:00 | 91 |
+| 23 | Profile before you vectorise | Speed | 50 | 18:00 | 18:50 | 122 |
+| 24 | Will free-threaded Python save my loop? | Speed | 50 | 18:50 | 19:40 | 108 |
+| 25 | A full AHN sheet would need 74.2 GB | Memory | 55 | 19:40 | 20:35 | 77 |
+| 26 | Stream chunks, keep the first point per voxel | Memory | 60 | 20:35 | 21:35 | 128 |
+| 27 | The register has 61 poles; we found 3 | Reality | 45 | 21:35 | 22:20 | 153 |
+| 28 | From the air, the city is sampled unevenly | Reality | 40 | 22:20 | 23:00 | 134 |
+| 29 | Four rules, each backed by this talk's numbers | Wrap-up | 75 | 23:00 | 24:15 | 78 |
+| 30 | What this doesn't do yet, and what's next | Wrap-up | 45 | 24:15 | 25:00 | 112 |
+| 31 | Thank you | Wrap-up | 45 | 25:00 | 25:45 | 101 |
+| | **Total** | | **1545** | | **25:45** | |
+
+
+## 2026-10-13 (restructure): 30 slides, 1545 s, the four rules as the spine
+
+Restructure review, same day: no slide added, removed or moved, so every time below holds. Slide 29's four click
+builds take no extra time (the talk track already walks the rules one by one). Titles 12 and 13 changed (below).
+
+Narrative arc: Hook (1 to 4, the rules as the talk's promise) · Data (5 to 8) · Toolbox (9, 10) · Pipeline (11 to
+19) · Reality (20, 21) · Speed (22 to 26) · Memory (27, 28) · Rules (29) · Close (30). Removed: Agenda (its parts are
+now `meta.chapters`, the footer breadcrumb) and Scope ("Not today" is in the slide 3 notes); "No single library does the
+whole job" (the filmstrip on slide 11 carries the library per step). Moved: the rules to slide 4, the case before the
+plane, the ecosystem wall and the C++ meme into Toolbox, "Use views, not copies" right after Load. Restored from
+5ccb438: "Stream chunks, keep the first point per voxel" (28). Slide 8 cut from 145 to 60 s. Slides that are evidence
+for a rule carry a rule badge top right (number disc + rule); slides 12 to 18 a step tracker. Skip-first order: 26, 25, 27, 18, 13 (the slide 19 checkpoint covers 26,
+25 and 27).
+
+| Slide | Title | Section | Seconds | Starts | Ends | wpm |
+|---|---|---|---|---|---|---|
+| 1 | 3D Data Science with Python | Hook | 20 | 0:00 | 0:20 | 126 |
+| 2 | 3D used to mean C++. Not anymore | Hook | 35 | 0:20 | 0:55 | 153 |
+| 3 | The goal: give every point a name | Hook | 50 | 0:55 | 1:45 | 143 |
+| 4 | Four rules this talk will prove | Hook | 50 | 1:45 | 2:35 | 154 |
+| 5 | Today's case: the Jaarbeurs hall, from a plane | Data | 50 | 2:35 | 3:25 | 116 |
+| 6 | A plane scans the city with a laser | Data | 50 | 3:25 | 4:15 | 140 |
+| 7 | One object, three representations | Data | 40 | 4:15 | 4:55 | 141 |
+| 8 | Where today's pipeline sits in a 3D project | Data | 60 | 4:55 | 5:55 | 89 |
+| 9 | Python already has a library for every layer | Toolbox | 45 | 5:55 | 6:40 | 115 |
+| 10 | Python is the interface. C++ does the work | Toolbox | 35 | 6:40 | 7:15 | 130 |
+| 11 | Six steps turn a point cloud into labels | Pipeline | 40 | 7:15 | 7:55 | 86 |
+| 12 | 1 Load: subtract a local origin first | Pipeline | 55 | 7:55 | 8:50 | 91 |
+| 13 | 1 Load: use views, not copies | Pipeline | 60 | 8:50 | 9:50 | 141 |
+| 14 | 2 Voxel downsampling: one average per voxel | Pipeline | 50 | 9:50 | 10:40 | 102 |
+| 15 | 3 Ground removal: one plane per tile | Pipeline | 70 | 10:40 | 11:50 | 93 |
+| 16 | 4 Clustering: DBSCAN groups what touches | Pipeline | 50 | 11:50 | 12:40 | 83 |
+| 17 | 5 Labelling: rules name the clusters | Pipeline | 65 | 12:40 | 13:45 | 136 |
+| 18 | 6 Visualisation: PyVista paints every point | Pipeline | 35 | 13:45 | 14:20 | 96 |
+| 19 | Six steps label every point in {pipeline.runtime_s|f1} s | Pipeline | 50 | 14:20 | 15:10 | 97 |
+| 20 | The map has {bgt.collections.paal.n|int} poles; we found {pipeline.n_objects.street_furniture|int} | Reality | 45 | 15:10 | 15:55 | 144 |
+| 21 | A point cloud samples the surface unevenly | Reality | 40 | 15:55 | 16:35 | 134 |
+| 22 | Quiz: which is faster, and by how much? | Speed | 60 | 16:35 | 17:35 | 69 |
+| 23 | How much slower is the loop over rows? | Speed | 70 | 17:35 | 18:45 | 74 |
+| 24 | Every trip into compiled code pays a toll | Speed | 85 | 18:45 | 20:10 | 91 |
+| 25 | Profile before you vectorise | Speed | 50 | 20:10 | 21:00 | 122 |
+| 26 | Will free-threaded Python save my loop? | Speed | 50 | 21:00 | 21:50 | 78 |
+| 27 | Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GB | Memory | 55 | 21:50 | 22:45 | 75 |
+| 28 | Stream chunks, keep the first point per voxel | Memory | 60 | 22:45 | 23:45 | 113 |
+| 29 | Four rules, each backed by this talk's numbers | Rules | 75 | 23:45 | 25:00 | 62 |
+| 30 | Thank you | Close | 45 | 25:00 | 25:45 | 81 |
+| | **Total** | | **1545** | | **25:45** | |
+
+## 2026-10-13: agenda, scope, goal and data capture: agenda, scope, goal and data capture (32 slides, 1750 s)
+
+Four slides after the ecosystem wall: 5 Agenda (35 s), 6 Scope (45 s), 7 Goal (45 s), 8 how a plane captures the
+points (55 s); slide 9, the Jaarbeurs case, gave 15 s (65 to 50 s) because the plane is now on slide 8. Every later
+slide moved by four. Skip-first order: 29, 28, 30, 21, 14 (the slide 22 checkpoint covers 29, 28 and 30).
+
+| Slide | Title | Section | Seconds | Starts | Ends | wpm |
+|---|---|---|---|---|---|---|
+| 1 | 3D Data Science with Python | Hook | 20 | 0:00 | 0:20 | 126 |
+| 2 | 3D used to mean C++. Not anymore | Hook | 35 | 0:20 | 0:55 | 153 |
+| 3 | Python is the interface. C++ does the work | Hook | 30 | 0:55 | 1:25 | 126 |
+| 4 | Python already has a library for every layer | Hook | 30 | 1:25 | 1:55 | 160 |
+| 5 | Agenda | Intro | 35 | 1:55 | 2:30 | 132 |
+| 6 | Scope: what to expect, and what not | Intro | 45 | 2:30 | 3:15 | 136 |
+| 7 | The goal: give every point a name | Intro | 45 | 3:15 | 4:00 | 128 |
+| 8 | A plane scans the city with a laser | Intro | 55 | 4:00 | 4:55 | 120 |
+| 9 | Today's case: the Jaarbeurs hall, from a plane | Hook | 50 | 4:55 | 5:45 | 115 |
+| 10 | One object, three representations | Hook | 40 | 5:45 | 6:25 | 124 |
+| 11 | A 3D project moves through six stages | Hook | 145 | 6:25 | 8:50 | 84 |
+| 12 | Four rules of thumb for 3D data | Hook | 45 | 8:50 | 9:35 | 137 |
+| 13 | No single library does the whole job | Landscape | 55 | 9:35 | 10:30 | 80 |
+| 14 | Use views, not copies | Landscape | 70 | 10:30 | 11:40 | 116 |
+| 15 | Six steps turn a point cloud into labels | Pipeline | 25 | 11:40 | 12:05 | 103 |
+| 16 | 1 Load: laspy hands you NumPy | Pipeline | 65 | 12:05 | 13:10 | 73 |
+| 17 | 2 Voxel downsampling: one average per voxel | Pipeline | 55 | 13:10 | 14:05 | 93 |
+| 18 | 3 Ground removal: one plane per tile | Pipeline | 75 | 14:05 | 15:20 | 87 |
+| 19 | 4 Clustering: DBSCAN groups what touches | Pipeline | 55 | 15:20 | 16:15 | 75 |
+| 20 | 5 Labelling: rules name the clusters | Pipeline | 70 | 16:15 | 17:25 | 126 |
+| 21 | 6 Visualisation: PyVista paints every point | Pipeline | 40 | 17:25 | 18:05 | 84 |
+| 22 | Six steps label every point in {pipeline.runtime_s|f1} s | Pipeline | 65 | 18:05 | 19:10 | 70 |
+| 23 | The map has {bgt.collections.paal.n|int} poles; we found {pipeline.n_objects.street_furniture|int} | Pipeline | 40 | 19:10 | 19:50 | 162 |
+| 24 | A point cloud samples the surface unevenly | Pipeline | 40 | 19:50 | 20:30 | 120 |
+| 25 | Quiz: which is faster, and by how much? | Performance | 75 | 20:30 | 21:45 | 55 |
+| 26 | How much slower is the loop over rows? | Performance | 80 | 21:45 | 23:05 | 64 |
+| 27 | Every trip into compiled code pays a toll | Performance | 95 | 23:05 | 24:40 | 81 |
+| 28 | Profile before you vectorise | Performance | 55 | 24:40 | 25:35 | 111 |
+| 29 | Will free-threaded Python save my loop? | Performance | 50 | 25:35 | 26:25 | 78 |
+| 30 | Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GB | RAM | 55 | 26:25 | 27:20 | 75 |
+| 31 | Four rules, each backed by this talk's numbers | Close | 60 | 27:20 | 28:20 | 77 |
+| 32 | Thank you | Close | 50 | 28:20 | 29:10 | 73 |
+| | **Total** | | **1750** | | **29:10** | **98** |
+
+## 2026-10-13 (later): 28 slides, 1585 s, Morph dropped
+
+The stream-chunks, memory-over-time and gotchas slides are gone and every slide is a fade (no Morph chain), so the
+Morph caveats in the older sections below no longer apply. The talk is 26:25 on purpose, not 30:00. Skip-first order:
+25, 24, 26, 17, 10 (the slide 18 checkpoint covers 25, 24 and 26). The table is generated from `deck/notes.yaml`
+(wpm is the spoken talk track at the planned seconds).
+
+| Slide | Title | Section | Seconds | Starts | Ends | wpm |
+|---|---|---|---|---|---|---|
+| 1 | 3D Data Science with Python | Hook | 20 | 0:00 | 0:20 | 126 |
+| 2 | 3D used to mean C++. Not anymore | Hook | 35 | 0:20 | 0:55 | 153 |
+| 3 | Python is the interface. C++ does the work | Hook | 30 | 0:55 | 1:25 | 126 |
+| 4 | The Python 3D ecosystem | Hook | 30 | 1:25 | 1:55 | 160 |
+| 5 | Today's case: the Jaarbeurs hall, from a plane | Hook | 65 | 1:55 | 3:00 | 113 |
+| 6 | One object, three representations | Hook | 40 | 3:00 | 3:40 | 124 |
+| 7 | A 3D project moves through six stages | Hook | 145 | 3:40 | 6:05 | 84 |
+| 8 | Four rules of thumb for 3D data | Hook | 45 | 6:05 | 6:50 | 137 |
+| 9 | No single library does the whole job | Landscape | 55 | 6:50 | 7:45 | 80 |
+| 10 | Use views, not copies | Landscape | 70 | 7:45 | 8:55 | 116 |
+| 11 | Six steps turn a point cloud into labels | Pipeline | 25 | 8:55 | 9:20 | 103 |
+| 12 | 1 Load: laspy hands you NumPy | Pipeline | 65 | 9:20 | 10:25 | 73 |
+| 13 | 2 Voxel downsampling: one average per voxel | Pipeline | 55 | 10:25 | 11:20 | 93 |
+| 14 | 3 Ground removal: one plane per tile | Pipeline | 75 | 11:20 | 12:35 | 87 |
+| 15 | 4 Clustering: DBSCAN groups what touches | Pipeline | 55 | 12:35 | 13:30 | 75 |
+| 16 | 5 Labelling: rules name the clusters | Pipeline | 70 | 13:30 | 14:40 | 126 |
+| 17 | 6 Visualisation: PyVista paints every point | Pipeline | 40 | 14:40 | 15:20 | 84 |
+| 18 | What the six steps did | Pipeline | 65 | 15:20 | 16:25 | 70 |
+| 19 | Expectation vs reality: street furniture | Pipeline | 40 | 16:25 | 17:05 | 162 |
+| 20 | A point cloud samples the surface unevenly | Pipeline | 40 | 17:05 | 17:45 | 120 |
+| 21 | Quiz: which is faster, and by how much? | Performance | 75 | 17:45 | 19:00 | 55 |
+| 22 | How much slower is the loop over rows? | Performance | 80 | 19:00 | 20:20 | 64 |
+| 23 | Every trip into compiled code pays a toll | Performance | 95 | 20:20 | 21:55 | 81 |
+| 24 | Profile before you vectorise | Performance | 55 | 21:55 | 22:50 | 111 |
+| 25 | Will free-threaded Python save my loop? | Performance | 50 | 22:50 | 23:40 | 78 |
+| 26 | Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GB | RAM | 55 | 23:40 | 24:35 | 75 |
+| 27 | Take the four rules home | Close | 60 | 24:35 | 25:35 | 77 |
+| 28 | Thank you | Close | 50 | 25:35 | 26:25 | 73 |
+| | **Total** | | **1585** | | **26:25** | **95** |
 
 ## 2026-10-13: workflow ring replaces the trade-offs and chain slides (31 slides, still 1800 s)
 
@@ -150,37 +375,25 @@ plus a show of hands), slide 14 (125 wpm) and slide 3 (120 wpm, 15 s); no slide 
 
 ## Skip-first list
 
-If time runs short, cut in this order (each slide's notes carry "Skip-first number N" and the line to say instead):
+If time runs short, cut in this order (each slide's notes carry "Skip-first number N" and the line to say instead;
+updated 2026-10-14 for the 31-slide order):
 
-| Order | Slide | Saves | Cumulative | Decide | Say instead (from the notes) |
-|---|---|---|---|---|---|
-| 1 | 23 free-threaded | 50 s | 50 s | at the slide 16 checkpoint (leaving after 16:35) | nothing; if asked: free threads help some, NumPy still wins |
-| 2 | 18 plane question | 25 s | 75 s | at the slide 16 checkpoint (after 16:35) | on slide 19: "the distance of every point to the ground plane, the test inside RANSAC" |
-| 3 | 25 RAM chart | 60 s | 135 s | at the slide 16 checkpoint (after 18:05), or on arriving at 25 after 23:35 | on slide 26: "a full-size AHN file has 926 203 338 points" (token) |
-| 4 | 22 profile | 55 s | 190 s | at the slide 16 checkpoint (after 18:05) | on the next slide shown: "a profiler finds such loops: Scalene puts one line at 88 percent" |
-| 5 | 24 rule of thumb | 55 s | 245 s | when still late after slide 21 | nothing: the rule comes back as habit 2 on slide 28 |
-| 6 | 15 visualisation | 40 s | 285 s | at the end of slide 14 (planned 13:20), only if already late | on slide 16: "every render here is PyVista, off-screen, one fixed camera" |
-| 7 | 8 hand-offs | 60 s | 345 s | at the end of slide 7 (planned 6:30), only if already late | on slide 9: "Python passes whole arrays; Vector3dVector copies, np.asarray gives you a view" |
-
-Caveats:
-
-- Slides 15 and 8 come **before** the slide 16 checkpoint, so no checkpoint covers them. Whether Morph plays cleanly
-  from 14 to 16 over a skipped slide 15 is UNVERIFIED.
-- To skip, say the one sentence, then jump by slide number (type the number, then Enter). Jumping may not play Morph
-  (UNVERIFIED); every skip-first slide except 15 sits outside the Morph run (10 to 16).
-
-After 18:05 the notes also say to tell only one story on slide 27; how much that saves depends on the stories.
+| Order | Slide | Saves | Decide |
+|---|---|---|---|
+| 1 | 24 free-threaded | 50 s | at the slide 19 checkpoint (leaving after 17:45) |
+| 2 | 23 profile | 50 s | at the slide 19 checkpoint (leaving after 17:45) |
+| 3 | 25 the full AHN sheet | 55 s | at the slide 19 checkpoint (after 19:25), or on arriving at 25 after 22:50 |
+| 4 | 18 paint-back | 35 s | at the end of slide 17, only if already late |
+| 5 | 13 views, not copies | 60 s | at the end of slide 12, only if already late |
 
 ## Checkpoints (presenter view only, never spoken)
 
-Wall-clock times assume the talk starts at 10:45:00 sharp; they shift with the real start.
+| Where | Talk clock | Action |
+|---|---|---|
+| Leaving slide 19 | by 14:25 | on time: carry on |
+| Leaving slide 19 | after 17:45 | skip 24 and 23 |
+| Leaving slide 19 | after 19:25 | also skip 25 |
+| Arriving at slide 25 | by 22:50 | later than that: skip slide 25 |
+| End of slide 31 | 25:45 | Q&A; slide 31 stays up with the QR code; backups B1 to B8 and C2 to C9 are hidden |
 
-| Where | Talk clock | Wall clock | Action |
-|---|---|---|---|
-| Leaving slide 16 | by 15:20 | 11:00:20 | on time: carry on |
-| Leaving slide 16 | after 16:35 | after 11:01:35 | skip 23 and 18 (saves 75 s) |
-| Leaving slide 16 | after 18:05 | after 11:03:05 | also skip 25 and 22 (190 s in all), and tell only one story on 27 |
-| Arriving at slide 25 | by 23:35 | 11:08:35 | later than that: skip slide 25 |
-| End of slide 29 | 30:00 | 11:15:00 | Q&A; slide 29 stays up with the QR code; B1 to B7 are slides 30 to 36 |
-
-Source: `deck/notes.yaml` (slide 16 and 25 `checkpoint`, `skip` on 8, 15, 18, 22, 23, 24, 25) and `storyboard.md`.
+Source: `deck/notes.yaml` (slide 19 and 25 `checkpoint`, `skip` on 13, 18, 23, 24, 25).

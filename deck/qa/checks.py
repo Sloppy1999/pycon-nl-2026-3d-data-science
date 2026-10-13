@@ -75,7 +75,6 @@ MASTER_STRINGS = ["Speaker name", "Code, support line and source line go here", 
                   "Where a Python loop meets compiled code", "Second level at 20 pt", "These five gotchas",
                   "Fitting points in RAM", "Gotchas and takeaways", "Lorem ipsum"]
 SMALL_NAMES = ("Source", "!!src", "!!small", "Small print", "Conditions", "Placeholder note", "tile_ref")
-MORPH_OBJECTS = ["!!title", "!!code", "!!support", "!!src", "!!render"]
 _KEYS = "|".join(RESULT_FILES)
 TOKEN_RE = re.compile(rf"\{{(?:{_KEYS})\.[^}}]*\}}|\[(?:{_KEYS})\.[A-Za-z0-9_.\-]+\]")
 # Colours allowed in the package's XML: content.yaml meta.palette; the render palette only on the label chip
@@ -442,9 +441,9 @@ def main():
     # slide roles from content.yaml (numbers change when slides are inserted): Morph chain, the one on-click build,
     # the filmstrip, the closing slide, the label-chip chain
     main_specs = list(content["slides"])
-    morph_labels = [str(s_["n"]) for s_ in main_specs if s_.get("transition") == "morph"]
     build_labels = [str(s_["n"]) for s_ in main_specs if (s_.get("hero") or {}).get("build_on_click")]
-    film_label = next((str(s_["n"]) for s_ in main_specs if s_.get("build") == "filmstrip"), None)
+    tile_labels = [str(s_["n"]) for s_ in main_specs if s_.get("click")]   # `click: true`: one rule tile per click
+    anim_labels = sorted(build_labels + tile_labels, key=labels.index) if labels else build_labels + tile_labels
     closing_label = next((str(s_["n"]) for s_ in main_specs if s_.get("build") == "closing"), None)
     chip_chain = [str(s_["n"]) for s_ in main_specs if s_.get("transition") == "morph" and s_.get("labels_from")]
     chip_full = [str(s_["n"]) for s_ in main_specs if s_.get("transition") == "morph" and s_.get("labels_from")
@@ -593,7 +592,7 @@ def main():
     tr_bad, hid_bad, timing = [], [], []
     for sl, lab, sp, app in zip(slides, labels, specs, is_app):
         k = transition_kind(sl._element)
-        want = "morph" if (not app and lab in morph_labels) else "fade"
+        want = "fade"
         if k != want:
             tr_bad.append(f"{lab}: {k}, expected {want}")
         hidden = sl._element.get("show") == "0"
@@ -602,12 +601,20 @@ def main():
         tm = sl._element.find("p:timing", NS)
         if tm is not None:
             timing.append(lab)
-    put("transitions", tr_bad, f"Morph exactly on {morph_labels[0]} to {morph_labels[-1]}, fade on every other slide",
+    put("transitions", tr_bad, "fade on every slide",
         "wrong transitions")
     put("appendix_hidden", hid_bad, "B and C backup slides hidden, no main slide hidden", "hidden flags wrong")
-    rep.add("animations", "pass" if timing == build_labels else "fail",
-            f"only slide {', '.join(build_labels)} has a build (on-click hero)" if timing == build_labels
-            else f"timing on slides {timing}, expected {build_labels}", timing)
+    rep.add("animations", "pass" if timing == anim_labels else "fail",
+            f"only slides {', '.join(anim_labels)} have a build (on-click hero, rule tiles)" if timing == anim_labels
+            else f"timing on slides {timing}, expected {anim_labels}", timing)
+    for tb_ in tile_labels:
+        sl = slides[labels.index(tb_)]
+        tm = sl._element.find("p:timing", NS)
+        spids = [t.get("spid") for t in tm.iter(P + "spTgt")] if tm is not None else []
+        tile_ids = [str(sh.shape_id) for sh in sl.shapes if sh.name.startswith("Rules of thumb")]
+        ok = bool(spids) and spids == tile_ids
+        rep.add("tile_build", "pass" if ok else "fail", f"slide {tb_}: one click per rule tile, in order" if ok
+                else f"slide {tb_} build targets {spids}, tiles {tile_ids}")
     for hb in build_labels:
         sl = slides[labels.index(hb)]
         tm = sl._element.find("p:timing", NS)
@@ -629,54 +636,6 @@ def main():
     main_labels = [lab for lab, app in zip(labels, is_app) if not app]
     adj = [f"{a} and {b}" for a, b in zip(main_labels, main_labels[1:]) if a in dark and b in dark]
     put("dark_not_adjacent", adj, f"dark slides {dark} never adjacent", "adjacent dark slides")
-
-    # ---------------------------------------------------------------- Morph geometry (the Morph chain)
-    morph = [(lab, sl) for lab, sl, app in zip(labels, slides, is_app) if not app and lab in morph_labels]
-    geo_bad, names_dup, crop_bad = [], [], []
-    ref = {}
-    for lab, sl in morph:
-        tree = sl._element.find(".//p:cSld/p:spTree", NS)
-        seen = {}
-        for el in tree:
-            c = cnv(el)
-            if c is None:
-                continue
-            nm = c.get("name") or ""
-            if nm.startswith("!!"):
-                seen[nm] = seen.get(nm, 0) + 1
-        names_dup += [f"{lab}: {k} x{v}" for k, v in seen.items() if v > 1]
-        for nm in MORPH_OBJECTS:
-            els = [el for el in tree if cnv(el) is not None and cnv(el).get("name") == nm]
-            if not els:
-                geo_bad.append(f"{lab}: {nm} missing")
-                continue
-            g = geom(els[0])
-            if g is None and nm == "!!title":
-                g = "inherited"
-            if nm not in ref:
-                ref[nm] = g
-            elif g != ref[nm]:
-                geo_bad.append(f"{lab}: {nm} geometry {g} differs from {ref[nm]}")
-            if nm == "!!render" and els[0].tag == P + "pic":
-                src = els[0].find(".//a:srcRect", NS)
-                if src is not None and any(int(src.get(k, "0")) != 0 for k in ("l", "t", "r", "b")):
-                    crop_bad.append(f"{lab}: !!render cropped {dict(src.attrib)}")
-    put("morph_geometry", geo_bad, f"!!title, !!code, !!support, !!src, !!render identical on {morph_labels[0]} to "
-        f"{morph_labels[-1]}",
-        "Morph object geometry differs or missing")
-    put("morph_unique_names", names_dup, "!! names unique on every Morph slide", "duplicate !! names")
-    put("render_no_crop", crop_bad, f"renders on {morph_labels[0]} to {morph_labels[-1]} not cropped", "renders cropped")
-    render_kinds = [(lab, [el.tag.split('}')[1] for el in sl._element.iter(P + "pic", P + "sp")
-                           if cnv(el) is not None and cnv(el).get("name") == "!!render"]) for lab, sl in morph]
-    pics = [lab for lab, k in render_kinds if k == ["pic"]]
-    rep.add("morph_renders_present", "pass" if len(pics) == len(morph) else "pending",
-            f"{len(pics)} of {len(morph)} Morph slides have the real render picture", [f"{l}: {k}" for l, k in render_kinds])
-    s7 = slides[labels.index(film_label)] if film_label in labels else None
-    if s7 is not None:
-        r7 = [sh for sh in s7.shapes if sh.name == "!!render"]
-        st = "pass" if r7 and r7[0].shape_type == 13 else ("pending" if r7 else "fail")
-        rep.add("filmstrip_morph_target", st, f"slide {film_label}: first thumbnail named !!render"
-                + ("" if st == "pass" else " (not a picture yet)" if r7 else " missing"))
 
     # ---------------------------------------------------------------- label chips (3, 12, 13, 14)
     chip_bad, chip_info = label_chip_check(slides, labels, is_app, chip_chain, chip_full)

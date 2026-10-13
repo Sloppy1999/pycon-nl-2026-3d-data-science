@@ -17,8 +17,7 @@ Every visible word comes from ``spec`` (content.yaml). There are no built-in def
 missing word is drawn as a visible ``[visual.<key>]`` placeholder (see ``_word``).
 
 Grouping: the ecosystem map and toll diagram are returned as one group with
-the alt text on the group. The filmstrip is NOT grouped, because its first picture is the Morph
-target (``!!render``) and Morph matching inside groups is UNVERIFIED.
+the alt text on the group. The filmstrip is not grouped: each thumbnail keeps its own alt text.
 """
 
 from __future__ import annotations
@@ -342,9 +341,8 @@ FRAME_ASPECT = 1588 / 1792  # width / height of the L7 render frames
 def add_filmstrip(slide, box, spec, style=None, renders_dir=None):
     """Six thumbnails in a row with blue block arrows between them, step names (20 pt bold) and library
     tags (20 pt slate) below. Missing render files become navy placeholders that name the file.
-    The first picture is named ``spec['morph_first_as']`` (e.g. "!!render") for Morph.
 
-    spec: ``frames`` [file names], ``names`` [str], ``tags`` [str], ``morph_first_as``?, ``alt``?
+    spec: ``frames`` [file names], ``names`` [str], ``tags`` [str], ``alt``?
     renders_dir: directory with the frame PNGs (str or Path); None = placeholders only.
     """
     st = Style(style)
@@ -362,7 +360,7 @@ def add_filmstrip(slide, box, spec, style=None, renders_dir=None):
     out = []
     for i, f in enumerate(frames):
         x = x0 + i * (tw + sep)
-        pic_name = spec.get("morph_first_as") if i == 0 and spec.get("morph_first_as") else f"film_{i + 1}"
+        pic_name = f"film_{i + 1}"
         descr = spec.get("alt") if i == 0 and spec.get("alt") else f"Thumbnail {i + 1}: {names[i]}"
         path = rdir / f if rdir else None
         if path is not None and path.is_file():
@@ -491,10 +489,10 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
              [{"text": _word(spec, "caption_call"), "size": 18, "color": st.text}], name="toll_caption_call")
 
     # legend, stacked top right above the boundary (words from content.yaml): what the tick, bar and arrow mean
-    row_h = 0.30
+    row_h = 0.34
     items = [("toll", _word(spec, "legend_toll")), ("work", _word(spec, "legend_work")),
              ("arrow", _word(spec, "legend_arrow"))]
-    lgx = x0 + W - max(_width(w, 16) for _, w in items) - 0.45
+    lgx = x0 + W - max(_width(w, 18) for _, w in items) - 0.45
     for i, (kind, word) in enumerate(items):
         cy_mid = chip_y + i * row_h + row_h / 2
         if kind == "toll":
@@ -503,8 +501,8 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
             _box(S, lgx, cy_mid - 0.09, 0.32, 0.18, fill=st.muted, rounded=True, name="legend_work_swatch")
         else:
             _connector(S, lgx, cy_mid, lgx + 0.32, cy_mid, st.text_small, 1.25, arrow=True, name="legend_arrow_swatch")
-        _textbox(S, st, lgx + 0.42, chip_y + i * row_h, _width(word, 16) + 0.1, row_h,
-                 [{"text": word, "size": 16, "color": st.text}], anchor=MSO_ANCHOR.MIDDLE, wrap=False,
+        _textbox(S, st, lgx + 0.42, chip_y + i * row_h, _width(word, 18) + 0.1, row_h,
+                 [{"text": word, "size": 18, "color": st.text}], anchor=MSO_ANCHOR.MIDDLE, wrap=False,
                  name=f"legend_{kind}")
     return _finish_group(grp, alt, name)
 

@@ -29,17 +29,32 @@ meta:
     slate: "#455A64"            # pycon-nl.org neutral (small print, comments: 7:1 on white)
     ink: "#263238"              # pycon-nl.org neutral (body text)
     light: "#E0E0E0"            # pycon-nl.org neutral (tiles, rules)
-    warn: "#B3261E"             # red, used only for the part of a bar past the RAM limit (slide 26; 6.5:1 on white)
+    warn: "#B3261E"             # red, used only for the part of a bar past the RAM limit (slide 30; 6.5:1 on white)
     blue_tint: "#DFE8EF"        # blue #2B6797 at 15 % on white: note boxes (not a site colour; ink text about 11:1 on it)
   fonts: {sans: "Fira Sans", mono: "Fira Mono"}   # pycon-nl.org uses Fira Sans (Google Fonts, OFL); Fira Mono from the same family for code
   footer: "3D Data Science with Python | PyCon NL 2026"   # on every content slide, with the slide number
+  # 2026-10-13 restructure: the chapters in the footer breadcrumb (current one in blue SemiBold), from the first
+  # chapter on; `sections` are the slide sections each chapter covers. Replaces the agenda slide.
+  chapters:
+    # 2026-10-14 (Phase 3): Intro and Wrap-up added, so every footer slide highlights its chapter; Reality after Memory
+    - {crumb: "Intro", sections: [Hook]}
+    - {crumb: "Data", sections: [Data]}
+    - {crumb: "Toolbox", sections: [Toolbox]}
+    - {crumb: "Pipeline", sections: [Pipeline]}
+    - {crumb: "Memory", sections: [Memory]}
+    - {crumb: "Speed", sections: [Speed]}
+    - {crumb: "Reality", sections: [Reality]}
+    - {crumb: "Wrap-up", sections: [Rules, Close]}
+  # `rule: [k]` on a slide puts a small rule badge top right (blue number disc + the rule): the slide is evidence for rule k
+  # of slide 4 (numbered in the order the talk first proves them). `step: k` (slides 12 to 18) adds the six-step tracker
+  # left of it, step k in blue. `footnote` puts one line in front of the Conditions line.
   language: en-GB
   author: "Sergio Peral"
   file_name: "20261015_PyCon-NL_3D-Data-Science.pptx"
   source_ahn: "Data: AHN5, Het Waterschapshuis, CC BY 4.0."
   source_renders: "Renders: PyVista, one fixed camera."
   # CC BY 4.0 section 3(a)(1)(C): every "CC BY 4.0" run in slide text links here (deck/build_deck.py, checked by
-  # deck/qa/checks.py); slide 28 also prints the readable URI, for the PDF and for photos of the slide.
+  # deck/qa/checks.py); slide 32 also prints the readable URI, for the PDF and for photos of the slide.
   licence_url: "https://creativecommons.org/licenses/by/4.0/"
   licence_line: "Licence: creativecommons.org/licenses/by/4.0"
   terms: [point cloud, voxel downsampling, ground removal, clustering, labelling, visualisation, street furniture]
@@ -74,7 +89,7 @@ slides:
     section: Hook
     layout: 5            # Two columns
     transition: fade
-    title: "3D used to mean C++. Not anymore"
+    title: "3D meant C++; now Python drives it"
     # Both sides were compiled or run on the crop (snippets/run_all.py; results/snippets.json): the same crop.pcd,
     # the same 0.5 m voxels. `output` is the line each program printed, read from results/snippets.json
     # (output_line), shown under the code as a terminal line.
@@ -82,62 +97,101 @@ slides:
             output: "{snippets.s02_pcl.cpp.output_line|nb}"}
     right: {kind: code, snippet: s02_python.py, lang: python, caption: "Python with Open3D",
             output: "{snippets.s02_python.py.output_line|nb}"}
+    # footnote 6a (2026-10-14, speaker approved): why the counts differ (notes slide 2, grid anchoring)
+    note: "Why do the counts differ? PCL and Open3D anchor the 0.5 m voxel grid differently; both average the points in each voxel."
     alt: "Two code blocks. Left, greyed out: loading a point cloud and voxel downsampling it with PCL in C++. Right: the same two operations in two lines of Python with Open3D."
-    note: "Why the counts differ: both average the points in each 0.5 m voxel, but the grids sit in different places. PCL anchors its voxels at multiples of the leaf size; Open3D at the minimum corner minus half a voxel."
     seconds: 35
 
   - n: 3
     build: meme
     section: Hook
-    layout: 4            # Title and content, body replaced by one picture
+    layout: 4
     transition: fade
-    title: "Python is the interface. C++ does the work"
-    # 2026-10-12 (speaker): the unmasking meme opens the Python-against-C++ comparison. The template is the Scooby-Doo
-    # scene; the Python logo sits on the hooded head, the C++ logo on the unmasked one (logos from Wikimedia Commons,
-    # shown unaltered apart from scaling). 30 s taken from the former slide 4 (now 5), so every later clock time holds. 2026-10-12 (later): moved behind the code
-    # comparison, which shows the C++ is still there underneath, and NumPy added to the explanation.
-    image: {file: assets/meme/python_cpp_unmasking.png,
-            alt: "Scooby-Doo unmasking meme. Top: Fred touches the hood of a tied-up ghost whose head is the Python logo. Bottom: the unmasked figure's head is the C++ logo. Caption: Let's see who's really behind the mask."}
-    takeaway: "Every call you make here runs compiled code"
+    title: "A city scan: millions of points, no names"
+    # 2026-10-14 (restructure): the problem, before the goal. Picture: the raw crop coloured by height (the render of
+    # slide 14). The register is the BGT (slide 29); the question at the foot is answered on slide 29.
+    image: {file: ../renders/f1_load.png,
+            alt: "Bird's-eye render of the raw crop around the Jaarbeurs hall, coloured by height only: blue near the ground through sage to white on the roofs. Nothing says which point is a tree, a roof or a lamp post."}
+    takeaway: "{pipeline.crop.points|int} points in one city block; none has a name."
     bullets:
-      - "NumPy: a compiled C core, with some C++"
-      - "Open3D: C++, wrapped for Python"
-      - "PyVista: VTK, which is C++"
-      - "laspy: the lazrs decoder is Rust"
-    note: "Python is used as a proxy to write higher-level code: the heavy loops run below it, in compiled code."
-    seconds: 30
+      - "Each point: x, y, z and little else"
+      - "Cities register what stands in the street: trees, lamp posts, bollards"
+      - "Naming points by hand doesn't scale"
+    note: "Today's question: does the scan agree with the register?"
+    source: ahn
+    seconds: 45
 
   - n: 4
-    build: logo_wall
+    build: columns
     section: Hook
     layout: 4
     transition: fade
-    title: "The Python 3D ecosystem"
-    # One row per layer of a point cloud project (the yt talk's layers: files, arrays, algorithms, views), and a row of
-    # models. 2026-10-12 relevance pass (speaker: every library on the wall must be relevant to the talk): kept are
-    # the libraries the pipeline uses (used: true, blue outline) and those the talk or its backups name: PDAL and
-    # pyproj (AHN files and RD New coordinates, slide 5), Numba (B1), Dask (scaling past RAM, slide 26),
-    # trimesh and PyTorch3D (the wall only; slide 9 shows the pipeline libraries alone), scikit-learn (B5), VTK (under PyVista). Dropped: Potree,
-    # CloudCompare and QGIS (not Python), GDAL (rasters), OpenCV, COLMAP and nerfstudio (images and photogrammetry),
-    # Matplotlib (not used), PyG and Pointcept (deep learning on graphs and point clouds, not covered). The rest is in
-    # docs/ECOSYSTEM.md. Every id resolves in deck/ecosystem/ecosystem.yaml (checked against PyPI and GitHub on
-    # 2026-10-11); logos are shown unaltered; terms per file: deck/assets/logos/SOURCES.md.
-    wall:
-      rows:
-        - {label: "Load and store", ids: [{id: laspy, used: true}, {id: pdal, caption: true, name: PDAL}, {id: pyproj, caption: true}]}
-        - {label: "Arrays and speed", ids: [{id: numpy, used: true}, {id: scipy, caption: true, used: true}, {id: numba, caption: true}, dask]}
-        - {label: "Process", ids: [{id: open3d, used: true}, trimesh]}
-        - {label: "Visualise", ids: [{id: pyvista, used: true}, vtk]}
-        - {label: "Learn", ids: [{id: scikit-learn, caption: true}, pytorch3d]}
-    alt: "Ecosystem wall in five rows of logos; the five used in this talk's pipeline have a blue outline. Load and store: laspy (used), PDAL, pyproj. Arrays and speed: NumPy (used), SciPy (used), Numba, Dask. Process: Open3D (used), trimesh. Visualise: PyVista (used), VTK. Learn: scikit-learn, PyTorch3D."
-    seconds: 30
+    title: "The goal: name every point, then check it"
+    # 2026-10-13, speaker: what the goal is. Class 1 "overig" mixes vegetation, facades, cars and poles (AHN4
+    # acquisition spec, research: reports/dataset.md). 2026-10-14 (restructure): input, output and how it is judged;
+    # ground scored against AHN class 2, buildings against class 6 (results/pipeline.json), poles against the BGT
+    # (slide 29); vegetation has no reference (slide 32)
+    takeaway: "From x, y, z alone, in plain Python, and say how far to trust it."
+    columns:
+      - head: "In"
+        items: ["One LAZ file, 200 m × 200 m", "x, y, z per laser echo"]
+      - head: "Out"
+        items: ["A class per point: ground, buildings, vegetation, street furniture"]
+      - head: "Checked against"
+        items: ["Ground, buildings: AHN's own classes", "Poles: the BGT register", "Vegetation: no reference"]
+    alt: "Takeaway: from x, y, z alone, in plain Python, and say how far to trust it. Three columns. In: one LAZ file, 200 m by 200 m, x, y, z per laser echo. Out: a class per point: ground, buildings, vegetation, street furniture. Checked against: AHN's own classes for ground and buildings; the BGT register for poles; vegetation has no reference."
+    seconds: 40
 
   - n: 5
-    build: split_renders
+    build: agenda
     section: Hook
+    layout: 4
+    transition: fade
+    title: "Eight chapters, three questions"
+    # 2026-10-14 (restructure): the agenda. Chapters exactly as meta.chapters (the footer breadcrumb, which marks
+    # "you are here" on every slide); minutes from the seconds per chapter (docs/TIMING.md); Rule: where each rule
+    # is proven (the badges top right)
+    table:
+      columns: ["Chapter", "What you get", "Rule", "Min"]
+      rows:
+        - ["Intro", "The problem, the goal, this map", "", "3"]
+        - ["Data", "How a plane scans; the case; the scope", "", "3"]
+        - ["Toolbox", "Four rules; a library for every layer", "", "2"]
+        - ["Pipeline", "Six steps from LAZ file to labels", "1, 2", "8"]
+        - ["Memory", "Does it fit? A full AHN sheet", "2", "2"]
+        - ["Speed", "Is it fast? A loop against one call", "3", "5"]
+        - ["Reality", "Is it right? The register against the scan", "4", "1"]
+        - ["Wrap-up", "The rules in numbers; limits; next", "", "3"]
+    alt: "Agenda table with four columns: chapter, what you get, the rule it proves, minutes. Intro: the problem, the goal, this map, 3 minutes. Data: how a plane scans, the case, the scope, 3. Toolbox: four rules and a library for every layer, 2. Pipeline: six steps from LAZ file to labels, proves rules 1 and 2, 8. Memory: does it fit, a full AHN sheet, rule 2, 2. Speed: is it fast, a loop against one call, rule 3, 5. Reality: is it right, the register against the scan, rule 4, 1. Wrap-up: the rules in numbers, limits, next, 3."
+    seconds: 40
+
+  - n: 6
+    build: concept
+    section: Data
+    layout: 4
+    transition: fade
+    title: "A plane sweeps a strip with a laser"
+    # 2026-10-13, speaker: how the data is gathered (a plane? one spot?). Figure and numbers: deck/concepts/
+    # make_figures.py acquisition(), from the crop (results/concepts.json acq); the principle (time of flight, GNSS,
+    # IMU) is general airborne laser scanning, no numbers. 2026-10-14 (restructure): before the data set; the inset
+    # shows the strip from above; the last bullet plants slide 29 (61 poles, 3 found)
+    figure: {file: a1_acquisition.png, caption: "Schematic side view, inset from above; not to scale.",
+             alt: "Schematic side view: a plane flies over a street; laser rays fan out below it. One ray hits the ground, one passes a leaf-off tree and leaves three echoes on the way down, one hits a pole, two hit a flat roof; the building's wall is hardly hit. Labels: GNSS, where the plane is; IMU, how it is tilted; each dot is one point, x, y, z from range and position. Inset top left, from above: the flight line, and the strip the scanner sweeps in a zigzag."}
+    takeaway: "x, y, z = range + GNSS position + IMU tilt."
+    bullets:
+      - "A scanning laser, not one spot: it sweeps a strip"
+      - "One pulse can leave up to {concept.acq.max_returns|int} echoes, in trees most"
+      - "Roofs dense, walls sparse, thin poles often missed"
+      - "This crop: {concept.acq.pulses|int} pulses in {concept.acq.seconds|s1} of flight"
+    alt: "Schematic of airborne laser scanning, with four bullets: a scanning laser, not one spot, it sweeps a strip; one pulse can leave up to {concept.acq.max_returns|int} echoes, in trees most; roofs are dense, walls sparse, and thin poles often missed; this crop is {concept.acq.pulses|int} pulses in {concept.acq.seconds|s1} of flight."
+    seconds: 55
+
+  - n: 7
+    build: split_renders
+    section: Data
     layout: 4            # Title and content, body replaced by two render frames
     transition: fade
-    title: "Today's case: the Jaarbeurs hall, from a plane"
+    title: "Today's case: the block around the Jaarbeurs"
     # 2026-10-12: the slide proposes the running example of the whole talk and states the data set's specification
     # (speaker's request): a spec table right of the two frames (build_deck.py slide_split_renders `specs`). Values:
     # data/README.md and the crop's LAS header; density = 722 961 points / 40 000 m2 = 18.1 per m2; flown: GPS time
@@ -154,7 +208,7 @@ slides:
         - ["Coordinates", "RD New + NAP"]
         - ["Licence", "CC BY 4.0"]
       alt: "Specification of the data set: area 200 m by 200 m; {pipeline.crop.points|int} points, about 18 per square metre; source AHN5 from ahn.nl; flown in April 2023, at night; a 4.3 MB LAZ file; coordinates in RD New with NAP heights; licence CC BY 4.0."
-    # Two portrait frames side by side (same camera, same scale as slides 12 to 18): f1 raw | f6 labelled.
+    # Two portrait frames side by side (same camera, same scale as slides 16 to 22): f1 raw | f6 labelled.
     # hook_split.png (one wide split frame) is kept as an alternative but made the hall too small.
     visual:
       kind: side_by_side
@@ -165,96 +219,153 @@ slides:
         - "Bird's-eye render of the Jaarbeurs hall in Utrecht and the streets, trees and buildings around it, coloured by height from blue near the ground through sage to white on the roofs."
         - "The same view with our labels: ground slate grey, buildings light blue, vegetation sage green, street furniture white."
     # no label chips since 2026-10-12: with the data set table beside them the frames are about 2.5 in wide, too
-    # small for four 20 pt chips; the classes are named in the support line and labelled from slide 16 on
+    # small for four 20 pt chips; the classes are named in the support line and labelled from slide 20 on
     # The arrow points at the roof of the Jaarbeurs hall (BAG pand 0344100000077882, Jaarbeursplein 6), which lies
     # inside the crop: pixel from renders/labels.json f1_load.jaarbeurs_hall (pipeline/render.py jaarbeurs_hall)
     edge_arrow: {text: "Jaarbeurs hall", anchor: "f1_load.jaarbeurs_hall",
                  descr: "Arrow pointing down at the roof of the Jaarbeurs hall"}   # arrow on the LEFT frame
     # no split captions: the brief's ~20 words of body text (QA final round); the label chips and the arrows carry it
-    note: "Goal: ground, buildings, vegetation, street furniture; scored against AHN."   # only classes 2 and 6 have an answer key
+    note: "Checked against AHN (ground, buildings) and the BGT pole register (street furniture)."   # vegetation has no reference (slide 32)
     source: ahn
     # alt text: one per frame in visual.alts (no slide-level alt)
-    seconds: 65
+    seconds: 45
 
-  - n: 6
+  - n: 8
     build: concept
     concept: C1      # figure, bullets and notes: deck/appendix.yaml entry C1 (promoted from the hidden Mental models section, 2026-10-12)
-    section: Hook
+    section: Data
     layout: 4
-    transition: fade
+    transition: fade   # no rule badge: it comes before the rules (slide 10)
     title: "One object, three representations"
     seconds: 40
 
-  - n: 7
-    build: workflow
-    section: Hook
+  - n: 9
+    build: columns
+    section: Data
     layout: 4
     transition: fade
-    title: "A 3D project moves through six stages"
-    # 2026-10-13, speaker: replaces the trade-offs slide with the typical workflow of a 3D data scientist, simplified from
-    # the six-stage view of the book "3D Data Science with Python" (Figure 1-12): preparation = pre-processing and
-    # registration; exploration = modelling, semantics, structure; analysis = measurements, optimisation, monitoring.
-    # Later the same day the chain slide (laspy, NumPy, Open3D, PyVista with an image each) was merged in: the tools sit
-    # under their stage, three of the pipeline's renders beside them (the slide's 80 s moved here; talk total unchanged).
-    # Ring, clockwise; disc colour = phase: navy gets the data, blue understands it, sage delivers it. The pipeline
-    # covers stages 1 to 5 in miniature: laspy loads (1), Open3D voxels and ground (2) and clusters (3), NumPy and SciPy
-    # label and measure (3, 4), PyVista draws (5). NumPy holds the array between every step (said in the notes).
-    stages:
-      - {head: "Acquisition", text: "Scan the scene", tools: "laspy", tone: navy,
-         image: {file: closeup.png, alt: "Close-up render of the crop: single points as laspy reads them."}}
-      - {head: "Preparation", text: "Clean and register", tools: "NumPy, Open3D", tone: navy}
-      - {head: "Exploration", text: "Model and label", tools: "Open3D, SciPy", tone: blue,
-         image: {file: f4_clusters.png, alt: "The clusters render: ground grey, each cluster in one of four colours."}}
-      - {head: "Analysis", text: "Measure, monitor", tools: "NumPy, SciPy", tone: blue}
-      - {head: "Visualisation", text: "See it, trust it", tools: "PyVista", tone: sage,
-         image: {file: f6_final.png, alt: "The final render: ground, buildings, vegetation and street furniture."}}
-      - {head: "Application", text: "Ship it", tone: sage}
-    loops: [[4, 2], [5, 1]]      # analysis back to preparation, visualisation back to acquisition (dashed, through the middle)
-    centre: "Loop back when the data surprises"
-    source: ahn
-    alt: "A ring of six numbered stages, clockwise, with the Python libraries under each. 1 Acquisition, scan the scene, laspy, with a close-up of single points as laspy reads them; 2 Preparation, clean and register, NumPy and Open3D; 3 Exploration, model and label, Open3D and SciPy, with the clustered point cloud; 4 Analysis, measure, monitor, NumPy and SciPy; 5 Visualisation, see it, trust it, PyVista, with the final labelled render; 6 Application, ship it. Stages 1 and 2 are coloured as data, 3 and 4 as understanding, 5 and 6 as delivery. Dashed arrows through the middle lead from analysis back to preparation and from visualisation back to acquisition: loop back when the data surprises you."
-    seconds: 145
+    title: "What this talk does, and doesn't"
+    # 2026-10-14 (restructure): scope and assumptions, after the data set so the terms are known. Values from
+    # pipeline/run.py and results/pipeline.json params (voxel, tile, ransac_threshold, low_prefilter, eps,
+    # min_points, cluster_min_height_m); "tuned on this crop" is the speaker's statement (brief, 2026-10-14)
+    pt: 20
+    columns:
+      - head: "In scope"
+        items: ["Airborne LiDAR, AHN5", "One 200 m × 200 m urban crop", "Four classes, rule-based", "Standard Python libraries", "Speed and memory"]
+      - head: "Not today"
+        items: ["Deep learning, trained models", "Mobile or terrestrial scans", "Meshes, registration", "CRS in depth, production", "State-of-the-art accuracy"]
+      - head: "Assumptions"
+        items: ["Metres: RD New + NAP", "Ground: one plane per 25 m tile", "Voxel 0.5 m; inliers 0.4 m; objects > 0.3 m", "DBSCAN eps 0.75 m, 6 points", "Thresholds tuned on this crop"]
+    alt: "Scope in three columns. In scope: airborne LiDAR from AHN5; one 200 by 200 metre urban crop; four classes, rule-based; standard Python libraries; speed and memory. Not today: deep learning and trained models; mobile or terrestrial scans; meshes and registration of several scans; coordinate reference systems in depth and production deployment; claims of state-of-the-art accuracy. Assumptions: metric coordinates, RD New plus NAP; ground is one plane per 25 metre tile; voxel 0.5 metres, plane inliers within 0.4 metres, objects more than 0.3 metres above ground; DBSCAN eps 0.75 metres with at least 6 points; thresholds tuned on this crop, so results hold for this crop only."
+    seconds: 40
 
-  - n: 8
+  - n: 10
     build: rules
-    section: Hook
+    section: Toolbox
     layout: 4
     transition: fade
-    title: "Four rules of thumb for 3D data"
+    title: "Four rules this talk will prove"
     # 2026-10-12, speaker: tips at the start and the end to build a mental model; keep it simple. Four rules, one
     # line each; the closing slide (build: rules, evidence: true) brings the same four back with the talk's numbers.
     rules:
-      - {head: "Think in arrays, not points", text: "A point cloud is an N×3 table plus attribute columns."}
-      - {head: "Look before you compute", text: "Render it; check units, coordinates and classes."}
-      - {head: "Make it small first", text: "Crop, tile and downsample; scale up last."}
-      - {head: "Let compiled code loop", text: "One call per array or tile, never per point."}
-    alt: "Four tiles, one rule of thumb each. 1 Think in arrays, not points: a point cloud is an N by 3 table plus attribute columns. 2 Look before you compute: render it; check units, coordinates and classes. 3 Make it small first: crop, tile and downsample; scale up last. 4 Let compiled code loop: one call per array or tile, never per point."
-    seconds: 45
+      # 2026-10-14 (Phase 3): numbered in the order the talk first proves them; same order on the badges and slide 29
+      - {head: "Think in arrays, not points", text: "A point cloud is an N×3 table plus attribute columns.", ref: "Proof: Pipeline"}
+      - {head: "Make it small first", text: "Crop, tile and downsample; scale up last.", ref: "Proof: Pipeline, Memory"}
+      - {head: "Let compiled code loop", text: "One call per array or tile, never per point.", ref: "Proof: Speed"}
+      - {head: "Look before you compute", text: "Render it; check units, coordinates and classes.", ref: "Proof: Reality"}
+    alt: "Four tiles, one rule of thumb each. 1 Think in arrays, not points: a point cloud is an N by 3 table plus attribute columns. 2 Make it small first: crop, tile and downsample; scale up last. 3 Let compiled code loop: one call per array or tile, never per point. 4 Look before you compute: render it; check units, coordinates and classes. Each tile names the part of the talk that proves it: Pipeline; Pipeline and Memory; Speed; Reality."
+    seconds: 30
 
-  - n: 9
-    build: ecosystem
-    section: Landscape
+  - n: 11
+    build: logo_wall
+    section: Toolbox
     layout: 4
     transition: fade
-    title: "No single library does the whole job"
+    title: "Python already has a library for every layer"
+    # One row per layer of a point cloud project (the yt talk's layers: files, arrays, algorithms, views), and a row of
+    # models. 2026-10-12 relevance pass (speaker: every library on the wall must be relevant to the talk): kept are
+    # the libraries the pipeline uses (used: true, blue outline) and those the talk or its backups name: PDAL and
+    # pyproj (AHN files and RD New coordinates, slide 9), Numba (B1), Dask (scaling past RAM, slide 30),
+    # trimesh and PyTorch3D (the wall only; slide 13 shows the pipeline libraries alone), scikit-learn (B5), VTK (under PyVista). Dropped: Potree,
+    # CloudCompare and QGIS (not Python), GDAL (rasters), OpenCV, COLMAP and nerfstudio (images and photogrammetry),
+    # Matplotlib (not used), PyG and Pointcept (deep learning on graphs and point clouds, not covered). The rest is in
+    # docs/ECOSYSTEM.md. Every id resolves in deck/ecosystem/ecosystem.yaml (checked against PyPI and GitHub on
+    # 2026-10-11); logos are shown unaltered; terms per file: deck/assets/logos/SOURCES.md.
+    wall:
+      rows:
+        - {label: "Load and store", ids: [{id: laspy, used: true}, {id: pdal, caption: true, name: PDAL}, {id: pyproj, caption: true}]}
+        - {label: "Arrays and speed", ids: [{id: numpy, used: true}, {id: scipy, caption: true, used: true}, {id: numba, caption: true}, dask]}
+        - {label: "Process", ids: [{id: open3d, used: true}, trimesh]}
+        - {label: "Visualise", ids: [{id: pyvista, used: true}, vtk]}
+        - {label: "Learn", ids: [{id: scikit-learn, caption: true}, pytorch3d]}
+    alt: "Ecosystem wall in five rows of logos; the five used in this talk's pipeline have a blue outline. Load and store: laspy (used), PDAL, pyproj. Arrays and speed: NumPy (used), SciPy (used), Numba, Dask. Process: Open3D (used), trimesh. Visualise: PyVista (used), VTK. Learn: scikit-learn, PyTorch3D."
+    seconds: 35
+
+  - n: 12
+    build: meme
+    section: Toolbox
+    layout: 4            # Title and content, body replaced by one picture
+    transition: fade
+    title: "Python plans; compiled code does the work"
+    # 2026-10-12 (speaker): the unmasking meme opens the Python-against-C++ comparison. The template is the Scooby-Doo
+    # scene; the Python logo sits on the hooded head, the C++ logo on the unmasked one (logos from Wikimedia Commons,
+    # shown unaltered apart from scaling). 30 s taken from the former slide 4 (now 5), so every later clock time holds. 2026-10-12 (later): moved behind the code
+    # comparison, which shows the C++ is still there underneath, and NumPy added to the explanation.
+    image: {file: assets/meme/python_cpp_unmasking.png,
+            alt: "Scooby-Doo unmasking meme. Top: Fred touches the hood of a tied-up ghost whose head is the Python logo. Bottom: the unmasked figure's head is the C++ logo. Caption: Let's see who's really behind the mask."}
+    takeaway: "Every call you make here runs compiled code"
+    bullets:
+      - "NumPy: a compiled C core, with some C++"
+      - "Open3D: C++, wrapped for Python"
+      - "PyVista: VTK, which is C++"
+      - "laspy: the lazrs decoder is Rust"
+    seconds: 35
+
+  - n: 13
+    build: filmstrip
+    section: Pipeline
+    layout: 4
+    transition: fade
+    title: "Six steps: from LAZ file to labels"
     visual:
-      kind: ecosystem_map
-      steps: ["Load", "Voxel downsampling", "Ground removal", "Clustering", "Labelling", "Visualisation"]
-      libraries:
-        - {name: "laspy", job: "LAS/LAZ in and out", steps: [1]}
-        - {name: "Open3D", job: "downsampling, planes, DBSCAN", steps: [2, 3, 4]}
-        - {name: "SciPy KDTree", job: "batch neighbour queries", steps: [4, 5, 6]}   # 4: height_above (slide 15 code)
-        - {name: "PyVista", job: "off-screen renders", steps: [6]}
-        - {name: "NumPy", job: "the arrays every step passes on", steps: [1, 2, 3, 4, 5, 6]}
-    alt: "Diagram: six pipeline steps in a row. Under each step, the library that does it: laspy under Load, Open3D across voxel downsampling, ground removal and clustering, SciPy KDTree under clustering, labelling and visualisation, PyVista under visualisation, NumPy under all six steps, the arrays every step passes on."
+      kind: filmstrip
+      frames: [f1_load.png, f2_voxel.png, f3_ground.png, f4_clusters.png, f5_labels.png, f6_final.png]
+      names: ["Load", "Voxel downsampling", "Ground removal", "Clustering", "Labelling", "Paint-back"]
+      tags: ["laspy", "Open3D", "Open3D", "Open3D, SciPy", "NumPy, SciPy", "SciPy, PyVista"]
+    source: ahn          # the thumbnails are AHN renders (CONTRACTS.md, data/DATA_LICENSE.md)
+    alt: "Six thumbnails of the same area from the same camera, one per pipeline step: load, voxel downsampling, ground removal, clustering, labelling, paint-back."
+    seconds: 40
+
+  # Slides 12 to 18: one step each (code left, render right; 13 is the copy-or-view hand-off of step 1); 19 sums them up
+
+  - n: 14
+    build: load_stack
+    section: Pipeline
+    layout: 4
+    rule: [1]
+    step: 1          # step tracker top right (2026-10-13 restructure): slides 12 to 18
+    transition: fade
+    title: "1 Load: subtract a local origin first"
+    code: {snippet: s08_load.py}
+    visual: {kind: render, file: f1_load.png}
+    figure: {file: f1_load_origin.png, alt: "The crop's points 135914.6 m from the origin, then after subtracting header.mins: near zero. float32 step 1.6 cm becomes 15 µm."}
+    takeaway: "laspy hands you NumPy; a local origin keeps float32 precise."   # 2026-10-13: the slide's message, big (slide_load_stack)
+    source: ahn
+    alt: "The crop as a point cloud, coloured by height: the hall roof white, the ground blue."
+    # 2026-10-12, speaker: a simple visualisation per step: a small navy sketch in the render's top-right corner
+    # (deck/lib/sketches.py; the label chips keep clear of it). Load: the first point's x in RD and after
+    # subtracting header.mins, with float32's step at each size (np.spacing(np.float32(v)): 0.015625 m at
+    # 135 914.6, 1.53e-5 m at 199.6; the RD step is the research token used in the notes)
     seconds: 55
 
-  - n: 10
+  - n: 15
     build: handoffs
-    section: Landscape
+    section: Pipeline
     layout: 4
+    rule: [1]
+    step: 1          # still step 1: the hand-offs of the load
     transition: fade
-    title: "Use views, not copies"
+    title: "1 Load: pass views, not copies"
     # Four hand-offs of the pipeline, in order (laspy -> NumPy -> Open3D -> NumPy -> PyVista). Every verdict is a
     # check in bench/python_facts.py (results/python_facts.json); `verify` names the boolean that must hold for the
     # verdict shown (the build warns otherwise). snippets/s06b_handoffs.py runs the same four calls with asserts.
@@ -267,13 +378,11 @@ slides:
       view: {title: "The solution: views", head: "view", text: "same memory → free, writes show through"}
     rows:
       - {code: "las.xyz", kind: copy, verify: facts.las_xyz.fresh_copy_each_access, text: "new array, every access"}
-      - {code: "Vector3dVector(xyz)", kind: copy, verify: facts.vector3dvector.copies, text: "float32: {facts.factor_v3d_float32_vs_float64_f.median|x} slower"}
       - {code: "np.asarray(pcd.points)", kind: view, verify: facts.asarray_points.view, text: "writes reach the point cloud"}
-      - {code: "pv.PolyData(pts)", kind: view, verify: facts.polydata.shares_memory_open3d_view, text: "same memory as pts"}
     pills: {copy: "copy", view: "view"}
     # 24 B per point measured for the float64 xyz on the 1 km AHN file (results/memory.json); × 21 013 926 points
     # = 0.47 GB (1 GB = 2^30 B)
-    takeaway: "Every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point → 0.5 GB per 1 km AHN file."
+    takeaway: "Rule 1: each extra xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point → 0.5 GB per 1 km AHN file."
     note: "Why 24 B? x, y and z are three float64 values: 3 × 8 B."
     row_h_in: 0.44
     row_gap_in: 0.08
@@ -282,64 +391,32 @@ slides:
     conditions: facts
     conditions_short: true
     conditions_note: "Copy or view: checked by writing to one side and reading the other, and with np.shares_memory. float32: Vector3dVector of a float32 copy, {facts.timings.v3d_float32.median_ms|ms}, against the float64 xyz of slide 12, {facts.timings.v3d_float64_f.median_ms|ms}."
-    alt: "Takeaway: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point, 0.5 GB per 1 km AHN file. The problem, copies: two names, each on its own block of memory; new memory costs time and RAM. The solution, views: two names on one block; same memory, free, writes show through. Below, four rows, one per hand-off between the libraries. las.xyz: copy, a new array on every access. Vector3dVector of xyz: copy, and {facts.factor_v3d_float32_vs_float64_f.median|x} slower for float32 input. np.asarray of pcd.points: view, writes reach the point cloud. pv.PolyData of pts: view, the same memory as pts."
-    seconds: 70
+    alt: "Takeaway: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point, 0.5 GB per 1 km AHN file. The problem, copies: two names, each on its own block of memory; new memory costs time and RAM. The solution, views: two names on one block; same memory, free, writes show through. Below, four rows, one per hand-off between the libraries. las.xyz: copy, a new array on every access. Vector3dVector of xyz: copy, Open3D gets its own copy. np.asarray of pcd.points: view, writes reach the point cloud. pv.PolyData of pts: view, the same memory as pts."
+    seconds: 45
 
-  - n: 11
-    build: filmstrip
-    section: Pipeline
-    layout: 4
-    transition: fade
-    title: "Six steps turn a point cloud into labels"
-    visual:
-      kind: filmstrip
-      frames: [f1_load.png, f2_voxel.png, f3_ground.png, f4_clusters.png, f5_labels.png, f6_final.png]
-      names: ["Load", "Voxel downsampling", "Ground removal", "Clustering", "Labelling", "Visualisation"]
-      tags: ["laspy", "Open3D", "Open3D", "Open3D, SciPy", "NumPy, SciPy", "SciPy, PyVista"]
-      morph_first_as: "!!render"
-    source: ahn          # the thumbnails are AHN renders (CONTRACTS.md, data/DATA_LICENSE.md)
-    alt: "Six thumbnails of the same area from the same camera, one per pipeline step: load, voxel downsampling, ground removal, clustering, labelling, visualisation."
-    seconds: 25
-
-  # Slides 12 to 18: identical L7 geometry; objects named !!title !!code !!hl !!support !!src !!render !!lab_*
-
-  - n: 12
-    build: load_stack
-    section: Pipeline
-    layout: 4
-    transition: fade
-    title: "1 Load: laspy hands you NumPy"
-    code: {snippet: s08_load.py}
-    visual: {kind: render, file: f1_load.png}
-    figure: {file: f1_load_origin.png, alt: "The crop's points 135914.6 m from the origin, then after subtracting header.mins: near zero. float32 step 1.6 cm becomes 15 µm."}
-    takeaway: "Subtract a local origin before anything else."   # 2026-10-13: the slide's message, big (slide_morph)
-    source: ahn
-    alt: "The crop as a point cloud, coloured by height: the hall roof white, the ground blue."
-    # 2026-10-12, speaker: a simple visualisation per step: a small navy sketch in the render's top-right corner
-    # (deck/lib/sketches.py; the label chips keep clear of it). Load: the first point's x in RD and after
-    # subtracting header.mins, with float32's step at each size (np.spacing(np.float32(v)): 0.015625 m at
-    # 135 914.6, 1.53e-5 m at 199.6; the RD step is the research token used in the notes)
-    seconds: 65
-
-  - n: 13
+  - n: 16
     build: voxel_story
     section: Pipeline
     layout: 4
+    rule: [2]
+    step: 2
     transition: fade
     title: "2 Voxel downsampling: one average per voxel"
     code: {snippet: s09_voxel.py}
     visual: {kind: render, file: f2_voxel.png}   # the building after downsampling, right
     figure: {file: s13_voxel.png}   # deck/concepts/make_voxel_figure.py; 2026-10-13: before/after under the code, as on C1
-    takeaway: "{pipeline.points_in|int} points in → {pipeline.points_after_voxel|int} out at {pipeline.params.voxel|m} voxels."
+    takeaway: "Rule 2: {pipeline.points_in|int} points in → {pipeline.points_after_voxel|int} out at {pipeline.params.voxel|m} voxels."
     source: ahn
     alt: "Left, a 3 by 1.5 metre patch of the crop from above, one layer of voxels, with the 0.5 metre cells drawn: 95 points. Right of it, the same patch: the 95 points faded, and one larger average point in each of the 18 cells."
     alt_render: "Same view as slide 12 after voxel downsampling: fewer points, same size, same area."
-    seconds: 55
+    seconds: 50
 
-  - n: 14
+  - n: 17
     build: step_stack
     section: Pipeline
     layout: 4
+    rule: [2]
+    step: 3
     transition: fade
     title: "3 Ground removal: one plane per tile"
     code: {snippet: s10_ground.py}
@@ -347,19 +424,20 @@ slides:
     support: "Scored against AHN's ground:\n{pipeline.ground.precision|pct} precision, {pipeline.ground.recall|pct} recall."
     takeaway: "Fit one plane per tile;\nroofs get none."
     source: ahn
-    # joke (notes slide 14): the Zen of Python line "Flat is better than nested." (checked by snippets/s10b_zen.py)
+    # joke (notes slide 18): the Zen of Python line "Flat is better than nested." (checked by snippets/s10b_zen.py)
     # is spoken now; its on-slide REPL callout was dropped on 2026-10-12, because the step sketch takes the top of
     # the render and the callout did not fit beside it
     alt: "Same view: ground points in slate grey, labelled Ground, everything else still coloured by height."
-    figure: {file: f3_ground_strip.png, alt: "Side view: ground points along a gently sloping street, a building and a tree above them; a dashed line splits two tiles and each tile has its own straight plane through its ground points."}
-    seconds: 75
+    figure: {file: f3_ground_strip.png, alt: "Side view: ground points along a gently sloping street, a building and a tree above them, drawn hollow because they are not ground; a dashed line splits two tiles and each tile has its own straight plane through its ground points."}
+    seconds: 70
 
-  - n: 15
+  - n: 18
     build: step_stack
     section: Pipeline
     layout: 4
+    step: 4
     transition: fade
-    title: "4 Clustering: DBSCAN groups what touches"
+    title: "4 Clustering: DBSCAN groups points that touch"
     code: {snippet: s11_cluster.py}
     visual: {kind: render, file: f4_clusters.png, frame: l7}
     support: "{pipeline.n_clusters|int} clusters. Clusters are not labels yet."
@@ -367,46 +445,49 @@ slides:
     source: ahn
     alt: "Same view: ground stays slate grey, labelled Ground; the other points are grouped into clusters, each drawn in one of four cycling colours (blue, sage, grey, light grey), with noise dimmed."
     figure: {file: f4_cluster_strip.png, alt: "Two groups of points, each a cluster because every point has neighbours within eps, drawn as a dashed circle; one lone point far away is noise."}
-    seconds: 55
+    seconds: 50
 
-  - n: 16
+  - n: 19
     build: step_stack
     section: Pipeline
     layout: 4
+    rule: [2]
+    step: 5
     transition: fade
-    title: "5 Labelling: rules name the clusters"
+    title: "5 Labelling: the first rule that fires wins"
     code: {snippet: s12_label.py}
     visual: {kind: render, file: f5_labels.png, frame: l7}
-    support: "Leaf-off scan: bare trees echo several times."   # one line; the pulses and branches are in the notes
-    takeaway: "The first rule that fires\nnames the cluster."
+    support: "Height, footprint and echoes decide the class."   # one line; leaf-off and the echoes are in the notes
+    takeaway: "{pipeline.n_clusters|int} clusters, not {pipeline.points_after_voxel|int} points:\na Python loop is fine."
     source: ahn
     alt: "Same view with four classes, each labelled directly: ground slate grey, buildings light blue, vegetation sage green, street furniture white."
     figure: {file: f5_rules_strip.png, alt: "Three cluster shapes, a tree crown with many echoes, a wide flat building and a thin pole, each with an arrow to its class colour: vegetation, buildings, street furniture."}
-    seconds: 70
+    seconds: 65
 
-  - n: 17
+  - n: 20
     build: step_stack
     section: Pipeline
     layout: 4
+    step: 6
     transition: fade
-    title: "6 Visualisation: PyVista paints every point"
+    title: "6 Paint-back: every point takes its voxel's label"
     code: {snippet: s13_render.py}
     visual: {kind: render, file: f6_final.png, frame: l7}
-    support: "Fixed camera, off-screen, one PNG per step."
-    takeaway: "Paint the labels back\nonto every point."
+    support: "One KDTree query, then PyVista renders it."   # fixed camera, off-screen: in the notes
+    takeaway: "One query labels all\n{pipeline.points_in|int} points."
     source: ahn
     alt: "Same view: the four class labels painted back from the {pipeline.points_after_voxel|int} voxel points onto all {pipeline.points_in|int} original points; ground slate grey, buildings light blue, vegetation sage green, street furniture white."
-    figure: {file: f6_paint_strip.png, alt: "Three large voxel points in their class colours with many small original points around them; each small point takes the colour of its nearest voxel point."}
-    seconds: 40
+    figure: {file: f6_paint_strip.png, alt: "Three large voxel points in their class colours with small original points around them, each joined by a thin line to its nearest voxel point, whose colour it takes."}
+    seconds: 35
 
-  - n: 18
+  - n: 21
     build: summary
     section: Pipeline
     layout: 7
     transition: fade
-    title: "What the six steps did"
-    # 2026-10-12, speaker: a better summary of what has been done. The end of the Morph chain: same render and chips
-    # as slide 17, the seven calls (snippets/s14_pipeline.py, still in the repo and in the notes) replaced by one row
+    title: "Six steps label every point in {pipeline.runtime_s|f1} s"
+    # 2026-10-12, speaker: a better summary of what has been done. The end of the step slides: same render and chips
+    # as slide 21, the seven calls (snippets/s14_pipeline.py, still in the repo and in the notes) replaced by one row
     # per step: the library, what came out, and the step's time (results/pipeline.json timings_s, one run,
     # indicative; Load is laspy.read only, the copy into Open3D is in the notes).
     table:
@@ -421,17 +502,193 @@ slides:
       alt: "Table, one row per step. Load, laspy: {pipeline.points_in|int} points, {pipeline.timings_s.load|sms}. Voxels, Open3D: {pipeline.points_after_voxel|int} voxels, {pipeline.timings_s.downsample|sms}. Ground, Open3D: {pipeline.ground.precision|pct} precision, {pipeline.timings_s.remove_ground|sms}. Clusters, Open3D: {pipeline.n_clusters|int} clusters, {pipeline.timings_s.cluster|sms}. Labels, NumPy: 4 classes, {pipeline.timings_s.label|sms}. Paint-back, SciPy: all points labelled, {pipeline.timings_s.paint_back|sms}."
     visual: {kind: render, file: f6_final.png, frame: l7}
     labels_from: f6_final
-    support: "{pipeline.runtime_s|f1} s from file to labels, and no loop over points."
+    support: "No loop over points: the label rules loop over {pipeline.n_clusters|int} clusters."   # 2026-10-14: rule 3 is proven in Speed
     source: ahn
-    alt: "The final labelled area, same view as slides 12 to 17: ground, buildings, vegetation and street furniture painted back onto all {pipeline.points_in|int} points, each class labelled directly."
-    seconds: 65
+    alt: "The final labelled area, same view as slides 12 to 18: ground, buildings, vegetation and street furniture painted back onto all {pipeline.points_in|int} points, each class labelled directly."
+    seconds: 50
 
-  - n: 19
-    build: expectation_map
-    section: Pipeline
-    layout: 8            # Media left, text right
+  - n: 22
+    build: bar_gb
+    section: Memory
+    layout: 8
+    rule: [2]
     transition: fade
-    title: "Expectation vs reality: street furniture"   # joke slide (notes slide 19), after the Morph chain
+    title: "A full AHN sheet would need {memory.big_file.computed_gb.our_pipeline|gb}"   # every loaded state on the chart, not the LAS records alone
+    chart:
+      kind: bar_gb
+      bars:
+        # "\n": two-line category labels, so the plot gets more of the chart width (RAM bars on one line each)
+        - {label: "LAS records\n(computed)", value: "memory.big_file.computed_gb.las_records"}
+        - {label: "+ float64 xyz\n(computed)", value: "memory.big_file.computed_gb.plus_xyz"}
+        - {label: "Our pipeline\n(computed)", value: "memory.big_file.computed_gb.our_pipeline", highlight: true}
+      threshold: "memory.ram_reference_gb.1"   # labelled dashed line at 32 GB across the bars (a limit, not a fourth quantity)
+      threshold_label: "{memory.ram_reference_gb.1|int} GB RAM"
+    hero: {value: "{memory.tile_1km.bytes_per_point.pipeline_retained|int} B", label: "per point in our pipeline"}
+    support: "{memory.big_file.points|int} points × {memory.tile_1km.bytes_per_point.pipeline_retained|int} B each."
+    # note box under the support line: why 86 B and not the 24 B of one xyz array (bytes_per_point, 1 km file)
+    # "Why not 24 B?" moved to the notes (2026-10-14, Phase 3: one idea per slide)
+    # joke line (notes slide 30), 20 pt slate under the small print: the RAM of the machine everything ran on
+    machine_line: "It works on my machine ({memory.conditions.ram_gib|f1} GiB RAM)."   # the fix is slide 28
+    conditions: memory
+    # footnote 6b (2026-10-14, speaker approved): which file is which
+    footnote: "86 B per point measured on the 1 km AHN tile ({memory.tile_1km.points|int} points); the {memory.big_file.points|int} points are the AHN5 sheet 2023_C_31HZ2 that holds the crop, computed, not run."
+    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
+    alt: "Horizontal bar chart in gigabytes for one {research.ahn5_c_31hz2.width_km|f2t} by {research.ahn5_c_31hz2.height_km|f2t} km AHN5 file with {memory.big_file.points|int} points: LAS records at {memory.big_file.computed_gb.las_records|gb}, plus a float64 copy of the coordinates at {memory.big_file.computed_gb.plus_xyz|gb}, and our load and voxel downsampling steps (slides 14 and 16), all arrays kept, at {memory.big_file.computed_gb.our_pipeline|gb}; a dashed line labelled {memory.ram_reference_gb.1|int} GB RAM crosses all three bars, and the part of each bar past it is red; the three data bars are computed, not run."
+    seconds: 55
+
+  - n: 23
+    build: code_hero
+    section: Memory
+    layout: 4
+    rule: [2]
+    transition: fade
+    title: "Stream chunks, keep the first point per voxel"
+    code: {snippet: s21_chunked.py, width: full, line_pt: 20}   # 20 pt line pitch (1.11 em): room for the hero
+    hero: {value: "{memory.tile_1km.naive_peak_mb|gb1} → {memory.tile_1km.chunked_peak_mb|gb1}", label: "peak memory, 1 km AHN tile"}   # above the process after imports (memory conditions)
+    support: "Rule 2: make it small first, then scale up."   # verdict line (2026-10-13 restructure); the hero shrinks to fit
+    conditions: memory
+    footnote: "Measured on the 1 km AHN tile ({memory.tile_1km.points|int} points); the full sheet of slide 22 was not run."   # footnote 6b
+    conditions_short: true
+    alt: "Twelve lines of Python that read a LAZ file in chunks of one million points and keep the first point in every voxel, above the peak memory before and after."   # on the code box
+    seconds: 60
+
+  - n: 24
+    build: quiz
+    section: Speed
+    layout: 5
+    rule: [3]
+    transition: fade
+    title: "Quiz: which is faster, and by how much?"
+    # 2026-10-12, speaker: make it a quiz (and the old slide 18, "How far is each point from the ground?", is
+    # removed, so the task line under the title says what both codes compute). Rows A and B instead of the Drake
+    # cross and check (they gave the answer away); four answer pills under the rows; slide 26 reveals the answer
+    # on click. Code at 20 pt (>= 18). The snippets were benchmarked verbatim, so they stay as they are.
+    task: "Distance of every point to the ground plane, {bench.plane.n|int} points."
+    rows:
+      - {snippet: s16_loop.py, letter: "A", alt: "Option A: a Python for loop over the rows of P, one distance per point."}
+      - {snippet: s16_vec.py, letter: "B", alt: "Option B: one element-wise NumPy expression over the columns of P."}
+    code_pt: 20
+    answers: ["2×", "10×", "100×", "1000×"]
+    answers_label: "The faster one wins by about:"
+    small_print: "Both give identical results (np.array_equal). P: the crop's xyz from slide 14, column-ordered. plane: one seeded segment_plane on the whole crop."
+    alt: "Quiz. Two code blocks computing the distance of every point to a plane: A, a Python for loop over the rows of a NumPy array; B, one element-wise NumPy expression. Below them four answers for how much faster the faster one is: 2, 10, 100 or 1000 times."
+    seconds: 60
+
+  - n: 25
+    build: chart_hero
+    section: Speed
+    layout: 7
+    rule: [3]
+    transition: fade
+    title: "How much slower is the loop over rows?"
+    # question title: the hero number (on-click build) gives the answer, so the title must not reveal it
+    # no "two orders of magnitude" title: the factor holds for one loop on one memory layout (a row-ordered copy,
+    # plain Python floats and the kNN loop all give smaller factors, bench_cliff.json); the phrase is spoken only
+    chart:
+      kind: column_log
+      unit: ms
+      bars:
+        - {label: "Loop over NumPy rows", value: "bench.plane.loop_numpy_rows.median_ms", highlight: true}
+        - {label: "One NumPy expression", value: "bench.plane.vectorised.median_ms"}
+      scale: linear              # bar lengths show the real ratio; data labels carry the values
+    hero: {value: "{bench.plane.factor.median|x}", label: "slower", build_on_click: true}   # "same answer" is in the support line
+    # NumPy-level operations per procedure, counted with dis on the snippets (3.13 bytecode): loop body per row = 3 element
+    # reads + 6 arithmetic + abs + row view + store = 12; the expression = 6 arithmetic + abs = 7, once for all rows
+    ops: {loop_per_row: 12, vectorised: 7, loop_label: "Loop", vec_label: "One expression"}
+    support: "Same data, same answer, far fewer calls into compiled code."
+    # the array the factor holds for (appended to the Conditions line)
+    conditions_note: "Array: {bench.plane.array.how|nb}, {bench.plane.array.dtype}, column-ordered as laspy returns it; on a row-ordered copy the factor is {bench.plane.sensitivity.factor_c_contiguous.median|x}."
+    conditions: bench
+    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
+    conditions_threads: true   # the plane runs' thread count and CPU/wall ratio: only here, where they are charted
+    alt: "Column chart of the median time per run, linear axis. The Python loop over NumPy rows takes {bench.plane.loop_numpy_rows.median_ms|ms}; one NumPy expression takes {bench.plane.vectorised.median_ms|ms}."
+    seconds: 70
+
+  - n: 26
+    build: toll
+    section: Speed
+    layout: 4
+    rule: [3]
+    transition: fade
+    title: "Every trip into compiled code pays a toll"
+    visual: {kind: toll_diagram, loop_code: "for p in pts: f(p)", call_code: "f(pts)", lane_top: "Python", lane_bottom: "compiled code", times: "× N", toll_label: "", caption_loop: "N trips: {bench.plane.loop_numpy_rows.median_ms|ms}", caption_call: "1 trip: {bench.plane.vectorised.median_ms|ms}", legend_toll: "toll per crossing", legend_work: "work in compiled code", legend_arrow: "call and return"}   # no word label: the blue toll ticks and the title carry "toll" (body ~20 words)
+    hero: {value: "{bench.plane.per_step_ns_loop|ns}", label: "per loop step"}
+    takeaway: "Rule 3: one call on the whole array, not N calls on single points."
+    # how the per-call cost was measured (appended to the Conditions line; brief: conditions for every benchmark)
+    # distance_upper_bound: its value is stored only inside a description string in bench_cliff.json, so it is not printed
+    conditions_note: "KDTree query: SciPy KDTree.query with k\u00a0=\u00a0{bench.knn.k|int} and distance_upper_bound, one query point far outside the cloud (no neighbour found), median of {bench.knn.per_query_desc.far_knn.repeat|int} timeit repeats of {bench.knn.per_query_desc.far_knn.calls_per_repeat|int} calls."
+    conditions: bench
+    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
+    alt: "Diagram: a Python lane above a dashed boundary and a compiled-code lane below. On the left a loop crosses the boundary many times, paying a toll each time, marked by blue ticks on the boundary. On the right one call crosses once and does all the work below the line."
+    seconds: 70
+
+  - n: 27
+    build: profile
+    section: Speed
+    layout: 4
+    rule: [3]
+    transition: fade
+    title: "Profile before you vectorise"
+    # 2026-10-12, speaker: use Scalene (github.com/plasma-umass/scalene) for the CPU profile too. The command on top,
+    # then the slide-18 lines with one bar each: Python, native and system share of the whole run, as Scalene
+    # reports it (bench/profile_loop_scalene.py, results/profile_scalene.json: the loop and the one-expression
+    # version, 30 repeats, median of 3 runs). Replaces the cProfile output and the icicle (those result files stay
+    # as a cross-check; notes 26). The for and indexing lines show 0 %: Scalene bills a sample to the line the
+    # interpreter is on after a long C call returns (notes).
+    line_profile:
+      command: "$ scalene run --cpu-only loop.py"
+      legend: {python: "Python", native: "native, i.e. NumPy", system: "system"}
+      rows:
+        - {tag: "loop", line: for}
+        - {line: unpack}
+        - {line: loop_body, key: true}
+        - {tag: "NumPy", line: vectorised, gap: true, key: true}
+      alt: "Per-line CPU profile from Scalene. For the loop version, the for line and the line that unpacks a row show 0 %, and the line that computes the distance takes {prof.lines.loop_body.total|int} % of the whole run, almost all of it native NumPy time and about {prof.lines.loop_body.python|int} % in the Python interpreter. The one-expression NumPy version takes {prof.lines.vectorised.total|f1} %."
+    support: "The loop's last line takes {prof.lines.loop_body.total|int} % of the run. As one NumPy expression: {prof.lines.vectorised.total|f1} %."
+    conditions: scalene_cpu
+    # footnote 6c (2026-10-14, speaker approved): a different setup from slide 21, said once
+    footnote: "Different setup: under the profiler, each version runs 30 times; slide 25 holds the baseline timings."
+    seconds: 50
+
+  - n: 28
+    build: chart_hero
+    section: Speed
+    layout: 7
+    rule: [3]
+    transition: fade
+    title: "Will free-threaded Python save my loop?"
+    # question title, answered by the hero. Timed on CPython 3.14t (GIL disabled) and the default 3.14 build of the
+    # same release (bench/bench_freethreaded.py, results/bench_freethreaded.json); threads_8 is the fastest thread
+    # count measured on the free-threaded build (summary.best_threads_ft)
+    chart:
+      kind: column_log
+      unit: ms
+      bars:
+        # three bars, all on the free-threaded build (four did not fit the frame at 20 pt); the GIL build's
+        # threads are in the support line and the conditions note
+        - {label: "Loop,\n1 thread", value: "ft.builds.free_threaded.timings.loop.median_ms"}
+        - {label: "Loop,\nthreads", value: "ft.builds.free_threaded.timings.threads_8.median_ms", highlight: true}
+        - {label: "NumPy,\n1 call", value: "ft.builds.free_threaded.timings.vectorised.median_ms"}
+      scale: linear              # bar lengths show the real ratio; data labels carry the values
+    hero: {value: "{ft.summary.ft_speedup_best_vs_loop.median|x}", label: "faster on {ft.summary.best_threads_ft|int} free threads"}
+    # calls per procedure as on slide 26 (12 per row in the loop body, 7 for the expression); threads split the rows, not the calls
+    ops: {loop_per_row: 12, vectorised: 7, loop_label: "Loop", threads: "ft.summary.best_threads_ft", threads_label: "threads", vec_label: "NumPy"}
+    support: "Rule 3: one NumPy call still beats {ft.summary.best_threads_ft|int} threads by {ft.summary.ft_vectorised_vs_best_threads.median|x}; GIL threads gain nothing."   # verdict line
+    conditions: ft
+    # footnote 6c: same machine, another Python build, so the loop and NumPy times differ a little from slide 21
+    footnote: "Different setup: Python 3.14 builds. Loop {ft.builds.free_threaded.timings.loop.median_ms|ms} and NumPy {ft.builds.free_threaded.timings.vectorised.median_ms|ms} here; {bench.plane.loop_numpy_rows.median_ms|ms} and {bench.plane.vectorised.median_ms|ms} on 3.13 (slide 25)."
+    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
+    conditions_note: "Loop: the slide 24 loop. Threads: the same loop body over N slices of P, concurrent.futures.ThreadPoolExecutor. Default build with the GIL: loop {ft.builds.gil.timings.loop.median_ms|ms}, {ft.summary.best_threads_ft|int} threads {ft.builds.gil.timings.threads_8.median_ms|ms}."
+    alt: "Column chart of the median time per run, linear axis, on the free-threaded build: the loop on one thread takes {ft.builds.free_threaded.timings.loop.median_ms|ms}; the same loop split over {ft.summary.best_threads_ft|int} threads takes {ft.builds.free_threaded.timings.threads_8.median_ms|ms}; one NumPy expression on one thread takes {ft.builds.free_threaded.timings.vectorised.median_ms|ms}. With the GIL, the {ft.summary.best_threads_ft|int} threads take {ft.builds.gil.timings.threads_8.median_ms|ms}."
+    seconds: 50
+
+  - n: 29
+    build: expectation_map
+    section: Reality
+    layout: 8            # Media left, text right
+    rule: [4]
+    transition: fade
+    title: "The register has {bgt.collections.paal.n|int} poles; we found {pipeline.n_objects.street_furniture|int}"   # joke slide (notes slide 20), after the pipeline summary
     # 2026-10-12, speaker: a real example instead of the drawn lamp posts. Expectation = the poles the Dutch
     # large-scale topography register (BGT, Kadaster) lists inside this exact 200 m box, queried on PDOK
     # (bench/bgt_street_furniture.py, results/bgt_street_furniture.json); reality = the pipeline's street furniture
@@ -465,199 +722,70 @@ slides:
     source: ahn
     alt: "The final render with two kinds of rings. Small sage rings mark the {bgt.collections.paal.n|int} poles the BGT register lists in this box, {bgt.collections.paal.by_type.lichtmast|int} lamp posts and {bgt.collections.paal.by_type.afsluitpaal|int} bollards, along the streets and the plaza. Three large white rings mark the street furniture objects the pipeline found; two of them sit on a registered lamp post."
     small_print: "Poles: BGT, Kadaster, CC BY 4.0. Photos: Wikimedia Commons, CC BY-SA 4.0 and CC BY 3.0."
-    seconds: 40
+    seconds: 45
 
-  - n: 20
+  - n: 30
     build: concept
     concept: C5      # figure, bullets and notes: deck/appendix.yaml entry C5 (promoted from the hidden Mental models section, 2026-10-12)
-    section: Pipeline
+    section: Reality
     layout: 4
+    rule: [4]
     transition: fade
-    title: "A point cloud samples the surface unevenly"
-    seconds: 40
+    title: "From the air, the city is sampled unevenly"
+    seconds: 30
 
-  - n: 21
-    build: quiz
-    section: Performance
-    layout: 5
-    transition: fade
-    title: "Quiz: which is faster, and by how much?"
-    # 2026-10-12, speaker: make it a quiz (and the old slide 18, "How far is each point from the ground?", is
-    # removed, so the task line under the title says what both codes compute). Rows A and B instead of the Drake
-    # cross and check (they gave the answer away); four answer pills under the rows; slide 22 reveals the answer
-    # on click. Code at 20 pt (>= 18). The snippets were benchmarked verbatim, so they stay as they are.
-    task: "Distance of every point to the ground plane, {bench.plane.n|int} points."
-    rows:
-      - {snippet: s16_loop.py, letter: "A", alt: "Option A: a Python for loop over the rows of P, one distance per point."}
-      - {snippet: s16_vec.py, letter: "B", alt: "Option B: one element-wise NumPy expression over the columns of P."}
-    code_pt: 20
-    answers: ["2×", "10×", "100×", "1000×"]
-    answers_label: "The faster one wins by about:"
-    small_print: "Both give identical results (np.array_equal). P: the crop's xyz from slide 12, column-ordered. plane: one seeded segment_plane on the whole crop."
-    alt: "Quiz. Two code blocks computing the distance of every point to a plane: A, a Python for loop over the rows of a NumPy array; B, one element-wise NumPy expression. Below them four answers for how much faster the faster one is: 2, 10, 100 or 1000 times."
-    seconds: 75
-
-  - n: 22
-    build: chart_hero
-    section: Performance
-    layout: 7
-    transition: fade
-    title: "How much slower is the loop over rows?"
-    # question title: the hero number (on-click build) gives the answer, so the title must not reveal it
-    # no "two orders of magnitude" title: the factor holds for one loop on one memory layout (a row-ordered copy,
-    # plain Python floats and the kNN loop all give smaller factors, bench_cliff.json); the phrase is spoken only
-    chart:
-      kind: column_log
-      unit: ms
-      bars:
-        - {label: "Loop over NumPy rows", value: "bench.plane.loop_numpy_rows.median_ms", highlight: true}
-        - {label: "One NumPy expression", value: "bench.plane.vectorised.median_ms"}
-      axis_title: "Median time per run, log scale"
-    hero: {value: "{bench.plane.factor.median|x}", label: "slower", build_on_click: true}   # "same answer" is in the support line
-    # NumPy-level operations per procedure, counted with dis on the snippets (3.13 bytecode): loop body per row = 3 element
-    # reads + 6 arithmetic + abs + row view + store = 12; the expression = 6 arithmetic + abs = 7, once for all rows
-    ops: {loop_per_row: 12, vectorised: 7, loop_label: "Loop", vec_label: "One expression"}
-    support: "Same data, same answer, far fewer calls into compiled code."
-    # the array the factor holds for (appended to the Conditions line)
-    conditions_note: "Array: {bench.plane.array.how|nb}, {bench.plane.array.dtype}, column-ordered as laspy returns it; on a row-ordered copy the factor is {bench.plane.sensitivity.factor_c_contiguous.median|x}."
-    conditions: bench
-    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
-    conditions_threads: true   # the plane runs' thread count and CPU/wall ratio: only here, where they are charted
-    alt: "Column chart on a logarithmic time axis. The Python loop over NumPy rows takes {bench.plane.loop_numpy_rows.median_ms|ms}; one NumPy expression takes {bench.plane.vectorised.median_ms|ms}."
-    seconds: 80
-
-  - n: 23
-    build: toll
-    section: Performance
-    layout: 4
-    transition: fade
-    title: "Every trip into compiled code pays a toll"
-    visual: {kind: toll_diagram, loop_code: "for p in pts: f(p)", call_code: "f(pts)", lane_top: "Python", lane_bottom: "compiled code", times: "× N", toll_label: "", caption_loop: "N trips: {bench.plane.loop_numpy_rows.median_ms|ms}", caption_call: "1 trip: {bench.plane.vectorised.median_ms|ms}", legend_toll: "toll per crossing", legend_work: "work in compiled code", legend_arrow: "call and return"}   # no word label: the blue toll ticks and the title carry "toll" (body ~20 words)
-    hero: {value: "{bench.plane.per_step_ns_loop|ns}", label: "per loop step"}
-    takeaway: "Prefer one call on the whole array over N calls on single points."
-    # how the per-call cost was measured (appended to the Conditions line; brief: conditions for every benchmark)
-    # distance_upper_bound: its value is stored only inside a description string in bench_cliff.json, so it is not printed
-    conditions_note: "KDTree query: SciPy KDTree.query with k\u00a0=\u00a0{bench.knn.k|int} and distance_upper_bound, one query point far outside the cloud (no neighbour found), median of {bench.knn.per_query_desc.far_knn.repeat|int} timeit repeats of {bench.knn.per_query_desc.far_knn.calls_per_repeat|int} calls."
-    conditions: bench
-    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
-    alt: "Diagram: a Python lane above a dashed boundary and a compiled-code lane below. On the left a loop crosses the boundary many times, paying a toll each time, marked by blue ticks on the boundary. On the right one call crosses once and does all the work below the line."
-    seconds: 95
-
-  - n: 24
-    build: profile
-    section: Performance
-    layout: 4
-    transition: fade
-    title: "Profile before you vectorise"
-    # 2026-10-12, speaker: use Scalene (github.com/plasma-umass/scalene) for the CPU profile too. The command on top,
-    # then the slide-18 lines with one bar each: Python, native and system share of the whole run, as Scalene
-    # reports it (bench/profile_loop_scalene.py, results/profile_scalene.json: the loop and the one-expression
-    # version, 30 repeats, median of 3 runs). Replaces the cProfile output and the icicle (those result files stay
-    # as a cross-check; notes 22). The for and indexing lines show 0 %: Scalene bills a sample to the line the
-    # interpreter is on after a long C call returns (notes).
-    line_profile:
-      command: "$ scalene run --cpu-only loop.py"
-      legend: {python: "Python", native: "native, i.e. NumPy", system: "system"}
-      rows:
-        - {tag: "loop", line: for}
-        - {line: unpack}
-        - {line: loop_body, key: true}
-        - {tag: "NumPy", line: vectorised, gap: true, key: true}
-      alt: "Per-line CPU profile from Scalene. For the loop version, the for line and the line that unpacks a row show 0 %, and the line that computes the distance takes {prof.lines.loop_body.total|int} % of the whole run, almost all of it native NumPy time and about {prof.lines.loop_body.python|int} % in the Python interpreter. The one-expression NumPy version takes {prof.lines.vectorised.total|f1} %."
-    support: "The loop's last line takes {prof.lines.loop_body.total|int} % of the run. As one NumPy expression: {prof.lines.vectorised.total|f1} %."
-    conditions: scalene_cpu
-    seconds: 55
-
-  - n: 25
-    build: chart_hero
-    section: Performance
-    layout: 7
-    transition: fade
-    title: "Will free-threaded Python save my loop?"
-    # question title, answered by the hero. Timed on CPython 3.14t (GIL disabled) and the default 3.14 build of the
-    # same release (bench/bench_freethreaded.py, results/bench_freethreaded.json); threads_8 is the fastest thread
-    # count measured on the free-threaded build (summary.best_threads_ft)
-    chart:
-      kind: column_log
-      unit: ms
-      bars:
-        # three bars, all on the free-threaded build (four did not fit the frame at 20 pt); the GIL build's
-        # threads are in the support line and the conditions note
-        - {label: "Loop,\n1 thread", value: "ft.builds.free_threaded.timings.loop.median_ms"}
-        - {label: "Loop,\nthreads", value: "ft.builds.free_threaded.timings.threads_8.median_ms", highlight: true}
-        - {label: "NumPy,\n1 call", value: "ft.builds.free_threaded.timings.vectorised.median_ms"}
-      axis_title: "Median time per run, log scale"
-      axis_max_ms: 1000          # the slowest bar is under 1 s: no empty decade above it
-    hero: {value: "{ft.summary.ft_speedup_best_vs_loop.median|x}", label: "faster on {ft.summary.best_threads_ft|int} free threads"}
-    # calls per procedure as on slide 22 (12 per row in the loop body, 7 for the expression); threads split the rows, not the calls
-    ops: {loop_per_row: 12, vectorised: 7, loop_label: "Loop", threads: "ft.summary.best_threads_ft", threads_label: "threads", vec_label: "NumPy"}
-    support: "With the GIL, threads gain nothing; one NumPy call is still {ft.summary.ft_vectorised_vs_best_threads.median|x} faster."
-    conditions: ft
-    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
-    conditions_note: "Loop: the slide 21 loop. Threads: the same loop body over N slices of P, concurrent.futures.ThreadPoolExecutor. Default build with the GIL: loop {ft.builds.gil.timings.loop.median_ms|ms}, {ft.summary.best_threads_ft|int} threads {ft.builds.gil.timings.threads_8.median_ms|ms}."
-    alt: "Column chart on a logarithmic time axis, on the free-threaded build: the loop on one thread takes {ft.builds.free_threaded.timings.loop.median_ms|ms}; the same loop split over {ft.summary.best_threads_ft|int} threads takes {ft.builds.free_threaded.timings.threads_8.median_ms|ms}; one NumPy expression on one thread takes {ft.builds.free_threaded.timings.vectorised.median_ms|ms}. With the GIL, the {ft.summary.best_threads_ft|int} threads take {ft.builds.gil.timings.threads_8.median_ms|ms}."
-    seconds: 50
-
-  - n: 26
-    build: bar_gb
-    section: RAM
-    layout: 8
-    transition: fade
-    title: "Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GB"   # every loaded state on the chart, not the LAS records alone
-    chart:
-      kind: bar_gb
-      bars:
-        # "\n": two-line category labels, so the plot gets more of the chart width (RAM bars on one line each)
-        - {label: "{memory.ram_reference_gb.1|int} GB RAM", value: "memory.ram_reference_gb.1", kind: reference}
-        - {label: "LAS records\n(computed)", value: "memory.big_file.computed_gb.las_records"}
-        - {label: "+ float64 xyz\n(computed)", value: "memory.big_file.computed_gb.plus_xyz"}
-        - {label: "Our pipeline\n(computed)", value: "memory.big_file.computed_gb.our_pipeline", highlight: true}
-        # my approach (appendix B2): measured on the 1 km file, so a different file from the bars above; MiB × 1/1024 = GiB
-        - {label: "Chunked, 1 km file\n(measured)", value: "memory.tile_1km.chunked_peak_mb", scale: 0.0009765625, highlight: true}
-      threshold: "memory.ram_reference_gb.1"   # dashed line at the 32 GB RAM bar's end, across the bars below it
-    hero: {value: "{memory.tile_1km.bytes_per_point.pipeline_retained|int} B", label: "per point in our pipeline"}
-    support: "{memory.big_file.points|int} points × {memory.tile_1km.bytes_per_point.pipeline_retained|int} B each."
-    # note box under the support line: why 86 B and not the 24 B of one xyz array (bytes_per_point, 1 km file)
-    note: "Why not 24 B? Each point is held several times: LAS record {memory.tile_1km.bytes_per_point.laspy_read_retained|int} B + float64 xyz {memory.tile_1km.bytes_per_point.xyz_float64|int} B + Open3D copy {memory.tile_1km.bytes_per_point.open3d_points|int} B + the downsampled cloud and the rest."
-    # joke line (notes slide 26), 20 pt slate under the small print: the RAM of the machine everything ran on
-    machine_line: "It works on my machine ({memory.conditions.ram_gib|f1} GiB RAM): I stream the file in chunks and keep one point per voxel."
-    conditions: memory
-    conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
-    alt: "Horizontal bar chart in gigabytes for one {research.ahn5_c_31hz2.width_km|f2t} by {research.ahn5_c_31hz2.height_km|f2t} km AHN5 file with {memory.big_file.points|int} points: a reference bar for {memory.ram_reference_gb.1|int} GB of RAM, then LAS records at {memory.big_file.computed_gb.las_records|gb}, plus a float64 copy of the coordinates at {memory.big_file.computed_gb.plus_xyz|gb}, and our load and voxel downsampling steps (slides 12 and 13), all arrays kept, at {memory.big_file.computed_gb.our_pipeline|gb}; a dashed line continues the end of the {memory.ram_reference_gb.1|int} GB bar down across the data bars; the three data bars are computed, not run; a last, short bar shows the peak of the chunked approach, {memory.tile_1km.chunked_peak_mb|gb1}, measured on the 1 km file."
-    seconds: 55
-
-  - n: 27
+  - n: 31
     build: rules
-    section: Close
+    section: Rules
     layout: 4
+    click: true      # one rule tile per click (2026-10-13 restructure)
     transition: fade
-    title: "Take the four rules home"
-    # the four rules of slide 8 again, each with the evidence the talk measured for it (tokens from results/*.json)
+    title: "Four rules, each backed by this talk's numbers"
+    # the four rules of slide 12 again, each with the evidence the talk measured for it (tokens from results/*.json)
     # and the slides it comes from; replaces the old "Three habits" tiles and the "Loop over tiles" statement slide
     rules:
-      - {head: "Think in arrays, not points", evidence: "{pipeline.crop.points|int} × 3, as views", ref: "slides 6, 11"}
-      - {head: "Look before you compute", evidence: "{bgt.collections.paal.n|int} poles on the map, {pipeline.n_objects.street_furniture|int} found", ref: "slides 19, 26"}
-      - {head: "Make it small first", evidence: "{memory.tile_1km.naive_peak_mb|gb1} → {memory.tile_1km.chunked_peak_mb|gb1} peak", ref: "slides 13, 26"}
-      - {head: "Let compiled code loop", evidence: "{bench.plane.factor.median|x} faster than a loop", ref: "slides 21 to 25"}
-    alt: "The four rules of thumb again, each with its evidence from the talk. Think in arrays, not points: {pipeline.crop.points|int} by 3, passed on as views. Look before you compute: {bgt.collections.paal.n|int} poles on the map, {pipeline.n_objects.street_furniture|int} found. Make it small first: {memory.tile_1km.naive_peak_mb|gb1} to {memory.tile_1km.chunked_peak_mb|gb1} peak memory. Let compiled code loop: {bench.plane.factor.median|x} faster than a loop over rows."
-    seconds: 60
+      - {head: "Think in arrays, not points", evidence: "{memory.tile_1km.bytes_per_point.xyz_float64|int} B per point per xyz copy", ref: "slides 14, 15"}
+      - {head: "Make it small first", evidence: "{memory.tile_1km.naive_peak_mb|gb1} → {memory.tile_1km.chunked_peak_mb|gb1} peak", ref: "slides 16, 17, 19, 22, 23"}
+      - {head: "Let compiled code loop", evidence: "{bench.plane.factor.median|x} faster than a loop", ref: "slides 24 to 28"}
+      - {head: "Look before you compute", evidence: "{bgt.collections.paal.n|int} poles on the register, {pipeline.n_objects.street_furniture|int} found", ref: "slides 29, 30"}
+    alt: "The four rules of thumb again, each with its evidence from the talk. Think in arrays, not points: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} bytes per point. Make it small first: {memory.tile_1km.naive_peak_mb|gb1} to {memory.tile_1km.chunked_peak_mb|gb1} peak memory. Let compiled code loop: {bench.plane.factor.median|x} faster than a loop over rows. Look before you compute: {bgt.collections.paal.n|int} poles on the register, {pipeline.n_objects.street_furniture|int} found."
+    seconds: 75
 
-  - n: 28
+  - n: 32
+    build: columns
+    section: Rules
+    layout: 4
+    transition: fade
+    title: "What this doesn't do yet, and what's next"
+    # 2026-10-14 (Phase 3): limits from results/pipeline.json (ground and buildings scored against AHN classes 2 and 6;
+    # buildings precision a lower bound, facades), slide 27 (poles) and the notes of slides 3 and 17; next steps are
+    # backup slides B2 (tiles with overlap), B5 (classifier) and B6 (open data). No new numbers.
+    takeaway: "A baseline in plain Python, not production accuracy."
+    columns:
+      - head: "Limits"
+        items: ["{pipeline.n_objects.street_furniture|int} of {bgt.collections.paal.n|int} poles found", "Vegetation: not scored", "Buildings: {pipeline.buildings.precision|pct} precision, a lower bound", "One 200 m crop, one timed run"]
+      - head: "Next"
+        items: ["Ground and clusters on tiles with overlap (B2)", "A classifier for the labels (B5)", "Your own point cloud (B6)"]
+    alt: "Takeaway: a baseline in plain Python, not production accuracy. Two columns. Limits: {pipeline.n_objects.street_furniture|int} of {bgt.collections.paal.n|int} poles found; vegetation is not scored, as nothing labels it; buildings reach {pipeline.buildings.precision|pct} precision, a lower bound; one 200 m crop and one timed run. Next: ground removal and clustering on tiles with overlap; a classifier for the labels; your own point cloud. Each next step has a backup slide."
+    seconds: 45
+
+  - n: 33
     build: closing
     section: Close
     layout: 11           # Closing (navy)
     transition: fade
     title: "Thank you"
+    support: "Try it on your own AHN tile."
     contact: ["Sergio Peral", "sergioperalgarijo99@gmail.com", "github.com/Sloppy1999"]
     qr: {url: "https://github.com/Sloppy1999/pycon-nl-2026-3d-data-science", placeholder: "QR: repo URL"}
     logo: {file: assets/pycon_nl_2026_logo.png, alt: "PyCon NL 2026 logo: the Python snakes filled with a Dutch canal house, tulips and a windmill"}   # supplied by the speaker, 2026-10-04
     small_print:
       - ahn_licence        # the AHN source line plus meta.licence_line (readable licence URI)
-      - "[Optional: Title shared with F. Poux, 3D Data Science with Python, O'Reilly 2025; this talk is independent.]"
-    # callback to the coffee of the abstract and slide 1 (joke, notes slide 28), small sage type under the title
-    callback: "To the Python community and to everyone here today."
-    alt: "Closing slide: Thank you to the Python community and all attendees. QR code to the repository, contact details."
-    seconds: 50
+      - "Title shared with F. Poux, 3D Data Science with Python, O'Reilly 2025; this talk is independent."
+    # callback to the coffee of the abstract and slide 1 (joke, notes slide 32), small sage type under the title
+    callback: "Write the plan in Python; let compiled code loop."   # 2026-10-14 (Phase 3): the one closing line; the thanks are spoken
+    alt: "Closing slide: Thank you, and the closing line: write the plan in Python; let compiled code loop. QR code to the repository, contact details."
+    seconds: 45
 
 appendix:
   - n: B1
@@ -688,8 +816,37 @@ appendix:
     layout: 4
     title: "Which libraries have stopped moving?"
     kind: dense
+  - n: B8
+    # 2026-10-14 restructure: was main slide 8; hidden backup (a second six-part flow next to slide 11)
+    build: workflow
+    layout: 4
+    transition: fade
+    title: "Where today's pipeline sits in a 3D project"
+    # 2026-10-13, speaker: replaces the trade-offs slide with the typical workflow of a 3D data scientist, simplified from
+    # the six-stage view of the book "3D Data Science with Python" (Figure 1-12): preparation = pre-processing and
+    # registration; exploration = modelling, semantics, structure; analysis = measurements, optimisation, monitoring.
+    # Later the same day the chain slide (laspy, NumPy, Open3D, PyVista with an image each) was merged in: the tools sit
+    # under their stage, three of the pipeline's renders beside them (the slide's 80 s moved here; talk total unchanged).
+    # Ring, clockwise; disc colour = phase: navy gets the data, blue understands it, sage delivers it. The pipeline
+    # covers stages 1 to 5 in miniature: laspy loads (1), Open3D voxels and ground (2) and clusters (3), NumPy and SciPy
+    # label and measure (3, 4), PyVista draws (5). NumPy holds the array between every step (said in the notes).
+    stages:
+      - {head: "Acquisition", text: "Scan the scene", tools: "laspy", tone: navy,
+         image: {file: closeup.png, alt: "Close-up render of the crop: single points as laspy reads them."}}
+      - {head: "Preparation", text: "Clean and register", tools: "NumPy, Open3D", tone: navy}
+      - {head: "Exploration", text: "Model and label", tools: "Open3D, SciPy", tone: blue,
+         image: {file: f4_clusters.png, alt: "The clusters render: ground grey, each cluster in one of four colours."}}
+      - {head: "Analysis", text: "Measure, monitor", tools: "NumPy, SciPy", tone: blue}
+      - {head: "Visualisation", text: "See it, trust it", tools: "PyVista", tone: sage,
+         image: {file: f6_final.png, alt: "The final render: ground, buildings, vegetation and street furniture."}}
+      - {head: "Application", text: "Ship it", tone: sage}
+    loops: [[4, 2], [5, 1]]      # analysis back to preparation, visualisation back to acquisition (dashed, through the middle)
+    centre: "Loop back when the data surprises"
+    source: ahn
+    alt: "A ring of six numbered stages, clockwise, with the Python libraries under each. 1 Acquisition, scan the scene, laspy, with a close-up of single points as laspy reads them; 2 Preparation, clean and register, NumPy and Open3D; 3 Exploration, model and label, Open3D and SciPy, with the clustered point cloud; 4 Analysis, measure, monitor, NumPy and SciPy; 5 Visualisation, see it, trust it, PyVista, with the final labelled render; 6 Application, ship it. Stages 1 and 2 are coloured as data, 3 and 4 as understanding, 5 and 6 as delivery. Dashed arrows through the middle lead from analysis back to preparation and from visualisation back to acquisition: loop back when the data surprises you."
+
   # C2 to C4 and C6 to C9: mental models of 3D data (hidden, section "Mental models", 2026-10-12; C1 and C5 now
-  # play as main slides 6 and 20, their content stays in appendix.yaml). Content, notes and citations in
+  # play as main slides 10 and 24, their content stays in appendix.yaml). Content, notes and citations in
   # appendix.yaml; figures from deck/concepts/make_figures.py (deck/assets/concepts/, numbers in results/concepts.json);
   # research: docs/research/reports/mental_models.md. C8 says which to show and where they fit the main deck.
   - n: C2

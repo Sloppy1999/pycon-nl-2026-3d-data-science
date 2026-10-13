@@ -1,5 +1,49 @@
 # Storyboard: "3D Data Science with Python", PyCon NL 2026 (for approval)
 
+> **2026-10-14 (Phase 3 restructure, approved by the speaker): 31 main slides, 25:45, three acts.** Thesis: in Python
+> you write the plan and compiled code does the work, so four rules take a city scan from LAZ to a label per point,
+> fast, within memory and honestly. Act 1, Why: Intro (1 title, 2 C++ vs Python, 3 goal, 4 the four rules, 5 roadmap:
+> one city block, six steps, three questions) · Data (6 case, 7 plane, 8 representations) · Toolbox (9 wall, 10 meme).
+> Act 2, Build: Pipeline (11 overview, 12 to 18 the six steps, 19 summary) · Speed, "is it fast?" (20 to 24) · Memory,
+> "does it fit?" (25, 26). Act 3: Reality, "is it right?" (27 poles, the twist; 28 density) · Wrap-up (29 rules, 30
+> limits and next steps, 31 thank you with one closing line).
+>
+> Rules renumbered in the order the talk first proves them, same order on slide 4, every badge and slide 29:
+> 1 Think in arrays, not points (8, 12, 13) · 2 Make it small first (14, 15, 17, 25, 26) · 3 Let compiled code loop
+> (16, 18, 19, 20 to 24) · 4 Look before you compute (27, 28). Each chapter's last slide says its rule ("Rule k: …").
+> The footer breadcrumb is Intro · Data · Toolbox · Pipeline · Speed · Memory · Reality · Wrap-up, highlighted on every
+> footer slide. Footnotes (approved): 2 why the PCL and Open3D counts differ; 25 and 26 the 1 km tile against the
+> full AHN5 sheet 2023_C_31HZ2 (computed, not run); 23 and 24 the different setup from the slide 21 baseline.
+> Evaluation stated on 6: AHN for ground and buildings, BGT for poles; 30 says vegetation is not scored.
+>
+> Change log, old → new: 1 to 4 → 1 to 4 (2 and 4 retitled or reordered); new 5 (roadmap); 5, 6, 7 → 6, 7, 8 (6:
+> evaluation line); 8 (lifecycle ring) → hidden backup B8; 9 → 9; 10 → 10 ("Python plans; compiled code does the
+> work", callout rewritten); 11 → 11 ("Six steps: from LAZ file to labels", step 6 named Paint-back); 12, 13 → 12, 13
+> (13: "pass views, not copies", the float32 factor moved to the notes); 14 to 19 → 14 to 19 (16, 17, 18 retitled and
+> badged; 17's takeaway: 1 024 clusters, not 232 180 points); 22 to 26 → 20 to 24; 27, 28 → 25, 26 (25: "A full AHN
+> sheet would need 74.2 GB", the "Why not 24 B?" box moved to the notes); 20, 21 → 27, 28 (28: "From the air, the city
+> is sampled unevenly"); 29 → 29 (new order); new 30 (limits and next steps); 30 → 31 (closing line "Write the plan in
+> Python; let compiled code loop."). Timing table: docs/TIMING.md.
+
+> **2026-10-13 (restructure review): same 30 slides, same order, 25:45; the four rules made visible.** The rule chip is
+> now the badge of slides 4 and 29 in small (blue number disc + the rule), on every evidence slide, now also 7 and 12
+> (Rule 1). Slides 12 to 18 carry a six-step tracker top right (Load · Voxels · Ground · Clusters · Labels · Paint).
+> Each chapter's last slide states its rule as a verdict line: 19 and 26 "Rule 4: …", 21 "Rule 2: …", 28 "Rule 3: …".
+> Slide 3 has three columns ("Not today" is in the notes only). Slide 12 is titled "1 Load: subtract a local origin
+> first", slide 13 "1 Load: use views, not copies". The side notes of 17 and 18 give the result ("Height, footprint and
+> echoes decide the class"; "Each point takes its nearest voxel point's label"); leaf-off and the fixed camera are in
+> the notes. Slide 29 shows one rule per click, and Rule 1's evidence is the cost of a copy (24 B per point per xyz
+> copy, slides 7, 12, 13), no longer "722 961 × 3, as views". No new numbers.
+
+> **2026-10-13 (restructure): 30 main slides, 25:45, the four rules as the spine.** Arc: Hook (1 to 4: C++ vs Python,
+> the goal, the rules as the promise) · Data (5 case, 6 plane, 7 representations, 8 where the pipeline
+> sits) · Toolbox (9 wall, 10 Python is the interface) · Pipeline (11 overview, 12 Load, 13 views not copies, 14 to 18
+> steps 2 to 6, 19 summary) · Reality (20 poles, 21 density) · Speed (22 to 26) · Memory (27 the 86 B problem, 28 stream
+> chunks, restored) · Rules (29) · Close (30). Removed: Agenda, Scope, "No single library does the whole job". Every
+> evidence slide carries a rule badge; the footer breadcrumb lists the chapters. Old-to-new: 1, 2 same; 7 to 3; 12 to
+> 4; 9 to 5; 8 to 6; 10 to 7; 11 to 8; 4 to 9; 3 to 10; 15, 16 to 11, 12; 14 to 13; 17 to 30 to 14 to 27; 31, 32 to
+> 29, 30. Timing table: docs/TIMING.md.
+
 > **2026-10-12: revised to 29 main slides (speaker's review).** New: 6 "Four rules of thumb for 3D data" and 28 "Take
 > the four rules home" (the same rules with the talk's evidence), 26 "Why it works: memory over time" (Scalene memory timeline,
 > bench/bench_memory_scalene.py; slides 24 and 25 keep the RSS peaks of bench_memory.py, notes 26 explain why the two differ). Removed: old 18 (plane render), old 24 (statement), old 28 (three habits). Changed: 2 (PCL
@@ -24,7 +68,8 @@
 > 12 (`>>> import this` callout), 19 (Drake format redrawn, replaces the captions), 24
 > (second line "np.vectorize is a for loop in disguise"), 25 ("It works on my machine" line), 29 (coffee callback).
 > Old slides 3 to 24 are now 4 to 7, 9 to 16, 18 to 21 and 24 to 29; the table below keeps the OLD numbers. Timing,
-> skip-first list and checkpoints: docs/TIMING.md; Morph chain is now 10 to 16.
+> skip-first list and checkpoints: docs/TIMING.md. Since 2026-10-13 the deck has 28 main slides, all fades (no
+> Morph); docs/TIMING.md has the current list, the tables here are history.
 >
 > **2026-10-03: re-themed to the PyCon NL 2026 palette; layout numbers refer to
 > deck/template/pycon_nl_2026_master.pptx** (personal talk: Fira Sans and Fira Mono, docs/DESIGN.md). The storyboard

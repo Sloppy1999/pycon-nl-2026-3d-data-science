@@ -173,7 +173,7 @@ def add_code(slide, sn: Snippet, x: float, y: float, w: float, h: float, *, name
     same advance width, so the width budget holds). Returns (code_box, hl_group|None)."""
     hl = None
     keys = sn.keys if highlight else []
-    keys = keys[:1] if hl_name else keys          # Morph slides: one key line, named hl_name
+    keys = keys[:1] if hl_name else keys          # step slides: one key line, named hl_name
     for n, k in enumerate(keys):
         top = y + INSET_T + k * line_pt / 72
         grp = slide.shapes.add_group_shape()

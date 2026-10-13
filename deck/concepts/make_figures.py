@@ -32,6 +32,7 @@ META = yaml.safe_load((TALK / "deck" / "content.yaml").read_text(encoding="utf-8
 C = META["palette"]
 SIZE = (7.2, 4.5)          # inches, drawn 1:1 on the slide (deck/build_deck.py slide_concept), so pt sizes are real
 FS = 14                    # smallest text in a figure (appendix minimum: 14 pt)
+FS_MAIN = 16               # figures on main slides (C1, C5, slide 8): chart-label size from the back of the room
 FACTS: dict = {}
 
 
@@ -79,9 +80,9 @@ def c1():
     pitch = 0.5
     ijk = np.unique(np.floor(pts / pitch).astype(int), axis=0)
     fig = plt.figure(figsize=SIZE)
-    heads = [("Point cloud", f"{len(pts)} × 3 floats\nno connectivity"),
-             ("Mesh", f"{len(v)} vertices, {len(f)} triangles\na surface with neighbours"),
-             ("Voxel grid", f"{len(ijk)} occupied {pitch} m cells\nvolume at one resolution")]
+    heads = [("Point cloud", f"{len(pts)} × 3 floats,\nno connectivity"),
+             ("Mesh", f"{len(v)} vertices,\n{len(f)} triangles"),
+             ("Voxel grid", f"{len(ijk)} cells of\n{pitch} m")]
     for i, (head, sub) in enumerate(heads):
         ax = fig.add_axes([i / 3 - 0.02, 0.18, 1 / 3 + 0.04, 0.86], projection="3d")
         if i == 0:
@@ -98,7 +99,7 @@ def c1():
         ax.view_init(elev=22, azim=-58)
         ax.set_axis_off()
         fig.text((i + 0.5) / 3, 0.17, head, ha="center", fontsize=18, weight="semibold", color=C["navy"])
-        fig.text((i + 0.5) / 3, 0.02, sub, ha="center", fontsize=FS, color=C["slate"], linespacing=1.15)
+        fig.text((i + 0.5) / 3, 0.02, sub, ha="center", fontsize=FS_MAIN, color=C["slate"], linespacing=1.15)
     save(fig, "c1_representations.png")
     FACTS["c1"] = {"points": len(pts), "vertices": len(v), "triangles": len(f), "voxels": int(len(ijk)),
                    "pitch_m": pitch, "note": "synthetic house, 4 x 3 x 2 m box with a gable roof to 3 m"}
@@ -256,18 +257,20 @@ def c5():
     im = ax.imshow(dens, origin="lower", extent=[0, 200, 0, 200], cmap=cmap, vmin=0, vmax=vmax)
     ax.set_xticks([]), ax.set_yticks([])
     cb = fig.colorbar(im, ax=ax, fraction=0.05, pad=0.02)
-    cb.set_label("points per m², 2 m cells", fontsize=FS)
-    cb.ax.tick_params(labelsize=FS - 2)
+    cb.set_label("points per m², 2 m cells", fontsize=FS_MAIN)
+    cb.ax.tick_params(labelsize=FS_MAIN)
     ax2 = fig.add_axes([0.70, 0.17, 0.28, 0.60])
-    ax2.hist(dens.ravel(), bins=40, range=(0, vmax), color=C["blue"])
     med = float(np.median(dens))
     p10, p90 = (float(np.percentile(dens, q)) for q in (10, 90))
+    ax2.axvspan(p10, p90, color=C["blue_tint"], lw=0, zorder=0)   # the band the title names
+    ax2.hist(dens.ravel(), bins=40, range=(0, vmax), color=C["blue"])
     ax2.axvline(med, color=C["ink"], lw=2, ls="--")
-    ax2.text(med, ax2.get_ylim()[1] * 0.97, f" median {med:.0f}", fontsize=FS, va="top", color=C["ink"])
-    ax2.set_xlabel("points per m²", fontsize=FS)
+    ax2.text(med, ax2.get_ylim()[1] * 0.97, f" median {med:.0f}", fontsize=FS_MAIN, va="top", color=C["ink"])
+    ax2.set_xlabel("points per m²", fontsize=FS_MAIN)
+    ax2.tick_params(labelsize=FS_MAIN)
     ax2.set_yticks([])
     ax2.spines[["top", "right", "left"]].set_visible(False)
-    ax2.set_title(f"middle 80 % of cells:\n{p10:.0f} to {p90:.0f} per m²", fontsize=FS, color=C["slate"], loc="left")
+    ax2.set_title(f"middle 80 % of cells:\n{p10:.0f} to {p90:.0f} per m²", fontsize=FS_MAIN, color=C["slate"], loc="left")
     save(fig, "c5_density.png")
     FACTS["c5"] = {"cell_m": cell, "median_per_m2": med, "p10_per_m2": p10, "p90_per_m2": p90,
                    "empty_cells_share": float((dens == 0).mean()), "source": str(CROP.relative_to(TALK))}
@@ -340,9 +343,68 @@ def load_origin():
                             "float32_step_rd_cm": round(step_rd * 100, 1), "float32_step_local_um": round(step_loc * 1e6)}
 
 
+# ------------------------------------------------------------------ A1: how a plane captures the points (main slide 8)
+def acquisition():
+    """Side view, schematic and not to scale: a plane, its laser rays and the echoes they leave on the ground, a
+    leaf-off tree, a pole and a building. The numbers in the bullets come from the crop (FACTS["acq"])."""
+    las = laspy.read(CROP)
+    t = np.asarray(las.gps_time)
+    nr = np.asarray(las.number_of_returns)
+    ang = np.abs(np.asarray(las.scan_angle)) * 0.006          # LAS 1.4: scan angle in 0.006 degree steps
+    FACTS["acq"] = {"points": int(len(t)), "pulses": int(np.unique(t).size), "seconds": float(t.max() - t.min()),
+                    "max_returns": int(nr.max()), "multi_share": float((nr > 1).mean()),
+                    "angle_min_deg": float(ang.min()), "angle_max_deg": float(ang.max()),
+                    "strips": int(np.unique(np.asarray(las.point_source_id)).size),
+                    "source": str(CROP.relative_to(TALK))}
+
+    fig = plt.figure(figsize=SIZE)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 144), ax.set_ylim(-8, 82), ax.axis("off")
+    ink, blue, sage, navy, grey, slate = C["ink"], C["blue"], C["sage"], C["navy"], C["grey"], C["slate"]
+    ax.plot([2, 142], [0, 0], color=slate, lw=2.5)                                  # ground
+    ax.add_patch(plt.Rectangle((98, 0), 34, 24, fc=C["light"], ec=slate, lw=1.5))   # building, flat roof
+    ax.plot([80, 80], [0, 11], color=slate, lw=2.5)                                 # pole
+    ax.plot([78, 82], [11, 11], color=slate, lw=2.5)
+    px, py = 64, 66                                                                  # the plane, seen from behind
+    ax.add_patch(plt.Polygon([(px - 18, py), (px + 18, py), (px + 3, py + 2.5), (px - 3, py + 2.5)], fc=navy))
+    ax.add_patch(plt.Circle((px, py + 0.5), 3.2, fc=navy))
+    ax.add_patch(plt.Polygon([(px - 1, py + 2), (px + 1, py + 2), (px, py + 8)], fc=navy))
+    ax.text(px + 21, py + 1, "GNSS: where the plane is\nIMU: how it is tilted", fontsize=FS_MAIN, color=ink, va="center")
+    sy = py - 3                                                                      # the scanner, under the plane
+
+    def on_ray(x_end, y):                                                            # x on the ray to (x_end, 0) at height y
+        return x_end + (px - x_end) * y / sy
+
+    tx = 50                                                                          # leaf-off tree: echoes on its branches
+    tree = [(on_ray(tx, 22), 22), (on_ray(tx, 14), 14), (tx, 0)]
+    ax.plot([tx, tx], [0, 7], color=slate, lw=3)
+    for bx, by in tree[:2] + [(tx - 9, 15), (tx - 5, 20), (tx + 9, 13)]:
+        ax.plot([tx, bx], [7, by], color=sage, lw=2.5)
+    rays = [((8, 0), [(8, 0)]), ((tx, 0), tree), ((80, 11), [(80, 11)]), ((99, 24), [(99, 24)]),
+            ((115, 24), [(115, 24)])]
+    for end, pts in rays:
+        ax.plot([px, end[0]], [sy, end[1]], color=blue, lw=1.2, alpha=0.55)
+        ax.scatter(*zip(*pts), s=70, color=blue, zorder=3, edgecolor="white", linewidth=1)
+    ax.annotate("one pulse,\nthree echoes", tree[0], (14, 38), fontsize=FS_MAIN, color=ink,
+                arrowprops={"arrowstyle": "-", "color": grey, "lw": 1.2})
+    ax.annotate("walls:\nhardly hit", (98, 9), (115, 12), fontsize=FS_MAIN, color=ink, ha="center", va="center",
+                arrowprops={"arrowstyle": "-", "color": grey, "lw": 1.2})
+    ax.text(72, -6, "each dot is one point: x, y, z from range and position", fontsize=FS_MAIN, color=slate, ha="center")
+    # inset top left, seen from above: the flight line, the strip the scanner sweeps and the zigzag of its pulses
+    top = fig.add_axes([0.01, 0.64, 0.24, 0.35])
+    top.set_xlim(0, 10), top.set_ylim(0, 12.6), top.axis("off")
+    top.add_patch(plt.Rectangle((1.5, 0.3), 7, 9.2, fc=sage, ec="none", alpha=0.45))         # the strip (swath)
+    ys = np.linspace(0.5, 9.2, 15)
+    top.plot(np.where(np.arange(ys.size) % 2, 8.2, 1.8), ys, color=blue, lw=1.0, alpha=0.8)     # scan zigzag
+    top.plot([5, 5], [0.3, 9.4], color=navy, lw=1.2, ls=(0, (3, 2)))                         # flight line
+    top.add_patch(plt.Polygon([(5, 10.6), (4.2, 9.4), (5.8, 9.4)], fc=navy))                  # the plane, heading up
+    top.text(1.5, 11.0, "from above: one strip", fontsize=FS_MAIN - 2, color=ink, ha="left", va="bottom")
+    save(fig, "a1_acquisition.png")
+
+
 def main():
     setup()
-    for fn in (c1, c2, c3, c4, c5, c6, load_origin):
+    for fn in (c1, c2, c3, c4, c5, c6, load_origin, acquisition):
         fn()
     (TALK / "results" / "concepts.json").write_text(json.dumps(FACTS, indent=2) + "\n", encoding="utf-8")
     print("wrote", ", ".join(sorted(p.name for p in OUT.glob("*.png"))))

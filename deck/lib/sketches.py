@@ -1,5 +1,5 @@
-"""Small explanatory drawings for the deck (added 2026-10-12): the step sketches on the Morph slides (11 to 16), the
-copy-or-view legend (9), the rule-of-thumb tiles (6 and 27), the line profile (22) and the data set table (4).
+"""Small explanatory drawings for the deck (added 2026-10-12): the step sketches (slides 12 to 17), the
+copy-or-view legend (10), the rule-of-thumb tiles (8 and 27), the line profile (24) and the data set table (5).
 
 Same shape and rules as lib/diagrams.py: ``f(slide, box, spec, style)``, ``box`` in EMU, every visible word from
 ``spec`` (content.yaml), native editable shapes only, colours from the palette roles in lib.style (the class colours
@@ -21,7 +21,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Pt
 
 from .charts import Style, emu_box, inch
-from .diagrams import _box, _connector, _finish_group, _frame, _group, _paras, _textbox, _width
+from .diagrams import _box, _connector, _finish_group, _frame, _group, _paras, _textbox, _width, set_alt
 from .style import RENDER
 
 CAPTION_PT = 18
@@ -70,7 +70,7 @@ def _caption(S, st, x, y, w, text, name):
 
 
 # ------------------------------------------------------------------------------------------
-# step sketches (Morph slides): one function per `kind`
+# step sketches (slides 12 to 17): one function per `kind`
 # ------------------------------------------------------------------------------------------
 
 def add_step_sketch(slide, box, spec, style=None):
@@ -323,19 +323,25 @@ def add_rule_tiles(slide, box, spec, style=None):
     one-line explanation (20 pt ink) or, for the closing slide, the evidence (24 pt SemiBold blue) and the slides
     it comes from (20 pt slate).
 
-    spec: ``rules`` [{head, text? | evidence?, ref?}], ``alt``?, ``name``?   Returns [group].
+    spec: ``rules`` [{head, text? | evidence?, ref?}], ``alt``?, ``name``?, ``per_tile``? (one group per tile, for
+    an on-click build of each)   Returns [group] or one group per tile.
     """
     st = Style(style)
     x0, y0, W, H = emu_box(box)
     rules = spec["rules"]
     name = spec.get("name", "rule_tiles")
     alt = spec.get("alt") or "; ".join(r["head"] for r in rules)
-    grp = _group(slide, name, alt)
-    S = grp.shapes
+    per_tile = spec.get("per_tile")
+    grp = None if per_tile else _group(slide, name, alt)
+    tiles = []
     gx, gy = 0.50, 0.30
     tw, th = (W - gx) / 2, (H - gy) / 2
     disc = 0.56
     for i, r in enumerate(rules):
+        if per_tile:
+            grp = _group(slide, f"{name} {i + 1}", r["head"])
+            tiles.append(grp)
+        S = grp.shapes
         x = x0 + (i % 2) * (tw + gx)
         y = y0 + (i // 2) * (th + gy)
         _box(S, x, y, tw, th, fill=st.light, name=f"rule tile {i + 1}")
@@ -361,7 +367,9 @@ def add_rule_tiles(slide, box, spec, style=None):
             paras.append({"text": r["ref"], "size": 20, "color": st.text_small, "space_before": 6})
         by = max(y + 0.25 + disc, hy + head_h) + 0.15
         _textbox(S, st, tx, by, txw, y + th - 0.20 - by, paras, name=f"rule text {i + 1}")
-    return _finish_group(grp, alt, name)
+        if per_tile:
+            set_alt(grp, f"Rule {i + 1}: " + "; ".join([r["head"]] + [p["text"] for p in paras]), f"{name} {i + 1}")
+    return tiles if per_tile else _finish_group(grp, alt, name)
 
 
 WF_DISC, WF_RX, WF_LABEL_W, WF_THUMB_W, WF_SHIFT = 0.95, 2.2, 2.3, 1.15, -0.5

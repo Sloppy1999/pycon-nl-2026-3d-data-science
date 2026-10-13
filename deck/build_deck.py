@@ -156,29 +156,22 @@ class Builder:
         self.report["helpers"]["sketches"] = "ok" if self.sketches else err
         self._chip_cache: dict = {}
         self._cover_cache: dict = {}
-        # Morph chain: chips on every Morph slide first try the chip rectangles of the last Morph
-        # slide with labels (f6_final), so they stay put from slide 13 to 15.
-        morph_labels = [sp.get("labels_from") for sp in self.content["slides"]
-                        if sp.get("transition") == "morph" and sp.get("labels_from")]
-        self.morph_chip_ref = morph_labels[-1] if morph_labels else None
-        # slides with `labels_only` (10, 11: the Ground chip alone) reuse the chip layout of the first Morph slide
-        # that draws every chip of that frame (12), computed against that slide's render, so the chips they
-        # share stay in the same rectangle through the whole Morph chain
+        # slides with `labels_only` (the Ground chip alone) reuse the chip layout of the first slide that draws
+        # every chip of that frame, computed against that slide's render, so shared chips stay in one rectangle
         self.chip_layout_file = {}
         for sp in self.content["slides"]:
             fk = sp.get("labels_from")
             if fk and not sp.get("labels_only") and fk not in self.chip_layout_file and sp.get("visual", {}).get("file"):
                 self.chip_layout_file[fk] = sp["visual"]["file"]
-        self.morph = self._morph_stack()
+        self.summary_boxes = self._summary_stack()
 
-    def _morph_stack(self) -> dict:
-        """Fixed boxes of the L7 text column on the Morph slides (8 to 14), identical on every one of them, so Morph
-        only changes their content. Stacked from the content bottom (6.800 in): source line, small print, support
-        line, each as tall as the longest of its kind on the Morph slides (measured with Fira Sans); the code box
+    def _summary_stack(self) -> dict:
+        """Fixed boxes of the L7 text column on the summary slide. Stacked from the content bottom (6.800 in): source line, small print, support
+        line, each as tall as the longest of its kind on that slide (measured with Fira Sans); the code box
         takes the rest of the column from content_top(7, 2) down."""
         col = L7_TEXT
         w = col.w - 0.02                           # wrap safety: renderers break slightly earlier than the estimate
-        specs = [sp for sp in self.content["slides"] if sp.get("transition") == "morph"]
+        specs = [sp for sp in self.content["slides"] if sp.get("build") == "summary"]
 
         def max_lines(key, size):
             n = 0
@@ -288,7 +281,7 @@ class Builder:
     def set_title(self, slide, n, text, layout, *, name=None):
         """Title text only: no typeface, size or colour on the runs, so they inherit the master's title style
         (Fira Sans SemiBold; 32 pt navy, or the dark layouts' size in white). Line breaks: a "\n" in content.yaml,
-        or, on L7 (the Morph chain and slide 18), after the colon of a "N Step: claim" title, so every Morph title
+        or, on L7, after the colon of a "N Step: claim" title, so every step title
         has the same two-line shape as the master's example; on L6/L8 after the separator when both halves fit on
         one line but the whole does not."""
         ph = title_placeholder(slide) or placeholder(slide, 0)
@@ -599,6 +592,10 @@ class Builder:
         """Conditions small print, bottom-aligned at `bottom`, height from its wrapped lines (the box itself is
         SMALL_PAD taller and bottom-anchored). Returns the top y of the text (so callers can stack above it)."""
         text = self.conditions_text(kind, note=note, n=n, plane_threads=plane_threads, short=short)
+        # content.yaml `footnote` (2026-10-14): one line on what differs from the baseline, in front of the conditions
+        foot = next((sp.get("footnote") for sp in self.content["slides"] if str(sp["n"]) == str(n)), None)
+        if foot:
+            text = self.R(foot, n) + " " + text
         h = text_h(text, SMALL_PT, w - 0.02)
         self.small(s, n, text, (x, bottom - h, w, h), name="Conditions", bottom=True)
         self.report.setdefault("conditions_lines", {})[str(n)] = round(h / lines_h(1, SMALL_PT))
@@ -910,7 +907,7 @@ class Builder:
     def build_slide(self, slide, spec, n):
         layout = int(spec["layout"])
         # content.yaml `build` names the method (slide_<build>), so slides can be inserted and renumbered freely
-        if str(n)[0] in "BC" and spec.get("build") != "concept":
+        if str(n)[0] in "BC" and spec.get("build") in (None, "dense"):   # B8 keeps its own build (workflow)
             fn = self.slide_dense
         else:
             fn = getattr(self, f"slide_{spec.get('build')}", None) or self.slide_generic
@@ -1066,6 +1063,20 @@ class Builder:
     # handoffs -- takeaway band, copy/view panels, rows "code | copy/view | consequence" (L4), conditions at the bottom
     TAKEAWAY_PT = 24
 
+    def _takeaway_band(self, s, tk, top):
+        """The one sentence to remember, as a blue band right under the title (2026-10-13): the slide's loudest text.
+        Returns the y under the band."""
+        th = text_h(tk, self.TAKEAWAY_PT, FULL_W - 0.60, font="title") + 0.20
+        band = rect(s, X0, top, FULL_W, th, fill="highlight", rounded=True, name="Takeaway")
+        tf = band.text_frame
+        set_body_pr(tf, wrap=True, anchor="ctr", autofit="none", insets=(0.30, 0.0, 0.30, 0.0))
+        p = tf.paragraphs[0]
+        para_format(p, align="center")
+        add_run(p, tk, font="title", size=self.TAKEAWAY_PT, colour="white")
+        end_para_size(p, self.TAKEAWAY_PT)
+        set_alt(band, tk)
+        return top + th + 0.25
+
     def slide_handoffs(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1080,18 +1091,7 @@ class Builder:
         sub = self.helper_spec(spec, n, None)
         rows_bottom = cond_y - 0.25
         if spec.get("takeaway"):
-            # the one sentence to remember, as a blue band right under the title (2026-10-13): the slide's loudest text
-            tk = self.R(spec["takeaway"], n)
-            th = text_h(tk, self.TAKEAWAY_PT, FULL_W - 0.60, font="title") + 0.20
-            band = rect(s, X0, top, FULL_W, th, fill="highlight", rounded=True, name="Takeaway")
-            tf = band.text_frame
-            set_body_pr(tf, wrap=True, anchor="ctr", autofit="none", insets=(0.30, 0.0, 0.30, 0.0))
-            p = tf.paragraphs[0]
-            para_format(p, align="center")
-            add_run(p, tk, font="title", size=self.TAKEAWAY_PT, colour="white")
-            end_para_size(p, self.TAKEAWAY_PT)
-            set_alt(band, tk)
-            top += th + 0.25
+            top = self._takeaway_band(s, self.R(spec["takeaway"], n), top)
         rows_top = top
         if spec.get("legend"):
             # problem (copy) left, solution (view) right, drawn above the rows (2026-10-12, panels 2026-10-13)
@@ -1119,7 +1119,7 @@ class Builder:
             ny = 0.95
             box = rect(s, nx, ny, nw, nh, fill="blue_tint", name="Note box")
             mark_decorative(box)
-            self.small(s, n, nt, (nx + 0.15, ny + 0.08, nw - 0.30, nh - 0.16), name="Note")
+            self.small(s, n, nt, (nx + 0.15, ny + 0.08, nw - 0.30, nh - 0.16), name="Small print note")
         need = k * float(spec.get("row_h_in", 0.62)) + (k - 1) * float(spec.get("row_gap_in", 0.30))
         if rows_bottom - rows_top < need:
             self.warn(n, f"hand-off rows need {need:.2f} in, get {rows_bottom - rows_top:.2f} in")
@@ -1325,7 +1325,7 @@ class Builder:
         self.report.setdefault("slide3_layout", {})["edge_arrow_tip_in"] = [round(ex, 3), round(ey, 3)]
         return grp
 
-    # render_column -- render and text column (L7: text left, render right, as on the Morph slides, so the title stays on the 0.600
+    # render_column -- render and text column (L7: text left, render right, as on the step slides, so the title stays on the 0.600
     # margin from slide 4 to 6; L8 mirrors it)
     def slide_render_column(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
@@ -1522,55 +1522,8 @@ class Builder:
                    bold=True, anchor="b", name="Takeaway")
         self.source(s, n, spec.get("source"), (X0, BOTTOM - src_h, FULL_W, src_h), name="Source")
 
-    # morph -- Morph chain (L7): identical names and boxes on every slide (self.morph)
-    def slide_morph(self, s, spec, n, L):
-        self.set_title(s, n, spec["title"], L, name="!!title")
-        drop_placeholder(s, 14)
-        vis = spec["visual"]
-        pic, info = self.place_render(s, n, vis["file"], MEDIA_R, name="!!render", alt=self.R(spec.get("alt"), n))
-        sn = self.snippet(n, spec["code"]["snippet"])
-        code = self.morph["code"]
-        self.code_or_pending(s, n, sn, *code, name="!!code", hl_name="!!hl",
-                             max_lines=int((code[3] - INSET_T - INSET_B) * 72 / LINE_PT + 1e-6))
-        if spec.get("takeaway"):
-            # the slide's one message, big: bold 30 pt navy, bottom-aligned where the support line sits, blue bar left
-            sx, sy, sw, sh = self.morph["support"]
-            th = lines_h(2, 30) + 0.1
-            rect(s, sx, sy + sh - th, 0.07, th, fill="blue", name="Takeaway bar")
-            text_block(s, sx + 0.2, sy + sh - th, sw - 0.2, th, self.R(spec["takeaway"], n), size=30, colour="navy",
-                       bold=True, anchor="b", name="!!support")
-        else:
-            self.support(s, n, spec.get("support"), self.morph["support"], name="!!support")
-        if spec.get("small_print"):
-            # same box and name on every Morph slide that has one (12 to 14), so it stays still
-            self.small(s, n, spec["small_print"], self.morph["small"], name="!!small")
-            sup = self.R(spec.get("support"), n) or ""
-            n_sup = len(wrap_lines(sup, SUPPORT_PT, L7_TEXT.w - 0.02, font="minor"))
-            sup_bottom = self.morph["support"][1] + lines_h(n_sup, SUPPORT_PT)
-            if self.morph["small"][1] - sup_bottom < 0.20:
-                self.warn(n, f"support line ends {sup_bottom:.2f} in, small print starts {self.morph['small'][1]:.2f} in")
-        self.source(s, n, spec.get("source"), self.morph["src"], name="!!src")
-        if spec.get("callout"):
-            self._callout(s, n, spec["callout"], MEDIA_R)
-        if spec.get("sketch"):
-            # what the step does, as a small schematic in the render's top-right corner (2026-10-12; lib/sketches.py).
-            # Named per kind, not "!!", so Morph fades one sketch into the next instead of morphing shapes.
-            sk = self.resolved_spec(spec["sketch"], n)
-            sk["name"] = f"Sketch {sk['kind']}"
-            rx, ry, rw, rh = self.SKETCH_RECT
-            if sk["kind"] in ("origin", "voxel"):   # the numbers are the proof on slide 12, the grid on 13: a larger panel
-                rx, rw, rh = rx - 0.9, rw + 0.9, rh + 0.3
-            self.call_helper(s, n, "sketches", "add_step_sketch", (rx, ry, rw, rh), sk,
-                             caption=f"SKETCH PENDING: {sk['kind']}", dark=True)
-        if spec.get("labels_from"):
-            px = tuple(info.get("px") or DEFAULT_PX)
-            self.label_chips(s, n, spec["labels_from"], MEDIA_R, px, vis["file"], reference_key=self.morph_chip_ref,
-                             only=spec.get("labels_only"), obstacles=self.chip_obstacles)
-
-
-    # the step sketch on the Morph slides: top-right corner of the render frame (the other corners hold the Zen
-    # callout, the street furniture and the ground chip); every chip on 11 to 17 keeps clear of it, so the chips
-    # stay in the same place through the Morph chain and on the summary slide
+    # the step sketch: top-right corner of the render frame (the other corners hold the street furniture and the
+    # ground chip); every chip keeps clear of it, so the chips sit in the same place on the step and summary slides
     SKETCH_W, SKETCH_H, SKETCH_M = 2.55, 1.70, 0.12
     SKETCH_RECT = (MEDIA_R[0] + MEDIA_R[2] - SKETCH_W - SKETCH_M, MEDIA_R[1] + SKETCH_M, SKETCH_W, SKETCH_H)
 
@@ -1786,7 +1739,9 @@ class Builder:
         # the hero, support line and small print); the chart ends above them
         cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, note=spec.get("conditions_note"),
                                        short=bool(spec.get("conditions_short"))) if spec.get("conditions") else BOTTOM
-        chart_box = (MEDIA_L[0], MEDIA_L[1], MEDIA_L[2], min(MEDIA_L[3], cond_y - 0.15 - MEDIA_L[1]))
+        thr_lbl = self.R(spec["chart"].get("threshold_label"), n)
+        lbl_h = lines_h(1, 20) + 0.10 if thr_lbl else 0.0      # room above the plot for the threshold label
+        chart_box = (MEDIA_L[0], MEDIA_L[1] + lbl_h, MEDIA_L[2], min(MEDIA_L[3], cond_y - 0.15 - MEDIA_L[1]) - lbl_h)
         thr_key = spec["chart"].get("threshold")
         if thr_key:
             ch["threshold_gb"] = self.res.number(thr_key, f"slide {n} chart threshold")
@@ -1824,6 +1779,10 @@ class Builder:
                 thr = line(s, lx, y1, lx, y2, colour="navy", width_pt=3, name=f"Threshold line {j}")
                 thr.line.dash_style = MSO_LINE_DASH_STYLE.DASH
                 mark_decorative(thr)
+            if thr_lbl:
+                # the limit is named on its line, not drawn as a bar of its own
+                text_block(s, lx - 1.5, py - lbl_h, 3.0, lines_h(1, 20), thr_lbl, size=20, colour="text",
+                           align="center", name="Threshold label")
         hero = spec.get("hero") or {}
         col = L8_TEXT
         hb, hh = self.hero(s, n, col.x, top, col.w, hero.get("value", ""), hero.get("label"), size=80)
@@ -1839,7 +1798,7 @@ class Builder:
             nh = text_h(nt, SMALL_PT, col.w - 0.34) + 0.16
             box = rect(s, col.x, y, col.w, nh, fill="blue_tint", name="Note box")
             mark_decorative(box)
-            self.small(s, n, nt, (col.x + 0.15, y + 0.08, col.w - 0.30, nh - 0.16), name="Note")
+            self.small(s, n, nt, (col.x + 0.15, y + 0.08, col.w - 0.30, nh - 0.16), name="Small print note")
             y += nh + 0.15
         if spec.get("small_print"):
             sp = self.R(spec["small_print"], n)
@@ -1990,6 +1949,53 @@ class Builder:
         elif sp is not None:
             drop_placeholder(s, 19)
 
+    # columns -- an optional takeaway band, then two to four light tiles side by side, each a heading (28 pt
+    # SemiBold navy) and bullets (24 pt); the tiles are as tall as the fullest column (L4, 2026-10-13: the goal slide and the scope slide); source line optional
+    def slide_columns(self, s, spec, n, L):
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        if spec.get("takeaway"):
+            top = self._takeaway_band(s, self.R(spec["takeaway"], n), top)
+        bottom = BOTTOM
+        if spec.get("source"):
+            src = self.source_text(spec["source"])
+            sh = text_h(src, SMALL_PT, FULL_W - 0.02)
+            self.source(s, n, spec["source"], (X0, BOTTOM - sh, FULL_W, sh))
+            bottom = BOTTOM - sh - 0.20
+        cols = spec["columns"]
+        gap, pt = 0.35, spec.get("pt", 24)
+        cw = (FULL_W - gap * (len(cols) - 1)) / len(cols)
+
+        def col_h(c):
+            items = [self.R(t_, n) for t_ in c["items"]]
+            return (0.22 + text_h(self.R(c["head"], n), 28, cw - 0.52, font="title") + 0.15
+                    + sum(text_h(t_, pt, cw - 0.77) for t_ in items) + self.DENSE_BULLET_GAP / 72 * len(items) + 0.30)
+        tile_h = min(bottom - top, max(col_h(c) for c in cols))
+        for i, c in enumerate(cols, 1):
+            x = X0 + (i - 1) * (cw + gap)
+            tile = rect(s, x, top, cw, tile_h, fill="tile", rounded=True, name=f"Column tile {i}")
+            mark_decorative(tile)
+            head = self.R(c["head"], n)
+            hh = text_h(head, 28, cw - 0.52, font="title")
+            text_block(s, x + 0.25, top + 0.22, cw - 0.50, hh, head, size=28, font="title", colour="title",
+                       name=f"Column head {i}")
+            y = top + 0.22 + hh + 0.15
+            self._bullets(s, x + 0.25, y, cw - 0.50, top + tile_h - y - 0.15, [self.R(t_, n) for t_ in c["items"]], pt,
+                          f"Column bullets {i}")
+
+    # agenda -- the chapters of meta.chapters as a table (L4, slide 5): chapter, what you get, rule, minutes; the
+    # appendix table helpers at 20 pt, the current-chapter mark is the footer breadcrumb
+    def slide_agenda(self, s, spec, n, L):
+        top = content_top(L, self.set_title(s, n, spec["title"], L))
+        drop_placeholder(s, 1)
+        crumbs = [it["crumb"] for it in self.meta.get("chapters") or []]
+        rows = [r[0] for r in spec["table"]["rows"]]
+        if rows != crumbs:
+            self.warn(n, f"agenda chapters {rows} differ from meta.chapters {crumbs}")
+        kind, data, h = self._dense_block({"table": self.resolved_spec(spec["table"], n)}, "table", 20, FULL_W)
+        gf = self._table(s, n, X0, top + 0.05, FULL_W, min(h, BOTTOM - top - 0.05), data, 20)
+        set_alt(gf, self.R(spec.get("alt", ""), n))
+
     # ============================================================================ slides added 2026-10-12
     # rules -- four rules of thumb in a 2 x 2 grid (L4): the opening tips (slide 7) and, with their evidence, the
     # closing ones (slide 28)
@@ -1998,9 +2004,11 @@ class Builder:
         top = content_top(L, lines)
         drop_placeholder(s, 1)
         sub = self.helper_spec(spec, n, None)
-        sub = {"rules": sub["rules"], "alt": sub.get("alt"), "name": "Rules of thumb"}
-        self.call_helper(s, n, "sketches", "add_rule_tiles", (X0, top + 0.05, FULL_W, BOTTOM - top - 0.20), sub,
-                         caption="TILES PENDING: four rules of thumb")
+        sub = {"rules": sub["rules"], "alt": sub.get("alt"), "name": "Rules of thumb", "per_tile": bool(spec.get("click"))}
+        out = self.call_helper(s, n, "sketches", "add_rule_tiles", (X0, top + 0.05, FULL_W, BOTTOM - top - 0.20), sub,
+                               caption="TILES PENDING: four rules of thumb")
+        if spec.get("click") and out:
+            self.click_build = out          # `click: true`: one tile per click (slide 29)
 
     # workflow -- the stages of a 3D data science project (L4): a ring with loops back, the tools under each stage and
     # a render beside three of them (slide 7); the AHN source line on the bottom edge
@@ -2028,7 +2036,7 @@ class Builder:
             self.source(s, n, spec["source"], (X0, BOTTOM - src_h, FULL_W, src_h))
 
     # summary -- the end of the pipeline section (L7, fade): one row per step in the text column, the final render
-    # with its chips on the right, as on the Morph slides
+    # with its chips on the right
     def slide_summary(self, s, spec, n, L):
         self.set_title(s, n, spec["title"], L)
         drop_placeholder(s, 14)
@@ -2036,19 +2044,18 @@ class Builder:
         pic, info = self.place_render(s, n, vis["file"], MEDIA_R, name="Render final", alt=self.R(spec.get("alt"), n))
         tb = self.resolved_spec(spec["table"], n)
         tb["name"] = "Pipeline summary"
-        cx, cy, cw, chh = self.morph["code"]
+        cx, cy, cw, chh = self.summary_boxes["code"]
         self.call_helper(s, n, "sketches", "add_step_table", (cx, cy + 0.05, cw, chh - 0.05), tb,
                          caption="TABLE PENDING: pipeline summary")
         if getattr(s, "_step_table_overflow", 0) > 0.01:
             self.warn(n, f"summary table {s._step_table_overflow:.2f} in wider than the column")
-        self.support(s, n, spec.get("support"), self.morph["support"], name="Support")
+        self.support(s, n, spec.get("support"), self.summary_boxes["support"], name="Support")
         if spec.get("small_print"):
-            self.small(s, n, spec["small_print"], self.morph["small"], name="Small print")
-        self.source(s, n, spec.get("source"), self.morph["src"], name="Source")
+            self.small(s, n, spec["small_print"], self.summary_boxes["small"], name="Small print")
+        self.source(s, n, spec.get("source"), self.summary_boxes["src"], name="Source")
         if spec.get("labels_from"):
             px = tuple(info.get("px") or DEFAULT_PX)
-            self.label_chips(s, n, spec["labels_from"], MEDIA_R, px, vis["file"], reference_key=self.morph_chip_ref,
-                             obstacles=self.chip_obstacles, prefix="Label ")
+            self.label_chips(s, n, spec["labels_from"], MEDIA_R, px, vis["file"], obstacles=self.chip_obstacles, prefix="Label ")
 
     # expectation_map -- expectation vs reality on one map (L8): the final render left with rings at the BGT
     # register's poles (small, sage) and at the pipeline's street furniture (large, white); right, the two counts
@@ -2306,8 +2313,9 @@ class Builder:
     # drawn size (shrunk only to fit), its caption under it; the takeaway and bullets from appendix.yaml on the right
     def slide_concept(self, s, spec, n, L):
         # content.yaml `concept: C1` plays an appendix.yaml entry as a main slide; without it the slide is the entry itself
-        entry = self.res.resolve_tree(copy.deepcopy(self.appendix.get(str(spec.get("concept", n))) or {}),
-                                      where=f"slide {n}")
+        # a spec with its own `figure` (slide 8) carries the entry inline
+        raw = spec if spec.get("figure") else self.appendix.get(str(spec.get("concept", n))) or {}
+        entry = self.res.resolve_tree(copy.deepcopy(raw), where=f"slide {n}")
         top = content_top(L, self.set_title(s, n, spec["title"], L))
         drop_placeholder(s, 1)
         fig = entry.get("figure") or {}
@@ -2339,13 +2347,16 @@ class Builder:
         items = [it.get("text", "") if isinstance(it, dict) else str(it) for it in entry.get("bullets") or []]
         if items:
             # main slides keep the 20 pt body minimum; the hidden ones use the appendix 16 pt
-            self._bullets(s, x, y, cw, BOTTOM - y, items, 20 if spec.get("concept") else 16, "Concept bullets")
+            self._bullets(s, x, y, cw, BOTTOM - y, items, 20 if spec.get("concept") or spec.get("figure") else 16,
+                          "Concept bullets")
 
     # meme -- the picture left, a takeaway and bullets right (L4); small print on the bottom edge
     def slide_meme(self, s, spec, n, L):
         top = content_top(L, self.set_title(s, n, spec["title"], L))
         drop_placeholder(s, 1)
-        sp = self.R(spec["small_print"], n) if spec.get("small_print") else ""
+        # `source: ahn` (slide 3, a render) takes the place of the small print
+        sp = (self.source_text(spec["source"]) if spec.get("source")
+              else self.R(spec["small_print"], n) if spec.get("small_print") else "")
         sph = text_h(sp, SMALL_PT, FULL_W - 0.02) if sp else 0.0
         path = DECK / spec["image"]["file"]
         with Image.open(path) as im:
@@ -2370,7 +2381,9 @@ class Builder:
         if spec.get("note"):
             # the note at the foot of the right column, above the small print (content.yaml `note`, slide 3)
             self._note(s, n, spec["note"], x, cw, foot, y + 0.30)
-        if sp:
+        if sp and spec.get("source"):
+            self.source(s, n, spec["source"], (X0, BOTTOM - sph, FULL_W, sph))
+        elif sp:
             self.small(s, n, sp, (X0, BOTTOM - sph, FULL_W, sph), bottom=True)
 
     # B1 to B6 -- dense appendix (L4, hidden): bullets and/or a native table, 14 to 16 pt
@@ -2758,6 +2771,8 @@ class Builder:
             self.click_build = None
             try:
                 self.build_slide(slide, spec, n)
+                if not hidden:
+                    self._breadcrumb(slide, spec, int(item["layout"]))
             except Exception as exc:
                 self.report["warnings"].append({"slide": n, "msg": f"builder error {type(exc).__name__}: {exc}",
                                                 "traceback": traceback.format_exc(limit=6)})
@@ -2841,6 +2856,70 @@ class Builder:
             old.getparent().remove(old)
         else:
             slide._element.find(qn("p:cSld")).addnext(new)
+
+    def _breadcrumb(self, slide, spec, L):
+        """The talk's chapters in the footer band, right-aligned before the slide number, the current one in blue
+        SemiBold (academic checklist: where am I in a long talk), and a "Rule k" chip top right on slides that are
+        evidence for one of slide 4's rules (`rule: [k]`). Chapters: content.yaml meta.chapters, shown from the first
+        chapter's slide on; the chapter comes from the slide's section. Only on layouts with a footer."""
+        if not GEO.has(L, FOOTER_IDX):
+            return
+        rules = next((sp["rules"] for sp in self.content["slides"] if sp.get("build") == "rules"), [])
+        x_end = GEO.slide_w - X0
+        # the rule badge of slides 4 and 29 in small: a blue number disc, then the rule in navy SemiBold
+        disc, y = 0.34, 0.20
+        for k in reversed(spec.get("rule") or []):
+            txt = rules[k - 1]["head"] if k <= len(rules) else f"Rule {k}"
+            tw = width_in(txt, SMALL_PT + 2, font="title") + 0.04
+            tb = add_textbox(slide, x_end - tw, y, tw, disc, name=f"Small print rule chip {k}", wrap=False, anchor="ctr")
+            p = tb.text_frame.paragraphs[0]
+            add_run(p, txt, font="title", size=SMALL_PT + 2, colour="title")
+            end_para_size(p, SMALL_PT + 2)
+            set_alt(tb, f"Evidence for rule {k}: {txt}")
+            dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, E(x_end - tw - 0.08 - disc), E(y), E(disc), E(disc))
+            dot.fill.solid()
+            dot.fill.fore_color.rgb = rgb("highlight")
+            dot.line.fill.background()
+            dot.shadow.inherit = False
+            set_name(dot, f"Small print rule number {k}")
+            set_body_pr(dot.text_frame, wrap=False, anchor="ctr", autofit="none", insets=(0.0, 0.0, 0.0, 0.0))
+            p = dot.text_frame.paragraphs[0]
+            para_format(p, align="center")
+            add_run(p, str(k), font="title", size=SMALL_PT + 2, colour="white")
+            end_para_size(p, SMALL_PT + 2)
+            mark_decorative(dot)
+            x_end -= tw + 0.08 + disc + 0.30
+        # step tracker on the step slides (`step: k`): the six steps of slide 11, the current one in blue SemiBold
+        if spec.get("step"):
+            steps = ["Load", "Voxels", "Ground", "Clusters", "Labels", "Paint-back"]   # the row names of slide 19
+            sep = "  ·  "
+            tw = sum(width_in(t, SMALL_PT, font="title") for t in steps) + 5 * width_in(sep, SMALL_PT) + 0.1
+            tb = add_textbox(slide, x_end - tw, y, tw, disc, name="Small print step tracker", wrap=False, anchor="ctr")
+            p = tb.text_frame.paragraphs[0]
+            para_format(p, align="right")
+            for i, t in enumerate(steps, 1):
+                if i > 1:
+                    add_run(p, sep, font="minor", size=SMALL_PT, colour="text_small")
+                cur = i == spec["step"]
+                add_run(p, f"{i} {t}" if cur else t, font="title" if cur else "minor", size=SMALL_PT,
+                        colour="highlight" if cur else "text_small")
+            end_para_size(p, SMALL_PT)
+            set_alt(tb, f"Pipeline step {spec['step']} of 6: {steps[spec['step'] - 1]}")
+        parts = self.meta.get("chapters") or []
+        first = next((sp["n"] for sp in self.content["slides"]
+                      if any(sp.get("section") in it["sections"] for it in parts)), None)
+        if first is None or spec["n"] < first:
+            return
+        cur = next((i for i, it in enumerate(parts) if spec.get("section") in it.get("sections", [])), None)
+        tb = add_textbox(slide, 4.6, 6.95, 7.0, 0.25, name="Small print breadcrumb", wrap=False, anchor="b")
+        p = tb.text_frame.paragraphs[0]
+        para_format(p, align="right")
+        for i, it in enumerate(parts):
+            if i:
+                add_run(p, "  ·  ", font="minor", size=SMALL_PT, colour="text_small")
+            add_run(p, it["crumb"], font="title" if i == cur else "minor", size=SMALL_PT,
+                    colour="highlight" if i == cur else "text_small")
+        end_para_size(p, SMALL_PT)
 
     def _footer(self, prs, plan):
         """Footer and slide number on every slide whose layout has them (all but L1 title and L11 closing): the

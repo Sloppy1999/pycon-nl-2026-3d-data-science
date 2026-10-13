@@ -263,7 +263,8 @@ def add_column_log(slide, box, spec, style=None, values=None):
 
     spec keys: ``bars`` [{label, value, highlight?, group?}], ``axis_title``, optional
     ``alt``, ``name`` (shape name, default "chart_time"), ``gap_width`` (default 60),
-    ``axis_min_ms`` / ``axis_max_ms`` (override the decade limits).
+    ``axis_min_ms`` / ``axis_max_ms`` (override the decade limits), ``scale: linear`` (linear axis from 0, axis
+    hidden, data labels only).
     Bars with ``highlight: true`` are blue (highlight), the rest grey (muted). Optional ``group`` keys turn the
     categories into two levels (group label under the bar labels).
     """
@@ -323,36 +324,45 @@ def add_column_log(slide, box, spec, style=None, values=None):
     dl.font.name = st.minor
     dl.font.color.rgb = st.text
 
-    # value axis: log10, whole decades
-    plot_h_in = h / EMU_IN - 1.0  # minus category labels
-    dmin, dmax = _decades(min(vals), max(vals), plot_h_in)
-    vmin = float(spec.get("axis_min_ms", 10.0 ** dmin))
-    vmax = float(spec.get("axis_max_ms", 10.0 ** dmax))
     va = ch.value_axis
     va.has_major_gridlines = False
     va.has_minor_gridlines = False
-    va.minimum_scale = vmin
-    va.maximum_scale = vmax
-    va.major_tick_mark = XL_TICK_MARK.OUTSIDE
-    va.minor_tick_mark = XL_TICK_MARK.NONE
-    va.tick_labels.number_format = FMT_MS_AXIS if vmin >= 1 else FMT_MS_AXIS_SUB
-    va.tick_labels.number_format_is_linked = False
-    va.tick_labels.font.size = Pt(CHART_PT)
-    va.tick_labels.font.name = st.minor
-    va.tick_labels.font.color.rgb = st.text_small
-    _line(va.format.line, st.muted)
-    # Where the category axis crosses: "autoZero" when the axis starts at >= 1 (a log axis
-    # has no zero, so both apps clamp the crossing to the lowest decade). With an explicit
-    # c:crosses="min", LibreOffice draws outside-end labels of short columns at the axis
-    # instead of above the column (tested); autoZero avoids that. Below 1 ms "min" is kept
-    # so that columns still rise from the bottom (labels may then be misplaced in LibreOffice).
-    va.crosses = XL_AXIS_CROSSES.AUTOMATIC if vmin >= 1 else XL_AXIS_CROSSES.MINIMUM
-    scaling = va._element.find(qn("c:scaling"))
-    log_base = scaling.find(qn("c:logBase"))
-    if log_base is None:
-        log_base = etree.Element(qn("c:logBase"))
-    scaling.insert(0, log_base)  # must be the first child of c:scaling
-    log_base.set("val", "10")
+    linear = spec.get("scale") == "linear"
+    if linear:
+        # bar length proportional to time, so the ratio reads as drawn; no axis: the data labels carry the values
+        plot_h_in = h / EMU_IN - 1.0  # minus category labels
+        va.minimum_scale = 0
+        va.maximum_scale = _nice(max(vals) / (1 - min(0.3, 0.45 / plot_h_in)))   # room for the top label
+        va.visible = False
+        va.crosses = XL_AXIS_CROSSES.AUTOMATIC
+    else:
+        # value axis: log10, whole decades
+        plot_h_in = h / EMU_IN - 1.0  # minus category labels
+        dmin, dmax = _decades(min(vals), max(vals), plot_h_in)
+        vmin = float(spec.get("axis_min_ms", 10.0 ** dmin))
+        vmax = float(spec.get("axis_max_ms", 10.0 ** dmax))
+        va.minimum_scale = vmin
+        va.maximum_scale = vmax
+        va.major_tick_mark = XL_TICK_MARK.OUTSIDE
+        va.minor_tick_mark = XL_TICK_MARK.NONE
+        va.tick_labels.number_format = FMT_MS_AXIS if vmin >= 1 else FMT_MS_AXIS_SUB
+        va.tick_labels.number_format_is_linked = False
+        va.tick_labels.font.size = Pt(CHART_PT)
+        va.tick_labels.font.name = st.minor
+        va.tick_labels.font.color.rgb = st.text_small
+        _line(va.format.line, st.muted)
+        # Where the category axis crosses: "autoZero" when the axis starts at >= 1 (a log axis
+        # has no zero, so both apps clamp the crossing to the lowest decade). With an explicit
+        # c:crosses="min", LibreOffice draws outside-end labels of short columns at the axis
+        # instead of above the column (tested); autoZero avoids that. Below 1 ms "min" is kept
+        # so that columns still rise from the bottom (labels may then be misplaced in LibreOffice).
+        va.crosses = XL_AXIS_CROSSES.AUTOMATIC if vmin >= 1 else XL_AXIS_CROSSES.MINIMUM
+        scaling = va._element.find(qn("c:scaling"))
+        log_base = scaling.find(qn("c:logBase"))
+        if log_base is None:
+            log_base = etree.Element(qn("c:logBase"))
+        scaling.insert(0, log_base)  # must be the first child of c:scaling
+        log_base.set("val", "10")
 
     if spec.get("axis_title"):
         va.has_title = True

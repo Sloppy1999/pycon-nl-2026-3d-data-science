@@ -32,7 +32,7 @@ is in [TIMING.md](TIMING.md); how to apply a change is in [HOW_TO_UPDATE.md](HOW
 | 29 | slide 29 `support` | `[repo URL]` | the readable link next to the QR code |
 | 29 | slide 29 `contact` | `[email]`, `[GitHub / LinkedIn handle]` | contact details the speaker wants public |
 | 29 | slide 29 `qr.url` | `null` (the tile says "Set qr.url in content.yaml") | the repo URL; the builder makes the QR code |
-| 29 | slide 29 `small_print[1]` | `[Optional: Title shared with F. Poux, ...]` | keep it without the brackets, or delete it (d5) |
+| 29 | slide 29 `small_print[1]` | `[Optional: Title shared with F. Poux, ...]` | DONE 2026-10-13: kept without the brackets (d5) |
 
 Set the repo URL and QR code only after the clean-up in section f.
 
@@ -99,9 +99,15 @@ Everything so far was rendered with LibreOffice and substitute fonts (QA_NOTES s
 1. Open the deck in PowerPoint on a machine with Fira Sans and Fira Mono installed (d6). Check title line counts,
    that no text overflows, that the label chips on 3 and 10 to 14 sit where the QA render shows them, and that the
    Conditions boxes on 17, 18, 20, 21, B1, B2 and B4 stay clear of the footer.
-2. Play Morph on 8 to 14: the first filmstrip thumbnail on 7 into slide 10, the Ground chip still from 10 to 14, and a
-   jump over slide 15 (skip-first number 4).
-3. Slide 20: the log axis, the data labels, and the on-click build of the hero number.
+2. ~~Play Morph on 8 to 14~~ OBSOLETE 2026-10-13: Morph dropped, every slide is a fade.
+3. Slides 23 and 26: the linear axis (2026-10-13, was log), the data label on the sliver bar, and the on-click build
+   of the hero number. Slide 27: the "32 GB RAM" label sits centred over the dashed line.
+   Slide 29 (2026-10-13): the four rule tiles appear one per click, in order 1 to 4; rehearse the four clicks.
+   Rule badges (slides 8, 12 to 28) and the step tracker (12 to 18): the number sits centred in its disc, and the
+   tracker stays clear of the badge and of the "Why 24 B?" note on 13.
+7. 2026-10-14 restructure (31 slides): rehearse the new order once end to end, above all the bridges 19 → 20 (three
+   questions), 26 → 27 (Reality is now the twist near the end) and 28 → 29; check the new checkpoints (leave 19 by
+   14:25, arrive at 25 by 22:50) and that the footnotes on 23 to 26 read as one line each in PowerPoint.
 4. The cup (☕) of the abstract is not on slide 1: Fira Mono has no glyph for it, and a fallback emoji font drew it
    differently on every machine. If you put it back in `content.yaml` slide 1 `subtitle_code`, check on the
    presenting laptop that it renders; it is then the one glyph outside the Fira fonts, and `glyph_coverage` fails.

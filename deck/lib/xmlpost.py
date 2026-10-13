@@ -52,30 +52,36 @@ def set_transition(slide, kind: str):
     anchor.addnext(el)
 
 
-def add_click_appear(slide, shape):
-    """One on-click 'Appear' entrance for `shape` (the slide 17 hero). Nothing else animates."""
+def add_click_appear(slide, shapes):
+    """On-click 'Appear' entrances: one click per shape, in order (the slide 23 hero; the slide 29 rule tiles).
+    Nothing else animates."""
     sld = slide._element
     for old in sld.findall(qn("p:timing")):
         sld.remove(old)
-    spid = shape.shape_id
-    xml = f'''<p:timing xmlns:p="{P}"><p:tnLst><p:par>
-<p:cTn id="1" dur="indefinite" restart="never" nodeType="tmRoot"><p:childTnLst>
-<p:seq concurrent="1" nextAc="seek"><p:cTn id="2" dur="indefinite" nodeType="mainSeq"><p:childTnLst>
-<p:par><p:cTn id="3" fill="hold"><p:stCondLst><p:cond delay="indefinite"/></p:stCondLst><p:childTnLst>
-<p:par><p:cTn id="4" fill="hold"><p:stCondLst><p:cond delay="0"/></p:stCondLst><p:childTnLst>
-<p:par><p:cTn id="5" presetID="1" presetClass="entr" presetSubtype="0" fill="hold" grpId="0" nodeType="clickEffect">
+    shapes = shapes if isinstance(shapes, (list, tuple)) else [shapes]
+    clicks = []
+    for i, shape in enumerate(shapes):
+        c = 3 + 4 * i                     # four cTn ids per click
+        clicks.append(f'''<p:par><p:cTn id="{c}" fill="hold"><p:stCondLst><p:cond delay="indefinite"/></p:stCondLst><p:childTnLst>
+<p:par><p:cTn id="{c + 1}" fill="hold"><p:stCondLst><p:cond delay="0"/></p:stCondLst><p:childTnLst>
+<p:par><p:cTn id="{c + 2}" presetID="1" presetClass="entr" presetSubtype="0" fill="hold" grpId="0" nodeType="clickEffect">
 <p:stCondLst><p:cond delay="0"/></p:stCondLst><p:childTnLst>
-<p:set><p:cBhvr><p:cTn id="6" dur="1" fill="hold"><p:stCondLst><p:cond delay="0"/></p:stCondLst></p:cTn>
-<p:tgtEl><p:spTgt spid="{spid}"/></p:tgtEl><p:attrNameLst><p:attrName>style.visibility</p:attrName></p:attrNameLst>
+<p:set><p:cBhvr><p:cTn id="{c + 3}" dur="1" fill="hold"><p:stCondLst><p:cond delay="0"/></p:stCondLst></p:cTn>
+<p:tgtEl><p:spTgt spid="{shape.shape_id}"/></p:tgtEl><p:attrNameLst><p:attrName>style.visibility</p:attrName></p:attrNameLst>
 </p:cBhvr><p:to><p:strVal val="visible"/></p:to></p:set>
 </p:childTnLst></p:cTn></p:par>
 </p:childTnLst></p:cTn></p:par>
-</p:childTnLst></p:cTn></p:par>
+</p:childTnLst></p:cTn></p:par>''')
+    blds = "".join(f'<p:bldP spid="{sh.shape_id}" grpId="0"/>' for sh in shapes)
+    xml = f'''<p:timing xmlns:p="{P}"><p:tnLst><p:par>
+<p:cTn id="1" dur="indefinite" restart="never" nodeType="tmRoot"><p:childTnLst>
+<p:seq concurrent="1" nextAc="seek"><p:cTn id="2" dur="indefinite" nodeType="mainSeq"><p:childTnLst>
+{"".join(clicks)}
 </p:childTnLst></p:cTn>
 <p:prevCondLst><p:cond evt="onPrev" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:prevCondLst>
 <p:nextCondLst><p:cond evt="onNext" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:nextCondLst>
 </p:seq></p:childTnLst></p:cTn></p:par></p:tnLst>
-<p:bldLst><p:bldP spid="{spid}" grpId="0"/></p:bldLst></p:timing>'''
+<p:bldLst>{blds}</p:bldLst></p:timing>'''
     el = etree.fromstring(re.sub(r">\s+<", "><", xml))
     # order: cSld, clrMapOvr, transition (AlternateContent), timing, extLst
     ext = sld.find(qn("p:extLst"))
