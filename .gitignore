@@ -29,3 +29,5 @@ deck/out/.lo-profile/
 
 # macOS
 .DS_Store
+# Canva import copy of the deck (local only, goes stale with every build)
+deck/out/*_Canva.pptx

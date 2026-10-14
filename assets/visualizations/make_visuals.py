@@ -1,7 +1,7 @@
-"""Oblique, eye-dome-lit renders of the Jaarbeurs crop for the deck: hero, before/after, pipeline sequence.
+"""Oblique, eye-dome-lit renders of the Jaarbeurs crop for the deck: hero (slides 1, 5) and before/after (slide 18).
 
     uv run python assets/visualizations/make_visuals.py              # all
-    uv run python assets/visualizations/make_visuals.py --only hero  # subset: hero split seq
+    uv run python assets/visualizations/make_visuals.py --only hero  # subset: hero split
     uv run python assets/visualizations/make_visuals.py --preview    # quarter size, fast
 
 Reads only what pipeline/render.py reads (results/labels_crop.npz, data/<crop>.laz, deck/content.yaml palette) and
@@ -56,12 +56,10 @@ def camera_for(size) -> dict:
                 distance_m=round(float(dist), 2))
 
 
-HERO_PX = (3840, 2160)   # 16:9 full-bleed
+HERO_PX = (3840, 2160)   # rendered 16:9, saved cropped to the crop's content (hero_trim.png)
 SPLIT_PX = (1920, 1560)  # each half of the before/after
-SEQ_PX = (1440, 1170)    # each of the six pipeline stages
 # Point sizes in px for a 1920 px wide image, scaled with the image width so every image has the same look.
 PS_FULL = 4              # raw and painted-back points (722 961)
-PS_VOXEL = 5             # voxel centroids (232 180, 0.5 m apart: slightly bigger so the cloud still reads as surfaces)
 PS_FURNITURE = 14        # street furniture: 3 objects, a few dozen points; same deliberate choice as renders/
 
 
@@ -127,17 +125,15 @@ def main() -> int:
     pal, col, d = R.PAL, R.Colours(R.PAL), R.Data()
     zr = d.ground_z_ref
     ramp_full = R.ramp_colours(d.xyz[:, 2], zr, pal["height_ramp"])
-    ramp_vox = R.ramp_colours(d.V[:, 2], zr, pal["height_ramp"])
-    sf_v, sf_p = d.v_class == R.S.STREET_FURNITURE, d.p_class == R.S.STREET_FURNITURE
+    sf_p = d.p_class == R.S.STREET_FURNITURE
     rgb_p = col.classes(d.p_class)
     files, crops, anchors = {}, {}, {}
 
     if want("hero"):
         img, hall = render([(d.xyz, ramp_full, PS_FULL)], scaled(HERO_PX, k), hall=d)
-        files["hero"] = save(img, "hero_jaarbeurs.png")           # full 16:9, for a full-bleed slide
         box = content_box([img])
         crops["hero_trim"] = [int(v) for v in box]
-        files["hero_trim"] = save(crop(img, box), "hero_trim.png")  # tight, for slides 1 and 5
+        files["hero_trim"] = save(crop(img, box), "hero_trim.png")
         anchors["hero_trim"] = dict(jaarbeurs_hall=[hall["px"][0] - int(box[0]), hall["px"][1] - int(box[1])],
                                     jaarbeurs_hall_note=hall)
         assert hall["pixel_shows_crop"], "hall anchor lands on the background"
@@ -151,32 +147,12 @@ def main() -> int:
         files["split_raw"] = save(crop(raw, box), "split_raw.png")
         files["split_labels"] = save(crop(lab, box), "split_labels.png")
 
-    if want("seq"):  # backup asset: the deck's slide 11 keeps the top-down filmstrip (Morph chain to slides 12-17)
-        size = scaled(SEQ_PX, k)
-        f3 = ramp_vox.copy()
-        f3[d.v_ground] = R.hex_rgb(pal["ground"])
-        f4, _ = R.cluster_colours(d, pal)
-        f5 = col.classes(d.v_class)
-        stages = [
-            ("seq1_load.png", [(d.xyz, ramp_full, PS_FULL)]),
-            ("seq2_voxel.png", [(d.V, ramp_vox, PS_VOXEL)]),
-            ("seq3_ground.png", [(d.V, f3, PS_VOXEL)]),
-            ("seq4_clusters.png", [(d.V, f4, PS_VOXEL)]),
-            ("seq5_labels.png", [(d.V[~sf_v], f5[~sf_v], PS_VOXEL), (d.V[sf_v], f5[sf_v], PS_FURNITURE)]),
-            ("seq6_final.png", [(d.xyz[~sf_p], rgb_p[~sf_p], PS_FULL), (d.xyz[sf_p], rgb_p[sf_p], PS_FURNITURE)]),
-        ]
-        imgs = {name: render(layers, size) for name, layers in stages}
-        box = content_box(list(imgs.values()))
-        crops["seq"] = [int(v) for v in box]
-        for name, img in imgs.items():
-            files[name] = save(crop(img, box), name)
-
     if a.preview:
         return 0
     spec_p = OUT / "spec.json"
     spec = json.loads(spec_p.read_text()) if spec_p.exists() and a.only else {}
-    spec.update(camera={n: camera_for(sz) for n, sz in (("hero", HERO_PX), ("split", SPLIT_PX), ("seq", SEQ_PX))},
-                edl=True, point_size_px_at_1920=dict(full=PS_FULL, voxel=PS_VOXEL, street_furniture=PS_FURNITURE),
+    spec.update(camera={n: camera_for(sz) for n, sz in (("hero", HERO_PX), ("split", SPLIT_PX))},
+                edl=True, point_size_px_at_1920=dict(full=PS_FULL, street_furniture=PS_FURNITURE),
                 inputs=dict(labels_crop_npz_sha256=d.npz_sha256, crop=d.crop_file, palette=R.PALETTE_SOURCE),
                 note="Same arrays and colours as pipeline/render.py; only camera, eye-dome shading and the crop "
                      "box differ. EDL darkens colours at depth edges: not for pixel-exact class QA.")

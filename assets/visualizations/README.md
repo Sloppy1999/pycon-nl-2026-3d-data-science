@@ -11,9 +11,7 @@ edges, so these images are for the audience, not for the pixel-exact class QA of
 
 | File | Used on | Shows |
 |---|---|---|
-| `hero_trim.png` | slides 1 and 5 | all 722 961 raw points, height ramp |
-| `hero_jaarbeurs.png` | not used | the same, full 16:9 (for a full-bleed slide) |
-| `split_raw.png`, `split_labels.png` | slide 18 | raw / painted-back labels, one camera, one crop box |
-| `seq1..6_*.png` | not used (backup) | the six pipeline stages; slide 11 keeps the top-down filmstrip, whose first frame Morphs into slides 12 to 17 |
-| `anchors.json` | slide 5 arrow | `pipeline/render.py jaarbeurs_hall` projected with this camera |
+| `hero_trim.png` | slides 1 and 6 | all 722 961 raw points, height ramp |
+| `split_raw.png`, `split_labels.png` | slide 19 | raw / painted-back labels, one camera, one crop box |
+| `anchors.json` | slide 6 arrow | `pipeline/render.py jaarbeurs_hall` projected with this camera |
 | `spec.json` | | cameras, crop boxes, input and output sha256 |

@@ -41,33 +41,11 @@
    "azimuth_deg": 200.0,
    "elevation_deg": 28.0,
    "distance_m": 419.61
-  },
-  "seq": {
-   "position": [
-    -24.717,
-    -248.151,
-    206.995
-   ],
-   "focal_point": [
-    102.0,
-    100.0,
-    10.0
-   ],
-   "view_up": [
-    0.0,
-    0.0,
-    1.0
-   ],
-   "view_angle": 30.0,
-   "azimuth_deg": 200.0,
-   "elevation_deg": 28.0,
-   "distance_m": 419.61
   }
  },
  "edl": true,
  "point_size_px_at_1920": {
   "full": 4,
-  "voxel": 5,
   "street_furniture": 14
  },
  "inputs": {
@@ -88,24 +66,11 @@
    278,
    1920,
    1391
-  ],
-  "seq": [
-   72,
-   206,
-   1440,
-   1046
   ]
  },
  "outputs_sha256": {
-  "hero": "67afa4babc0f32d0673ea49198fcc1193ef40c36ac38769a62c88ef0c1fbf86b",
   "hero_trim": "9165c5b8c9162d79f27f7fd7a976232bc90891352ff56f7fa5be857577aefe22",
   "split_raw": "4efcccc120d19d356e9b8fd9a909f5bf638049ec753b12591581eaba882aaeae",
-  "split_labels": "fea3423ec5171dd32d1d5627e34811048aa79871cb4244c2dcdb0c608a6ce2db",
-  "seq1_load.png": "043222a517c32f14565e5b56a666ad2b952bd83c7850e3b8d5b3ad8aeaea79ab",
-  "seq2_voxel.png": "8e3a57770abca9bb3cbcedcebd62d5c5e515e23665b5114de5ed72c952d58845",
-  "seq3_ground.png": "74ebdaf430ee4dc21d499aca5cb47e846345f901f7c2be2f09fbaa3a97421aec",
-  "seq4_clusters.png": "0eb544d4af281c828fc5bdfaa2d65896ef40a6e5c8419311cb6d87e10baefc56",
-  "seq5_labels.png": "f48b89645296de736d6a23ba79b9994629d2590dbaafd9930261297014498bc2",
-  "seq6_final.png": "0f87dac5c59b38c7644fb6f59bc31051255222840be97dacf8b2bd1571e3705a"
+  "split_labels": "fea3423ec5171dd32d1d5627e34811048aa79871cb4244c2dcdb0c608a6ce2db"
  }
 }
