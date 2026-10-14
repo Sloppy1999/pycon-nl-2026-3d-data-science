@@ -342,8 +342,9 @@ def build_json(r: dict, ahn: np.ndarray, sweep_rows, prob_check) -> dict:
         buildings=dict(precision=r4(sc["buildings"]["precision"]), recall=r4(sc["buildings"]["recall"]),
                        counts={k: sc["buildings"][k] for k in ("true_positives", "predicted", "truth")},
                        against="AHN class 6, point level, after paint-back",
-                       note="AHN puts many facade points in class 1 ('overig'); facades we call buildings count as "
-                            "false positives, so this precision is a lower bound"),
+                       note="AHN class 1 ('overig') includes facade points and other objects. Predicted buildings "
+                            "outside class 6 count as false positives here; this measures class-6 agreement, "
+                            "not independently validated building precision or a proven lower bound"),
         n_clusters=int(ids.max() + 1),
         noise_share=r4(np.count_nonzero(ids == S.NOISE) / max(considered, 1)),
         noise_share_note="DBSCAN noise voxels / voxels given to DBSCAN (not ground, more than "

@@ -71,6 +71,7 @@ def worker() -> dict:
         return h
 
     pools = {n: ThreadPoolExecutor(max_workers=n) for n in THREADS}
+    gil_at_start = getattr(sys, "_is_gil_enabled", lambda: True)()
     variants = {"loop": lambda: loop(P, plane), "vectorised": lambda: vectorised(P, plane)}
     for n in THREADS:
         variants[f"threads_{n}"] = (lambda n=n: threaded(n, pools[n]))
@@ -99,6 +100,7 @@ def worker() -> dict:
             "free-threaded" if sysconfig.get_config_var("Py_GIL_DISABLED") else "default (GIL)",
         "py_gil_disabled_build": bool(sysconfig.get_config_var("Py_GIL_DISABLED")),
         "gil_enabled_at_end": getattr(sys, "_is_gil_enabled", lambda: True)(),
+        "gil_enabled_at_start": gil_at_start,
         "numpy": np.__version__, "laspy": laspy.__version__, "lazrs": md.version("lazrs"),
         "n": int(len(P)), "array": {"how": "las.xyz - las.header.mins", "dtype": str(P.dtype),
                                     "f_contiguous": bool(P.flags.f_contiguous)},
@@ -127,9 +129,19 @@ def main() -> int:
     if args.worker:
         print(json.dumps(worker()))
         return 0
+    if not args.ft or not args.gil:
+        ap.error("--ft and --gil are required")
     import conditions
     from _common import rel, write_json
     builds = {"free_threaded": run_interpreter(args.ft), "gil": run_interpreter(args.gil)}
+    a, b = builds["free_threaded"], builds["gil"]
+    if not (a["py_gil_disabled_build"] and not a["gil_enabled_at_start"] and not a["gil_enabled_at_end"]
+            and not b["py_gil_disabled_build"] and b["gil_enabled_at_start"] and b["gil_enabled_at_end"]):
+        raise SystemExit("Interpreter build/GIL states do not match the comparison labels")
+    if any(a[k] != b[k] for k in ("python", "numpy", "laspy", "lazrs", "n", "array", "plane")):
+        raise SystemExit("Compared builds must use matching versions, input and plane")
+    if not all(all(x["equal_to_vectorised"].values()) for x in builds.values()):
+        raise SystemExit("Compared calculations differ; refusing to publish results")
     ft, gil = builds["free_threaded"]["timings"], builds["gil"]["timings"]
     best_n = min(THREADS, key=lambda n: ft[f"threads_{n}"]["median_ms"])
     summary = {

@@ -1,0 +1,41 @@
+{
+  "source": "Recorded BGT snapshot of 2026-10-12; no new register query",
+  "histogram": {
+    "0": 42,
+    "1-5": 4,
+    "6-20": 15,
+    ">20": 0
+  },
+  "matches": [
+    {
+      "x_rd": 135766.79,
+      "y_rd": 455620.74,
+      "cluster": 185,
+      "nearest_type": "lichtmast",
+      "nearest_collection": "paal",
+      "nearest_x_rd": 135766.52,
+      "nearest_y_rd": 455621.15,
+      "distance_m": 0.49
+    },
+    {
+      "x_rd": 135806.75,
+      "y_rd": 455654.57,
+      "cluster": 451,
+      "nearest_type": "lichtmast",
+      "nearest_collection": "paal",
+      "nearest_x_rd": 135806.45,
+      "nearest_y_rd": 455654.98,
+      "distance_m": 0.51
+    },
+    {
+      "x_rd": 135754.83,
+      "y_rd": 455608.66,
+      "cluster": 727,
+      "nearest_type": "lichtmast",
+      "nearest_collection": "paal",
+      "nearest_x_rd": 135750.08,
+      "nearest_y_rd": 455607.21,
+      "distance_m": 4.97
+    }
+  ]
+}

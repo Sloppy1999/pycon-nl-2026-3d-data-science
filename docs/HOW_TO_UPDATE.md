@@ -5,7 +5,7 @@ Rule one: **the deck is generated.** Every visible word comes from `deck/content
 a script's output in `results/` or `renders/`. Never edit the PPTX by hand (the next build overwrites it), and never
 type a number into the YAML files or hand-edit a result file: re-run the script that produces it.
 
-All commands run from `talk/` with uv (Python 3.13, `.venv`); `uv sync` installs the dependencies, including the
+All commands run from the repository root with uv (Python 3.13, `.venv`); `uv sync` installs the dependencies, including the
 default `deck` group.
 
 ## Prerequisites
@@ -14,10 +14,12 @@ default `deck` group.
 |---|---|
 | everything | uv, Python 3.13 (`.python-version`) |
 | `data/fetch_ahn5.py` | network access to basisdata.nl (no registration); about 130 MB |
-| `deck/build_deck.py` | the PyCon NL 2026 style master `deck/template/pycon_nl_2026_master.pptx` and its geometry `pycon_nl_2026_master.geometry.json` (both in the repo; `uv run python deck/template/make_master.py` regenerates them, docs/DESIGN.md), and the pptx skill's scripts (`add_slide.py`, `clean.py`, `office/validate.py`) under `~/.claude/skills/pptx` or `$PPTX_SKILL_DIR` |
+| `deck/build_deck.py` | the PyCon NL 2026 style master `deck/template/pycon_nl_2026_master.pptx` and its geometry `pycon_nl_2026_master.geometry.json` (both in the repo; `uv run python deck/template/make_master.py` regenerates them, docs/DESIGN.md), optionally the pptx helper scripts under `~/.claude/skills/pptx` or `$PPTX_SKILL_DIR`; without them the portable XML builder performs native package checks |
 | presenting the deck | Fira Sans and Fira Mono installed on the presenting laptop (Google Fonts, SIL OFL 1.1), or embedded in the file with PowerPoint's "Embed fonts in the file" (File > Options > Save, all characters) |
-| `deck/qa/render.py` | LibreOffice (through the pptx skill's `office/soffice.py` wrapper), `pdftoppm`, and the QA fonts from `deck/qa/setup_fonts.py` (git-ignored; that script uses `uvx` for fontTools) |
+| `deck/qa/render.py` | LibreOffice (helper wrapper or direct headless export), `pdftoppm` or the `qa` dependency group (PyMuPDF), and the QA fonts from `deck/qa/setup_fonts.py` (git-ignored; that script uses `uvx` for fontTools) |
 | the benchmarks | an idle machine: `--final` refuses to start above a 1-minute load average of 1.0 (cliff) or with less than 8 GiB RAM free (memory) unless `--force` is given |
+
+The per-slide table below contains historical slide numbering. For the current 28-slide build and verified reproduction commands, use README.md and docs/IMPROVEMENTS.md.
 
 ## What feeds what
 

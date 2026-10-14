@@ -602,7 +602,8 @@ def main():
         tm = sl._element.find("p:timing", NS)
         if tm is not None:
             timing.append(lab)
-    put("transitions", tr_bad, f"Morph exactly on {morph_labels[0]} to {morph_labels[-1]}, fade on every other slide",
+    put("transitions", tr_bad, (f"Morph exactly on {morph_labels[0]} to {morph_labels[-1]}, fade on every other slide"
+         if morph_labels else "Fade on every slide"),
         "wrong transitions")
     put("appendix_hidden", hid_bad, "B and C backup slides hidden, no main slide hidden", "hidden flags wrong")
     rep.add("animations", "pass" if timing == build_labels else "fail",
@@ -661,11 +662,10 @@ def main():
                 src = els[0].find(".//a:srcRect", NS)
                 if src is not None and any(int(src.get(k, "0")) != 0 for k in ("l", "t", "r", "b")):
                     crop_bad.append(f"{lab}: !!render cropped {dict(src.attrib)}")
-    put("morph_geometry", geo_bad, f"!!title, !!code, !!support, !!src, !!render identical on {morph_labels[0]} to "
-        f"{morph_labels[-1]}",
+    put("morph_geometry", geo_bad, "Morph object geometry consistent" if morph_labels else "No Morph slides",
         "Morph object geometry differs or missing")
     put("morph_unique_names", names_dup, "!! names unique on every Morph slide", "duplicate !! names")
-    put("render_no_crop", crop_bad, f"renders on {morph_labels[0]} to {morph_labels[-1]} not cropped", "renders cropped")
+    put("render_no_crop", crop_bad, "Morph renders not cropped" if morph_labels else "No Morph renders", "renders cropped")
     render_kinds = [(lab, [el.tag.split('}')[1] for el in sl._element.iter(P + "pic", P + "sp")
                            if cnv(el) is not None and cnv(el).get("name") == "!!render"]) for lab, sl in morph]
     pics = [lab for lab, k in render_kinds if k == ["pic"]]
@@ -943,7 +943,7 @@ def main():
         tree = sl._element.find(".//p:cSld/p:spTree", NS)
         for el in tree.iter(P + "sp", P + "graphicFrame"):
             name = (cnv(el).get("name") if cnv(el) is not None else "") or ""
-            if name.startswith(code_names):
+            if name.startswith(code_names) or (lab == "24" and name == "code"):
                 continue
             for para in el.iter(A + "p"):
                 vis = "".join((r.find(A + "t").text or "") for r in para.iter(A + "r") if r.find(A + "t") is not None)

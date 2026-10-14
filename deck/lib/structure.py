@@ -98,7 +98,8 @@ def build_structure(template: Path, work: Path, plan: list[dict]) -> tuple[Path,
     new_files = []
     for item in plan:
         src = examples[int(item["layout"])]
-        out = _run_script("add_slide.py", str(u), src)
+        out = (_run_script("add_slide.py", str(u), src) if (SCRIPTS / "add_slide.py").exists()
+               else _duplicate_slide(u, src))
         m = re.search(r"Created ppt/slides/(slide\d+\.xml)", out)
         if not m:
             raise RuntimeError(f"add_slide.py output not understood: {out}")
@@ -141,7 +142,61 @@ def build_structure(template: Path, work: Path, plan: list[dict]) -> tuple[Path,
                   pres, flags=re.S)
     pres_p.write_text(pres, encoding="utf-8")
     log.extend(remove_webextension(u))
-    log.append(_run_script("clean.py", str(u)).strip())
+    if (SCRIPTS / "clean.py").exists():
+        log.append(_run_script("clean.py", str(u)).strip())
+    else:
+        from lxml import etree as ET
+        rp = u / "ppt/_rels/presentation.xml.rels"
+        rels_tree = ET.parse(str(rp))
+        for el in list(rels_tree.getroot()):
+            if el.get("Type", "").endswith("/slide") and Path(el.get("Target")).name not in new_files:
+                rels_tree.getroot().remove(el)
+        rels_tree.write(str(rp), xml_declaration=True, encoding="UTF-8")
+        log.append("Portable XML duplication; external clean/office validation unavailable")
     out = work / "structure.pptx"
     pack(u, out)
     return out, log
+
+
+def _duplicate_slide(u: Path, src: str) -> str:
+    """Clone a template example without requiring an external skill installation.
+
+    Layout/media relationships remain shared. Notes must be created independently
+    by the content builder, so the example's notes relationship is omitted.
+    """
+    from lxml import etree as ET
+    slides = u / "ppt/slides"
+    num = max(int(p.stem.removeprefix("slide")) for p in slides.glob("slide*.xml")) + 1
+    dst = f"slide{num}.xml"
+    shutil.copyfile(slides / src, slides / dst)
+    rel = ET.parse(str(slides / "_rels" / (src + ".rels")))
+    for child in list(rel.getroot()):
+        if child.get("Type", "").endswith("/notesSlide"):
+            rel.getroot().remove(child)
+    rel.write(str(slides / "_rels" / (dst + ".rels")), xml_declaration=True, encoding="UTF-8")
+    rp = u / "ppt/_rels/presentation.xml.rels"
+    r = ET.parse(str(rp))
+    ids = {el.get("Id") for el in r.getroot()}
+    k = 1
+    while f"rId{k}" in ids:
+        k += 1
+    rid = f"rId{k}"
+    ET.SubElement(r.getroot(), "{http://schemas.openxmlformats.org/package/2006/relationships}Relationship",
+                  Id=rid, Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide",
+                  Target=f"slides/{dst}")
+    r.write(str(rp), xml_declaration=True, encoding="UTF-8")
+    pp = u / "ppt/presentation.xml"
+    pres = ET.parse(str(pp))
+    ns = "http://schemas.openxmlformats.org/presentationml/2006/main"
+    lst = pres.getroot().find(f"{{{ns}}}sldIdLst")
+    sid = max(int(el.get("id")) for el in lst) + 1
+    ET.SubElement(lst, f"{{{ns}}}sldId", id=str(sid),
+                  attrib={"{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id": rid})
+    pres.write(str(pp), xml_declaration=True, encoding="UTF-8")
+    cp = u / "[Content_Types].xml"
+    ct = ET.parse(str(cp))
+    ET.SubElement(ct.getroot(), "{http://schemas.openxmlformats.org/package/2006/content-types}Override",
+                  PartName=f"/ppt/slides/{dst}",
+                  ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml")
+    ct.write(str(cp), xml_declaration=True, encoding="UTF-8")
+    return f"Created ppt/slides/{dst}"

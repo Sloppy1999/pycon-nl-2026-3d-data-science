@@ -14,7 +14,7 @@ Formats (content.yaml header):
   x     79x (integer, rounded; values below 10 keep one decimal so 4.8 does not become 5)
   ms    5.7 ms / 450 ms / 14.9 s (value in ms)
   ns    450 ns     ns1  3.5 ns (one decimal)     us1  3.0 us (micro sign)
-  gb    27.8 GB (value already in GiB)   gb1  MiB value shown as 3.3 GB    mb  985 MB
+  gb    27.8 GiB (value already in GiB)   gb1  MiB value shown as 3.3 GiB    mb  985 MB
   m     0.5 m       cm  1.6 cm (value in m)    s1  2.8 s (value in s, one decimal)   sms  value in s shown as ms
   f2t   up to two decimals, trailing zeros dropped (5, 6.25)
   nb    a string value kept on one line (no-break spaces, ' - ' as a minus sign), e.g. an expression
@@ -107,11 +107,11 @@ def format_value(v: Any, fmt: str | None) -> str:
     if fmt == "us1":
         return f"{v:.1f}{NBSP}{MICRO}s"
     if fmt == "gb":
-        return f"{v:.1f}{NBSP}GB"
+        return f"{v:.1f}{NBSP}GiB"
     if fmt == "gb1":
-        return f"{v / 1024:.1f}{NBSP}GB"
+        return f"{v / 1024:.1f}{NBSP}GiB"
     if fmt == "mb":
-        return fmt_int(v) + NBSP + "MB"
+        return fmt_int(v) + NBSP + "MiB"
     if fmt == "m":
         return _trim(v, 2) + NBSP + "m"
     if fmt == "cm":
@@ -146,6 +146,23 @@ class Resolver:
         self.missing: list[dict] = []
         self.used: list[dict] = []
         self._context = ""
+        self._derive()
+
+    def _derive(self) -> None:
+        """Values computed from the loaded results, in memory only (results/*.json are not changed).
+
+        prof.per_call_ms: Scalene reports each line's share of the whole profiled run (elapsed_s, which includes
+        imports and reading the LAZ file) over ``repeats`` calls of each version. share × elapsed_s / repeats is
+        the time per call attributed to that line under the profiler, comparable with slide 22's standalone
+        per-call medians."""
+        prof = self.data.get("prof")
+        try:
+            el, rep = float(prof["elapsed_s"]), int(prof["repeats"])
+            prof["per_call_ms"] = {k: prof["lines"][k]["total"] / 100 * el / rep * 1000
+                                   for k in ("loop_body", "vectorised")}
+            prof["total_s"] = {k: prof["lines"][k]["total"] / 100 * el for k in ("loop_body", "vectorised")}
+        except (TypeError, KeyError, ValueError, ZeroDivisionError):
+            pass
 
     # -- lookups ------------------------------------------------------------------
     def context(self, where: str):

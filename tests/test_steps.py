@@ -79,3 +79,23 @@ def test_roof_only_tile_borrows_a_neighbours_ground_plane():
     assert not ground[xyz[:, 0] >= 50].any()
     assert ground[xyz[:, 0] < 50].all()
     assert not any(p.rejected for p in planes if p.ij != (2, 0))
+
+
+def test_ground_mask_is_invariant_to_vertical_origin():
+    xyz, multi = scene()
+    a, _ = S.remove_ground(cloud(xyz, multi))
+    xyz[:, 2] += 100
+    b, _ = S.remove_ground(cloud(xyz, multi))
+    assert np.array_equal(a, b)
+
+
+def test_vertical_plane_without_plausible_neighbour_is_not_ground():
+    yz = np.mgrid[0:10:0.5, 0:1.5:0.1].reshape(2, -1).T
+    mask, planes = S.remove_ground(cloud(np.c_[np.zeros(len(yz)), yz]))
+    assert len(planes) == 1 and planes[0].rejected
+    assert not mask.any() and planes[0].n_ground == 0
+
+
+def test_empty_cloud_has_no_ground():
+    mask, planes = S.remove_ground(cloud(np.empty((0, 3))))
+    assert mask.size == 0 and planes == []

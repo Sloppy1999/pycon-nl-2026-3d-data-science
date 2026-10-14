@@ -1,0 +1,493 @@
+{
+  "label": "SMOKE (not for the deck)",
+  "conditions": {
+    "cpu": "arm",
+    "cores": 8,
+    "threads": 8,
+    "ram_gib": null,
+    "os": "Darwin",
+    "kernel": "25.6.0",
+    "governor": null,
+    "boost": "unknown",
+    "python": "3.13.5",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "open3d": "0.20.0",
+    "laspy": "2.7.0",
+    "load_avg_before": [
+      4.61,
+      3.58,
+      2.93
+    ],
+    "load_avg_after": [
+      4.66,
+      3.92,
+      3.15
+    ],
+    "date_utc": "2026-10-14T04:57:29Z",
+    "data": "data/utrecht_jaarbeurs_200m.laz",
+    "n": 722961,
+    "runs": 7,
+    "warmup": 1,
+    "statistic": "median and IQR (numpy.percentile, linear) of wall time over the timed runs",
+    "extra": {
+      "boost_sources": {},
+      "scaling_driver": null,
+      "energy_performance_preference": null,
+      "cpu_max_mhz": null,
+      "cpu_temp_c_at_collect": null,
+      "ram_available_gib_at_collect": null,
+      "affinity_cpus": null,
+      "python_implementation": "CPython",
+      "python_full": "3.13.5 (main, Jun 12 2025, 12:22:43) [Clang 20.1.4 ]",
+      "gil_enabled": true,
+      "lazrs": "0.8.2",
+      "psutil": "7.2.2",
+      "thread_env": {
+        "OMP_NUM_THREADS": null,
+        "OPENBLAS_NUM_THREADS": null,
+        "MKL_NUM_THREADS": null,
+        "NUMEXPR_NUM_THREADS": null
+      },
+      "transparent_hugepage": null,
+      "load_check": {
+        "limit_1min": 1.0,
+        "value": 4.61,
+        "forced": false,
+        "applies_to": "--final"
+      },
+      "order": "interleaved: seeded (numpy default_rng 20261015) permutation of the variants per round",
+      "gc": "gc.collect() before every run, GC enabled during runs; timeit disables GC",
+      "timers": "wall time.perf_counter, CPU time.process_time (whole process)",
+      "pinning": "none (no taskset); boost and SMT as reported"
+    }
+  },
+  "plane": {
+    "n": 722961,
+    "loop_numpy_rows": {
+      "median_ms": 392.57433294551447,
+      "q1_ms": 386.1807915091049,
+      "q3_ms": 395.2233955205884,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 384.54695796826854,
+      "max_ms": 405.9628329705447,
+      "all_ms": [
+        405.962833,
+        385.737708,
+        395.150791,
+        395.296,
+        392.574333,
+        384.546958,
+        386.623875
+      ],
+      "cpu_over_wall_median": 0.9999924107443102,
+      "warmup_ms": [
+        392.044583
+      ]
+    },
+    "loop_python_floats": {
+      "median_ms": 108.40579197974876,
+      "q1_ms": 108.16931197769009,
+      "q3_ms": 109.4897500006482,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 106.94854200119153,
+      "max_ms": 110.73870805557817,
+      "all_ms": [
+        106.948542,
+        110.738708,
+        110.19875,
+        108.000958,
+        108.337666,
+        108.78075,
+        108.405792
+      ],
+      "cpu_over_wall_median": 1.0000203681021844,
+      "warmup_ms": [
+        108.45675
+      ]
+    },
+    "vectorised": {
+      "median_ms": 1.6843329649418592,
+      "q1_ms": 1.6573750181123614,
+      "q3_ms": 1.700271008303389,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 1.6058749752119184,
+      "max_ms": 2.127791987732053,
+      "all_ms": [
+        2.127792,
+        1.661,
+        1.688417,
+        1.605875,
+        1.684333,
+        1.712125,
+        1.65375
+      ],
+      "cpu_over_wall_median": 1.0043839638995866,
+      "warmup_ms": [
+        2.188083
+      ]
+    },
+    "equal": true,
+    "factor": {
+      "median": 233.07406618326536,
+      "iqr_low": 227.12896333770604,
+      "iqr_high": 238.4634685580824
+    },
+    "factor_python_floats": {
+      "median": 64.36126005732528,
+      "iqr_low": 63.61886513940301,
+      "iqr_high": 66.06214574499238
+    },
+    "per_step_ns_loop": 543.0090045597403,
+    "per_point_ns_vectorised": 2.329770160412331,
+    "equal_python_floats": true,
+    "per_step_ns_python_floats": 149.9469431680945,
+    "coefficients": [
+      -1.5062219603848938e-05,
+      0.0006345643996983212,
+      0.9999997985505558,
+      -3.3312819147246766
+    ],
+    "plane_fit": {
+      "distance_threshold": 0.3,
+      "ransac_n": 3,
+      "num_iterations": 1000,
+      "probability": 1.0,
+      "seed": 0,
+      "on": "whole crop (722961 points)",
+      "inliers": 234853,
+      "seconds": 0.473630083957687,
+      "call": "pcd.segment_plane(0.3, 3, 1000, 1.0) after o3d.utility.random.seed(0)"
+    },
+    "array": {
+      "how": "las.xyz - las.header.mins",
+      "dtype": "float64",
+      "layout": "F-contiguous",
+      "smoke_subsample": "seeded (20261015) random 722961 rows, file order"
+    },
+    "snippets": {
+      "loop": {
+        "file": "snippets/s16_loop.py",
+        "source": "a, b, c, d = plane\nh = np.empty(len(P))  # distances\nfor i, p in enumerate(P):\n    x, y, z = p[0], p[1], p[2]\n    h[i] = abs(a*x + b*y + c*z + d)\n",
+        "budget": {
+          "lines": 5,
+          "max_chars": 35,
+          "ok": true,
+          "budget": {
+            "lines": 5,
+            "chars": 35
+          }
+        }
+      },
+      "vectorised": {
+        "file": "snippets/s16_vec.py",
+        "source": "a, b, c, d = plane\nx, y, z = P.T  # columns, no copy\nh = np.abs(a*x + b*y + c*z + d)\n",
+        "budget": {
+          "lines": 3,
+          "max_chars": 33,
+          "ok": true,
+          "budget": {
+            "lines": 3,
+            "chars": 35
+          }
+        }
+      },
+      "run_as": "slide region verbatim, compiled as a function body f(P, plane) returning h"
+    },
+    "matmul_reference": {
+      "expr": "np.abs(P @ (a, b, c) + d)",
+      "equal": false,
+      "max_abs_diff": 1.4210854715202004e-14,
+      "note": "not used in any factor"
+    },
+    "sensitivity": {
+      "loop_numpy_rows_c_contiguous": {
+        "median_ms": 392.7342910319567,
+        "q1_ms": 386.55539602041245,
+        "q3_ms": 396.98745851637796,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 384.0488329879008,
+        "max_ms": 398.71558296727017,
+        "all_ms": [
+          387.8765,
+          384.048833,
+          392.734291,
+          396.369625,
+          398.715583,
+          397.605292,
+          385.234292
+        ],
+        "cpu_over_wall_median": 0.9999759654057206,
+        "warmup_ms": [
+          399.562334
+        ]
+      },
+      "vectorised_c_contiguous": {
+        "median_ms": 2.3332919809035957,
+        "q1_ms": 2.297146013006568,
+        "q3_ms": 2.4218125035986304,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 2.280707994941622,
+        "max_ms": 2.792000013869256,
+        "all_ms": [
+          2.792,
+          2.297667,
+          2.397375,
+          2.296625,
+          2.333292,
+          2.44625,
+          2.280708
+        ],
+        "cpu_over_wall_median": 1.0031915105708378,
+        "warmup_ms": [
+          2.860667
+        ]
+      },
+      "factor_c_contiguous": {
+        "median": 168.31767916155334,
+        "iqr_low": 159.61408880580984,
+        "iqr_high": 172.81768606288543
+      },
+      "loop_numpy_rows_unpack": {
+        "median_ms": 599.915416969452,
+        "q1_ms": 594.9469169718213,
+        "q3_ms": 602.2946870070882,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 589.0207919874229,
+        "max_ms": 748.2305410085246,
+        "all_ms": [
+          603.506916,
+          589.020792,
+          599.915417,
+          601.082458,
+          597.195125,
+          748.230541,
+          592.698709
+        ],
+        "cpu_over_wall_median": 0.9999259612802148,
+        "warmup_ms": [
+          624.532459
+        ]
+      },
+      "unpack_source": "a, b, c, d = plane\nh = np.empty(len(P))  # distances\nfor i, p in enumerate(P):\n    x, y, z = p\n    h[i] = abs(a*x + b*y + c*z + d)\n",
+      "factor_unpack_vs_loop": {
+        "median": 1.5281575147010809,
+        "iqr_low": 1.5053433671054748,
+        "iqr_high": 1.5596184487930131
+      },
+      "tolist": {
+        "median_ms": 85.86495800409466,
+        "q1_ms": 85.27085397508927,
+        "q3_ms": 91.1380420147907,
+        "runs": 7,
+        "threads": 1,
+        "min_ms": 84.31266702245921,
+        "max_ms": 92.93395798886195,
+        "all_ms": [
+          89.411334,
+          85.864958,
+          84.312667,
+          92.86475,
+          85.457292,
+          92.933958,
+          85.084416
+        ],
+        "cpu_over_wall_median": 1.0000857383670823,
+        "warmup_ms": [
+          87.748083
+        ]
+      },
+      "equal": {
+        "loop_python_floats": true,
+        "loop_numpy_rows_c_contiguous": true,
+        "vectorised_c_contiguous": true,
+        "loop_numpy_rows_unpack": true
+      },
+      "note": "C-contiguous = np.ascontiguousarray(P); unpack = the loop with `x, y, z = p`; tolist = cost of P.tolist(), excluded from loop_python_floats"
+    },
+    "snapshots": {
+      "before": {
+        "time_utc": "2026-10-14T04:57:30Z",
+        "load_avg": [
+          4.61,
+          3.58,
+          2.93
+        ],
+        "cpu_temp_c": null,
+        "cpu_freq_mhz_mean": null,
+        "ram_available_gib": null
+      },
+      "after": {
+        "time_utc": "2026-10-14T04:57:49Z",
+        "load_avg": [
+          4.54,
+          3.63,
+          2.96
+        ],
+        "cpu_temp_c": null,
+        "cpu_freq_mhz_mean": null,
+        "ram_available_gib": null
+      }
+    }
+  },
+  "knn": {
+    "n": 722961,
+    "k": 16,
+    "loop": {
+      "median_ms": 10331.369874998927,
+      "q1_ms": 10004.573520534905,
+      "q3_ms": 10824.513312487397,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 9867.792042030487,
+      "max_ms": 12591.96679102024,
+      "all_ms": [
+        9867.792042,
+        10011.53075,
+        10331.369875,
+        10692.235167,
+        12591.966791,
+        10956.791458,
+        9997.616291
+      ],
+      "cpu_over_wall_median": 0.9912375729361895,
+      "warmup_ms": [
+        9901.306375
+      ]
+    },
+    "one_call_1t": {
+      "median_ms": 2430.338083009701,
+      "q1_ms": 2423.9301045017783,
+      "q3_ms": 2860.837749991333,
+      "runs": 7,
+      "threads": 1,
+      "min_ms": 2419.5089580025524,
+      "max_ms": 4759.735332976561,
+      "all_ms": [
+        2430.338083,
+        2422.437084,
+        2425.423125,
+        2446.574625,
+        3275.100875,
+        4759.735333,
+        2419.508958
+      ],
+      "cpu_over_wall_median": 0.9994136590168209,
+      "warmup_ms": [
+        2441.905334
+      ]
+    },
+    "one_call_all": {
+      "median_ms": 533.662292000372,
+      "q1_ms": 501.4939999964554,
+      "q3_ms": 601.9049169844948,
+      "runs": 7,
+      "threads": 8,
+      "min_ms": 452.37104198895395,
+      "max_ms": 733.8268340099603,
+      "all_ms": [
+        474.513208,
+        533.662292,
+        545.385542,
+        452.371042,
+        733.826834,
+        658.424292,
+        528.474792
+      ],
+      "cpu_over_wall_median": 5.737333975999,
+      "warmup_ms": [
+        470.649458
+      ]
+    },
+    "factor_loop_vs_1t": {
+      "median": 4.251001104424403,
+      "iqr_low": 3.4970782668696305,
+      "iqr_high": 4.465687064319167
+    },
+    "factor_loop_vs_all": {
+      "median": 19.359377699842668,
+      "iqr_low": 16.62151818040826,
+      "iqr_high": 21.584532043382186
+    },
+    "factor_1t_vs_all": {
+      "median": 4.55407496358766,
+      "iqr_low": 4.027098028448602,
+      "iqr_high": 5.704630065387729
+    },
+    "per_query_us_far": 3.344208496855572,
+    "per_query_us_typical": 14.669062511529773,
+    "per_query_us_far_knn": 9.451874997466803,
+    "per_point_us_loop": 14.290355738413174,
+    "per_point_us_one_call_1t": 3.3616447955141444,
+    "per_query_desc": {
+      "per_query_us_far": "scipy.spatial.KDTree.query_ball_point(p_far, r=0.5, return_length=True), p_far = local origin + (-10000, -10000, -10000) m, answer 0 neighbours (no tree work beyond the root check); median over 7 timeit repeats of per-call time, gc disabled by timeit",
+      "per_query_us_far_knn": "KDTree.query(p_far, k=16, distance_upper_bound=0.5), same p_far, answer: no neighbour (all distances inf); fixed cost of the call the loop uses",
+      "per_query_us_typical": "KDTree.query(p, k=16) looped over 2000 crop points (seeded random sample, seed 20261016); median per call over 7 repeats",
+      "far": {
+        "median_us": 3.344208496855572,
+        "min_us": 3.268770989961922,
+        "max_us": 3.4200210066046566,
+        "repeat": 7,
+        "calls_per_repeat": 2000,
+        "stmt": "tree.query_ball_point(p_far, r, return_length=True)"
+      },
+      "far_knn": {
+        "median_us": 9.451874997466803,
+        "min_us": 9.339520998764783,
+        "max_us": 9.589416498783976,
+        "repeat": 7,
+        "calls_per_repeat": 2000,
+        "stmt": "tree.query(p_far, k=k, distance_upper_bound=r)"
+      },
+      "typical": {
+        "median_us": 14.669062511529773,
+        "min_us": 14.489666500594467,
+        "max_us": 15.405208512675017,
+        "repeat": 7,
+        "calls_per_repeat": 2000,
+        "stmt": "for p in S: tree.query(p, k=k)"
+      },
+      "far_answer": {
+        "ball_count": 0,
+        "knn_all_inf": true
+      }
+    },
+    "equal_loop_vs_1t": true,
+    "equal_1t_vs_all": true,
+    "build_s": 0.2727663329569623,
+    "threads_all_source": "worker threads observed in /proc/self/task during a workers=-1 call",
+    "tree": "scipy.spatial.KDTree(P) default leafsize, built once, build excluded from every timing",
+    "snapshots": {
+      "before": {
+        "time_utc": "2026-10-14T04:57:50Z",
+        "load_avg": [
+          4.54,
+          3.63,
+          2.96
+        ],
+        "cpu_temp_c": null,
+        "cpu_freq_mhz_mean": null,
+        "ram_available_gib": null
+      },
+      "after": {
+        "time_utc": "2026-10-14T04:59:42Z",
+        "load_avg": [
+          4.72,
+          3.91,
+          3.15
+        ],
+        "cpu_temp_c": null,
+        "cpu_freq_mhz_mean": null,
+        "ram_available_gib": null
+      }
+    }
+  },
+  "script": "bench/bench_cliff.py",
+  "runtime_s": 133.56364595796913
+}

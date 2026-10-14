@@ -1,0 +1,90 @@
+{
+  "checks": "ground counts, determinism, benchmark ratios, binary units, memory formulas, recorded GIL states and thread winner: PASS",
+  "machine": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "current_python": "3.13.5",
+  "pipeline_before": {
+    "ground": {
+      "precision": 0.9816,
+      "recall": 0.9427,
+      "counts": {
+        "true_positives": 247654,
+        "predicted": 252303,
+        "truth": 262712
+      },
+      "against": "AHN class 2, point level, after paint-back"
+    },
+    "buildings": {
+      "precision": 0.8342,
+      "recall": 0.9886,
+      "counts": {
+        "true_positives": 335085,
+        "predicted": 401689,
+        "truth": 338943
+      },
+      "against": "AHN class 6, point level, after paint-back",
+      "note": "AHN puts many facade points in class 1 ('overig'); facades we call buildings count as false positives, so this precision is a lower bound"
+    },
+    "runtime_s": 0.624,
+    "n_clusters": 1024,
+    "n_objects": {
+      "buildings": 58,
+      "vegetation": 683,
+      "street_furniture": 3
+    }
+  },
+  "pipeline_after": {
+    "ground": {
+      "precision": 0.9841,
+      "recall": 0.9437,
+      "counts": {
+        "true_positives": 247912,
+        "predicted": 251926,
+        "truth": 262712
+      },
+      "against": "AHN class 2, point level, after paint-back"
+    },
+    "buildings": {
+      "precision": 0.822,
+      "recall": 0.9886,
+      "counts": {
+        "true_positives": 335085,
+        "predicted": 407637,
+        "truth": 338943
+      },
+      "against": "AHN class 6, point level, after paint-back",
+      "note": "AHN class 1 ('overig') includes facade points and other objects. Predicted buildings outside class 6 count as false positives here; this measures class-6 agreement, not independently validated building precision or a proven lower bound"
+    },
+    "runtime_s": 0.999,
+    "n_clusters": 1026,
+    "n_objects": {
+      "buildings": 58,
+      "vegetation": 681,
+      "street_furniture": 3
+    }
+  },
+  "standalone_retained_for_deck": {
+    "loop_ms": 317.0335899994825,
+    "vectorised_ms": 2.440463002130855,
+    "factor": 129.9071486528045
+  },
+  "profile_scope": {
+    "repeats": 30,
+    "elapsed_s": 11.9,
+    "loop_attributed_s": 10.47676,
+    "vectorised_attributed_ms": 78.53999999999999
+  },
+  "free_threaded_supplement": {
+    "python": "3.14.2",
+    "numpy": "2.5.4",
+    "best_threads": 4,
+    "speedup": 3.350689455102731,
+    "numpy_vs_threads": 66.88553901276798,
+    "limitation": "Supplemental workers ran during other validation work; not an idle-machine final benchmark. Original 3.14.7 unavailable; 3.14.2 used."
+  },
+  "memory_limitations": [
+    "Memory script needs Linux /proc and absent 1 km tile; historical measurement retained.",
+    "Big-file totals are extrapolations, never run. 86 B/point is retained load + voxel memory, not whole classifier peak.",
+    "Chunked processing retains survivors: output memory grows, and first-per-voxel is not Open3D centroid downsampling."
+  ],
+  "final_pipeline_arrays_identical_to_rendered_inputs": true
+}

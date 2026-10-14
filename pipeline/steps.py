@@ -149,6 +149,8 @@ def tiles(P: np.ndarray, size: float) -> list[np.ndarray]:
     """Split points into square tiles of ``size`` metres (plan view, local coordinates). Returns one
     index array per non-empty tile, ordered by tile (x index, then y index); indices ascend inside a
     tile."""
+    if not len(P):
+        return []
     ij = np.floor(P[:, :2] / size).astype(np.int64)
     key = ij[:, 0] * 100_000 + ij[:, 1]
     order = np.argsort(key, kind="stable")
@@ -162,8 +164,8 @@ def remove_ground(pcd: o3d.geometry.PointCloud, tile: float | None = None, param
     ``pcd`` and one ``TilePlane`` per tile. Parameters: ``params`` (default ``GroundParams()``), then
     ``tile`` and any ``GroundParams`` field given as a keyword override it; ``params`` is not modified.
 
-    Utrecht is not flat and has roofs: one plane for the whole 200 m crop misses a lot of ground, so we fit one plane
-    per square tile (``tiles``). Per tile:
+    This crop is nearly flat; tiling also accommodates locally varying terrain.
+    These parameters and the median-height roof check are crop-specific heuristics. Per tile:
 
     1. low-point pre-filter: only points less than ``low_window`` above the ``low_percentile``-th
        percentile of z in the tile go into RANSAC. Without it RANSAC happily fits a large flat roof (the
@@ -174,49 +176,71 @@ def remove_ground(pcd: o3d.geometry.PointCloud, tile: float | None = None, param
        differ (the early stop races between threads).
     3. the plane's inliers are the ground.
 
-    A plausibility check then flags planes tilted more than ``max_tilt_deg`` or more than
+    ``check_planes`` then flags planes tilted more than ``max_tilt_deg`` or more than
     ``max_above_median`` above the median tile plane (a roof that slipped through). A flagged tile
     borrows the plane of the nearest accepted tile, and its ground becomes the pre-filtered points within
-    ``threshold`` of that plane. The slide code (s12) replaces this check with a simpler roof rule;
-    ``snippets/s10_ground.py`` asserts that both give the same mask in every tile the check accepts, and
-    ``results/pipeline.json`` reports the count of flagged tiles.
+    ``threshold`` of that plane. Slide 14 shows this loop and the ``check_planes`` call, so the displayed
+    algorithm and the evaluated mask agree. Local Z is above the crop minimum, not height above terrain;
+    every height test here is relative (to the tile's low percentile or to the median tile plane).
     """
     if tile is not None:
         overrides["tile"] = tile
     p = replace(params or GroundParams(), **overrides)  # raises TypeError for unknown names
     P = np.asarray(pcd.points)
-    T = float(p.tile)
-    ground = np.zeros(len(P), bool)
     o3d.utility.random.seed(p.seed)
-    planes: list[TilePlane] = []
-    members: list[tuple[np.ndarray, np.ndarray]] = []
-    for i in tiles(P, T):  # loop over tiles, never over points
+    fits = []
+    for i in tiles(P, float(p.tile)):  # loop over tiles, never over points
         z0 = float(np.percentile(P[i, 2], p.low_percentile))
         low = i[P[i, 2] < z0 + p.low_window]
         if len(low) < p.ransac_n:  # too few voxels for a plane: leave the tile without ground
             continue
-        sub = pcd.select_by_index(low)
-        plane, inl = sub.segment_plane(p.threshold, p.ransac_n, p.iterations, p.probability)
-        ground[low[np.asarray(inl, dtype=np.int64)]] = True
+        plane, inl = pcd.select_by_index(low).segment_plane(p.threshold, p.ransac_n, p.iterations, p.probability)
+        fits.append((i, low, inl, plane))
+    return check_planes(P, fits, p)
+
+
+def check_planes(P: np.ndarray, fits: list, params: GroundParams | None = None
+                 ) -> tuple[np.ndarray, list[TilePlane]]:
+    """Ground mask from per-tile RANSAC fits, with the plausibility check. ``fits`` holds one
+    ``(i, low, inl, plane)`` per tile: the tile's indices into ``P``, its pre-filtered candidates (indices
+    into ``P``), the inliers (positions in ``low``, as ``segment_plane`` returns them) and the plane.
+    Returns ``(ground, planes)`` as ``remove_ground`` does. ``params`` defaults to ``GroundParams()``.
+    """
+    p = params or GroundParams()
+    T = float(p.tile)
+    ground = np.zeros(len(P), bool)
+    planes: list[TilePlane] = []
+    members: list[tuple[np.ndarray, np.ndarray]] = []
+    for i, low, inl, plane in fits:
+        inl = np.asarray(inl, dtype=np.int64)
+        ground[low[inl]] = True  # inl indexes the sub-cloud; low maps it back to P
+        plane = np.asarray(plane, dtype=float)
         a, b, c, d = (float(v) for v in (plane if plane[2] >= 0 else -plane))
         ij = tuple(int(v) for v in np.floor(P[i[0], :2] / T))
         x0, y0 = ij[0] * T, ij[1] * T
-        zc = -(a * (x0 + T / 2) + b * (y0 + T / 2) + d) / c
+        # A vertical plane has no Z at the tile centre; reject it by tilt.
+        zc = (-(a * (x0 + T / 2) + b * (y0 + T / 2) + d) / c
+              if c > 1e-12 else float("nan"))
         planes.append(TilePlane(ij=ij, bounds=(x0, y0, x0 + T, y0 + T), plane=(a, b, c, d),
                                 n_points=int(len(i)), n_candidates=int(len(low)), n_ground=int(len(inl)),
-                                z_low=z0, z_centre=float(zc), tilt_deg=float(np.degrees(np.arccos(min(c, 1.0))))))
+                                z_low=float(np.percentile(P[i, 2], p.low_percentile)), z_centre=float(zc),
+                                tilt_deg=float(np.degrees(np.arccos(min(c, 1.0))))))
         members.append((i, low))
     # plausibility check: tilted or roof-high planes borrow the nearest accepted plane
-    z_med = float(np.median([pl.z_centre for pl in planes]))
+    heights = [pl.z_centre for pl in planes if np.isfinite(pl.z_centre)]
+    z_med = float(np.median(heights)) if heights else float("nan")
     for pl in planes:
         pl.rejected = pl.tilt_deg > p.max_tilt_deg or pl.z_centre > z_med + p.max_above_median
     good = [pl for pl in planes if not pl.rejected]
     for pl, (i, low) in zip(planes, members):
-        if not pl.rejected or not good:
+        if not pl.rejected:
+            continue
+        ground[i] = False
+        pl.n_ground = 0
+        if not good:  # no plausible neighbour: leave this tile unclassified
             continue
         src = min(good, key=lambda g: ((g.ij[0] - pl.ij[0]) ** 2 + (g.ij[1] - pl.ij[1]) ** 2, g.ij))
         n = np.asarray(src.plane)
-        ground[i] = False
         ground[low[np.abs(P[low] @ n[:3] + n[3]) <= p.threshold]] = True
         pl.plane, pl.borrowed_from = src.plane, src.ij
         pl.n_ground = int(np.count_nonzero(ground[i]))

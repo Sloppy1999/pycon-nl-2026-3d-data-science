@@ -7,7 +7,7 @@ Every function has the shape ``f(slide, box, spec, style, values=None)``:
 * ``spec``   the slide's ``chart`` dict from content.yaml (``bars``, ``axis_title``, ...) plus an
              optional resolved ``alt`` string (tokens already filled in by the builder)
 * ``style``  ``lib.style.STYLE`` (a dict); ``None`` uses it too
-* ``values`` the resolved numbers, one per ``spec["bars"]`` entry, in the bar's unit (ms or GB).
+* ``values`` the resolved numbers, one per ``spec["bars"]`` entry, in the bar's unit (ms or GiB).
              ``None`` entries (or ``values=None``) fall back to a numeric ``bar["value"]`` in the
              spec. If any value is still missing, a visible ``[placeholder]`` text box is drawn
              instead of a chart, naming the missing token, so nothing is invented.
@@ -54,8 +54,8 @@ CHART_PT = 20      # all chart text (data labels, category labels, axis title): 
 FMT_MS_LABEL = '[<10]0.0" ms";[<1000]0" ms";0.0," s"'      # 5.7 ms / 450 ms / 14.9 s
 FMT_MS_AXIS = '[<1000]0" ms";0," s"'                        # 1 ms, 10 ms, ..., 1 s, 10 s
 FMT_MS_AXIS_SUB = '[<1]0.###" ms";[<1000]0" ms";0," s"'     # axis starting below 1 ms
-FMT_GB = '0.0" GB"'
-FMT_GB_INT = '0" GB"'
+FMT_GB = '0.0" GiB"'
+FMT_GB_INT = '0" GiB"'
 
 
 # ------------------------------------------------------------------------------------------
@@ -377,7 +377,7 @@ def add_column_log(slide, box, spec, style=None, values=None):
 
 
 # ------------------------------------------------------------------------------------------
-# Slide 20: horizontal bar chart in GB
+# Slide 20: horizontal bar chart in GiB
 # ------------------------------------------------------------------------------------------
 
 def _nice(target: float) -> float:
@@ -399,7 +399,7 @@ def _bar_axis_max(labels, vals, int_idx, box_w_in: float, no_label=None) -> floa
     for i, v in enumerate(vals):
         if no_label is not None and i in no_label:
             continue
-        txt = f"{v:.0f} GB" if i in int_idx else f"{v:.1f} GB"
+        txt = f"{v:.0f} GiB" if i in int_idx else f"{v:.1f} GiB"
         share = min(0.6, (_width_in(txt, CHART_PT) + 0.15) / plot_w)
         need = max(need, v / (1.0 - share))
     return _nice(need)
@@ -449,12 +449,12 @@ def _xml_attr(s: str) -> str:
 
 
 def add_bar_gb(slide, box, spec, style=None, values=None):
-    """Native horizontal bar chart in GB, categories top to bottom in content order.
+    """Native horizontal bar chart in GiB, categories top to bottom in content order.
 
     spec keys: ``bars`` [{label, value, kind?: "reference", highlight?}], optional ``alt``,
     ``name`` (default "chart_memory"), ``gap_width`` (default 45), ``axis_max_gb``.
     Reference bars (RAM) are navy with whole-GB labels, computed bars grey, the highlighted
-    bar blue; labels "0.0 GB". No value axis is drawn: the data labels carry the numbers.
+    bar blue; labels "0.0 GiB". No value axis is drawn: the data labels carry the numbers.
     """
     st = Style(style)
     alt = spec.get("alt")
@@ -468,7 +468,7 @@ def add_bar_gb(slide, box, spec, style=None, values=None):
     l, t, w, h = box
     cd = CategoryChartData(number_format="0.0")
     cd.categories = [b["label"] for b in bars]
-    cd.add_series(spec.get("series_name", "GB (2^30 bytes)"), vals)   # workbook header: binary GB
+    cd.add_series(spec.get("series_name", "GB (2^30 bytes)"), vals)   # workbook header: binary GiB
     gf = slide.shapes.add_chart(XL_CHART_TYPE.BAR_CLUSTERED, Emu(l), Emu(t), Emu(w), Emu(h), cd)
     ch = gf.chart
     ch.has_legend = False
@@ -503,10 +503,10 @@ def add_bar_gb(slide, box, spec, style=None, values=None):
     dl.font.size = Pt(CHART_PT)
     dl.font.name = st.minor
     dl.font.color.rgb = st.text
-    # reference bars (RAM) whose category label already names the value ("RAM, 16 GB machine") get no data
+    # reference bars (RAM) whose category label already names the value ("RAM, 16 GiB machine") get no data
     # label; other reference bars get a whole-GB label
     unlabelled = {i for i, b in enumerate(bars)
-                  if b.get("kind") == "reference" and f"{vals[i]:g} GB" in str(b.get("label", ""))}
+                  if b.get("kind") == "reference" and f"{vals[i]:g} GiB" in str(b.get("label", ""))}
     for i, b in enumerate(bars):
         if i in unlabelled:
             _point_dlbl_delete(ser._element, i)
@@ -525,7 +525,7 @@ def add_bar_gb(slide, box, spec, style=None, values=None):
     va.visible = False
 
     if spec.get("threshold_gb") is not None:
-        # fixed inner plot box (c:manualLayout), so the caller can draw a threshold line at an exact GB value:
+        # fixed inner plot box (c:manualLayout), so the caller can draw a threshold line at an exact GiB value:
         # category labels in the left cat_w, the bars in the rest; geometry handed back in spec["_plot_in"]
         w_in, h_in = w / EMU_IN, h / EMU_IN
         cat_w = max(_width_in(line, CHART_PT) for b in bars for line in str(b["label"]).split("\n")) + 0.25
@@ -610,7 +610,7 @@ def add_memory_trace(slide, box, spec, style=None, values=None):
     va.major_unit = float(spec.get("y_major", 1.0))
     ca.minimum_scale, ca.maximum_scale = 0.0, float(spec.get("x_max", math.ceil(xmax)))
     ca.major_unit = float(spec.get("x_major", 2.0))
-    for ax, title, fmt in ((va, spec.get("axis_title"), '0" GB"'), (ca, spec.get("time_title"), spec.get("time_fmt", '0" s"'))):
+    for ax, title, fmt in ((va, spec.get("axis_title"), '0" GiB"'), (ca, spec.get("time_title"), spec.get("time_fmt", '0" s"'))):
         ax.has_major_gridlines = False
         ax.has_minor_gridlines = False
         ax.major_tick_mark = XL_TICK_MARK.OUTSIDE

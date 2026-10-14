@@ -104,7 +104,10 @@ def run_block(title: str, variants: list[tuple[str, object, int]], runs: int, wa
 def threads_during(fn) -> tuple[object, int]:
     """Run fn once while sampling /proc/self/task; return its output and the peak number of extra threads."""
     def count() -> int:
-        return len(os.listdir("/proc/self/task"))
+        if Path("/proc/self/task").exists():
+            return len(os.listdir("/proc/self/task"))
+        import psutil
+        return psutil.Process().num_threads()
     stop, peak = threading.Event(), [0]
 
     def sample():
@@ -272,7 +275,7 @@ def main() -> int:
     build_s = time.perf_counter() - t0
     _, extra_threads = threads_during(lambda: tree.query(P, k=K, workers=-1))
     threads_all = extra_threads if extra_threads > 1 else (os.cpu_count() or 1)
-    threads_src = ("worker threads observed in /proc/self/task during a workers=-1 call"
+    threads_src = ("worker threads observed via /proc/self/task (Linux) or psutil (other OS) during a workers=-1 call"
                    if extra_threads > 1 else "os.cpu_count() (no threads observed: call too short to sample)")
     knn_variants = [
         ("loop", lambda: knn_loop(tree, P, K), 1),

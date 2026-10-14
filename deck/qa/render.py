@@ -41,9 +41,16 @@ from lib.style import hex_of  # noqa: E402
 
 
 def _soffice(args: list[str]) -> subprocess.CompletedProcess:
-    sys.path.insert(0, str(SKILL_OFFICE))
-    from soffice import run_soffice  # the skill's wrapper (headless, sandbox shim, private profile)
-    return run_soffice(args, capture_output=True, text=True, timeout=600)
+    if (SKILL_OFFICE / "soffice.py").exists():
+        sys.path.insert(0, str(SKILL_OFFICE))
+        from soffice import run_soffice
+        return run_soffice(args, capture_output=True, text=True, timeout=600)
+    binary = shutil.which("soffice") or "/Applications/LibreOffice.app/Contents/MacOS/soffice"
+    if not Path(binary).exists():
+        raise RuntimeError("LibreOffice is required to regenerate the PDF")
+    profile = (OUT / ".lo-profile").as_uri()
+    return subprocess.run([binary, f"-env:UserInstallation={profile}", *args],
+                          capture_output=True, text=True, timeout=600)
 
 
 def to_pdf(pptx: Path, out_pdf: Path, *, hidden: bool) -> float:
@@ -67,6 +74,16 @@ def to_png(pdf: Path) -> list[Path]:
     if PNG.exists():
         shutil.rmtree(PNG)
     PNG.mkdir(parents=True)
+    if not shutil.which("pdftoppm"):
+        import pymupdf
+        with pymupdf.open(pdf) as doc:
+            files = []
+            for i, page in enumerate(doc):
+                dst = PNG / f"slide-{i + 1:02d}.png"
+                page.get_pixmap(matrix=pymupdf.Matrix(W_PX / page.rect.width,
+                                                      W_PX / page.rect.width)).save(dst)
+                files.append(dst)
+        return files
     subprocess.run(["pdftoppm", "-png", "-scale-to-x", str(W_PX), "-scale-to-y", "-1", str(pdf),
                     str(PNG / "slide")], check=True)
     files = sorted(PNG.glob("slide-*.png"))
@@ -107,8 +124,10 @@ def contact_sheet(pngs: list[Path], labels: list[str], cols: int = 4, thumb_w: i
 def fonts_in_pdf(pdf: Path) -> list[str]:
     try:
         res = subprocess.run(["pdffonts", str(pdf)], capture_output=True, text=True, check=True)
-    except Exception:
-        return ["pdffonts not available"]
+    except FileNotFoundError:
+        import pymupdf
+        with pymupdf.open(pdf) as doc:
+            return sorted({f[3].split("+")[-1] for page in doc for f in page.get_fonts()})
     names = set()
     for line in res.stdout.splitlines()[2:]:
         if line.strip():
@@ -129,7 +148,8 @@ def main():
     (OUT / ".fccache").mkdir(parents=True, exist_ok=True)
     (OUT / ".fonts.generated.conf").write_text(conf)
     os.environ["FONTCONFIG_FILE"] = str(OUT / ".fonts.generated.conf")
-    subprocess.run(["fc-cache", "-f"], env=dict(os.environ), capture_output=True)
+    if shutil.which("fc-cache"):
+        subprocess.run(["fc-cache", "-f"], env=dict(os.environ), capture_output=True)
     report = {"fontconfig": str(QA / "fonts.conf"), "fontconfig_generated": os.environ["FONTCONFIG_FILE"],
               "font_notes": notes}
     report["seconds_pdf_all"] = round(to_pdf(pptx, OUT / "qa_all.pdf", hidden=True), 1)
