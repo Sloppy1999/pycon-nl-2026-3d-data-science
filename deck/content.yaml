@@ -9,9 +9,9 @@
 # build: which builder method draws the slide (deck/build_deck.py slide_<build>), so slide numbers can change freely.
 #   fmt  = int   -> 1 239 310 (no-break spaces)             pct  -> 94 %      pct1 -> 93.7 %
 #          f1/f2 -> 1 or 2 decimals   x -> 79×  (integer, rounded)   ms -> 15 µs / 5.7 ms / 450 ms / 14.9 s
-#          ns -> 450 ns   ns1 -> 3.5 ns   us1 -> 3.0 µs   gb -> 27.8 GB (value already in GiB)   gb1 -> MiB value shown as 3.3 GB
+#          ns -> 450 ns   ns1 -> 3.5 ns   us1 -> 3.0 µs   gb -> 27.8 GiB (value already in GiB)   gb1 -> MiB value shown as 3.3 GiB
 #          mb -> 985 MB   m -> 0.5 m   cm -> 1.6 cm (value in m)   s1 -> 2.8 s (value in s)   nb -> string on one line.
-#          Memory: 1 GB = 2^30 bytes (stated in small print).
+#          Memory: 1 GiB = 2^30 bytes (stated in small print).
 # A token whose value is missing renders as a visible [placeholder] and is listed by qa/checks.py.
 # [Square brackets] in literal text are deliberate placeholders for the speaker (open items).
 #
@@ -84,6 +84,7 @@ slides:
             output: "{snippets.s02_python.py.output_line|nb}"}
     alt: "Two code blocks. Left, greyed out: loading a point cloud and voxel downsampling it with PCL in C++. Right: the same two operations in two lines of Python with Open3D."
     note: "Why the counts differ: both average the points in each 0.5 m voxel, but the grids sit in different places. PCL anchors its voxels at multiples of the leaf size; Open3D at the minimum corner minus half a voxel."
+    small_print: "C++ output: recorded Linux / PCL run; not rerun on this machine."
     seconds: 35
 
   - n: 3
@@ -272,9 +273,8 @@ slides:
       - {code: "pv.PolyData(pts)", kind: view, verify: facts.polydata.shares_memory_open3d_view, text: "same memory as pts"}
     pills: {copy: "copy", view: "view"}
     # 24 B per point measured for the float64 xyz on the 1 km AHN file (results/memory.json); × 21 013 926 points
-    # = 0.47 GB (1 GB = 2^30 B)
-    takeaway: "Every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point → 0.5 GB per 1 km AHN file."
-    note: "Why 24 B? x, y and z are three float64 values: 3 × 8 B."
+    # = 0.47 GiB (1 GiB = 2^30 B)
+    takeaway: "An extra xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point → 0.5 GiB per 1 km file."
     row_h_in: 0.44
     row_gap_in: 0.08
     code_pt: 18
@@ -282,7 +282,7 @@ slides:
     conditions: facts
     conditions_short: true
     conditions_note: "Copy or view: checked by writing to one side and reading the other, and with np.shares_memory. float32: Vector3dVector of a float32 copy, {facts.timings.v3d_float32.median_ms|ms}, against the float64 xyz of slide 12, {facts.timings.v3d_float64_f.median_ms|ms}."
-    alt: "Takeaway: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point, 0.5 GB per 1 km AHN file. The problem, copies: two names, each on its own block of memory; new memory costs time and RAM. The solution, views: two names on one block; same memory, free, writes show through. Below, four rows, one per hand-off between the libraries. las.xyz: copy, a new array on every access. Vector3dVector of xyz: copy, and {facts.factor_v3d_float32_vs_float64_f.median|x} slower for float32 input. np.asarray of pcd.points: view, writes reach the point cloud. pv.PolyData of pts: view, the same memory as pts."
+    alt: "Takeaway: every unnecessary xyz copy costs {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point, 0.5 GiB per 1 km AHN file. The problem, copies: two names, each on its own block of memory; new memory costs time and RAM. The solution, views: two names on one block; same memory, free, writes show through. Below, four rows, one per hand-off between the libraries. las.xyz: copy, a new array on every access. Vector3dVector of xyz: copy, and {facts.factor_v3d_float32_vs_float64_f.median|x} slower for float32 input. np.asarray of pcd.points: view, writes reach the point cloud. pv.PolyData of pts: view, the same memory as pts."
     seconds: 70
 
   - n: 11
@@ -344,8 +344,8 @@ slides:
     title: "3 Ground removal: one plane per tile"
     code: {snippet: s10_ground.py}
     visual: {kind: render, file: f3_ground.png, frame: l7}
-    support: "Scored against AHN's ground:\n{pipeline.ground.precision|pct} precision, {pipeline.ground.recall|pct} recall."
-    takeaway: "Fit one plane per tile;\nroofs get none."
+    support: "Vs AHN's ground class:\n{pipeline.ground.precision|pct1} precision, {pipeline.ground.recall|pct1} recall."
+    takeaway: "One plane per tile,\nchecked against its neighbours."
     source: ahn
     # joke (notes slide 14): the Zen of Python line "Flat is better than nested." (checked by snippets/s10b_zen.py)
     # is spoken now; its on-slide REPL callout was dropped on 2026-10-12, because the step sketch takes the top of
@@ -400,30 +400,18 @@ slides:
     seconds: 40
 
   - n: 18
-    build: summary
+    build: split_renders
     section: Pipeline
-    layout: 7
+    layout: 4
     transition: fade
     title: "What the six steps did"
-    # 2026-10-12, speaker: a better summary of what has been done. The end of the Morph chain: same render and chips
-    # as slide 17, the seven calls (snippets/s14_pipeline.py, still in the repo and in the notes) replaced by one row
-    # per step: the library, what came out, and the step's time (results/pipeline.json timings_s, one run,
-    # indicative; Load is laspy.read only, the copy into Open3D is in the notes).
-    table:
-      columns: ["Step", "Library", "Result", "Time"]
-      rows:
-        - ["Load", "laspy", "{pipeline.points_in|int} points", "{pipeline.timings_s.load|sms}"]
-        - ["Voxels", "Open3D", "{pipeline.points_after_voxel|int} voxels", "{pipeline.timings_s.downsample|sms}"]
-        - ["Ground", "Open3D", "{pipeline.ground.precision|pct} precision", "{pipeline.timings_s.remove_ground|sms}"]
-        - ["Clusters", "Open3D", "{pipeline.n_clusters|int} clusters", "{pipeline.timings_s.cluster|sms}"]
-        - ["Labels", "NumPy", "4 classes", "{pipeline.timings_s.label|sms}"]
-        - ["Paint-back", "SciPy", "all points", "{pipeline.timings_s.paint_back|sms}"]
-      alt: "Table, one row per step. Load, laspy: {pipeline.points_in|int} points, {pipeline.timings_s.load|sms}. Voxels, Open3D: {pipeline.points_after_voxel|int} voxels, {pipeline.timings_s.downsample|sms}. Ground, Open3D: {pipeline.ground.precision|pct} precision, {pipeline.timings_s.remove_ground|sms}. Clusters, Open3D: {pipeline.n_clusters|int} clusters, {pipeline.timings_s.cluster|sms}. Labels, NumPy: 4 classes, {pipeline.timings_s.label|sms}. Paint-back, SciPy: all points labelled, {pipeline.timings_s.paint_back|sms}."
-    visual: {kind: render, file: f6_final.png, frame: l7}
-    labels_from: f6_final
-    support: "{pipeline.runtime_s|f1} s from file to labels, and no loop over points."
+    visual: {kind: side_by_side, files: [f1_load.png, f6_final.png]}
+    split_captions: ["Original scan", "Pipeline labels"]
+    legend: [ground, buildings, vegetation, street_furniture, unlabelled]
+    legend_side: true    # 2026-10-14: legend and result line beside the renders, so both renders use the full body height
+    support: "{pipeline.points_in|int} points in {pipeline.runtime_s|f1} s, one run.\nGround vs AHN: {pipeline.ground.precision|pct1} precision, {pipeline.ground.recall|pct1} recall."
     source: ahn
-    alt: "The final labelled area, same view as slides 12 to 17: ground, buildings, vegetation and street furniture painted back onto all {pipeline.points_in|int} points, each class labelled directly."
+    alt: "Same camera and scale: original scan on the left, measured pipeline labels on the right, including unlabelled points. Runtime is indicative; ground agreement is scored after paint-back."
     seconds: 65
 
   - n: 19
@@ -516,7 +504,6 @@ slides:
     hero: {value: "{bench.plane.factor.median|x}", label: "slower", build_on_click: true}   # "same answer" is in the support line
     # NumPy-level operations per procedure, counted with dis on the snippets (3.13 bytecode): loop body per row = 3 element
     # reads + 6 arithmetic + abs + row view + store = 12; the expression = 6 arithmetic + abs = 7, once for all rows
-    ops: {loop_per_row: 12, vectorised: 7, loop_label: "Loop", vec_label: "One expression"}
     support: "Same data, same answer, far fewer calls into compiled code."
     # the array the factor holds for (appended to the Conditions line)
     conditions_note: "Array: {bench.plane.array.how|nb}, {bench.plane.array.dtype}, column-ordered as laspy returns it; on a row-ordered copy the factor is {bench.plane.sensitivity.factor_c_contiguous.median|x}."
@@ -531,13 +518,13 @@ slides:
     section: Performance
     layout: 4
     transition: fade
-    title: "Every trip into compiled code pays a toll"
-    visual: {kind: toll_diagram, loop_code: "for p in pts: f(p)", call_code: "f(pts)", lane_top: "Python", lane_bottom: "compiled code", times: "× N", toll_label: "", caption_loop: "N trips: {bench.plane.loop_numpy_rows.median_ms|ms}", caption_call: "1 trip: {bench.plane.vectorised.median_ms|ms}", legend_toll: "toll per crossing", legend_work: "work in compiled code", legend_arrow: "call and return"}   # no word label: the blue toll ticks and the title carry "toll" (body ~20 words)
-    hero: {value: "{bench.plane.per_step_ns_loop|ns}", label: "per loop step"}
+    title: "Batch calls into compiled code"
+    visual: {kind: toll_diagram, loop_code: "for p in pts: f(p)", call_code: "f(pts)", lane_top: "Python", lane_bottom: "compiled code", times: "× N", toll_label: "", caption_loop: "N trips: {bench.plane.loop_numpy_rows.median_ms|ms}", caption_call: "Array operations: {bench.plane.vectorised.median_ms|ms}", legend_toll: "toll per crossing", legend_work: "work in compiled code", legend_arrow: "call and return"}   # no word label: the blue toll ticks and the title carry "toll" (body ~20 words)
+    hero: {value: "{bench.plane.per_step_ns_loop|ns}", label: "per full loop step"}
     takeaway: "Prefer one call on the whole array over N calls on single points."
     # how the per-call cost was measured (appended to the Conditions line; brief: conditions for every benchmark)
     # distance_upper_bound: its value is stored only inside a description string in bench_cliff.json, so it is not printed
-    conditions_note: "KDTree query: SciPy KDTree.query with k\u00a0=\u00a0{bench.knn.k|int} and distance_upper_bound, one query point far outside the cloud (no neighbour found), median of {bench.knn.per_query_desc.far_knn.repeat|int} timeit repeats of {bench.knn.per_query_desc.far_knn.calls_per_repeat|int} calls."
+    conditions_note: "Loop-step time includes indexing and arithmetic, not just call overhead. The NumPy expression makes several array operations; the diagram shows the batching principle."
     conditions: bench
     conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
     alt: "Diagram: a Python lane above a dashed boundary and a compiled-code lane below. On the left a loop crosses the boundary many times, paying a toll each time, marked by blue ticks on the boundary. On the right one call crosses once and does all the work below the line."
@@ -565,6 +552,10 @@ slides:
         - {tag: "NumPy", line: vectorised, gap: true, key: true}
       alt: "Per-line CPU profile from Scalene. For the loop version, the for line and the line that unpacks a row show 0 %, and the line that computes the distance takes {prof.lines.loop_body.total|int} % of the whole run, almost all of it native NumPy time and about {prof.lines.loop_body.python|int} % in the Python interpreter. The one-expression NumPy version takes {prof.lines.vectorised.total|f1} %."
     support: "The loop's last line takes {prof.lines.loop_body.total|int} % of the run. As one NumPy expression: {prof.lines.vectorised.total|f1} %."
+    # 2026-10-14: the times are totals over prof.repeats calls (share × elapsed_s); per call (deck/lib/tokens.py
+    # Resolver._derive) they land near slide 22's standalone medians. The remaining gap is not attributed: profiler
+    # overhead was not isolated.
+    note: "Times are totals over {prof.repeats|int} calls of each version: about {prof.per_call_ms.loop_body|ms} and {prof.per_call_ms.vectorised|ms} per call under the profiler, against {bench.plane.loop_numpy_rows.median_ms|ms} and {bench.plane.vectorised.median_ms|ms} timed alone (slide 22). Profile to find the line; benchmark to measure the gain."
     conditions: scalene_cpu
     seconds: 55
 
@@ -581,21 +572,23 @@ slides:
       kind: column_log
       unit: ms
       bars:
-        # three bars, all on the free-threaded build (four did not fit the frame at 20 pt); the GIL build's
-        # threads are in the support line and the conditions note
-        - {label: "Loop,\n1 thread", value: "ft.builds.free_threaded.timings.loop.median_ms"}
-        - {label: "Loop,\nthreads", value: "ft.builds.free_threaded.timings.threads_8.median_ms", highlight: true}
-        - {label: "NumPy,\n1 call", value: "ft.builds.free_threaded.timings.vectorised.median_ms"}
+        # 2026-10-14: four bars, so the GIL claim in the support line is on the chart. Loop and NumPy on the
+        # free-threaded build; "With GIL" is the default 3.14.7 build, same loop over 8 threads (both builds measured
+        # in the same script, same input, outputs checked equal). Labels of at most 6 characters per line: the L7
+        # media box gives each of four categories about 1 in at 20 pt; ×8 = 8 threads (hero and support line say so)
+        - {label: "Loop", value: "ft.builds.free_threaded.timings.loop.median_ms"}
+        - {label: "GIL\n×8", value: "ft.builds.gil.timings.threads_8.median_ms"}
+        - {label: "No GIL\n×8", value: "ft.builds.free_threaded.timings.threads_8.median_ms", highlight: true}
+        - {label: "1 call", value: "ft.builds.free_threaded.timings.vectorised.median_ms"}   # "NumPy" wraps at 20 pt; the support line names it
       axis_title: "Median time per run, log scale"
       axis_max_ms: 1000          # the slowest bar is under 1 s: no empty decade above it
     hero: {value: "{ft.summary.ft_speedup_best_vs_loop.median|x}", label: "faster on {ft.summary.best_threads_ft|int} free threads"}
     # calls per procedure as on slide 22 (12 per row in the loop body, 7 for the expression); threads split the rows, not the calls
-    ops: {loop_per_row: 12, vectorised: 7, loop_label: "Loop", threads: "ft.summary.best_threads_ft", threads_label: "threads", vec_label: "NumPy"}
-    support: "With the GIL, threads gain nothing; one NumPy call is still {ft.summary.ft_vectorised_vs_best_threads.median|x} faster."
+    support: "×{ft.summary.best_threads_ft|int}: {ft.summary.best_threads_ft|int} threads. With the GIL, no gain. One NumPy call is {ft.summary.ft_vectorised_vs_best_threads.median|x} faster still."
     conditions: ft
     conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
     conditions_note: "Loop: the slide 21 loop. Threads: the same loop body over N slices of P, concurrent.futures.ThreadPoolExecutor. Default build with the GIL: loop {ft.builds.gil.timings.loop.median_ms|ms}, {ft.summary.best_threads_ft|int} threads {ft.builds.gil.timings.threads_8.median_ms|ms}."
-    alt: "Column chart on a logarithmic time axis, on the free-threaded build: the loop on one thread takes {ft.builds.free_threaded.timings.loop.median_ms|ms}; the same loop split over {ft.summary.best_threads_ft|int} threads takes {ft.builds.free_threaded.timings.threads_8.median_ms|ms}; one NumPy expression on one thread takes {ft.builds.free_threaded.timings.vectorised.median_ms|ms}. With the GIL, the {ft.summary.best_threads_ft|int} threads take {ft.builds.gil.timings.threads_8.median_ms|ms}."
+    alt: "Column chart on a logarithmic time axis. On the free-threaded build: the loop on one thread takes {ft.builds.free_threaded.timings.loop.median_ms|ms}; the same loop split over {ft.summary.best_threads_ft|int} threads takes {ft.builds.free_threaded.timings.threads_8.median_ms|ms}; one NumPy expression on one thread takes {ft.builds.free_threaded.timings.vectorised.median_ms|ms}. With the GIL, the {ft.summary.best_threads_ft|int} threads take {ft.builds.gil.timings.threads_8.median_ms|ms}."
     seconds: 50
 
   - n: 26
@@ -603,27 +596,29 @@ slides:
     section: RAM
     layout: 8
     transition: fade
-    title: "Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GB"   # every loaded state on the chart, not the LAS records alone
+    title: "Loading this area's AHN file outgrows {memory.ram_reference_gb.1|int} GiB"   # every loaded state on the chart, not the LAS records alone
     chart:
       kind: bar_gb
       bars:
         # "\n": two-line category labels, so the plot gets more of the chart width (RAM bars on one line each)
-        - {label: "{memory.ram_reference_gb.1|int} GB RAM", value: "memory.ram_reference_gb.1", kind: reference}
+        - {label: "{memory.ram_reference_gb.1|int} GiB RAM", value: "memory.ram_reference_gb.1", kind: reference}
         - {label: "LAS records\n(computed)", value: "memory.big_file.computed_gb.las_records"}
         - {label: "+ float64 xyz\n(computed)", value: "memory.big_file.computed_gb.plus_xyz"}
-        - {label: "Our pipeline\n(computed)", value: "memory.big_file.computed_gb.our_pipeline", highlight: true}
-        # my approach (appendix B2): measured on the 1 km file, so a different file from the bars above; MiB × 1/1024 = GiB
-        - {label: "Chunked, 1 km file\n(measured)", value: "memory.tile_1km.chunked_peak_mb", scale: 0.0009765625, highlight: true}
-      threshold: "memory.ram_reference_gb.1"   # dashed line at the 32 GB RAM bar's end, across the bars below it
-    hero: {value: "{memory.tile_1km.bytes_per_point.pipeline_retained|int} B", label: "per point in our pipeline"}
-    support: "{memory.big_file.points|int} points × {memory.tile_1km.bytes_per_point.pipeline_retained|int} B each."
+        - {label: "Load + voxels\n(extrapolated)", value: "memory.big_file.computed_gb.our_pipeline", highlight: true}
+        # 2026-10-14: the last two bars are a measured pair on the 1 km file (21 013 926 points), so the chunked peak is
+        # compared with its own load-everything peak, not with the extrapolated big-file bars; MiB × 1/1024 = GiB
+        - {label: "Load + voxels,\n1 km (measured)", value: "memory.tile_1km.naive_peak_mb", scale: 0.0009765625}
+        - {label: "Chunked,\n1 km (measured)", value: "memory.tile_1km.chunked_peak_mb", scale: 0.0009765625, highlight: true}
+      threshold: "memory.ram_reference_gb.1"   # dashed line at the 32 GiB RAM bar's end, across the bars below it
+    hero: {value: "{memory.tile_1km.bytes_per_point.pipeline_retained|int} B", label: "retained per input point"}
+    support: "{memory.big_file.points|int} points × ≈{memory.tile_1km.bytes_per_point.pipeline_retained|int} B each."
     # note box under the support line: why 86 B and not the 24 B of one xyz array (bytes_per_point, 1 km file)
-    note: "Why not 24 B? Each point is held several times: LAS record {memory.tile_1km.bytes_per_point.laspy_read_retained|int} B + float64 xyz {memory.tile_1km.bytes_per_point.xyz_float64|int} B + Open3D copy {memory.tile_1km.bytes_per_point.open3d_points|int} B + the downsampled cloud and the rest."
+    note: "Big-file bars are computed, never run: load + voxels, arrays kept, temporaries excluded (with them: {memory.big_file.computed_gb_extra.our_pipeline_peak|gb}). The 1 km bars are measured peaks on one smaller file."
     # joke line (notes slide 26), 20 pt slate under the small print: the RAM of the machine everything ran on
-    machine_line: "It works on my machine ({memory.conditions.ram_gib|f1} GiB RAM): I stream the file in chunks and keep one point per voxel."
+    machine_line: "Stream chunks to fit within RAM."
     conditions: memory
     conditions_short: true      # 2026-10-12, speaker: concise conditions; the full line is in the notes
-    alt: "Horizontal bar chart in gigabytes for one {research.ahn5_c_31hz2.width_km|f2t} by {research.ahn5_c_31hz2.height_km|f2t} km AHN5 file with {memory.big_file.points|int} points: a reference bar for {memory.ram_reference_gb.1|int} GB of RAM, then LAS records at {memory.big_file.computed_gb.las_records|gb}, plus a float64 copy of the coordinates at {memory.big_file.computed_gb.plus_xyz|gb}, and our load and voxel downsampling steps (slides 12 and 13), all arrays kept, at {memory.big_file.computed_gb.our_pipeline|gb}; a dashed line continues the end of the {memory.ram_reference_gb.1|int} GB bar down across the data bars; the three data bars are computed, not run; a last, short bar shows the peak of the chunked approach, {memory.tile_1km.chunked_peak_mb|gb1}, measured on the 1 km file."
+    alt: "Horizontal bar chart in gibibytes for one {research.ahn5_c_31hz2.width_km|f2t} by {research.ahn5_c_31hz2.height_km|f2t} km AHN5 file with {memory.big_file.points|int} points: a reference bar for {memory.ram_reference_gb.1|int} GiB of RAM, then LAS records at {memory.big_file.computed_gb.las_records|gb}, plus a float64 copy of the coordinates at {memory.big_file.computed_gb.plus_xyz|gb}, and our load and voxel downsampling steps (slides 12 and 13), all arrays kept, at {memory.big_file.computed_gb.our_pipeline|gb}; a dashed line continues the end of the {memory.ram_reference_gb.1|int} GiB bar down across the data bars; the three data bars are computed, not run; then two measured peaks on the smaller 1 km file: loading everything and downsampling, {memory.tile_1km.naive_peak_mb|gb1}, and the chunked approach, {memory.tile_1km.chunked_peak_mb|gb1}."
     seconds: 55
 
   - n: 27
@@ -635,8 +630,8 @@ slides:
     # the four rules of slide 8 again, each with the evidence the talk measured for it (tokens from results/*.json)
     # and the slides it comes from; replaces the old "Three habits" tiles and the "Loop over tiles" statement slide
     rules:
-      - {head: "Think in arrays, not points", evidence: "{pipeline.crop.points|int} × 3, as views", ref: "slides 6, 11"}
-      - {head: "Look before you compute", evidence: "{bgt.collections.paal.n|int} poles on the map, {pipeline.n_objects.street_furniture|int} found", ref: "slides 19, 26"}
+      - {head: "Think in arrays, not points", evidence: "{pipeline.crop.points|int} × 3, as views", ref: "slides 10, 12"}
+      - {head: "Look before you compute", evidence: "{bgt.collections.paal.n|int} poles on the map, {pipeline.n_objects.street_furniture|int} found", ref: "slides 19, 20"}
       - {head: "Make it small first", evidence: "{memory.tile_1km.naive_peak_mb|gb1} → {memory.tile_1km.chunked_peak_mb|gb1} peak", ref: "slides 13, 26"}
       - {head: "Let compiled code loop", evidence: "{bench.plane.factor.median|x} faster than a loop", ref: "slides 21 to 25"}
     alt: "The four rules of thumb again, each with its evidence from the talk. Think in arrays, not points: {pipeline.crop.points|int} by 3, passed on as views. Look before you compute: {bgt.collections.paal.n|int} poles on the map, {pipeline.n_objects.street_furniture|int} found. Make it small first: {memory.tile_1km.naive_peak_mb|gb1} to {memory.tile_1km.chunked_peak_mb|gb1} peak memory. Let compiled code loop: {bench.plane.factor.median|x} faster than a loop over rows."
@@ -653,7 +648,6 @@ slides:
     logo: {file: assets/pycon_nl_2026_logo.png, alt: "PyCon NL 2026 logo: the Python snakes filled with a Dutch canal house, tulips and a windmill"}   # supplied by the speaker, 2026-10-04
     small_print:
       - ahn_licence        # the AHN source line plus meta.licence_line (readable licence URI)
-      - "[Optional: Title shared with F. Poux, 3D Data Science with Python, O'Reilly 2025; this talk is independent.]"
     # callback to the coffee of the abstract and slide 1 (joke, notes slide 28), small sage type under the title
     callback: "To the Python community and to everyone here today."
     alt: "Closing slide: Thank you to the Python community and all attendees. QR code to the repository, contact details."

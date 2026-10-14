@@ -40,6 +40,7 @@ TALK = DECK.parent
 sys.path.insert(0, str(DECK))
 
 from PIL import Image  # noqa: E402
+from pptx.dml.color import RGBColor
 from pptx import Presentation  # noqa: E402
 from pptx.enum.shapes import MSO_SHAPE  # noqa: E402
 from pptx.enum.dml import MSO_LINE_DASH_STYLE  # noqa: E402
@@ -489,7 +490,7 @@ class Builder:
         text = (f"Conditions: {cpu}, {vers}; {n_pts} points, {run_part}; {data} (CC BY 4.0). "
                 f"Full: {self.RESULT_FILES[kind]}.")
         if kind == "memory":
-            text = text.replace(" Full:", " 1\u00a0GB\u00a0=\u00a02³⁰\u00a0B. Full:")
+            text = text.replace(" Full:", " 1\u00a0GiB\u00a0=\u00a02³⁰\u00a0B. Full:")
         return text + self._label_suffix(kind)
 
     def _conditions_text(self, kind: str, plane_threads: bool = False) -> str:
@@ -592,7 +593,7 @@ class Builder:
         text = "; ".join(parts) + "."
         if kind == "memory":
             # memory figures are increases over the process after its imports (memory.json tile_1km.units)
-            text += " Memory: increase over the process after imports; 1\u00a0GB\u00a0=\u00a02³⁰\u00a0bytes."
+            text += " Memory: increase over the process after imports; 1\u00a0GiB\u00a0=\u00a02³⁰\u00a0bytes."
         return text + self._label_suffix(kind)
 
     def conditions_block(self, s, n, kind, x, w, bottom=BOTTOM, note=None, plane_threads=False, short=False):
@@ -1148,7 +1149,12 @@ class Builder:
         add_code(s, sn, X0 - INSET_L + 0.15, top, FULL_W + INSET_L - 0.15, ch, name="Code profile command", hl_name="Key line profile")
         cond_y = self.conditions_block(s, n, spec["conditions"], X0, FULL_W, note=spec.get("conditions_note"),
                                        short=bool(spec.get("conditions_short"))) if spec.get("conditions") else BOTTOM
-        sup_y = cond_y - 0.20                     # no takeaway line (2026-10-13): the profile takes the space
+        note = self.R(spec.get("note"), n) if spec.get("note") else ""
+        note_h = text_h(note, 18, FULL_W) if note else 0
+        sup_y = cond_y - note_h - 0.30
+        if note:
+            text_block(s, X0, sup_y, FULL_W, note_h, note, size=18,
+                       colour="text", name="Profile measurement scope")
         el = float(self.res.lookup("prof.elapsed_s"))
         rows = []
         for r in lp["rows"]:
@@ -1190,6 +1196,7 @@ class Builder:
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
         drop_placeholder(s, 1)
+        drop_placeholder(s, 14)
         vis = spec["visual"]
         files = list(vis.get("files") or ([vis["file"]] if vis.get("file") else []))
         if vis.get("kind") != "side_by_side" or len(files) != 2:
@@ -1212,18 +1219,25 @@ class Builder:
         # separate blocks, and the frames shrink to about 4.2 in (centred, same scale)
         sup_y = src_y - 0.17 - sup_h
         frame_y = top + (cap_h + 0.06 if has_caps else 0.0)
-        frame_h = sup_y - 0.20 - frame_y
+        # legend_side (slide 18, 2026-10-14): legend and support line in a right-hand column, so the two renders get
+        # the full body height instead of losing it to a legend row and a support line below them
+        side_w = 3.7 if spec.get("legend_side") else 0.0
+        if side_w:
+            gap_x = 0.75
+            sup_y = src_y - 0.17
+        legend_h = 0.45 if spec.get("legend") and not side_w else 0
+        frame_h = sup_y - 0.20 - frame_y - legend_h
         # the data set table (content.yaml `specs`, 2026-10-12) takes the right of the body; the frames the rest
         specs = spec.get("specs")
         table_w = 3.95 if specs else 0.0
-        row_avail = FULL_W - (table_w + 0.55 if specs else 0.0)
+        row_avail = FULL_W - (table_w + 0.55 if specs else 0.0) - (side_w + 0.35 if side_w else 0.0)
         # one scale for both frames: as tall as the body allows, as wide as the row allows
         scale = frame_h / max(ph for _, ph in pxs)
         scale = min(scale, (row_avail - gap_x * (len(pxs) - 1)) / sum(pw for pw, _ in pxs))
         # centre the row of frames in the content width (support and source lines stay on the margin); with the
         # table, the frames start on the margin
         row_w = sum(pw for pw, _ in pxs) * scale + gap_x * (len(pxs) - 1)
-        frames, x = [], X0 + (0.0 if specs else max(0.0, (FULL_W - row_w) / 2))
+        frames, x = [], X0 + (0.0 if specs or side_w else max(0.0, (FULL_W - row_w) / 2))
         for pw, ph in pxs:
             frames.append((x, frame_y, pw * scale, ph * scale))
             x += pw * scale + gap_x
@@ -1290,8 +1304,42 @@ class Builder:
             for a_, b_ in sub["rows"]:
                 if _w(a_, 20, font="title") + 0.30 + _w(b_, 20) > table_w:
                     self.warn(n, f"data set row {a_!r}: {b_!r} wider than the table ({table_w:.2f} in)")
-        if sup_txt:
+        if side_w:
+            sx = X0 + FULL_W - side_w
+            y = frame_y
+            for key in spec.get("legend") or []:
+                palette = self.content["meta"]["render_palette"]
+                label = key.replace("_", " ").capitalize()
+                square = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, E(sx), E(y + 0.07), E(0.30), E(0.30))
+                square.fill.solid()
+                square.fill.fore_color.rgb = RGBColor.from_string(palette[key].lstrip("#"))
+                square.line.color.rgb = rgb("navy")
+                set_name(square, "Swatch")
+                text_block(s, sx + 0.45, y, side_w - 0.45, 0.44, label, size=20, colour="text",
+                           name=f"Legend {label}")
+                y += 0.48
+            if sup_txt:
+                y += 0.2
+                h = text_h(sup_txt, SUPPORT_PT, side_w - 0.02)
+                if y + h > src_y - 0.1:
+                    self.warn(n, "side column: support line runs into the source line")
+                self.support(s, n, sup_txt, (sx, y, side_w, h))
+        elif sup_txt:
             self.support(s, n, sup_txt, (X0, sup_y, FULL_W, sup_h))
+        if spec.get("legend") and not side_w:
+            palette = self.content["meta"]["render_palette"]
+            x = X0
+            for key in spec["legend"]:
+                label = key.replace("_", " ").capitalize()
+                square = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, E(x),
+                                            E(sup_y - 0.48), E(0.22), E(0.22))
+                square.fill.solid()
+                square.fill.fore_color.rgb = RGBColor.from_string(palette[key].lstrip("#"))
+                square.line.color.rgb = rgb("navy")
+                set_name(square, "Swatch")
+                text_block(s, x + 0.30, sup_y - 0.52, 2.1, 0.35, label,
+                           size=18, colour="text", name=f"Legend {label}")
+                x += 2.40
         if note_txt:
             # as wide as the two frames (left edge of the first to right edge of the second), bottom on the reserved line
             self._note(s, n, note_txt, frames[0][0], frames[-1][0] + frames[-1][2] - frames[0][0],
@@ -1644,6 +1692,10 @@ class Builder:
 
     # chart_hero -- chart + hero (L7)
     def slide_chart_hero(self, s, spec, n, L):
+        if spec.get("conditions") == "ft":
+            # The best count may change on a rerun: labels and bars must follow it.
+            best = int(self.res.lookup("ft.summary.best_threads_ft"))
+            spec = yaml.safe_load(yaml.safe_dump(spec).replace("threads_8", f"threads_{best}"))
         # always the content.yaml title: the measured factor holds for one loop on one memory layout, so the
         # general "two orders of magnitude" phrase stays out of the title (it is spoken, notes slide 18)
         lines = self.set_title(s, n, spec["title"], L)
@@ -1771,7 +1823,7 @@ class Builder:
             self.small(s, n, cond, (X0, cond_y, FULL_W, cond_h), name="Conditions", bottom=True)
             self.report.setdefault("conditions_lines", {})[str(n)] = round(cond_h / lines_h(1, SMALL_PT))
 
-    # bar_gb -- GB bar chart + hero (L8)
+    # bar_gb -- GiB bar chart + hero (L8)
     def slide_bar_gb(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)
@@ -1790,10 +1842,10 @@ class Builder:
         thr_key = spec["chart"].get("threshold")
         if thr_key:
             ch["threshold_gb"] = self.res.number(thr_key, f"slide {n} chart threshold")
-        self.chart(s, n, "add_bar_gb", chart_box, ch, values, "CHART PENDING: horizontal bars in GB")
+        self.chart(s, n, "add_bar_gb", chart_box, ch, values, "CHART PENDING: horizontal bars in GiB")
         if ch.get("_plot_in") and ch.get("threshold_gb") is not None:
             # dashed navy line at the RAM threshold, from the end of that RAM bar down across the bars below it,
-            # so "outgrows 32 GB" reads at a glance (decorative: the alt text and the labels carry the numbers)
+            # so "outgrows 32 GiB" reads at a glance (decorative: the alt text and the labels carry the numbers)
             px, py, pw, ph = ch["_plot_in"]
             k = len(ch["bars"])
             band = ph / k
@@ -1836,10 +1888,11 @@ class Builder:
         if spec.get("note"):
             # note box (blue tint, as the deck's other note boxes) with 12 pt slate text
             nt = self.R(spec["note"], n)
-            nh = text_h(nt, SMALL_PT, col.w - 0.34) + 0.16
+            nh = text_h(nt, 18, col.w - 0.34) + 0.16
             box = rect(s, col.x, y, col.w, nh, fill="blue_tint", name="Note box")
             mark_decorative(box)
-            self.small(s, n, nt, (col.x + 0.15, y + 0.08, col.w - 0.30, nh - 0.16), name="Note")
+            text_block(s, col.x + 0.15, y + 0.08, col.w - 0.30, nh - 0.16,
+                       nt, size=18, colour="text", name="Note")
             y += nh + 0.15
         if spec.get("small_print"):
             sp = self.R(spec["small_print"], n)
@@ -2876,7 +2929,31 @@ class Builder:
     def validate(self, out: Path) -> dict:
         script = PPTX_SKILL / "scripts" / "office" / "validate.py"
         if not script.exists():
-            return {"status": "NOT RUN", "reason": f"{script} not found"}
+            import posixpath
+            import zipfile
+            errors = []
+            with zipfile.ZipFile(out) as package:
+                names = package.namelist()
+                if len(names) != len(set(names)):
+                    errors.append("Duplicate package entries")
+                for name in names:
+                    if not name.endswith((".xml", ".rels")):
+                        continue
+                    root = etree.fromstring(package.read(name))
+                    if name.endswith(".rels"):
+                        base = posixpath.dirname(posixpath.dirname(name))
+                        for rel in root:
+                            if rel.get("TargetMode") == "External":
+                                continue
+                            target = rel.get("Target", "")
+                            resolved = (target.lstrip("/") if target.startswith("/") else
+                                        posixpath.normpath(posixpath.join(base, target)))
+                            if resolved not in names:
+                                errors.append(f"{name}: missing {resolved}")
+            Presentation(str(out))
+            return {"returncode": 1 if errors else 0, "method": "native package validation",
+                    "output": "\n".join(errors) or "PASSED native package checks: XML, unique entries, internal targets. Office schema validator unavailable.",
+                    "limitation": "External Office schema validator unavailable"}
         env = dict(os.environ)
         env["PYTHONPATH"] = str(script.parent) + os.pathsep + str(PPTX_SKILL / "scripts") + os.pathsep \
             + env.get("PYTHONPATH", "")

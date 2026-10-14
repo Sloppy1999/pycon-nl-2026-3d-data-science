@@ -117,6 +117,7 @@ def measure(path: Path) -> dict:
 
 def main() -> int:
     results: dict = {}
+    previous = json.loads(OUT.read_text()) if OUT.exists() else {}
     for path in sorted(HERE.glob("*.py")):
         if path.name == Path(__file__).name or path.name.startswith("_"):
             continue
@@ -141,6 +142,10 @@ def main() -> int:
             results[path.name] = dict(ok=None, status="NOT RUN", seconds=None,
                                       error="no PCL toolchain: pkg-config finds no pcl_common (set PCL_PREFIX)",
                                       **measure(path), markers=markers)
+            old = previous.get(path.name, {})
+            if old.get("output_line"):
+                results[path.name]["output_line"] = old["output_line"]
+                results[path.name]["output_provenance"] = "Previously recorded run; not rerun on this machine"
             print(f"{path.name:20s} NOT RUN  {results[path.name]['lines']:2d} lines, "
                   f"max {results[path.name]['max_line_len']} chars")
             continue

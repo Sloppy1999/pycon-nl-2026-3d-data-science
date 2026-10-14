@@ -494,7 +494,7 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
     row_h = 0.30
     items = [("toll", _word(spec, "legend_toll")), ("work", _word(spec, "legend_work")),
              ("arrow", _word(spec, "legend_arrow"))]
-    lgx = x0 + W - max(_width(w, 16) for _, w in items) - 0.45
+    lgx = x0 + W - max(_width(w, 18) for _, w in items) - 0.45
     for i, (kind, word) in enumerate(items):
         cy_mid = chip_y + i * row_h + row_h / 2
         if kind == "toll":
@@ -503,8 +503,8 @@ def add_toll_diagram(slide, box, spec, style=None, n_pairs=6):
             _box(S, lgx, cy_mid - 0.09, 0.32, 0.18, fill=st.muted, rounded=True, name="legend_work_swatch")
         else:
             _connector(S, lgx, cy_mid, lgx + 0.32, cy_mid, st.text_small, 1.25, arrow=True, name="legend_arrow_swatch")
-        _textbox(S, st, lgx + 0.42, chip_y + i * row_h, _width(word, 16) + 0.1, row_h,
-                 [{"text": word, "size": 16, "color": st.text}], anchor=MSO_ANCHOR.MIDDLE, wrap=False,
+        _textbox(S, st, lgx + 0.42, chip_y + i * row_h, _width(word, 18) + 0.1, row_h,
+                 [{"text": word, "size": 18, "color": st.text}], anchor=MSO_ANCHOR.MIDDLE, wrap=False,
                  name=f"legend_{kind}")
     return _finish_group(grp, alt, name)
 

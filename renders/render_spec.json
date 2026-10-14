@@ -3,13 +3,13 @@
  "generated_by": "pipeline/render.py",
  "inputs": {
   "labels_npz": "results/labels_crop.npz",
-  "labels_npz_sha256": "8f3dd1932084f38126a06be59d0b2335f0fb85085d8907dbb5ad6a7ba92805e0",
+  "labels_npz_sha256": "c7db6296cceeb1ad282f44f2edc891774e75a5db94b4ddf52812e6954f2f74e8",
   "crop": "data/utrecht_jaarbeurs_200m.laz",
   "pipeline_json_label": "FINAL",
   "palette_source": "deck/content.yaml meta.render_palette"
  },
  "versions": {
-  "python": "3.13.15",
+  "python": "3.13.5",
   "numpy": "2.5.3",
   "pyvista": "0.49.0",
   "vtk": "9.7.1",
@@ -57,7 +57,7 @@
      "buildings": 0.994,
      "vegetation": 0.992,
      "street_furniture": 1.0,
-     "unlabelled": 0.992,
+     "unlabelled": 0.991,
      "jaarbeurs_hall": 1.0
     },
     "wide_empty_columns_left_right": [
@@ -98,11 +98,11 @@
    -1.0,
    30.0
   ],
-  "ground_median_local_z": 3.2773,
+  "ground_median_local_z": 3.2767,
   "ground_median_source": "median z of the pipeline's ground voxels (labels_crop.npz voxel_ground), not AHN's classes",
   "clim_local_z": [
-   2.2773,
-   33.2773
+   2.2767,
+   33.2767
   ],
   "fixed_for_all_frames": true
  },
@@ -287,7 +287,7 @@
      "rows_1500_1792": 0.714
     }
    },
-   "ground_voxels": 71504,
+   "ground_voxels": 71264,
    "shows": "ground removal: ground voxels in the ground colour, the rest on the ramp"
   },
   "f4_clusters.png": {
@@ -309,9 +309,9 @@
     }
    },
    "shows": "clustering: DBSCAN clusters in the palette's cycling cluster colours, noise dimmed, ground in the ground colour",
-   "clusters": 1024,
-   "noise_voxels": 15886,
-   "near_ground_not_clustered_voxels": 4986,
+   "clusters": 1026,
+   "noise_voxels": 15878,
+   "near_ground_not_clustered_voxels": 3162,
    "rule": "colour = cycle[permutation(n_clusters, seed) % 4]; DBSCAN noise and the near-ground voxels that never went to DBSCAN in the noise colour; ground in the ground colour"
   },
   "f5_labels.png": {
@@ -472,11 +472,11 @@
    "view_angle_deg": 7.5,
    "points_projecting_inside": 79063,
    "points_inside_by_our_label": {
-    "ground": 44929,
+    "ground": 44928,
     "buildings": 28669,
     "vegetation": 3839,
     "street_furniture": 25,
-    "unlabelled": 1601
+    "unlabelled": 1602
    },
    "shows": "same camera position, narrow view angle aimed at the trees north-west of the hall: single points visible (height ramp)"
   },
@@ -495,33 +495,15 @@
     "edge_opacity": 0.6,
     "method": "composite of five renders with the same camera (see pipeline/render.py plane_sheet)",
     "occluders": "points whose voxel is not a plane inlier (labels_crop.npz voxel_ground == False)",
-    "sheet_pixels": 695947,
-    "edge_pixels": 18616,
+    "sheet_pixels": 702873,
+    "edge_pixels": 19383,
     "tick_pixels": 4136,
     "tick_keyline_pixels": 2820
    },
    "ticks": [
     {
      "kind": "street furniture",
-     "cluster": 435,
-     "top_local": [
-      91.498,
-      179.85,
-      10.631
-     ],
-     "tile_ij": [
-      3,
-      7
-     ],
-     "plane_z": 3.191,
-     "vertical_m": 7.44,
-     "perpendicular_m": 7.44,
-     "projected_px": 20.5,
-     "drawn": false
-    },
-    {
-     "kind": "street furniture",
-     "cluster": 710,
+     "cluster": 185,
      "top_local": [
       51.961,
       145.555,
@@ -539,7 +521,25 @@
     },
     {
      "kind": "street furniture",
-     "cluster": 719,
+     "cluster": 451,
+     "top_local": [
+      91.498,
+      179.85,
+      10.631
+     ],
+     "tile_ij": [
+      3,
+      7
+     ],
+     "plane_z": 3.192,
+     "vertical_m": 7.44,
+     "perpendicular_m": 7.44,
+     "projected_px": 20.5,
+     "drawn": false
+    },
+    {
+     "kind": "street furniture",
+     "cluster": 727,
      "top_local": [
       39.607,
       134.269,
@@ -557,7 +557,7 @@
     },
     {
      "kind": "tree",
-     "cluster": 105,
+     "cluster": 117,
      "top_local": [
       83.906,
       169.036,
@@ -575,7 +575,7 @@
     },
     {
      "kind": "tree",
-     "cluster": 55,
+     "cluster": 60,
      "top_local": [
       63.03,
       156.056,
@@ -593,7 +593,7 @@
     },
     {
      "kind": "tree",
-     "cluster": 147,
+     "cluster": 153,
      "top_local": [
       29.975,
       88.064,
@@ -603,7 +603,7 @@
       1,
       3
      ],
-     "plane_z": 3.351,
+     "plane_z": 3.35,
      "vertical_m": 8.29,
      "perpendicular_m": 8.29,
      "projected_px": 14.6,
@@ -611,7 +611,7 @@
     },
     {
      "kind": "building",
-     "cluster": 923,
+     "cluster": 740,
      "top_local": [
       35.462,
       23.094,
@@ -621,7 +621,7 @@
       1,
       0
      ],
-     "plane_z": 3.322,
+     "plane_z": 3.327,
      "vertical_m": 90.7,
      "perpendicular_m": 90.7,
      "projected_px": 100.6,
@@ -629,7 +629,7 @@
     },
     {
      "kind": "car-sized unlabelled cluster",
-     "cluster": 478,
+     "cluster": 493,
      "top_local": [
       167.237,
       67.924,
@@ -772,9 +772,9 @@
      ]
     },
     "visible_pixels": {
-     "ground": 652280,
-     "buildings": 1116332,
-     "vegetation": 23456,
+     "ground": 651429,
+     "buildings": 1129756,
+     "vegetation": 23600,
      "street_furniture": 2576
     }
    },
@@ -860,9 +860,9 @@
      ]
     },
     "visible_pixels": {
-     "ground": 499288,
-     "buildings": 799556,
-     "vegetation": 21800,
+     "ground": 498186,
+     "buildings": 811454,
+     "vegetation": 21938,
      "street_furniture": 2582
     }
    },
@@ -929,8 +929,8 @@
      ]
     },
     "visible_pixels": {
-     "ground": 160005,
-     "buildings": 714064,
+     "ground": 158042,
+     "buildings": 724853,
      "vegetation": 6130,
      "street_furniture": 0
     },
@@ -965,7 +965,7 @@
   "method": "per class: densest visible patch (61 px window, minus other classes) inside the margins (200 px left/right of the usable area, 200 px top/bottom), anchors at least 300 px apart; street furniture: in the topmost visible patch the pixel nearest its centre; snapped to the front-most 3D point of that class projecting within 3 px (renderer camera matrices, cross-checked with vtkCoordinate); hook_split: right half only (divider excluded); f5_labels: searched first within 40 px of the f6_final anchor of the same class (chips stay put across the Morph from slide 12 to 13); f1_load: only the Jaarbeurs hall arrow (see detail.f1_load.jaarbeurs_hall_note)",
   "vegetation_excluded": {
    "known_error_clusters": [],
-   "flat_clusters": 632
+   "flat_clusters": 629
   }
  },
  "checks": {
@@ -983,15 +983,15 @@
   "grayscale_f5_labels": {
    "levels": {
     "ground": {
-     "pixels": 499288,
+     "pixels": 498186,
      "gray": 90
     },
     "buildings": {
-     "pixels": 799556,
+     "pixels": 811454,
      "gray": 150
     },
     "vegetation": {
-     "pixels": 52010,
+     "pixels": 51749,
      "gray": 194
     },
     "street_furniture": {
@@ -999,11 +999,11 @@
      "gray": 255
     },
     "unlabelled": {
-     "pixels": 98639,
+     "pixels": 88103,
      "gray": 70
     },
     "background": {
-     "pixels": 1393621,
+     "pixels": 1393622,
      "gray": 48
     }
    },
@@ -1053,15 +1053,15 @@
   "grayscale_f6_final": {
    "levels": {
     "ground": {
-     "pixels": 652280,
+     "pixels": 651429,
      "gray": 90
     },
     "buildings": {
-     "pixels": 1116332,
+     "pixels": 1129756,
      "gray": 150
     },
     "vegetation": {
-     "pixels": 48520,
+     "pixels": 48250,
      "gray": 194
     },
     "street_furniture": {
@@ -1069,11 +1069,11 @@
      "gray": 255
     },
     "unlabelled": {
-     "pixels": 102854,
+     "pixels": 90549,
      "gray": 70
     },
     "background": {
-     "pixels": 923134,
+     "pixels": 923136,
      "gray": 48
     }
    },
@@ -1130,8 +1130,8 @@
    "wide_raw_centre_vs_f1_load.png": {
     "x0": 1301,
     "pixels": 2845696,
-    "differing": 20,
-    "differing_share": 7.028157610651313e-06,
+    "differing": 13,
+    "differing_share": 4.568302446923354e-06,
     "differing_within_6px_of_edge": 0,
     "identical": false,
     "reading": "the few differing pixels are single 3 px point squares that land one pixel apart because the two viewports round sub-pixel positions differently; same camera, same view"
@@ -1139,8 +1139,8 @@
    "wide_labels_centre_vs_f6_final.png": {
     "x0": 1301,
     "pixels": 2845696,
-    "differing": 3,
-    "differing_share": 1.054223641597697e-06,
+    "differing": 6,
+    "differing_share": 2.108447283195394e-06,
     "differing_within_6px_of_edge": 0,
     "identical": false,
     "reading": "the few differing pixels are single 3 px point squares that land one pixel apart because the two viewports round sub-pixel positions differently; same camera, same view"
@@ -1168,15 +1168,15 @@
   "grayscale_hook_split_right_half": {
    "levels": {
     "ground": {
-     "pixels": 160005,
+     "pixels": 158042,
      "gray": 90
     },
     "buildings": {
-     "pixels": 714064,
+     "pixels": 724853,
      "gray": 150
     },
     "vegetation": {
-     "pixels": 15764,
+     "pixels": 15758,
      "gray": 194
     },
     "street_furniture": {
@@ -1184,11 +1184,11 @@
      "gray": null
     },
     "unlabelled": {
-     "pixels": 34600,
+     "pixels": 25781,
      "gray": 70
     },
     "background": {
-     "pixels": 2826223,
+     "pixels": 2826222,
      "gray": 48
     }
    },
@@ -1216,9 +1216,9 @@
  },
  "observations": {
   "vegetation_flat_clusters_at_buildings": {
-   "clusters": 495,
-   "voxels": 8365,
-   "points": 12813,
+   "clusters": 497,
+   "voxels": 8344,
+   "points": 12774,
    "rule": "vegetation clusters less than 3 m tall (vertical extent), more than 5 m above the ground and within 2 m (plan view) of a building voxel",
    "reading": "horizontal stripes on facades (balconies or floor edges, UNVERIFIED) that rule 1 calls vegetation because their share of multiple returns is above 0.4"
   },
@@ -1234,5 +1234,5 @@
   },
   "known_errors_from_pipeline": []
  },
- "seconds": 16.3
+ "seconds": 70.6
 }

@@ -1,7 +1,7 @@
 {
  "label": "FINAL",
  "versions": {
-  "python": "3.13.15",
+  "python": "3.13.5",
   "numpy": "2.5.3",
   "scipy": "1.18.1",
   "laspy": "2.7.0",
@@ -10,8 +10,8 @@
   "pyvista": "0.49.0"
  },
  "machine": {
-  "cpu": "AMD Ryzen 7 5700X 8-Core Processor",
-  "os": "Linux 7.2.5-3-omarchy"
+  "cpu": "arm",
+  "os": "Darwin 25.6.0"
  },
  "crop": {
   "file": "data/utrecht_jaarbeurs_200m.laz",
@@ -104,10 +104,10 @@
  "params_why": {
   "note": "each reason points at a row of param_choice (one parameter changed, everything else final)",
   "voxel": "0.5 m, as approved in the storyboard",
-  "tile": "25 m: ground recall 0.9427 against 0.8515 for 50 m tiles ('tile 50 m'); one plane for the whole crop scores 0.9457 here ('one plane (tile 250 m)'): this ground is flat, the first example street's was not (previous_street), so the tiles stay",
+  "tile": "25 m: ground recall 0.9437 against 0.8518 for 50 m tiles ('tile 50 m'); one plane for the whole crop scores 0.9469 here ('one plane (tile 250 m)'): this ground is flat, the first example street's was not (previous_street), so the tiles stay",
   "ransac_threshold": "0.4 m: 0.2 m misses more of the uneven ground ('RANSAC threshold 0.2 m')",
   "low_prefilter": "without it RANSAC fits roofs and facades in several tiles, which the plausibility check then has to catch ('no low-point pre-filter', tiles_flagged)",
-  "low_window": "1.5 m, kept from the first example street (not re-tuned: the sweep is scored against the same AHN classes it would tune on); 'pre-filter window 3 m' here: ground recall 0.9662 against 0.9427, building precision 0.8242 against 0.8342",
+  "low_window": "1.5 m, kept from the first example street (not re-tuned: the sweep is scored against the same AHN classes it would tune on); 'pre-filter window 3 m' here: ground recall 0.9664 against 0.9437, building precision 0.8237 against 0.822",
   "eps": "0.75 m (1.5 voxels): 0.5 m, the voxel size, leaves most voxels as noise and finds no building; 1.0 m glues buildings to trees and building recall collapses ('eps 0.5', 'eps 1.0')",
   "min_points": "6: 5 lets a tree fuse with a building (lower building recall); 10 turns more than half of the voxels into noise ('min_points 5', 'min_points 10')",
   "cluster_min_height": "0.3 m: without it, ground that RANSAC missed links objects together, building precision drops and more AHN ground becomes vegetation ('no near-ground skip')"
@@ -126,33 +126,33 @@
   "note": "the first example street, same parameters; kept in data/previous/, not used by the deck",
   "tiles_25m": {
    "ground": {
-    "precision": 0.9875,
-    "recall": 0.9448
+    "precision": 0.9878,
+    "recall": 0.9459
    },
    "n_tiles": 64,
    "tiles_flagged": 0,
    "plane_height_range_m": [
     0.131,
-    1.8962
+    1.8789
    ]
   },
   "one_plane": {
    "ground": {
-    "precision": 0.9777,
-    "recall": 0.8273
+    "precision": 0.9778,
+    "recall": 0.8277
    },
    "n_tiles": 1,
    "tiles_flagged": 0,
    "plane_height_range_m": [
-    1.1721,
-    1.1721
+    1.1685,
+    1.1685
    ]
   }
  },
  "single_plane": {
   "ground": {
-   "precision": 0.9877,
-   "recall": 0.9457
+   "precision": 0.988,
+   "recall": 0.9469
   },
   "tiles_flagged": 0,
   "note": "the same pipeline with one 250 m tile, i.e. one RANSAC plane for the whole 200 m crop (sweep row 'one plane (tile 250 m)'); scored like the final run"
@@ -165,56 +165,56 @@
  "n_tiles": 64,
  "tiles_flagged": 20,
  "ground": {
-  "precision": 0.9816,
-  "recall": 0.9427,
+  "precision": 0.9841,
+  "recall": 0.9437,
   "counts": {
-   "true_positives": 247654,
-   "predicted": 252303,
+   "true_positives": 247912,
+   "predicted": 251926,
    "truth": 262712
   },
   "against": "AHN class 2, point level, after paint-back"
  },
  "buildings": {
-  "precision": 0.8342,
+  "precision": 0.822,
   "recall": 0.9886,
   "counts": {
    "true_positives": 335085,
-   "predicted": 401689,
+   "predicted": 407637,
    "truth": 338943
   },
   "against": "AHN class 6, point level, after paint-back",
-  "note": "AHN puts many facade points in class 1 ('overig'); facades we call buildings count as false positives, so this precision is a lower bound"
+  "note": "AHN class 1 ('overig') includes facade points and other objects. Predicted buildings outside class 6 count as false positives here; this measures class-6 agreement, not independently validated building precision or a proven lower bound"
  },
- "n_clusters": 1024,
- "noise_share": 0.102,
+ "n_clusters": 1026,
+ "noise_share": 0.1007,
  "noise_share_note": "DBSCAN noise voxels / voxels given to DBSCAN (not ground, more than 0.3 m above the ground)",
- "voxels_not_clustered_near_ground": 4986,
+ "voxels_not_clustered_near_ground": 3162,
  "label_points": {
-  "ground": 252303,
-  "buildings": 401689,
-  "vegetation": 27224,
+  "ground": 251926,
+  "buildings": 407637,
+  "vegetation": 27093,
   "street_furniture": 53,
-  "unlabelled": 41692
+  "unlabelled": 36252
  },
  "label_voxels": {
-  "ground": 71504,
-  "buildings": 121035,
-  "vegetation": 17234,
+  "ground": 71264,
+  "buildings": 123121,
+  "vegetation": 17151,
   "street_furniture": 28,
-  "unlabelled": 22379
+  "unlabelled": 20616
  },
  "n_objects": {
   "buildings": 58,
-  "vegetation": 683,
+  "vegetation": 681,
   "street_furniture": 3
  },
  "n_objects_note": "objects = DBSCAN clusters, not real-world objects: buildings = clusters named by rule 2 (roofs); facade fragments (rule 3) are counted separately; one tree can be several vegetation clusters",
  "n_clusters_by_rule": {
-  "vegetation_rule1": 683,
+  "vegetation_rule1": 681,
   "buildings_rule2": 58,
-  "facades_rule3": 218,
+  "facades_rule3": 219,
   "street_furniture_rule4": 3,
-  "unlabelled": 62
+  "unlabelled": 65
  },
  "largest_cluster_voxels": 46039,
  "known_errors": {
@@ -224,19 +224,19 @@
  "label_vs_ahn": {
   "note": "points per predicted class, split by AHN class (AHN has no vegetation or street furniture class: both live in class 1)",
   "ground": {
-   "1": 4494,
-   "2": 247654,
+   "1": 3859,
+   "2": 247912,
    "6": 155,
    "26": 0
   },
   "buildings": {
-   "1": 51050,
-   "2": 4046,
+   "1": 57014,
+   "2": 4030,
    "6": 335085,
    "26": 11508
   },
   "vegetation": {
-   "1": 24639,
+   "1": 24508,
    "2": 0,
    "6": 2291,
    "26": 294
@@ -248,32 +248,15 @@
    "26": 0
   },
   "unlabelled": {
-   "1": 29127,
-   "2": 11012,
+   "1": 23929,
+   "2": 10770,
    "6": 1412,
    "26": 141
   }
  },
  "street_furniture_objects": [
   {
-   "cluster": 435,
-   "x_rd": 135806.75,
-   "y_rd": 455654.57,
-   "voxels": 10,
-   "points": 15,
-   "top_m": 7.42,
-   "bottom_m": 5.69,
-   "width_m": 0.72,
-   "footprint_m2": 2.0,
-   "multi_return_share": 0.4,
-   "to_building_m": 14.16,
-   "to_vegetation_m": 3.99,
-   "ahn_classes": {
-    "1": 15
-   }
-  },
-  {
-   "cluster": 710,
+   "cluster": 185,
    "x_rd": 135766.79,
    "y_rd": 455620.74,
    "voxels": 7,
@@ -290,7 +273,24 @@
    }
   },
   {
-   "cluster": 719,
+   "cluster": 451,
+   "x_rd": 135806.75,
+   "y_rd": 455654.57,
+   "voxels": 10,
+   "points": 15,
+   "top_m": 7.42,
+   "bottom_m": 5.69,
+   "width_m": 0.72,
+   "footprint_m2": 2.0,
+   "multi_return_share": 0.4,
+   "to_building_m": 13.84,
+   "to_vegetation_m": 3.99,
+   "ahn_classes": {
+    "1": 15
+   }
+  },
+  {
+   "cluster": 727,
    "x_rd": 135754.83,
    "y_rd": 455608.66,
    "voxels": 11,
@@ -308,7 +308,7 @@
   }
  ],
  "street_furniture_missed_candidates": {
-  "voxels": 32,
+  "voxels": 33,
   "groups": 23,
   "rule": "DBSCAN noise voxels 1.5 to 15 m above ground, multi-return share < 0.4, more than 2 m from buildings and 1 m from vegetation, grouped within 1.5 m in plan view",
   "note": "too small for min_points; what they are is UNVERIFIED"
@@ -328,9 +328,9 @@
    ],
    "plane": [
     0.010988746690130667,
-    0.012369580196023116,
+    0.012369580196023125,
     0.9998631110966912,
-    -3.861480360429298
+    -3.8614803604292987
    ],
    "n_points": 6479,
    "n_candidates": 233,
@@ -353,17 +353,17 @@
     50.0
    ],
    "plane": [
-    -0.004757644086486913,
-    0.0006796689795214422,
-    0.9999884513697268,
-    -3.2653420124838464
+    -0.005006172128711047,
+    0.00034419119670968363,
+    0.9999874098072625,
+    -3.248512646471848
    ],
    "n_points": 5616,
    "n_candidates": 2091,
-   "n_ground": 1766,
+   "n_ground": 1772,
    "z_low": 3.1966,
-   "z_centre": 3.2994,
-   "tilt_deg": 0.275,
+   "z_centre": 3.2982,
+   "tilt_deg": 0.288,
    "rejected": false,
    "borrowed_from": null
   },
@@ -379,10 +379,10 @@
     75.0
    ],
    "plane": [
-    -0.0019332126169827298,
-    -0.001377679310931962,
-    0.9999971823403772,
-    -3.1944094872804105
+    -0.0019332126169827272,
+    -0.001377679310931961,
+    0.9999971823403774,
+    -3.194409487280418
    ],
    "n_points": 2945,
    "n_candidates": 2818,
@@ -405,10 +405,10 @@
     100.0
    ],
    "plane": [
-    -0.002501330270186993,
-    0.0014123411239488895,
-    0.9999958743112038,
-    -3.410504705602938
+    -0.0025013302701869856,
+    0.0014123411239488916,
+    0.999995874311204,
+    -3.4105047056029365
    ],
    "n_points": 3085,
    "n_candidates": 2632,
@@ -431,10 +431,10 @@
     125.0
    ],
    "plane": [
-    0.0010876883130593496,
-    -0.0003720778966452407,
-    0.999999339245868,
-    -3.276988883151862
+    0.0010876883130593485,
+    -0.00037207789664523973,
+    0.9999993392458678,
+    -3.2769888831518643
    ],
    "n_points": 3617,
    "n_candidates": 2651,
@@ -457,17 +457,17 @@
     150.0
    ],
    "plane": [
-    0.005501682124935699,
-    -0.0007440520765924096,
-    0.9999845888213994,
-    -3.373577542596307
+    0.005510226195152197,
+    -0.0007882762438921032,
+    0.9999845078939181,
+    -3.3688285555864996
    ],
    "n_points": 1814,
    "n_candidates": 1734,
-   "n_ground": 1704,
+   "n_ground": 1709,
    "z_low": 3.0934,
-   "z_centre": 3.4072,
-   "tilt_deg": 0.318,
+   "z_centre": 3.4084,
+   "tilt_deg": 0.319,
    "rejected": false,
    "borrowed_from": null
   },
@@ -483,17 +483,17 @@
     175.0
    ],
    "plane": [
-    0.02088620561333454,
-    0.01862711936107816,
-    0.9996083217137529,
-    -6.3021516248102385
+    0.020936709682050324,
+    0.01869680662214349,
+    0.9996059641727953,
+    -6.314536044885985
    ],
    "n_points": 2063,
    "n_candidates": 2009,
-   "n_ground": 2007,
+   "n_ground": 2008,
    "z_low": 2.6663,
-   "z_centre": 3.0153,
-   "tilt_deg": 1.604,
+   "z_centre": 3.0158,
+   "tilt_deg": 1.608,
    "rejected": false,
    "borrowed_from": null
   },
@@ -509,17 +509,17 @@
     200.0
    ],
    "plane": [
-    0.004558869291273783,
-    -0.018627995609121855,
-    0.999816090333803,
-    0.05830085204088631
+    0.004475797577788899,
+    -0.01867217714618615,
+    0.9998156415243084,
+    0.06723232155870917
    ],
    "n_points": 2759,
    "n_candidates": 2755,
-   "n_ground": 2753,
+   "n_ground": 2755,
    "z_low": 2.9572,
-   "z_centre": 3.3781,
-   "tilt_deg": 1.099,
+   "z_centre": 3.3785,
+   "tilt_deg": 1.1,
    "rejected": false,
    "borrowed_from": null
   },
@@ -535,17 +535,17 @@
     25.0
    ],
    "plane": [
-    9.339812442719449e-05,
-    0.007751266981378553,
-    0.9999699541171093,
-    -3.503881417417451
+    0.0004862930962499042,
+    0.007251950025126968,
+    0.9999735860210798,
+    -3.511256924168884
    ],
    "n_points": 7206,
    "n_candidates": 2667,
-   "n_ground": 2250,
+   "n_ground": 2246,
    "z_low": 3.239,
-   "z_centre": 3.4036,
-   "tilt_deg": 0.444,
+   "z_centre": 3.4025,
+   "tilt_deg": 0.416,
    "rejected": false,
    "borrowed_from": null
   },
@@ -561,17 +561,17 @@
     50.0
    ],
    "plane": [
-    0.022120142159005846,
-    0.00983745000459906,
-    0.9997069189958987,
-    -4.305561813410103
+    0.06213269789434245,
+    0.042833576387710764,
+    0.997148340311615,
+    -7.06251773236167
    ],
    "n_points": 3319,
    "n_candidates": 1040,
-   "n_ground": 817,
+   "n_ground": 802,
    "z_low": 1.7899,
-   "z_centre": 3.1081,
-   "tilt_deg": 1.387,
+   "z_centre": 3.1352,
+   "tilt_deg": 4.328,
    "rejected": false,
    "borrowed_from": null
   },
@@ -587,10 +587,10 @@
     75.0
    ],
    "plane": [
-    -0.0555473474604635,
-    0.0778093676979764,
+    -0.05554734746046342,
+    0.07780936769797653,
     0.9954196072453806,
-    -3.021721242726944
+    -3.021721242726954
    ],
    "n_points": 3114,
    "n_candidates": 519,
@@ -613,17 +613,17 @@
     100.0
    ],
    "plane": [
-    0.0030640441422959772,
-    0.0007971918082786434,
-    0.9999949880467977,
-    -3.5128181885510417
+    0.002750726238448089,
+    0.00013202715277428056,
+    0.9999962080298064,
+    -3.4442551691453427
    ],
    "n_points": 4262,
    "n_candidates": 2309,
-   "n_ground": 2218,
+   "n_ground": 2217,
    "z_low": 3.191,
-   "z_centre": 3.3282,
-   "tilt_deg": 0.181,
+   "z_centre": 3.3296,
+   "tilt_deg": 0.158,
    "rejected": false,
    "borrowed_from": null
   },
@@ -639,17 +639,17 @@
     125.0
    ],
    "plane": [
-    -0.012109246542814922,
-    0.0031176090333503333,
-    0.9999218202750055,
-    -3.2771673773461054
+    -0.012310682842437021,
+    0.0032780870735943613,
+    0.999918847323667,
+    -3.2891464519595575
    ],
    "n_points": 4083,
    "n_candidates": 1599,
-   "n_ground": 1536,
+   "n_ground": 1533,
    "z_low": 3.2334,
-   "z_centre": 3.3808,
-   "tilt_deg": 0.716,
+   "z_centre": 3.3823,
+   "tilt_deg": 0.73,
    "rejected": false,
    "borrowed_from": null
   },
@@ -665,10 +665,10 @@
     150.0
    ],
    "plane": [
-    -0.0042028287446198844,
-    0.0034443359138210663,
+    -0.004202828744619887,
+    0.0034443359138210594,
     0.9999852362813444,
-    -3.6628580082756446
+    -3.662858008275636
    ],
    "n_points": 2554,
    "n_candidates": 2543,
@@ -691,10 +691,10 @@
     175.0
    ],
    "plane": [
-    -0.005081527141064107,
-    0.022869169756467567,
+    -0.0050815271410640924,
+    0.022869169756467612,
     0.9997255519174073,
-    -6.438350104989
+    -6.438350104989016
    ],
    "n_points": 2532,
    "n_candidates": 2532,
@@ -717,17 +717,17 @@
     200.0
    ],
    "plane": [
-    0.011899631165224453,
-    -0.032809401863298136,
-    0.9993907853925331,
-    2.5752174931023424
+    0.011995740208593888,
+    -0.03304292888776382,
+    0.9993819425361686,
+    2.6143725421571866
    ],
    "n_points": 3022,
    "n_candidates": 2734,
-   "n_ground": 2727,
+   "n_ground": 2733,
    "z_low": 2.656,
-   "z_centre": 3.1322,
-   "tilt_deg": 2.0,
+   "z_centre": 3.1333,
+   "tilt_deg": 2.015,
    "rejected": false,
    "borrowed_from": null
   },
@@ -743,17 +743,17 @@
     25.0
    ],
    "plane": [
-    0.004285680158211193,
-    0.005251324138018853,
-    0.9999770280063333,
-    -3.581548993379589
+    0.004324552939893645,
+    0.0053013936547580895,
+    0.9999765964597308,
+    -3.5848276271482766
    ],
    "n_points": 3263,
    "n_candidates": 2723,
-   "n_ground": 2686,
+   "n_ground": 2687,
    "z_low": 3.0567,
-   "z_centre": 3.2481,
-   "tilt_deg": 0.388,
+   "z_centre": 3.2484,
+   "tilt_deg": 0.392,
    "rejected": false,
    "borrowed_from": null
   },
@@ -769,17 +769,17 @@
     50.0
    ],
    "plane": [
-    0.00341669993577073,
-    -0.0031421321569944046,
-    0.9999892265254946,
-    -3.415683699477269
+    0.0029428838009787884,
+    -0.002618805762613135,
+    0.9999922406155517,
+    -3.400490767934921
    ],
    "n_points": 3732,
    "n_candidates": 2498,
-   "n_ground": 2410,
+   "n_ground": 2414,
    "z_low": 2.8926,
-   "z_centre": 3.32,
-   "tilt_deg": 0.266,
+   "z_centre": 3.3148,
+   "tilt_deg": 0.226,
    "rejected": false,
    "borrowed_from": null
   },
@@ -795,17 +795,17 @@
     75.0
    ],
    "plane": [
-    -0.010448742516525616,
-    -0.0038836026511241766,
-    0.9999378687749911,
-    -2.488235619336213
+    -0.01032997778160576,
+    -0.0039066073414289176,
+    0.9999390131293565,
+    -2.493115505359853
    ],
    "n_points": 4582,
    "n_candidates": 1174,
-   "n_ground": 1173,
+   "n_ground": 1172,
    "z_low": 3.1802,
-   "z_centre": 3.3842,
-   "tilt_deg": 0.639,
+   "z_centre": 3.3831,
+   "tilt_deg": 0.633,
    "rejected": false,
    "borrowed_from": null
   },
@@ -821,10 +821,10 @@
     100.0
    ],
    "plane": [
-    0.0030640441422959772,
-    0.0007971918082786434,
-    0.9999949880467977,
-    -3.5128181885510417
+    0.002750726238448089,
+    0.00013202715277428056,
+    0.9999962080298064,
+    -3.4442551691453427
    ],
    "n_points": 3837,
    "n_candidates": 81,
@@ -850,17 +850,17 @@
     125.0
    ],
    "plane": [
-    -0.012109246542814922,
-    0.0031176090333503333,
-    0.9999218202750055,
-    -3.2771673773461054
+    -0.012310682842437021,
+    0.0032780870735943613,
+    0.999918847323667,
+    -3.2891464519595575
    ],
    "n_points": 3194,
    "n_candidates": 2053,
    "n_ground": 1,
    "z_low": 43.2213,
-   "z_centre": 43.4071,
-   "tilt_deg": 0.488,
+   "z_centre": 43.4077,
+   "tilt_deg": 0.499,
    "rejected": true,
    "borrowed_from": [
     1,
@@ -879,10 +879,10 @@
     150.0
    ],
    "plane": [
-    0.0024840471472141776,
-    0.0024001110424560768,
-    0.9999940344705833,
-    -3.8276871168020965
+    0.0024840471472141845,
+    0.002400111042456071,
+    0.9999940344705835,
+    -3.8276871168020956
    ],
    "n_points": 3149,
    "n_candidates": 1073,
@@ -905,10 +905,10 @@
     175.0
    ],
    "plane": [
-    -0.007183016613326014,
-    0.01950439073596936,
+    -0.007183016613325994,
+    0.01950439073596939,
     0.9997839681723003,
-    -5.785030096600195
+    -5.785030096600204
    ],
    "n_points": 3571,
    "n_candidates": 2583,
@@ -931,16 +931,16 @@
     200.0
    ],
    "plane": [
-    0.003033286537338678,
-    -0.021267036788793065,
-    0.9997692295319989,
-    0.8538883841480569
+    0.0030191787353267504,
+    -0.021269405051537484,
+    0.9997692218549826,
+    0.8554212091113369
    ],
    "n_points": 3217,
    "n_candidates": 2592,
-   "n_ground": 2528,
+   "n_ground": 2527,
    "z_low": 2.6975,
-   "z_centre": 2.9448,
+   "z_centre": 2.9446,
    "tilt_deg": 1.231,
    "rejected": false,
    "borrowed_from": null
@@ -957,17 +957,17 @@
     25.0
    ],
    "plane": [
-    -0.009027029076091606,
-    -0.003412282073408603,
-    0.999953433454334,
-    -2.4586950803597745
+    -0.008981219171119171,
+    -0.003428580105550566,
+    0.9999537902026573,
+    -2.462061133127185
    ],
    "n_points": 3251,
    "n_candidates": 1986,
-   "n_ground": 1934,
+   "n_ground": 1933,
    "z_low": 3.106,
-   "z_centre": 3.2914,
-   "tilt_deg": 0.553,
+   "z_centre": 3.2909,
+   "tilt_deg": 0.551,
    "rejected": false,
    "borrowed_from": null
   },
@@ -983,10 +983,10 @@
     50.0
    ],
    "plane": [
-    0.004958913627222592,
-    -0.004253084242514563,
+    0.004958913627222586,
+    -0.004253084242514557,
     0.9999786599973342,
-    -3.570174016131476
+    -3.5701740161314732
    ],
    "n_points": 5141,
    "n_candidates": 1699,
@@ -1009,17 +1009,17 @@
     75.0
    ],
    "plane": [
-    -0.010448742516525616,
-    -0.0038836026511241766,
-    0.9999378687749911,
-    -2.488235619336213
+    -0.01032997778160576,
+    -0.0039066073414289176,
+    0.9999390131293565,
+    -2.493115505359853
    ],
    "n_points": 3217,
    "n_candidates": 81,
    "n_ground": 7,
    "z_low": 14.6166,
-   "z_centre": 178.5229,
-   "tilt_deg": 85.008,
+   "z_centre": 172.2672,
+   "tilt_deg": 84.813,
    "rejected": true,
    "borrowed_from": [
     2,
@@ -1038,17 +1038,17 @@
     100.0
    ],
    "plane": [
-    -0.010448742516525616,
-    -0.0038836026511241766,
-    0.9999378687749911,
-    -2.488235619336213
+    -0.01032997778160576,
+    -0.0039066073414289176,
+    0.9999390131293565,
+    -2.493115505359853
    ],
    "n_points": 3034,
    "n_candidates": 2214,
    "n_ground": 0,
    "z_low": 43.3528,
-   "z_centre": 43.5418,
-   "tilt_deg": 0.41,
+   "z_centre": 43.5419,
+   "tilt_deg": 0.408,
    "rejected": true,
    "borrowed_from": [
     2,
@@ -1067,16 +1067,16 @@
     125.0
    ],
    "plane": [
-    0.0024840471472141776,
-    0.0024001110424560768,
-    0.9999940344705833,
-    -3.8276871168020965
+    0.0024840471472141845,
+    0.002400111042456071,
+    0.9999940344705835,
+    -3.8276871168020956
    ],
    "n_points": 2661,
    "n_candidates": 2653,
    "n_ground": 0,
    "z_low": 43.4445,
-   "z_centre": 43.6088,
+   "z_centre": 43.6086,
    "tilt_deg": 0.445,
    "rejected": true,
    "borrowed_from": [
@@ -1096,17 +1096,17 @@
     150.0
    ],
    "plane": [
-    0.0024840471472141776,
-    0.0024001110424560768,
-    0.9999940344705833,
-    -3.8276871168020965
+    0.0024840471472141845,
+    0.002400111042456071,
+    0.9999940344705835,
+    -3.8276871168020956
    ],
    "n_points": 3019,
    "n_candidates": 599,
    "n_ground": 8,
    "z_low": 13.137,
-   "z_centre": 15.2915,
-   "tilt_deg": 8.261,
+   "z_centre": 15.2758,
+   "tilt_deg": 8.26,
    "rejected": true,
    "borrowed_from": [
     2,
@@ -1125,10 +1125,10 @@
     175.0
    ],
    "plane": [
-    -0.00821611447357796,
-    0.009572914008858131,
+    -0.00821611447357797,
+    0.009572914008858133,
     0.999920424224016,
-    -4.1080384259753275
+    -4.108038425975325
    ],
    "n_points": 3708,
    "n_candidates": 2238,
@@ -1151,17 +1151,17 @@
     200.0
    ],
    "plane": [
-    -0.015225248808050462,
-    -0.009975595628882238,
-    0.9998343259213408,
-    -0.0028375124671708996
+    -0.015243065820888699,
+    -0.009748053620740325,
+    0.9998362987984519,
+    -0.04335109249903146
    ],
    "n_points": 2919,
    "n_candidates": 2494,
-   "n_ground": 2447,
+   "n_ground": 2445,
    "z_low": 2.9552,
-   "z_centre": 3.206,
-   "tilt_deg": 1.043,
+   "z_centre": 3.2054,
+   "tilt_deg": 1.037,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1177,10 +1177,10 @@
     25.0
    ],
    "plane": [
-    -0.009027029076091606,
-    -0.003412282073408603,
-    0.999953433454334,
-    -2.4586950803597745
+    -0.008981219171119171,
+    -0.003428580105550566,
+    0.9999537902026573,
+    -2.462061133127185
    ],
    "n_points": 5082,
    "n_candidates": 940,
@@ -1206,10 +1206,10 @@
     50.0
    ],
    "plane": [
-    -0.0055500676683266515,
-    0.011336618735957262,
+    -0.005550067668326687,
+    0.01133661873595731,
     0.9999203357390591,
-    -3.1194124929024167
+    -3.1194124929024136
    ],
    "n_points": 4043,
    "n_candidates": 765,
@@ -1232,10 +1232,10 @@
     75.0
    ],
    "plane": [
-    0.00953843118810213,
-    -0.016561162021118497,
+    0.009538431188102152,
+    -0.01656116202111854,
     0.9998173564421554,
-    -3.4510578117950095
+    -3.451057811795015
    ],
    "n_points": 4657,
    "n_candidates": 735,
@@ -1258,10 +1258,10 @@
     100.0
    ],
    "plane": [
-    0.00953843118810213,
-    -0.016561162021118497,
+    0.009538431188102152,
+    -0.01656116202111854,
     0.9998173564421554,
-    -3.4510578117950095
+    -3.451057811795015
    ],
    "n_points": 2501,
    "n_candidates": 2501,
@@ -1287,10 +1287,10 @@
     125.0
    ],
    "plane": [
-    0.015596714619916501,
-    -0.030184592616261465,
+    0.015596714619916489,
+    -0.030184592616261455,
     0.9994226497641802,
-    -3.338902909964097
+    -3.3389029099640983
    ],
    "n_points": 2908,
    "n_candidates": 2908,
@@ -1316,10 +1316,10 @@
     150.0
    ],
    "plane": [
-    0.00032016944285671406,
-    0.004516027086199463,
-    0.9999897514429258,
-    -4.163096839278228
+    -6.418897583498221e-05,
+    0.0032319710614820457,
+    0.9999947751077668,
+    -3.9131393399404706
    ],
    "n_points": 2505,
    "n_candidates": 2505,
@@ -1345,17 +1345,17 @@
     175.0
    ],
    "plane": [
-    0.00032016944285671406,
-    0.004516027086199463,
-    0.9999897514429258,
-    -4.163096839278228
+    -6.418897583498221e-05,
+    0.0032319710614820457,
+    0.9999947751077668,
+    -3.9131393399404706
    ],
    "n_points": 3346,
    "n_candidates": 995,
-   "n_ground": 929,
+   "n_ground": 936,
    "z_low": 3.313,
-   "z_centre": 3.3933,
-   "tilt_deg": 0.259,
+   "z_centre": 3.3952,
+   "tilt_deg": 0.185,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1371,17 +1371,17 @@
     200.0
    ],
    "plane": [
-    -0.1455609464670727,
-    -0.09555662925521319,
-    0.9847237894298033,
-    28.850518082277514
+    -0.11327934372994482,
+    -0.06485647946506469,
+    0.991444112068608,
+    19.94586952448524
    ],
    "n_points": 3106,
    "n_candidates": 486,
-   "n_ground": 391,
+   "n_ground": 406,
    "z_low": 3.3054,
-   "z_centre": 5.5264,
-   "tilt_deg": 10.028,
+   "z_centre": 5.0014,
+   "tilt_deg": 7.5,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1397,17 +1397,17 @@
     25.0
    ],
    "plane": [
-    -0.0055500676683266515,
-    0.011336618735957262,
+    -0.005550067668326687,
+    0.01133661873595731,
     0.9999203357390591,
-    -3.1194124929024167
+    -3.1194124929024136
    ],
    "n_points": 4927,
    "n_candidates": 804,
    "n_ground": 23,
    "z_low": 7.5421,
-   "z_centre": 7.5724,
-   "tilt_deg": 1.04,
+   "z_centre": 7.5759,
+   "tilt_deg": 1.019,
    "rejected": true,
    "borrowed_from": [
     4,
@@ -1426,17 +1426,17 @@
     50.0
    ],
    "plane": [
-    -0.0055500676683266515,
-    0.011336618735957262,
+    -0.005550067668326687,
+    0.01133661873595731,
     0.9999203357390591,
-    -3.1194124929024167
+    -3.1194124929024136
    ],
    "n_points": 3208,
    "n_candidates": 475,
    "n_ground": 2,
    "z_low": 7.3363,
-   "z_centre": 7.6369,
-   "tilt_deg": 1.53,
+   "z_centre": 7.619,
+   "tilt_deg": 1.469,
    "rejected": true,
    "borrowed_from": [
     4,
@@ -1455,10 +1455,10 @@
     75.0
    ],
    "plane": [
-    0.0032945442003125707,
-    -0.005146068567500247,
-    0.9999813318041545,
-    -3.3526906119210373
+    0.003294544200312559,
+    -0.005146068567500237,
+    0.9999813318041547,
+    -3.3526906119210356
    ],
    "n_points": 4193,
    "n_candidates": 1566,
@@ -1481,10 +1481,10 @@
     100.0
    ],
    "plane": [
-    0.015596714619916501,
-    -0.030184592616261465,
+    0.015596714619916489,
+    -0.030184592616261455,
     0.9994226497641802,
-    -3.338902909964097
+    -3.3389029099640983
    ],
    "n_points": 3529,
    "n_candidates": 80,
@@ -1507,10 +1507,10 @@
     125.0
    ],
    "plane": [
-    0.015596714619916501,
-    -0.030184592616261465,
+    0.015596714619916489,
+    -0.030184592616261455,
     0.9994226497641802,
-    -3.338902909964097
+    -3.3389029099640983
    ],
    "n_points": 2608,
    "n_candidates": 2599,
@@ -1536,17 +1536,17 @@
     150.0
    ],
    "plane": [
-    -0.020018834018818543,
-    0.03294523485852003,
+    -0.020018834018818467,
+    0.032945234858519905,
     0.9992566526096507,
-    -6.35621536331997
+    -6.356215363319961
    ],
    "n_points": 2913,
    "n_candidates": 2570,
    "n_ground": 0,
    "z_low": 43.43,
-   "z_centre": 43.5433,
-   "tilt_deg": 0.373,
+   "z_centre": 43.5447,
+   "tilt_deg": 0.35,
    "rejected": true,
    "borrowed_from": [
     5,
@@ -1565,10 +1565,10 @@
     175.0
    ],
    "plane": [
-    -0.020018834018818543,
-    0.03294523485852003,
+    -0.020018834018818467,
+    0.032945234858519905,
     0.9992566526096507,
-    -6.35621536331997
+    -6.356215363319961
    ],
    "n_points": 3162,
    "n_candidates": 150,
@@ -1591,17 +1591,17 @@
     200.0
    ],
    "plane": [
-    -0.1455609464670727,
-    -0.09555662925521319,
-    0.9847237894298033,
-    28.850518082277514
+    -0.11327934372994482,
+    -0.06485647946506469,
+    0.991444112068608,
+    19.94586952448524
    ],
    "n_points": 3109,
    "n_candidates": 1331,
-   "n_ground": 255,
+   "n_ground": 0,
    "z_low": 9.6295,
-   "z_centre": 11.097,
-   "tilt_deg": 0.042,
+   "z_centre": 11.0976,
+   "tilt_deg": 0.038,
    "rejected": true,
    "borrowed_from": [
     4,
@@ -1620,17 +1620,17 @@
     25.0
    ],
    "plane": [
-    0.0008274266110396902,
-    -0.0026308795188811638,
-    0.9999961969118484,
-    -3.4376360342701493
+    0.00018979369956746974,
+    -0.001105039358735421,
+    0.9999993714329861,
+    -3.3986235777731544
    ],
    "n_points": 3490,
    "n_candidates": 2723,
    "n_ground": 0,
    "z_low": 7.185,
-   "z_centre": 7.5504,
-   "tilt_deg": 1.474,
+   "z_centre": 7.558,
+   "tilt_deg": 1.425,
    "rejected": true,
    "borrowed_from": [
     6,
@@ -1649,17 +1649,17 @@
     50.0
    ],
    "plane": [
-    0.0008274266110396902,
-    -0.0026308795188811638,
-    0.9999961969118484,
-    -3.4376360342701493
+    0.00018979369956746974,
+    -0.001105039358735421,
+    0.9999993714329861,
+    -3.3986235777731544
    ],
    "n_points": 4435,
    "n_candidates": 332,
-   "n_ground": 260,
+   "n_ground": 261,
    "z_low": 3.3623,
-   "z_centre": 3.4019,
-   "tilt_deg": 0.158,
+   "z_centre": 3.4092,
+   "tilt_deg": 0.064,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1675,17 +1675,17 @@
     75.0
    ],
    "plane": [
-    -0.004702421569112351,
-    0.005879877236785913,
-    0.999971656735863,
-    -2.9607768738743814
+    -0.004824587074238653,
+    0.006070107706947181,
+    0.9999699381241363,
+    -2.9535875263169613
    ],
    "n_points": 4406,
    "n_candidates": 2191,
-   "n_ground": 1849,
+   "n_ground": 1851,
    "z_low": 3.1978,
-   "z_centre": 3.3575,
-   "tilt_deg": 0.431,
+   "z_centre": 3.3583,
+   "tilt_deg": 0.444,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1701,10 +1701,10 @@
     100.0
    ],
    "plane": [
-    0.003033717531323879,
-    -0.0071887182894064035,
+    0.0030337175313238877,
+    -0.007188718289406427,
     0.99996955898032,
-    -3.204046855544485
+    -3.2040468555444783
    ],
    "n_points": 4471,
    "n_candidates": 1308,
@@ -1727,16 +1727,16 @@
     125.0
    ],
    "plane": [
-    0.003033717531323879,
-    -0.0071887182894064035,
+    0.0030337175313238877,
+    -0.007188718289406427,
     0.99996955898032,
-    -3.204046855544485
+    -3.2040468555444783
    ],
    "n_points": 2585,
    "n_candidates": 2585,
    "n_ground": 0,
    "z_low": 43.3709,
-   "z_centre": 43.4698,
+   "z_centre": 43.47,
    "tilt_deg": 0.31,
    "rejected": true,
    "borrowed_from": [
@@ -1756,10 +1756,10 @@
     150.0
    ],
    "plane": [
-    -0.0076715141929079534,
-    -0.0016908296267138185,
+    -0.007671514192907963,
+    -0.0016908296267138213,
     0.9999691440065346,
-    -1.8675076428482678
+    -1.8675076428482633
    ],
    "n_points": 4936,
    "n_candidates": 564,
@@ -1785,10 +1785,10 @@
     175.0
    ],
    "plane": [
-    -0.0076715141929079534,
-    -0.0016908296267138185,
+    -0.007671514192907963,
+    -0.0016908296267138213,
     0.9999691440065346,
-    -1.8675076428482678
+    -1.8675076428482633
    ],
    "n_points": 4837,
    "n_candidates": 333,
@@ -1811,10 +1811,10 @@
     200.0
    ],
    "plane": [
-    -0.0076715141929079534,
-    -0.0016908296267138185,
+    -0.007671514192907963,
+    -0.0016908296267138213,
     0.9999691440065346,
-    -1.8675076428482678
+    -1.8675076428482633
    ],
    "n_points": 3122,
    "n_candidates": 1251,
@@ -1840,17 +1840,17 @@
     25.0
    ],
    "plane": [
-    0.01897981406752752,
-    0.00816485178423148,
-    0.9997865281415347,
-    -7.098655865511534
+    0.019154004371238303,
+    0.008171620621463914,
+    0.9997831508547068,
+    -7.133184415428995
    ],
    "n_points": 3514,
    "n_candidates": 1204,
-   "n_ground": 1022,
+   "n_ground": 1023,
    "z_low": 3.1554,
-   "z_centre": 3.4386,
-   "tilt_deg": 1.184,
+   "z_centre": 3.4404,
+   "tilt_deg": 1.193,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1866,17 +1866,17 @@
     50.0
    ],
    "plane": [
-    0.005038303361416187,
-    3.926174546746923e-05,
-    0.9999873068983195,
-    -4.2099373581638595
+    0.0046865297037185045,
+    -3.913179942621044e-05,
+    0.9999890173937104,
+    -4.138469975593596
    ],
    "n_points": 3548,
    "n_candidates": 2665,
-   "n_ground": 2386,
+   "n_ground": 2379,
    "z_low": 3.151,
-   "z_centre": 3.2638,
-   "tilt_deg": 0.289,
+   "z_centre": 3.2612,
+   "tilt_deg": 0.269,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1892,17 +1892,17 @@
     75.0
    ],
    "plane": [
-    0.0036293901940898997,
-    -0.004685551136299785,
-    0.9999824364144443,
-    -3.667134460319852
+    0.0036837318434882506,
+    -0.004725386827700118,
+    0.9999820502584202,
+    -3.675074210431235
    ],
    "n_points": 3555,
    "n_candidates": 2973,
-   "n_ground": 2764,
+   "n_ground": 2765,
    "z_low": 3.1693,
-   "z_centre": 3.2795,
-   "tilt_deg": 0.34,
+   "z_centre": 3.2798,
+   "tilt_deg": 0.343,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1918,17 +1918,17 @@
     100.0
    ],
    "plane": [
-    -0.004210438555474393,
-    0.003943449324812257,
-    0.9999833605688613,
-    -2.905340457304282
+    -0.004121462875908504,
+    0.003925054427370565,
+    0.9999838036145909,
+    -2.9199847010933513
    ],
    "n_points": 4038,
    "n_candidates": 2480,
-   "n_ground": 2287,
+   "n_ground": 2285,
    "z_low": 3.2282,
-   "z_centre": 3.3498,
-   "tilt_deg": 0.331,
+   "z_centre": 3.3494,
+   "tilt_deg": 0.326,
    "rejected": false,
    "borrowed_from": null
   },
@@ -1944,10 +1944,10 @@
     125.0
    ],
    "plane": [
-    -0.005710980901342958,
-    -0.002830008168062508,
+    -0.005710980901342955,
+    -0.002830008168062512,
     0.9999796876691611,
-    -2.015850841423311
+    -2.015850841423312
    ],
    "n_points": 5462,
    "n_candidates": 612,
@@ -1970,10 +1970,10 @@
     150.0
    ],
    "plane": [
-    -0.00999468066044805,
-    -0.004897363065367666,
+    -0.009994680660448039,
+    -0.004897363065367641,
     0.9999380591784182,
-    -0.9641034342424981
+    -0.9641034342425066
    ],
    "n_points": 4199,
    "n_candidates": 1192,
@@ -1996,10 +1996,10 @@
     175.0
    ],
    "plane": [
-    -0.014945679538930957,
-    -0.0030379694108314775,
+    -0.014945679538930914,
+    -0.0030379694108314554,
     0.9998836919387066,
-    -0.36189347349434
+    -0.36189347349435286
    ],
    "n_points": 3098,
    "n_candidates": 242,
@@ -2022,10 +2022,10 @@
     200.0
    ],
    "plane": [
-    -0.014945679538930957,
-    -0.0030379694108314775,
+    -0.014945679538930914,
+    -0.0030379694108314554,
     0.9998836919387066,
-    -0.36189347349434
+    -0.36189347349435286
    ],
    "n_points": 2722,
    "n_candidates": 357,
@@ -2040,17 +2040,17 @@
    ]
   }
  ],
- "runtime_s": 0.624,
+ "runtime_s": 0.999,
  "runtime_note": "single run, load to paint-back, indicative only",
  "timings_s": {
-  "load": 0.057,
-  "to_open3d": 0.016,
-  "downsample": 0.084,
-  "remove_ground": 0.081,
-  "cluster": 0.137,
-  "label": 0.151,
-  "paint_back": 0.099,
-  "total": 0.624
+  "load": 0.061,
+  "to_open3d": 0.008,
+  "downsample": 0.123,
+  "remove_ground": 0.099,
+  "cluster": 0.27,
+  "label": 0.26,
+  "paint_back": 0.178,
+  "total": 0.999
  },
  "param_choice": [
   {
@@ -2059,21 +2059,21 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9816,
-    "recall": 0.9427
+    "precision": 0.9841,
+    "recall": 0.9437
    },
    "buildings": {
-    "precision": 0.8342,
+    "precision": 0.822,
     "recall": 0.9886
    },
-   "n_clusters": 1024,
-   "noise_share": 0.102,
+   "n_clusters": 1026,
+   "noise_share": 0.1007,
    "largest_cluster": 46039,
    "n_objects": {
     "buildings": 58,
-    "vegetation": 683,
+    "vegetation": 681,
     "street_furniture": 3,
-    "unlabelled": 62
+    "unlabelled": 65
    },
    "vegetation_points_ahn2": 0
   },
@@ -2083,19 +2083,19 @@
    "n_tiles": 16,
    "tiles_flagged": 1,
    "ground": {
-    "precision": 0.9846,
-    "recall": 0.8515
+    "precision": 0.9843,
+    "recall": 0.8518
    },
    "buildings": {
     "precision": 0.8098,
     "recall": 0.9886
    },
-   "n_clusters": 1031,
-   "noise_share": 0.0996,
+   "n_clusters": 1030,
+   "noise_share": 0.0997,
    "largest_cluster": 46039,
    "n_objects": {
     "buildings": 58,
-    "vegetation": 683,
+    "vegetation": 682,
     "street_furniture": 3,
     "unlabelled": 60
    },
@@ -2107,21 +2107,21 @@
    "n_tiles": 1,
    "tiles_flagged": 0,
    "ground": {
-    "precision": 0.9877,
-    "recall": 0.9457
+    "precision": 0.988,
+    "recall": 0.9469
    },
    "buildings": {
-    "precision": 0.8296,
+    "precision": 0.8295,
     "recall": 0.9886
    },
-   "n_clusters": 1038,
-   "noise_share": 0.1012,
+   "n_clusters": 1040,
+   "noise_share": 0.1013,
    "largest_cluster": 46039,
    "n_objects": {
     "buildings": 57,
     "vegetation": 682,
     "street_furniture": 3,
-    "unlabelled": 71
+    "unlabelled": 73
    },
    "vegetation_points_ahn2": 0
   },
@@ -2129,23 +2129,23 @@
    "variant": "no low-point pre-filter",
    "points_after_voxel": 232180,
    "n_tiles": 64,
-   "tiles_flagged": 29,
+   "tiles_flagged": 31,
    "ground": {
-    "precision": 0.9011,
-    "recall": 0.9739
+    "precision": 0.9834,
+    "recall": 0.9879
    },
    "buildings": {
-    "precision": 0.8213,
-    "recall": 0.9107
+    "precision": 0.8306,
+    "recall": 0.9886
    },
-   "n_clusters": 1007,
-   "noise_share": 0.107,
+   "n_clusters": 1023,
+   "noise_share": 0.1012,
    "largest_cluster": 46039,
    "n_objects": {
-    "buildings": 58,
-    "vegetation": 677,
+    "buildings": 57,
+    "vegetation": 681,
     "street_furniture": 3,
-    "unlabelled": 58
+    "unlabelled": 61
    },
    "vegetation_points_ahn2": 0
   },
@@ -2155,21 +2155,21 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9926,
-    "recall": 0.9157
+    "precision": 0.9927,
+    "recall": 0.915
    },
    "buildings": {
-    "precision": 0.8208,
+    "precision": 0.8206,
     "recall": 0.9886
    },
-   "n_clusters": 1048,
-   "noise_share": 0.1011,
+   "n_clusters": 1045,
+   "noise_share": 0.101,
    "largest_cluster": 46039,
    "n_objects": {
     "buildings": 58,
-    "vegetation": 683,
+    "vegetation": 682,
     "street_furniture": 3,
-    "unlabelled": 77
+    "unlabelled": 74
    },
    "vegetation_points_ahn2": 0
   },
@@ -2179,21 +2179,21 @@
    "n_tiles": 64,
    "tiles_flagged": 21,
    "ground": {
-    "precision": 0.9833,
-    "recall": 0.9662
+    "precision": 0.9843,
+    "recall": 0.9664
    },
    "buildings": {
-    "precision": 0.8242,
+    "precision": 0.8237,
     "recall": 0.9886
    },
-   "n_clusters": 1018,
-   "noise_share": 0.101,
+   "n_clusters": 1019,
+   "noise_share": 0.1008,
    "largest_cluster": 46039,
    "n_objects": {
     "buildings": 58,
-    "vegetation": 683,
+    "vegetation": 681,
     "street_furniture": 3,
-    "unlabelled": 56
+    "unlabelled": 58
    },
    "vegetation_points_ahn2": 0
   },
@@ -2203,21 +2203,21 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9816,
-    "recall": 0.9427
+    "precision": 0.9841,
+    "recall": 0.9437
    },
    "buildings": {
     "precision": null,
     "recall": 0.0
    },
-   "n_clusters": 1644,
-   "noise_share": 0.9143,
+   "n_clusters": 1652,
+   "noise_share": 0.9151,
    "largest_cluster": 75,
    "n_objects": {
     "buildings": 0,
-    "vegetation": 306,
-    "street_furniture": 307,
-    "unlabelled": 1031
+    "vegetation": 308,
+    "street_furniture": 301,
+    "unlabelled": 1043
    },
    "vegetation_points_ahn2": 0
   },
@@ -2227,23 +2227,23 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9816,
-    "recall": 0.9427
+    "precision": 0.9841,
+    "recall": 0.9437
    },
    "buildings": {
-    "precision": 0.8215,
+    "precision": 0.8095,
     "recall": 0.9724
    },
    "n_clusters": 506,
-   "noise_share": 0.0234,
+   "noise_share": 0.023,
    "largest_cluster": 52702,
    "n_objects": {
     "buildings": 22,
-    "vegetation": 370,
+    "vegetation": 368,
     "street_furniture": 1,
-    "unlabelled": 43
+    "unlabelled": 44
    },
-   "vegetation_points_ahn2": 1
+   "vegetation_points_ahn2": 0
   },
   {
    "variant": "min_points 5",
@@ -2251,21 +2251,21 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9816,
-    "recall": 0.9427
+    "precision": 0.9841,
+    "recall": 0.9437
    },
    "buildings": {
-    "precision": 0.8263,
+    "precision": 0.8149,
     "recall": 0.9917
    },
-   "n_clusters": 1220,
-   "noise_share": 0.0652,
-   "largest_cluster": 46684,
+   "n_clusters": 1216,
+   "noise_share": 0.0644,
+   "largest_cluster": 46685,
    "n_objects": {
-    "buildings": 51,
-    "vegetation": 859,
-    "street_furniture": 5,
-    "unlabelled": 62
+    "buildings": 50,
+    "vegetation": 857,
+    "street_furniture": 4,
+    "unlabelled": 61
    },
    "vegetation_points_ahn2": 0
   },
@@ -2275,21 +2275,21 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9816,
-    "recall": 0.9427
+    "precision": 0.9841,
+    "recall": 0.9437
    },
    "buildings": {
-    "precision": 0.8777,
+    "precision": 0.8764,
     "recall": 0.1977
    },
-   "n_clusters": 1809,
-   "noise_share": 0.6992,
+   "n_clusters": 1832,
+   "noise_share": 0.7011,
    "largest_cluster": 2136,
    "n_objects": {
     "buildings": 49,
-    "vegetation": 318,
-    "street_furniture": 165,
-    "unlabelled": 805
+    "vegetation": 321,
+    "street_furniture": 176,
+    "unlabelled": 810
    },
    "vegetation_points_ahn2": 0
   },
@@ -2299,19 +2299,19 @@
    "n_tiles": 64,
    "tiles_flagged": 20,
    "ground": {
-    "precision": 0.9816,
-    "recall": 0.9427
+    "precision": 0.9841,
+    "recall": 0.9437
    },
    "buildings": {
-    "precision": 0.7991,
+    "precision": 0.7978,
     "recall": 0.9886
    },
-   "n_clusters": 1026,
-   "noise_share": 0.0988,
+   "n_clusters": 1025,
+   "noise_share": 0.0985,
    "largest_cluster": 46039,
    "n_objects": {
     "buildings": 58,
-    "vegetation": 682,
+    "vegetation": 680,
     "street_furniture": 3,
     "unlabelled": 53
    },
@@ -2332,10 +2332,10 @@
    "probability_default_0.99999999": {
     "runs": 5,
     "voxels_differing_from_run_1": [
-     288,
-     342,
-     482,
-     712
+     551,
+     560,
+     777,
+     329
     ]
    },
    "note": "o3d.utility.random.seed(0) before every run. With probability < 1 RANSAC may stop early and the early stop races between threads, so seeded runs differ; with probability=1.0 they agree."

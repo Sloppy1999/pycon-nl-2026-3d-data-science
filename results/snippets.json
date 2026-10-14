@@ -1,7 +1,7 @@
 {
  "s02_python.py": {
   "ok": true,
-  "seconds": 0.91,
+  "seconds": 1.05,
   "error": null,
   "lines": 4,
   "max_line_len": 35,
@@ -13,7 +13,7 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "722961 -> 232180",
    "ok: read 722961 points from crop.pcd",
@@ -23,7 +23,7 @@
  },
  "s04_repl.py": {
   "ok": true,
-  "seconds": 0.65,
+  "seconds": 0.69,
   "error": null,
   "lines": 6,
   "max_line_len": 35,
@@ -35,7 +35,7 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "ok: key line 4 is the shape output",
    "ok: shape (722961, 3) = pipeline.json points_in",
@@ -44,7 +44,7 @@
  },
  "s06b_handoffs.py": {
   "ok": true,
-  "seconds": 0.85,
+  "seconds": 0.99,
   "error": null,
   "lines": 5,
   "max_line_len": 35,
@@ -56,7 +56,7 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "ok: Vector3dVector: the point cloud keeps its own copy",
    "ok: np.asarray(pcd.points): a writeable view (writes reach the cloud)",
@@ -65,7 +65,7 @@
  },
  "s08_load.py": {
   "ok": true,
-  "seconds": 0.82,
+  "seconds": 0.85,
   "error": null,
   "lines": 6,
   "max_line_len": 35,
@@ -77,7 +77,7 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "ok: same points as steps.load + steps.to_open3d",
    "ok: dtype float64, local origin [135715.0, 455475.0, -0.8130000000000001]",
@@ -86,7 +86,7 @@
  },
  "s09_voxel.py": {
   "ok": true,
-  "seconds": 0.96,
+  "seconds": 1.09,
   "error": null,
   "lines": 3,
   "max_line_len": 33,
@@ -98,7 +98,7 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "722961 -> 232180",
    "ok: same voxels as steps.downsample",
@@ -107,10 +107,10 @@
  },
  "s10_ground.py": {
   "ok": true,
-  "seconds": 1.26,
+  "seconds": 1.25,
   "error": null,
-  "lines": 10,
-  "max_line_len": 34,
+  "lines": 12,
+  "max_line_len": 35,
   "key_lines": 1,
   "shown": "s10_ground.py",
   "budget": {
@@ -119,19 +119,19 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
+   "ok: same parameters as results/pipeline.json",
    "ok: 20 flagged tiles = pipeline.json tiles_flagged",
-   "ok: steps.remove_ground mask = results/labels_crop.npz",
-   "pipeline.json ground: precision 0.9816 recall 0.9427"
+   "AHN class 2 point-level agreement: {'precision': 0.9841, 'recall': 0.9437, 'counts': {'true_positives': 247912, 'predicted': 251926, 'truth': 262712}, 'against': 'AHN class 2, point level, after paint-back'}"
   ]
  },
  "s10b_zen.py": {
   "ok": true,
-  "seconds": 0.06,
+  "seconds": 0.03,
   "error": null,
   "lines": 1,
-  "max_line_len": 15,
+  "max_line_len": 11,
   "key_lines": 0,
   "shown": "s10b_zen.py",
   "budget": {
@@ -140,14 +140,14 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "ok: 'Flat is better than nested.' is line 7 of `import this`"
   ]
  },
  "s11_cluster.py": {
   "ok": true,
-  "seconds": 1.23,
+  "seconds": 1.59,
   "error": null,
   "lines": 8,
   "max_line_len": 32,
@@ -159,16 +159,16 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "ok: same ids as steps.cluster",
-   "ok: pipeline.json n_clusters 1024, eps 0.75, min_points 6",
+   "ok: pipeline.json n_clusters 1026, eps 0.75, min_points 6",
    "ok: same ids as results/labels_crop.npz"
   ]
  },
  "s12_label.py": {
   "ok": true,
-  "seconds": 1.23,
+  "seconds": 1.56,
   "error": null,
   "lines": 10,
   "max_line_len": 35,
@@ -180,16 +180,16 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
-   "street furniture: {'cluster': 435, 'x_rd': 135806.75, 'y_rd': 455654.57, 'voxels': 10, 'points': 15, 'top_m': 7.42, 'bottom_m': 5.69, 'width_m': 0.72, 'footprint_m2': 2.0, 'multi_return_share': 0.4, 'to_building_m': 14.16, 'to_vegetation_m': 3.99, 'ahn_classes': {'1': 15}}",
-   "street furniture: {'cluster': 710, 'x_rd': 135766.79, 'y_rd': 455620.74, 'voxels': 7, 'points': 10, 'top_m': 6.03, 'bottom_m': 4.77, 'width_m': 0.47, 'footprint_m2': 2.0, 'multi_return_share': 0.19, 'to_building_m': 10.86, 'to_vegetation_m': 5.75, 'ahn_classes': {'1': 10}}",
-   "street furniture: {'cluster': 719, 'x_rd': 135754.83, 'y_rd': 455608.66, 'voxels': 11, 'points': 28, 'top_m': 3.38, 'bottom_m': 3.27, 'width_m': 1.29, 'footprint_m2': 3.0, 'multi_return_share': 0.327, 'to_building_m': 11.23, 'to_vegetation_m': 13.07, 'ahn_classes': {'1': 28}}"
+   "street furniture: {'cluster': 185, 'x_rd': 135766.79, 'y_rd': 455620.74, 'voxels': 7, 'points': 10, 'top_m': 6.03, 'bottom_m': 4.77, 'width_m': 0.47, 'footprint_m2': 2.0, 'multi_return_share': 0.19, 'to_building_m': 10.86, 'to_vegetation_m': 5.75, 'ahn_classes': {'1': 10}}",
+   "street furniture: {'cluster': 451, 'x_rd': 135806.75, 'y_rd': 455654.57, 'voxels': 10, 'points': 15, 'top_m': 7.42, 'bottom_m': 5.69, 'width_m': 0.72, 'footprint_m2': 2.0, 'multi_return_share': 0.4, 'to_building_m': 13.84, 'to_vegetation_m': 3.99, 'ahn_classes': {'1': 15}}",
+   "street furniture: {'cluster': 727, 'x_rd': 135754.83, 'y_rd': 455608.66, 'voxels': 11, 'points': 28, 'top_m': 3.38, 'bottom_m': 3.27, 'width_m': 1.29, 'footprint_m2': 3.0, 'multi_return_share': 0.327, 'to_building_m': 11.23, 'to_vegetation_m': 13.07, 'ahn_classes': {'1': 28}}"
   ]
  },
  "s13_render.py": {
   "ok": true,
-  "seconds": 2.41,
+  "seconds": 3.75,
   "error": null,
   "lines": 8,
   "max_line_len": 34,
@@ -201,7 +201,7 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "ok: same classes as steps.paint_back",
    "ok: same classes as results/labels_crop.npz (722961 points)",
@@ -210,7 +210,7 @@
  },
  "s14_pipeline.py": {
   "ok": true,
-  "seconds": 1.29,
+  "seconds": 1.79,
   "error": null,
   "lines": 9,
   "max_line_len": 35,
@@ -222,16 +222,16 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
-   "{'ground': 252303, 'buildings': 401689, 'vegetation': 27224, 'street_furniture': 53, 'unlabelled': 41692}",
+   "{'ground': 251926, 'buildings': 407637, 'vegetation': 27093, 'street_furniture': 53, 'unlabelled': 36252}",
    "ok: same class for all 722961 points as results/labels_crop.npz",
    "ok: same label_points as results/pipeline.json"
   ]
  },
  "s16_loop.py": {
   "ok": true,
-  "seconds": 1.44,
+  "seconds": 1.29,
   "error": null,
   "lines": 5,
   "max_line_len": 35,
@@ -243,14 +243,14 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "722961 distances; np.array_equal with the one-expression version: True"
   ]
  },
  "s16_vec.py": {
   "ok": true,
-  "seconds": 1.4,
+  "seconds": 1.15,
   "error": null,
   "lines": 3,
   "max_line_len": 33,
@@ -262,14 +262,14 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
    "722961 distances; np.array_equal with the loop over rows: True"
   ]
  },
  "s21_chunked.py": {
   "ok": true,
-  "seconds": 0.42,
+  "seconds": 0.71,
   "error": null,
   "lines": 12,
   "max_line_len": 70,
@@ -281,24 +281,16 @@
   },
   "within_budget": true,
   "has_region": true,
-  "python": "3.13.15",
+  "python": "3.13.5",
   "stdout_tail": [
-   "utrecht_jaarbeurs_200m.laz: 722961 points in, 230519 kept at 0.5 m (1 chunks, 0.1 s); equals the load-everything reference: True"
+   "utrecht_jaarbeurs_200m.laz: 722961 points in, 230519 kept at 0.5 m (1 chunks, 0.2 s); equals the load-everything reference: True"
   ]
  },
  "s02_pcl.cpp": {
-  "ok": true,
-  "status": "ran",
-  "seconds": 3.66,
-  "error": null,
-  "compiler": "g++ (conda-forge gcc 15.3.0-7) 15.3.0",
-  "pcl_version": "1.15.1",
-  "build_cmd": "g++ -std=c++17 -O2 -Wall -Wextra s02_pcl.cpp $(pkg-config --cflags --libs pcl_io pcl_filters) -o s02_pcl",
-  "build_warnings": [],
-  "stdout_tail": [
-   "722961 -> 230519"
-  ],
-  "output_line": "722961 -> 230519",
+  "ok": null,
+  "status": "NOT RUN",
+  "seconds": null,
+  "error": "no PCL toolchain: pkg-config finds no pcl_common (set PCL_PREFIX)",
   "lines": 12,
   "max_line_len": 35,
   "key_lines": 1,
@@ -313,6 +305,8 @@
    "start": "// --- slide ---",
    "end": "// --- end ---",
    "key": "  // <<"
-  }
+  },
+  "output_line": "722961 -> 230519",
+  "output_provenance": "Previously recorded run; not rerun on this machine"
  }
 }

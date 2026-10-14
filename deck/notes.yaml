@@ -271,7 +271,7 @@ slides:
   - Candidate gotchas 'las.xyz' and 'Vector3dVector(float32)' are measured here (their slide is removed)
   why_it_matters:
   - 'Memory: one float64 xyz copy is {memory.tile_1km.bytes_per_point.xyz_float64|int} B per point (results/memory.json);
-    21 013 926 points × 24 B = 0.47 GB per copy of a 1 km AHN file, and the load-everything pipeline holds several (slide
+    21 013 926 points × 24 B = 0.47 GiB per copy of a 1 km AHN file, and the load-everything pipeline holds several (slide
     25)'
   - 'Time: copying the crop into Open3D takes {facts.timings.v3d_float64_c.median_ms|ms} from a C-ordered float64 array,
     {facts.timings.v3d_float64_f.median_ms|ms} from laspy''s column-ordered one and {facts.timings.v3d_float32.median_ms|ms}
@@ -377,58 +377,33 @@ slides:
 - n: 14
   seconds: 75
   ends_at: '12:35'
-  talk_track: 'Step three. Every Dutch person in this room will tell you Utrecht is flat, and around the Jaarbeurs they
-    are right: one plane for this whole crop scores {pipeline.single_plane.ground.recall|pct1} recall against AHN''s ground,
-    the tiles {pipeline.ground.recall|pct1}, a tie. On the street where I built this, one plane scored {pipeline.previous_street.one_plane.ground.recall|pct1}
-    and the tiles {pipeline.previous_street.tiles_25m.ground.recall|pct1}, so the code fits one RANSAC plane per {pipeline.params.tile|m}
-    tile, and the last line gives no ground to the {pipeline.tiles_flagged|int} tiles under a roof, where RANSAC fits the
-    roof. Note `probability=1.0`: without it, two seeded runs differ. Or, as import this puts it: flat is better than nested.
-    With the ground gone, let''s group what''s left.'
+  talk_track: 'Step three. Around the Jaarbeurs Utrecht is flat, but this crop has a very large roof, so one RANSAC plane
+    per {pipeline.params.tile|m} tile, never one per point. Per tile I keep only the low points, within 1.5 metres of the
+    tile''s second percentile, so RANSAC never sees the treetops. Then one segment_plane call. Careful with one thing:
+    after subtracting header.mins, z is height above the lowest point of the crop, not above the terrain. So I never cut
+    at an absolute height. The check is relative: a plane steeper than 15 degrees, or 2.5 metres above the median tile
+    plane, is a roof that slipped through, and that tile borrows the nearest good plane. Here {pipeline.tiles_flagged|int}
+    of {pipeline.n_tiles|int} tiles are roof. This is exactly the code that was scored: {pipeline.ground.precision|pct1}
+    precision and {pipeline.ground.recall|pct1} recall against AHN''s own ground class, which the pipeline never saw.
+    Agreement with a reference label on one crop, not field truth. With the ground gone, let''s group what''s left.'
   question: Why RANSAC per tile and not a dedicated ground filter such as CSF or SMRF?
   answer: I haven't benchmarked dedicated ground filters for this talk, so I won't claim they are better or worse. RANSAC
-    per tile is one Open3D call you can read on a slide, and its inner test, distance to a plane, is exactly the benchmark
-    in the next section.
-  checks:
-  - 'The slide 14 title no longer says ''Utrecht isn''t flat'': on the Jaarbeurs crop one plane ties with the tiles (results/pipeline.json
-    single_plane); the joke now runs the other way'
-  trace:
-  - 'Sketch caption: one plane per tile'
-  - snippets/s10_ground.py
-  - 'results/snippets.json: s10_ground.py.ok'
-  - 'results/pipeline.json: ground.precision, ground.recall, n_tiles, params.tile, params.ransac_threshold, params.ransac_n,
-    params.ransac_iterations, params.ransac_probability, params.seed'
-  - renders/f3_ground.png
-  - 'results/pipeline.json: checks.ransac_default_probability (seeded runs identical at 1.0, different at the default)'
-  - 'results/pipeline.json: params_why.tile'
-  - 'results/bench_cliff.json: plane.plane_fit (one plane on the whole crop)'
-  - 'One plane against 25 m tiles, on this crop and on the first example street (data/previous/, Graadt van Roggenweg):
-    results/pipeline.json single_plane, previous_street, params_why.tile; the roof tiles: tiles_flagged, snippets/s10_ground.py
-    (z0 < 5 rule = the plausibility check on every accepted tile)'
-  - 'Seeded runs differ without probability=1.0: research: review/honesty/snippets/s10_default_probability.py, reports/libraries.md
-    FLAG 1'
-  - 'Callout: ''Flat is better than nested.'' is line 7 of `python -c "import this"` (checked by snippets/s10b_zen.py; results/snippets.json:
-    s10b_zen.py.ok)'
-  joke: 'Every Dutch person in this room will tell you Utrecht is flat; around the Jaarbeurs they are right (one plane ties
-    with the tiles). Spoken: ''flat is better than nested'', line 7 of import this (the on-slide callout was dropped on
-    2026-10-12 to make room for the sketch).'
+    per tile is one Open3D call you can read on a slide. Its parameters are tuned for this flat crop; hilly terrain or
+    tiles that are almost all roof need retuning or a dedicated filter.
   line_by_line:
-  - 'o3d.utility.random.seed(0): RANSAC draws random points; a fixed seed makes the planes reproducible (together with probability=1.0,
-    see below)'
-  - 'ground = np.zeros(len(P), bool): one flag per voxel, nothing is ground yet'
-  - 'for i in tiles(P, 25) (key line): splits the voxels into 25 m squares in plan view and loops over the {pipeline.n_tiles|int}
-    tiles, never over points; i holds the indices of one tile'
-  - 'z0 = np.percentile(P[i, 2], 2): the tile''s low height, the 2nd percentile, robust to a few points below the ground'
-  - 'low = i[P[i, 2] < z0 + 1.5]: candidate ground, the voxels within 1.5 m of that low height (roofs and treetops are out
-    before RANSAC starts)'
-  - 't = down.select_by_index(low): the candidates as their own Open3D point cloud'
-  - '_, inl = t.segment_plane(0.4, 3, 300, probability=1.0): RANSAC fits one plane: a voxel within 0.4 m of the plane is
-    an inlier, each try uses 3 points, at most 300 tries; probability=1.0 turns off the early stop, without it two seeded
-    runs differ'
-  - 'ground[low[inl]] = z0 < 5: the inliers become ground, unless the tile''s low point is more than 5 m up: then the tile
-    is all roof and gets no ground ({pipeline.tiles_flagged|int} tiles)'
-  sketch: 'A side view of two tiles: sage ground points along a gentle slope, a building and a tree above them in white.
-    Each tile fits its own straight plane through its ground points, so the line can bend at the tile edge where the street
-    does.'
+  - 'for i in tiles(P, 25) (key line): 25 m squares in plan view; i holds the indices of one tile into P (the voxels)'
+  - 'z0 = np.percentile(P[i, 2], 2): the tile''s low height, robust to a few points below the ground'
+  - 'low = i[P[i, 2] < z0 + 1.5]: candidates, still indices into P, in ascending order'
+  - 't = down.select_by_index(low); segment_plane(0.4, 3, 300, probability=1.0): 0.4 m tolerance, 3 points per try, 300
+    tries; probability=1.0 disables the early stop so two seeded runs agree'
+  - 'fits += [(i, low, inl, plane)]: inl indexes the sub-cloud t, so low[inl] maps the inliers back to P'
+  - 'check_planes: flags planes tilted more than 15 degrees or more than 2.5 m above the median tile plane; a flagged tile
+    takes the nearest accepted plane, its ground = candidates within 0.4 m of it. Same function the pipeline runs.'
+  checks:
+  - 'The old slide line ground[low[inl]] = z0 < 5 used an absolute height above the crop minimum. On this crop it split
+    the tiles the same way, but the scored pipeline repaired flagged tiles and the slide did not, so the slide showed
+    a different mask from the one that was scored. Fixed 2026-10-14: the slide code now equals results/labels_crop.npz.'
+  trace: [snippets/s10_ground.py, pipeline/steps.py (remove_ground, check_planes), results/pipeline.json, results/labels_crop.npz]
 
 - n: 15
   seconds: 55
@@ -498,7 +473,7 @@ slides:
   - 'Multiple-return share per AHN class on the crop: research: review/honesty/inspect_crop.out'
   - 'Lamp posts as a few dozen points: research: reports/dataset.md (pole_analysis.json, measured on the first example street,
     not on this crop)'
-  - 'Cars fail rule 4: research: reports/build/pipeline.md; results/pipeline.json params.rules.slender (a car fails ''twice
+  - 'Cars fail rule 4: pipeline/steps.py; results/pipeline.json params.rules.slender (a car fails ''twice
     as tall as wide'')'
   - 'Objects below min_points dropped as noise: results/pipeline.json street_furniture_note, params.min_points'
   - 'Street furniture drawn enlarged: renders/render_spec.json point_size_px'
@@ -570,7 +545,7 @@ slides:
     25. Leaving after 18:55: also skip 18, and tell only one story on 26. Further on: reach slide 26 by 23:45, otherwise
     skip it. To skip: one sentence, then click.'
   checks:
-  - Repo URL is still a placeholder (content.yaml)
+  - QR repository verified publicly accessible on 2026-10-14
   - 'Other open sources (B6): research: reports/videos.md V1'
   trace:
   - 'Small print: One run, indicative; renders not included. Street furniture drawn enlarged.'
@@ -582,8 +557,7 @@ slides:
   - 'No per-point Python loop: the loops in pipeline/steps.py run over tiles (remove_ground) and clusters (label)'
   - renders/f6_final.png
   - 'renders/labels.json: f6_final'
-  - 'Table: results/pipeline.json points_in, points_after_voxel, ground.precision, n_clusters, timings_s; ''4 classes''
-    = ground, buildings, vegetation, street furniture'
+  - 'Before and after: same stored camera. Four predicted classes plus unlabelled; runtime excludes rendering.'
   the_seven_calls:
   - 'The whole pipeline is seven calls in the repo (snippets/s14_pipeline.py, pipeline/run.py):'
   - las, xyz, _ = load("crop.laz") / multi = las.number_of_returns > 1 / pcd = to_open3d(xyz, multi) / down = downsample(pcd,
@@ -629,7 +603,7 @@ slides:
     1 to 5 {bgt.pole_points_histogram.1-5|int}, 6 to 20 {bgt.pole_points_histogram.6-20|int}, more than 20 none'
   - 'Poles with at least 6 occupied 0.5 m voxels above 1.5 m: {bgt.poles_with_6_voxels|int}, all lamp posts; half of them
     sit under building or viaduct points'
-  - 'Our objects against the BGT: clusters 435 and 710 within 0.51 m and 0.49 m of a lamp post; cluster 719 is 4.97 m from
+  - 'Our objects against the BGT: the two candidates within 0.51 m and 0.49 m of a lamp post; the third is 4.97 m from
     the nearest one'
   - 'Map: 60 of the 61 poles project inside the render (one falls just outside the frame)'
   mental_model: 'Slide 20 (a point cloud samples the surface unevenly) follows: the density map of this crop explains why poles get few points.'
@@ -637,7 +611,7 @@ slides:
 - n: 20
   seconds: 40
   ends_at: '17:45'
-  talk_track: 'Why so few points on a pole? Because a scanner doesn''t see the city, it samples it. This map counts points per square metre in our crop, median {concept.c5.median_per_m2|int}. Walls and tree crowns stack points into bright lines and spots, and some bands are thin, so a thin pole can fall between the samples. A radius tuned in one corner can fail in the next: measure density and error before you tune anything. Now, one simple question about every point.'
+  talk_track: 'Why so few points on a pole? Because a scanner doesn''t see the city, it samples it. This map counts points per square metre in our crop, median {concept.c5.median_per_m2|int}. Walls and tree crowns stack points into bright lines and spots, and some bands are thin, so a thin pole can fall between the samples. A radius tuned in one corner can fail in the next: measure density and error before you tune anything. We''ve turned the scan into labels. Now let''s look at the Python decisions that made the pipeline fast enough to be practical. Think in arrays and let compiled code loop: first, a quiz.'
   question: Is the density on the map the density of the surface?
   answer: 'Not quite: a map cell counts every point above it, so walls and tree crowns look denser than they are as surfaces; a per-surface density needs normals. And the published accuracy is a specification for the whole data set, not a guarantee for each point.'
   trace:
@@ -679,8 +653,7 @@ slides:
   ends_at: '20:20'
   talk_track: 'The answer: on {bench.plane.n|int} points the loop takes {bench.plane.loop_numpy_rows.median_ms|ms} and the
     single expression {bench.plane.vectorised.median_ms|ms}: (click) that''s {bench.plane.factor.median|x}, so if you said
-    100, you win. The axis is logarithmic, otherwise the grey bar would barely show. Same data, same machine, same result;
-    what changed most is how many times we call into compiled code, and memory layout does the rest. Even a loop over plain
+    100, you win. The axis is logarithmic, otherwise the grey bar would barely show. Same data, same machine, same result. Even a loop over plain
     Python floats, which avoids NumPy scalars, takes {bench.plane.loop_python_floats.median_ms|ms}, plus {bench.plane.sensitivity.tolist.median_ms|ms}
     to build those lists with P.tolist(). So where does the time go?'
   question: The abstract promised two orders of magnitude. Is that what you measured?
@@ -711,12 +684,13 @@ slides:
     calls into NumPy, a row, three elements, a few scalar operations, and together they cost about {bench.plane.per_step_ns_loop|ns}
     per point; the same loop on plain Python floats, one NumPy call per step, still costs {bench.plane.per_step_ns_python_floats|ns};
     the work itself costs {bench.plane.per_point_ns_vectorised|ns1} per point inside NumPy. It''s like sending every point
-    through the toll booth in its own car, when NumPy puts them all on one bus. C++ libraries are no exception: the KDTree
-    query the loop uses costs {bench.knn.per_query_us_far_knn|us1} even when it finds nothing, against {bench.knn.per_point_us_one_call_1t|us1}
-    per point inside one call, so the kNN loop is {bench.knn.factor_loop_vs_1t.median|x} slower than one call. So how do
-    you find such a loop in your own code?'
-  question: Why is the KDTree cliff so much smaller than the plane cliff?
-  answer: Because the factor is roughly toll plus work, divided by work. A KDTree query does microseconds of real work,
+    through the toll booth in its own car, when NumPy puts them all on one bus. That''s rule four, let compiled code loop. It''s why the loops in our pipeline run over {pipeline.n_tiles|int} tiles and
+    {pipeline.n_clusters|int} clusters, never over {pipeline.points_in|int} points: Python orchestrates, the libraries do the arithmetic. So how
+    do you find such a loop in your own code?'
+  question: Is this only a NumPy problem?
+  answer: No. C++ libraries pay a toll per call too. One SciPy KDTree query costs {bench.knn.per_query_us_far_knn|us1}
+    even when it finds nothing, against {bench.knn.per_point_us_one_call_1t|us1} per point inside one call, so a kNN loop
+    is {bench.knn.factor_loop_vs_1t.median|x} slower. That cliff is smaller because the factor is roughly toll plus work, divided by work. A KDTree query does microseconds of real work,
     so a toll of a few microseconds only multiplies the time a few times; plane distance does nanoseconds of work, so the
     toll dominates. In the synthetic pilot, queries with more neighbours had a smaller cliff.
   trace:
@@ -735,7 +709,16 @@ slides:
     time per line. One command, on the loop from the quiz. Each bar is one line of code, and its length is its share of the
     whole run: navy for time in the Python interpreter, blue for time in native code, here NumPy. The line that computes the
     distance takes {prof.lines.loop_body.total|int} percent of the run, and almost all of it is NumPy, one value at a time.
-    The same arithmetic as one expression takes {prof.lines.vectorised.total|f1} percent. So, could threads rescue the loop?'
+    The same arithmetic as one expression takes {prof.lines.vectorised.total|f1} percent. And if you wonder why it says 10 seconds when slide 22 said 317 milliseconds: the profiler ran each version
+    {prof.repeats|int} times. Per call that is about {prof.per_call_ms.loop_body|ms} and {prof.per_call_ms.vectorised|ms},
+    close to the standalone numbers. The profiler tells you which line; the benchmark tells you how much. Could threads
+    rescue this loop?'
+  discrepancy: 'Slide 24 shows share × the whole {prof.elapsed_s|s1} profiled run (imports and LAZ reading included) for {prof.repeats|int}
+    calls of each version. Divided by the repeats: {prof.per_call_ms.loop_body|ms} and {prof.per_call_ms.vectorised|ms} per call,
+    against {bench.plane.loop_numpy_rows.median_ms|ms} and {bench.plane.vectorised.median_ms|ms} unprofiled (slide 22). The remaining
+    ~10 % on the loop is not attributed: sampling overhead, a different run and sampling granularity were not separated. Both
+    measure the same code (bench/cpuprof/loop.py compiles the slide regions of s16_loop.py and s16_vec.py) on the same array
+    and plane (bench_cliff.json plane.coefficients).'
   question: Why do the for line and the indexing line show 0 %?
   answer: Scalene samples the program with a timer and bills each sample to the line the interpreter is executing when it
     gets to handle it. A long call into C, such as NumPy arithmetic on scalars, is handled once it returns, so the time of
@@ -774,7 +757,7 @@ slides:
   talk_track: 'Python 3.14 ships a free-threaded build, so I split the same loop over threads. With the GIL, {ft.summary.best_threads_ft|int}
     threads gain nothing; on Python 3.14t, without the GIL, they make the loop {ft.summary.ft_speedup_best_vs_loop.median|x}
     faster. One NumPy call on one thread is still {ft.summary.ft_vectorised_vs_best_threads.median|x} faster than that.
-    Free threading spreads the toll over your cores; it doesn''t remove it. Now the other way 3D data hurts: memory.'
+    That''s one loop on one 8-core machine, not a verdict on free-threaded Python. But the lesson holds: free threading spreads the toll over your cores; it doesn''t remove it. Now the other way 3D data hurts: memory.'
   question: What about more threads, or multiprocessing?
   answer: On this CPU with {ft.conditions.cores|int} cores, {ft.summary.best_threads_ft|int} threads were the fastest I
     measured, {ft.builds.free_threaded.timings.threads_8.median_ms|ms}; all {ft.conditions.threads|int} hardware threads
@@ -798,11 +781,14 @@ slides:
 - n: 26
   seconds: 55
   ends_at: '24:35'
-  talk_track: A 1 km AHN file has {memory.tile_1km.points|int} points, but the full-size files are {research.ahn5_c_31hz2.width_km|f2t}
-    by {research.ahn5_c_31hz2.height_km|f2t} km, and the one with this area, 2023_C_31HZ2, has {memory.big_file.points|int}.
-    At the {memory.tile_1km.bytes_per_point.pipeline_retained|int} bytes per point I measured for our pipeline, that's about
-    {memory.big_file.computed_gb.our_pipeline|gb}, against {memory.big_file.computed_gb.las_records|gb} for the LAS records
-    alone; both computed, not run. It works on my machine, just not for this file. So how do we get through it anyway?
+  talk_track: 'Rule three, make it small first, is about memory. The AHN file that holds this area has {memory.big_file.points|int}
+    points. Just its LAS records and one float64 copy of xyz are {memory.big_file.computed_gb.plus_xyz|gb}: that''s arithmetic
+    on record sizes, not a run. On a smaller 1 km file I measured about {memory.tile_1km.bytes_per_point.pipeline_retained|int}
+    bytes kept per point for loading and voxel downsampling. Scaled up, {memory.big_file.computed_gb.our_pipeline|gb}, and
+    more at peak. It works on my machine, just not for this file. On that 1 km file, loading everything peaked at
+    {memory.tile_1km.naive_peak_mb|gb1}; streaming it in chunks of a million points peaked at {memory.tile_1km.chunked_peak_mb|gb1},
+    measured both times. Chunking keeps the first point per voxel instead of the average, and the output still grows with
+    the data, so it''s not a constant-memory trick. It''s a budget: know your copies, and stream what doesn''t fit.'
   question: The LAS record is {memory.tile_1km.record_bytes|int} bytes. Why do you need so many more?
   answer: 'Because a working pipeline holds more than the record. Measured on the 1 km file: laspy.read peaks at {memory.tile_1km.bytes_per_point.laspy_read_peak|int}
     and keeps {memory.tile_1km.bytes_per_point.laspy_read_retained|int} bytes per point, the float64 xyz array adds {memory.tile_1km.bytes_per_point.xyz_float64|int},
@@ -829,18 +815,18 @@ slides:
     conditions).'
   what_is_on_the_slide:
   - 'Title: the AHN5 file that holds this area, 2023_C_31HZ2, is 5 by 6.25 km with {memory.big_file.points|int} points;
-    loading it whole needs more than the 32 GB of a big laptop'
-  - 'Bars: two reference bars, 16 and 32 GB of RAM (navy), then three computed bars for that file: the LAS records alone
+    loading it whole needs more than the 32 GiB of a big laptop'
+  - 'Bars: one reference bar, 32 GiB of RAM (navy), then three computed bars for that file: the LAS records alone
     ({memory.tile_1km.record_bytes|int} B per point for point format 6), plus a float64 xyz copy (24 B per point more),
     and our load and voxel steps with every array kept ({memory.tile_1km.bytes_per_point.pipeline_retained|int} B per point);
-    the dashed line is 32 GB'
+    the dashed line is 32 GiB'
   - 'Computed, not run: bytes per point measured on the 1 km file (21 013 926 points), multiplied by the big file''s point
     count'
   - 'Hero: {memory.tile_1km.bytes_per_point.pipeline_retained|int} B per point; where they go: laspy.read keeps {memory.tile_1km.bytes_per_point.laspy_read_retained|int},
     xyz adds {memory.tile_1km.bytes_per_point.xyz_float64|int}, Open3D''s copy {memory.tile_1km.bytes_per_point.open3d_points|int},
     the voxel centroids the rest; the peak while running is {memory.tile_1km.bytes_per_point_peak.pipeline|int} B per point'
   - 'Machine line: the RAM of the machine everything ran on, {memory.conditions.ram_gib|f1} GiB'
-  - 'Units: GB = 2^30 bytes; memory figures are the increase over the process after its imports'
+  - 'Units: GiB = 2^30 bytes; memory figures are the increase over the process after its imports'
   mental_model: 'Hidden C6 (memory follows N and the algorithm): linear storage against quadratic pairwise distances.'
 
 - n: 27
@@ -872,9 +858,9 @@ slides:
     the data sources from his beginner video.'
   checks:
   - Publish the repo URL and QR only after the repo clean-up listed in the open items (docs/OPEN_ITEMS.md, section f)
-  - If the optional book-credit small print is dropped from the slide, say the credit aloud
+  - Book title overlap is covered only if asked; the closing slide keeps the data attribution.
   trace:
-  - 'content.yaml slide 28: qr.url is null, contact and repo URL are placeholders'
+  - 'content.yaml slide 28: QR repository returned HTTP 200 on 2026-10-14; contact is configured.'
   - 'content.yaml meta.source_ahn (licence: research: reports/dataset.md)'
   - 'Book title and year: research: reports/book.md'
   - 'Poux''s videos used for B5 and B6: research: reports/videos.md'

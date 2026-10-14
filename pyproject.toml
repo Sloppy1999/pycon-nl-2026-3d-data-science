@@ -13,6 +13,7 @@ dependencies = [
 ]
 
 [dependency-groups]
+qa = ["pymupdf>=1.26", "zxing-cpp>=3"]
 deck = [
     "python-pptx>=1.0.2",
     "pyyaml>=6",
