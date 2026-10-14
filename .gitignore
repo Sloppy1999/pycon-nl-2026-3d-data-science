@@ -26,3 +26,6 @@ deck/out/*.json
 
 # Private LibreOffice export profile
 deck/out/.lo-profile/
+
+# macOS
+.DS_Store

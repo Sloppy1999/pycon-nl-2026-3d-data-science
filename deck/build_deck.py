@@ -140,6 +140,10 @@ class Builder:
         self.appendix = _index_by_n(self.appendix_raw)
         lab = RENDERS / "labels.json"
         self.labels = json.loads(lab.read_text(encoding="utf-8")) if lab.exists() else None
+        # 2026-10-14: anchors of the oblique renders (assets/visualizations/make_visuals.py), same shape as labels.json
+        lab3 = TALK / "assets" / "visualizations" / "anchors.json"
+        if lab3.exists():
+            self.labels = {**(self.labels or {}), **json.loads(lab3.read_text(encoding="utf-8"))}
         snj = RESULTS / "snippets.json"
         self.snippet_runs = json.loads(snj.read_text(encoding="utf-8")) if snj.exists() else None
         self.report: dict = {
@@ -960,6 +964,20 @@ class Builder:
                 if width_in(part, 24) > box.w - 0.05:
                     self.warn(n, f"presenter line wider than {box.w:.2f} in: {part!r}")
             set_name(pres, "Presenter")
+        hero = spec.get("hero")
+        if hero:
+            # 2026-10-14: the real point cloud on the title slide. The render's background is the slide's navy
+            # (render_palette.background), so the picture has no visible edge; it goes to the back so the title,
+            # presenter line and logo stay on top of it.
+            p_ = (TALK / hero["file"]).resolve()
+            x, y, w = hero["box"]
+            with Image.open(p_) as im:
+                h = w * im.size[1] / im.size[0]
+            # not "Hero ...": xmlpost.reading_order ranks names starting with "Hero" as the hero number (on top)
+            pic = add_picture_fill(s, p_, x, y, w, h, name="Title render", descr=self.R(hero["alt"], n))
+            tree = s.shapes._spTree
+            tree.remove(pic._element)
+            tree.insert(2, pic._element)
         self._logo_zone(s, n, L, spec)
 
     def _logo_zone(self, s, n, L, spec):
@@ -1199,7 +1217,7 @@ class Builder:
         drop_placeholder(s, 14)
         vis = spec["visual"]
         files = list(vis.get("files") or ([vis["file"]] if vis.get("file") else []))
-        if vis.get("kind") != "side_by_side" or len(files) != 2:
+        if vis.get("kind") != "side_by_side" or len(files) not in (1, 2):   # one file: a single wide render (slide 5)
             self.warn(n, f"slide 4 expects visual.kind side_by_side with two files, got {vis.get('kind')} {files}")
         infos = [self.render_info(f)[1] for f in files]
         pxs = [tuple(i.get("px") or DEFAULT_PX) for i in infos]
@@ -1286,7 +1304,8 @@ class Builder:
                 ex, ey = fx + float(anchor[0]) * fw / pw, fy + float(anchor[1]) * fh / ph
             descr = self.R(ea.get("descr"), n) if isinstance(ea, dict) and ea.get("descr") else None
             # a long arrow lifts the chip clear of the tower at the crop's south edge; the tip stays on the anchor
-            self._edge_arrow(s, txt, ex, ey, frames[target], descr=descr, ah=0.78)
+            ah = float(ea.get("arrow_h", 0.78)) if isinstance(ea, dict) else 0.78
+            self._edge_arrow(s, txt, ex, ey, frames[target], descr=descr, ah=ah)
         if spec.get("labels_from"):
             fk = spec["labels_from"]
             i = next((i for i, f in enumerate(files) if Path(f).stem == fk), len(files) - 1)
@@ -2046,6 +2065,46 @@ class Builder:
     # ============================================================================ slides added 2026-10-12
     # rules -- four rules of thumb in a 2 x 2 grid (L4): the opening tips (slide 7) and, with their evidence, the
     # closing ones (slide 28)
+    # agenda -- the talk's parts (L4, slide 2, 2026-10-14): one row per part, a blue number disc as on the rule tiles,
+    # the part's name (title font, navy) and one line on what it covers; thin tile-coloured rules between the rows
+    def slide_agenda(self, s, spec, n, L):
+        lines = self.set_title(s, n, spec["title"], L)
+        top = content_top(L, lines) + 0.10
+        drop_placeholder(s, 1)
+        items = spec["items"]
+        disc, head_pt, text_pt = 0.56, 28, 24
+        row_h = min(0.95, (BOTTOM - 0.10 - top) / len(items))
+        head_x = X0 + disc + 0.30
+        # heading column as wide as the widest heading, so the descriptions get the rest of the row
+        head_w = max(width_in(self.R(it["head"], n), head_pt, font="title") for it in items) + 0.15
+        text_x = head_x + head_w + 0.20
+        text_w = X0 + FULL_W - text_x
+        for i, it in enumerate(items):
+            y = top + i * row_h
+            head, text = self.R(it["head"], n), self.R(it.get("text", ""), n)
+            d = s.shapes.add_shape(MSO_SHAPE.OVAL, E(X0), E(y + (row_h - disc) / 2), E(disc), E(disc))
+            d.fill.solid()
+            d.fill.fore_color.rgb = rgb("highlight")
+            d.line.fill.background()
+            d.shadow.inherit = False
+            shape_text(d, str(i + 1), size=24, colour="white", font="title", align="centre", anchor="ctr",
+                       insets=(0, 0, 0, 0), wrap=False)
+            set_name(d, f"Agenda number {i + 1}")
+            mark_decorative(d)
+            if width_in(head, head_pt, font="title") > head_w:
+                self.warn(n, f"agenda part {i + 1} name wider than {head_w:.2f} in: {head!r}")
+            text_block(s, head_x, y, head_w, row_h, head, size=head_pt, font="title", colour="title", anchor="ctr",
+                       wrap=False, name=f"Agenda part {i + 1}")
+            if text:
+                if width_in(text, text_pt) > text_w:
+                    self.warn(n, f"agenda line {i + 1} wider than {text_w:.2f} in: {text!r}")
+                text_block(s, text_x, y, text_w, row_h, text, size=text_pt, colour="text", anchor="ctr",
+                           wrap=False, name=f"Agenda line {i + 1}")
+            if i < len(items) - 1:
+                rule = rect(s, head_x, y + row_h - 0.01, X0 + FULL_W - head_x, 0.02, fill="tile",
+                            name=f"Agenda rule {i + 1}")
+                mark_decorative(rule)
+
     def slide_rules(self, s, spec, n, L):
         lines = self.set_title(s, n, spec["title"], L)
         top = content_top(L, lines)

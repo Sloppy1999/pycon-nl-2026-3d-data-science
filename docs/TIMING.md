@@ -5,6 +5,17 @@ The talk is planned for **1800 s (30:00)**: the 32 `seconds` (31 before the meme
 Q&A and changeover; whether Q&A is included is not confirmed yet, OPEN_ITEMS d1), with about 7 minutes of Q&A after
 the talk. The backup slides B1 to B7 are hidden slides 30 to 36 and carry no time.
 
+## 2026-10-14: agenda as slide 2 (29 visible slides); the clock now adds up to 26:25
+
+A new slide 2, the agenda (20 s, five parts from the sections), follows the title. Its 20 s came from the workflow
+slide (now 8, 145 to 125 s). Every slide from the old 2 on moved by one, and every "slide N" reference in
+content.yaml, notes.yaml and appendix.yaml with it (references to old or former slides kept as they were).
+
+Recomputing `ends_at` from the `seconds` values found the main deck carries **1585 s (26:25)**, not 1800 s: the
+"Stream chunks", "Why it works" and "Six gotchas" slides (215 s) and other trims were removed without moving their
+time, while the last two `ends_at` still said 29:10 and 30:00. Both are now computed (25:35, 26:25), so about 3:35 of
+the 30 minutes are not allocated to any slide. The per-slide tables below are history and use older numbering.
+
 ## 2026-10-13: workflow ring replaces the trade-offs and chain slides (31 slides, still 1800 s)
 
 Slide 7 is now the six-stage workflow ring (Acquisition to Application, with loops back), with the tools of the old

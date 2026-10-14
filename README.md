@@ -38,7 +38,7 @@ uv run python deck/qa/checks.py
 uv run --group test pytest tests -q
 ```
 
-The PDF has 28 visible slides; the PPTX also contains hidden backup slides. LibreOffice is required
+The PDF has 29 visible slides; the PPTX also contains hidden backup slides. LibreOffice is required
 for PDF export; PyMuPDF substitutes for Poppler on systems without it. Fira fonts are downloaded by
 `setup_fonts.py`. The builder can clone the included master without external skill scripts; its native
 package checks do not replace full Office schema validation.

@@ -939,11 +939,13 @@ def main():
     ph_re = re.compile(r"\[[^\]\n]*[A-Za-z][^\]\n]*\]")
     code_names = ("Code", "!!code", "Struck code")
     spk = []
+    # the profiler slide's code table is Python too (h[i] = ...); by build, not by number, so renumbering keeps it
+    profile_labels = {str(s_["n"]) for s_ in specs if s_.get("build") == "profile"}
     for sl, lab in zip(slides, labels):
         tree = sl._element.find(".//p:cSld/p:spTree", NS)
         for el in tree.iter(P + "sp", P + "graphicFrame"):
             name = (cnv(el).get("name") if cnv(el) is not None else "") or ""
-            if name.startswith(code_names) or (lab == "24" and name == "code"):
+            if name.startswith(code_names) or (lab in profile_labels and name == "code"):
                 continue
             for para in el.iter(A + "p"):
                 vis = "".join((r.find(A + "t").text or "") for r in para.iter(A + "r") if r.find(A + "t") is not None)

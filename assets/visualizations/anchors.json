@@ -1,0 +1,30 @@
+{
+ "hero_trim": {
+  "jaarbeurs_hall": [
+   1489,
+   426
+  ],
+  "jaarbeurs_hall_note": {
+   "px": [
+    1993,
+    670
+   ],
+   "point_local": [
+    111.7,
+    108.3,
+    43.687
+   ],
+   "roof_voxels_within_15_m": 3251,
+   "matrix_px": [
+    1993.54,
+    670.34
+   ],
+   "vtkCoordinate_px": [
+    1993.54,
+    670.34
+   ],
+   "pixel_shows_crop": true,
+   "rule": "centre of the hall's BAG footprint, at the median z of the pipeline's building voxels within 15 m of it; projected with the renderer's camera matrices (cross-checked with vtkCoordinate); pixel = floor"
+  }
+ }
+}
