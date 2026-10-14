@@ -30,6 +30,7 @@ Run from the repository root:
 uv sync --group qa --group test
 uv run python pipeline/run.py          # crop included; evaluation, sweep and fresh-process determinism check
 uv run python pipeline/render.py       # real labels, stored camera; needs an OpenGL context
+uv run python assets/visualizations/make_visuals.py   # oblique renders for slides 1, 6, 19; after render.py
 uv run python snippets/run_all.py
 uv run python deck/build_deck.py
 uv run python deck/qa/setup_fonts.py

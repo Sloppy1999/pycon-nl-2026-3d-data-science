@@ -2,7 +2,6 @@
 
     uv run python assets/visualizations/make_visuals.py              # all
     uv run python assets/visualizations/make_visuals.py --only hero  # subset: hero split
-    uv run python assets/visualizations/make_visuals.py --preview    # quarter size, fast
 
 Reads only what pipeline/render.py reads (results/labels_crop.npz, data/<crop>.laz, deck/content.yaml palette) and
 reuses its Data, colours and cluster colouring, so every colour means the same thing as in renders/. Nothing is
@@ -63,10 +62,6 @@ PS_FULL = 4              # raw and painted-back points (722 961)
 PS_FURNITURE = 14        # street furniture: 3 objects, a few dozen points; same deliberate choice as renders/
 
 
-def scaled(px, k):
-    return (int(px[0] * k), int(px[1] * k))
-
-
 def render(layers, size, edl=True, hall=None):
     """layers: [(points, rgb uint8 (N, 3), point size px at 1920 px width), ...]. With hall=Data, also returns
     pipeline/render.py's Jaarbeurs hall anchor (BAG footprint centre at roof height) projected with this camera."""
@@ -118,10 +113,8 @@ def save(img, name):
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", nargs="*", default=None)
-    ap.add_argument("--preview", action="store_true")
     a = ap.parse_args()
     want = (lambda k: not a.only or k in a.only)
-    k = 0.5 if a.preview else 1.0
     pal, col, d = R.PAL, R.Colours(R.PAL), R.Data()
     zr = d.ground_z_ref
     ramp_full = R.ramp_colours(d.xyz[:, 2], zr, pal["height_ramp"])
@@ -130,7 +123,7 @@ def main() -> int:
     files, crops, anchors = {}, {}, {}
 
     if want("hero"):
-        img, hall = render([(d.xyz, ramp_full, PS_FULL)], scaled(HERO_PX, k), hall=d)
+        img, hall = render([(d.xyz, ramp_full, PS_FULL)], HERO_PX, hall=d)
         box = content_box([img])
         crops["hero_trim"] = [int(v) for v in box]
         files["hero_trim"] = save(crop(img, box), "hero_trim.png")
@@ -139,16 +132,14 @@ def main() -> int:
         assert hall["pixel_shows_crop"], "hall anchor lands on the background"
 
     if want("split"):
-        raw = render([(d.xyz, ramp_full, PS_FULL)], scaled(SPLIT_PX, k))
+        raw = render([(d.xyz, ramp_full, PS_FULL)], SPLIT_PX)
         lab = render([(d.xyz[~sf_p], rgb_p[~sf_p], PS_FULL), (d.xyz[sf_p], rgb_p[sf_p], PS_FURNITURE)],
-                     scaled(SPLIT_PX, k))
+                     SPLIT_PX)
         box = content_box([raw, lab])
         crops["split"] = [int(v) for v in box]
         files["split_raw"] = save(crop(raw, box), "split_raw.png")
         files["split_labels"] = save(crop(lab, box), "split_labels.png")
 
-    if a.preview:
-        return 0
     spec_p = OUT / "spec.json"
     spec = json.loads(spec_p.read_text()) if spec_p.exists() and a.only else {}
     spec.update(camera={n: camera_for(sz) for n, sz in (("hero", HERO_PX), ("split", SPLIT_PX))},
